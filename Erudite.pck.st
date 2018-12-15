@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 15 December 2018 at 4:29:49 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 15 December 2018 at 4:35:45 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.'!
-!provides: 'Erudite' 1 85!
+!provides: 'Erudite' 1 86!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 SystemOrganization addCategory: #'Erudite-Core'!
@@ -2154,19 +2154,6 @@ updateParents
 	sections do: [:section |
 		section parent: self.
 		section updateParents].! !
-
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:05:25'!
-asdfsdf
-
-<book: 'asdfsdf'>
-
-^(EruditeBook basicNew title: 'asdfsdf'; sections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'adsfs'; document: (EruditeDocument contents: '!!!! Title
-
-asdfasdfasdf
-
-//asdfs//
-
-'); subsections: ((OrderedCollection new)); yourself); yourself); updateParents; yourself)! !
 
 !EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 14:13'!
 bookNamed: aString ifNone: aBlock
