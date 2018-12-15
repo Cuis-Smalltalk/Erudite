@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 15 December 2018 at 3:35:11 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 15 December 2018 at 4:29:49 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.'!
-!provides: 'Erudite' 1 84!
-!requires: 'PetitParser' 1 5 nil!
+!provides: 'Erudite' 1 85!
 !requires: 'PetitParser-Binding' 1 0 nil!
+!requires: 'PetitParser' 1 5 nil!
 SystemOrganization addCategory: #'Erudite-Core'!
 SystemOrganization addCategory: #'Erudite-Morphic'!
 SystemOrganization addCategory: #'Erudite-Parser'!
@@ -17,6 +17,16 @@ PluggableTextModel subclass: #EruditePluggableTextModel
 	category: 'Erudite-Morphic'!
 !classDefinition: 'EruditePluggableTextModel class' category: #'Erudite-Morphic'!
 EruditePluggableTextModel class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeSmalltalkTextModel category: #'Erudite-Morphic'!
+TextModel subclass: #EruditeSmalltalkTextModel
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeSmalltalkTextModel class' category: #'Erudite-Morphic'!
+EruditeSmalltalkTextModel class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeBookExplorer category: #'Erudite-Core'!
@@ -548,6 +558,20 @@ refetch
 				stringOrText: self getActualContents).
 			self changed: #refetched.
 			^true ]! !
+
+!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:21:26'!
+formatAndStyle
+
+	|styler|
+	
+	styler _ SHTextStylerST80 new textModel: self.
+
+	self formatAndStyleIfNeededWith: styler! !
+
+!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:18:33'!
+shouldStyle: text with: aTextStyler
+
+	^ true! !
 
 !EruditeBookExplorer methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:29'!
 explorerList
@@ -2131,6 +2155,19 @@ updateParents
 		section parent: self.
 		section updateParents].! !
 
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:05:25'!
+asdfsdf
+
+<book: 'asdfsdf'>
+
+^(EruditeBook basicNew title: 'asdfsdf'; sections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'adsfs'; document: (EruditeDocument contents: '!!!! Title
+
+asdfasdfasdf
+
+//asdfs//
+
+'); subsections: ((OrderedCollection new)); yourself); yourself); updateParents; yourself)! !
+
 !EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 14:13'!
 bookNamed: aString ifNone: aBlock
 	
@@ -2652,21 +2689,19 @@ browse: aClass selector: aSymbol
 			open: browser
 			label: 'System Browser' ! !
 
-!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:03:12'!
+!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:26:20'!
 embed: aDocLink on: aStream
 
-	|text class|
+	|text class textModel |
 	
 	class _ Smalltalk at: aDocLink target asSymbol ifAbsent: [^nil].
 	
 	text _ Text string: class definition.
-							
-	"SHTextStylerST80  new 
-		textModel: (TextModel withText: text);
-		privateFormatAndConvert;
-		privateStyle."
 	
-	aStream nextPut: text.
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
+							
+	aStream nextPut: textModel actualContents.
 	aStream nextPut: Character newLineCharacter asString.
 	
 	aStream nextPut: 
@@ -2727,10 +2762,10 @@ browse: aClass selector: aSymbol
 			open: browser
 			label: 'System Browser' ! !
 
-!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:04:03'!
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:26:52'!
 embed: aDocLink on: aStream
 
-	|text methodReference|
+	|text methodReference textModel |
 	
 	methodReference _ self methodReferenceFor: aDocLink.
 	
@@ -2738,14 +2773,12 @@ embed: aDocLink on: aStream
 	
 	text _ Text string: methodReference sourceCode.
 							
-	"SHTextStylerST80  new 
-		textModel: (TextModel withText: text);
-		classOrMetaClass: methodReference actualClass;
-		formatAndStyle."
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
 	
 	aStream nextPut: (Text string: methodReference classSymbol asString attribute: TextEmphasis bold).
 	aStream nextPut: '>>'.	
-	aStream nextPut: text.
+	aStream nextPut: textModel actualContents.
 	aStream nextPut: Character newLineCharacter asString.
 	
 	aStream nextPut: 
@@ -2858,32 +2891,29 @@ render
 	
 	^ stream contents inject: '' into: [:x :y | x, y]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:03:28'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:25:01'!
 renderCode: aDocCode
 
-	|text|
+	|text textModel|
 	
 	text _ Text string: aDocCode code.
-							
-	"SHTextStylerST80  new textModel: (TextModel withText: text);
-		privateFormatAndConvert;
-		privateStyle."
+	
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
 
-	stream nextPut: text.! !
+	stream nextPut: textModel actualContents .! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:03:42'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:27:04'!
 renderCodeDoIt: aDocCode
 
-	|text button|
+	|text button textModel |
 	
 	text _ Text string: aDocCode code.							.
 							
-	"SHTextStylerST80  new 
-		textModel: (TextModel withText: text);
-		privateFormatAndConvert;
-		privateStyle."
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
 		
-	stream nextPut: text.
+	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
 	
 	button _ Text string: '[doIt]' attributes: 
@@ -2922,19 +2952,19 @@ renderCodeEmbedIt: aDocCode
 	
 	stream nextPut: (Text streamContents: [:s | result printOn: s])! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:04:18'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:27:16'!
 renderCodeExploreIt: aDocCode
 
-	|text button evalString|
+	|text button evalString textModel |
 	
 	evalString _ aDocCode code.
 	
 	text _ Text string: aDocCode code.							.
 							
-	"SHTextStylerST80  new textModel: (TextModel withText: text);
-		formatAndStyle."
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
 		
-	stream nextPut: text.
+	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
 	
 	button _ Text string: '[exploreIt]' 
@@ -2952,19 +2982,19 @@ renderCodeExploreItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) explore]})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:05:01'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:27:27'!
 renderCodeInspectIt: aDocCode
 
-	|text button evalString|
+	|text button evalString textModel |
 	
 	evalString _ aDocCode code.
 	
 	text _ Text string: aDocCode code.							.
 							
-	"SHTextStylerST80  new textModel: (TextModel withText: text);
-		formatAndStyle."
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
 		
-	stream nextPut: text.
+	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
 	
 	button _ Text string: '[inspectIt]' 
@@ -2982,19 +3012,19 @@ renderCodeInspectItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) inspect]})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:05:42'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:27:38'!
 renderCodePrintIt: aDocCode
 
-	|text button evalString|
+	|text button evalString textModel |
 	
 	evalString _ aDocCode code.
 	
 	text _ Text string: aDocCode code.							.
 							
-	"SHTextStylerST80  new textModel: (TextModel withText: text);
-		formatAndStyle."
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
 		
-	stream nextPut: text.
+	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
 	
 	button _ Text string: '[printIt]' 
@@ -3002,19 +3032,19 @@ renderCodePrintIt: aDocCode
 					BlockTextAction do: [:anObject | Transcript show: (Compiler evaluate: evalString notifying: anObject textProvider logged: false) printString]}.
 	stream nextPut: button.! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:04:37'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:28:32'!
 renderCodePrintItHere: aDocCode
 
-	|text evalString result |
+	|text evalString result textModel |
 	
 	evalString _ aDocCode code.
 	
 	text _ Text string: aDocCode code.							.
 							
-	"SHTextStylerST80  new textModel: (TextModel withText: text);
-		formatAndStyle."
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
 		
-	stream nextPut: text.
+	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
 	
 	requestor ifNil: [
