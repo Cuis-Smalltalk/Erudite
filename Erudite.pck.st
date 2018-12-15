@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 15 December 2018 at 3:21:11 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 15 December 2018 at 3:32:35 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.'!
-!provides: 'Erudite' 1 82!
+!provides: 'Erudite' 1 83!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'PetitParser-Binding' 1 0 nil!
 SystemOrganization addCategory: #'Erudite-Core'!
@@ -1208,11 +1208,6 @@ initialize
 	styledDocuments _ Dictionary new.
 	sourcesChanged _ false.
 	self initializeBindings ! !
-
-!EruditeBookReaderMorph class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:20:32'!
-initialize
-
-	EruditeBook eruditeManual open! !
 
 !EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/12/2018 18:56'!
 buildMorphicWindow
@@ -2591,9 +2586,14 @@ eruditeWorldMenu
 			} asDictionary.
 		}`! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:55:41'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 15:30:01'!
 initialize
 
+	Preferences addPreference: #eruditeBrowserClassComments 
+					category: 'erudite'  
+					default: true  
+					balloonHelp: 'Enabled/disable Erudite markup in browser class comments'.
+					 
 	EruditeBook eruditeManual open! !
 
 !EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:58:27'!
@@ -3417,23 +3417,27 @@ expandRoot
 enableEditing: aBoolean
 	self textMorph enableEditing: aBoolean! !
 
-!BrowserWindow methodsFor: '*Erudite' stamp: 'MM 12/13/2018 18:20'!
+!BrowserWindow methodsFor: '*Erudite' stamp: 'MM 12/15/2018 15:32:16'!
 buildMorphicCommentPane
 	"Construct the pane that shows the class comment."
 
 	| commentPane |
-	"commentPane _ BrowserCommentTextMorph
+	
+	(Preferences valueOfFlag: #eruditeBrowserClassComments ifAbsent: false) 
+		ifFalse: [
+			commentPane _ BrowserCommentTextMorph
 				textProvider: model
 				textGetter: #classCommentText
-				textSetter: #newClassComment:."
-				
-	commentPane _ EruditeClassCommentMorph withModel:
-		((EruditePluggableTextModel
-			on: model)
-			textGetter: #classCommentText
-			textSetter: #newClassComment:
-			selectionGetter: nil).
-	model addDependent: commentPane.
+				textSetter: #newClassComment:]
+	ifTrue: [
+		commentPane _ EruditeClassCommentMorph withModel:
+			((EruditePluggableTextModel
+				on: model)
+				textGetter: #classCommentText
+				textSetter: #newClassComment:
+				selectionGetter: nil).
+		model addDependent: commentPane].
+	
 	^ commentPane! !
 
 !InnerTextMorph methodsFor: '*Erudite' stamp: 'MM 12/7/2018 12:59'!
@@ -3443,5 +3447,4 @@ enableEditing: aBoolean
 	aBoolean ifFalse: [self stopBlinking]
 				ifTrue: [self removeProperty: #disablesEdition. self startBlinking]! !
 EruditeDocEditor initialize!
-EruditeBookReaderMorph initialize!
 EruditeSystem initialize!
