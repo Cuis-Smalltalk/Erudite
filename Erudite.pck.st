@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 15 December 2018 at 3:32:35 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 15 December 2018 at 3:35:11 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.'!
-!provides: 'Erudite' 1 83!
+!provides: 'Erudite' 1 84!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'PetitParser-Binding' 1 0 nil!
 SystemOrganization addCategory: #'Erudite-Core'!
@@ -648,13 +648,6 @@ cmdShortcutsSpec
 		#(		$l	#cancelEdits:						'Cancel')
 		#(       $i  #insertMarkup:                         'Insert markup')
 	)! !
-
-!EruditeDocEditor class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:10:43'!
-initialize
-	
-	"Tap and hold emulates button2 preference has to be false in order for clicking on links to work properly (avoid opening a context menu)."
-	Preferences setPreference:  #tapAndHoldEmulatesButton2 toValue: false.
-	Editor initialize.! !
 
 !EruditeDocEditor class methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:23'!
 initializeMenu
@@ -2586,13 +2579,15 @@ eruditeWorldMenu
 			} asDictionary.
 		}`! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 15:30:01'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 15:34:59'!
 initialize
 
 	Preferences addPreference: #eruditeBrowserClassComments 
 					category: 'erudite'  
 					default: true  
 					balloonHelp: 'Enabled/disable Erudite markup in browser class comments'.
+					
+	Preferences setPreference:  #tapAndHoldEmulatesButton2 toValue: false.
 					 
 	EruditeBook eruditeManual open! !
 
@@ -3446,5 +3441,4 @@ enableEditing: aBoolean
 	self setProperty: #disablesEdition toValue: aBoolean.
 	aBoolean ifFalse: [self stopBlinking]
 				ifTrue: [self removeProperty: #disablesEdition. self startBlinking]! !
-EruditeDocEditor initialize!
 EruditeSystem initialize!
