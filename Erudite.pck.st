@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 16 December 2018 at 11:04:37 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 16 December 2018 at 11:23:27 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.'!
-!provides: 'Erudite' 1 87!
+!provides: 'Erudite' 1 88!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 SystemOrganization addCategory: #'Erudite-Core'!
@@ -3437,29 +3437,6 @@ expandRoot
 !TextModelMorph methodsFor: '*Erudite' stamp: 'MM 12/7/2018 12:55'!
 enableEditing: aBoolean
 	self textMorph enableEditing: aBoolean! !
-
-!BrowserWindow methodsFor: '*Erudite' stamp: 'MM 12/15/2018 15:32:16'!
-buildMorphicCommentPane
-	"Construct the pane that shows the class comment."
-
-	| commentPane |
-	
-	(Preferences valueOfFlag: #eruditeBrowserClassComments ifAbsent: false) 
-		ifFalse: [
-			commentPane _ BrowserCommentTextMorph
-				textProvider: model
-				textGetter: #classCommentText
-				textSetter: #newClassComment:]
-	ifTrue: [
-		commentPane _ EruditeClassCommentMorph withModel:
-			((EruditePluggableTextModel
-				on: model)
-				textGetter: #classCommentText
-				textSetter: #newClassComment:
-				selectionGetter: nil).
-		model addDependent: commentPane].
-	
-	^ commentPane! !
 
 !InnerTextMorph methodsFor: '*Erudite' stamp: 'MM 12/7/2018 12:59'!
 enableEditing: aBoolean

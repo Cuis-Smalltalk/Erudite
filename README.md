@@ -12,10 +12,16 @@ Erudite provides the following to document Smalltalk programs:
 
 ## Install
 
-Evaluate:
+To install the core (markup and Erudite reader and editor):
 
 ```Smalltalk
 Feature require: 'Erudite'
+```
+
+Extensions to Smalltalk tools (browser, workspace, etc) are provided in a separate package:
+
+```Smalltalk
+Feature require: 'EruditeToolsExtensions'
 ```
 
 There's also a PetitParser tutorial book included. Install it doing:
