@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 15 December 2018 at 4:35:45 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 16 December 2018 at 11:04:37 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.'!
-!provides: 'Erudite' 1 86!
+!provides: 'Erudite' 1 87!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 SystemOrganization addCategory: #'Erudite-Core'!
@@ -21,7 +21,7 @@ EruditePluggableTextModel class
 
 !classDefinition: #EruditeSmalltalkTextModel category: #'Erudite-Morphic'!
 TextModel subclass: #EruditeSmalltalkTextModel
-	instanceVariableNames: ''
+	instanceVariableNames: 'styler'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
@@ -559,14 +559,22 @@ refetch
 			self changed: #refetched.
 			^true ]! !
 
-!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:21:26'!
+!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/16/2018 11:01:54'!
+classOrMetaClass: aClass
+
+	styler classOrMetaClass: aClass! !
+
+!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/16/2018 11:01:33'!
 formatAndStyle
 
-	|styler|
-	
-	styler _ SHTextStylerST80 new textModel: self.
-
 	self formatAndStyleIfNeededWith: styler! !
+
+!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/16/2018 11:02:06'!
+initialize
+	
+	super initialize.
+	
+	styler _ SHTextStylerST80 new textModel: self.! !
 
 !EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:18:33'!
 shouldStyle: text with: aTextStyler
@@ -2749,7 +2757,7 @@ browse: aClass selector: aSymbol
 			open: browser
 			label: 'System Browser' ! !
 
-!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:26:52'!
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/16/2018 11:04:04'!
 embed: aDocLink on: aStream
 
 	|text methodReference textModel |
@@ -2761,7 +2769,8 @@ embed: aDocLink on: aStream
 	text _ Text string: methodReference sourceCode.
 							
 	textModel _ EruditeSmalltalkTextModel withText: text.
-	textModel formatAndStyle.
+	textModel classOrMetaClass: methodReference actualClass;
+				formatAndStyle.
 	
 	aStream nextPut: (Text string: methodReference classSymbol asString attribute: TextEmphasis bold).
 	aStream nextPut: '>>'.	
