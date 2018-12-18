@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 3:51:00 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 3:55:54 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 98!
+!provides: 'Erudite' 1 99!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -2230,7 +2230,7 @@ booksList
 	pragmas _ Pragma allNamed: #book: in: self class.
 	^ pragmas collect: [:pragma | pragma method valueWithReceiver: self class arguments: #()].! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 15:45:17'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 15:55:49'!
 cuisManual
 
 <book: 'Cuis Manual'>
@@ -2269,11 +2269,11 @@ This is not unlike using Git or GitHub with a file-based development environment
 
 The way //ChangeSets// are created and managed in Cuis is different from Squeak. This was done to make ChangeSets a good way to manage changes to the base Cuis Core image, while keeping code in Packages out of the way, so they don''t get mixed together.
 
-What is not in a Package belongs (at least temporarily) to the Cuis Core image. Such code is automatically captured in a //ChangeSet//. The ChangeSet for Core changes is created automatically and named like *"1243-CuisCore-JuanVuletich-2012Apr03-22h50m"*. The number at the beginning is the next number for the Cuis update stream, and is provided only as a suggestion. The "CuisCore" part is to reveal that the code belongs in the base image and not in some package. Then we have author name and date / time of creation. These *ChangeSets* are created automatically. There is no longer a way to manually create them, or make them "current" or "active". It is best to rename them, replacing *''CuisCore''* with some meaningful name. These *ChangeSets* will not capture any code that belongs in a Package.
+What is not in a Package belongs (at least temporarily) to the Cuis Core image. Such code is automatically captured in a //ChangeSet//. The ChangeSet for Core changes is created automatically and named like //"1243-CuisCore-JuanVuletich-2012Apr03-22h50m"//. The number at the beginning is the next number for the Cuis update stream, and is provided only as a suggestion. The "CuisCore" part is to reveal that the code belongs in the base image and not in some package. Then we have author name and date / time of creation. These //ChangeSets// are created automatically. There is no longer a way to manually create them, or make them "current" or "active". It is best to rename them, replacing //''CuisCore''// with some meaningful name. These //ChangeSets// will not capture any code that belongs in a Package.
 
-Opening a [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: Change Sorter. will show the CuisCore change set. This is useful, for example, to check that no code that was intended for a Package ends here by mistake (because of the wrong class or method category). But it is also useful when doing changes to the base system. Now, we can do changes both to the base system and to a number of packages, all in the same session, without having to be careful about selecting the proper change set before saving a method: The code is automatically added to the proper *Package* or //ChangeSet//, simply following the class or method category. Gone are the days of messed up change sets and lost code!!
+Opening a [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: Change Sorter. will show the CuisCore change set. This is useful, for example, to check that no code that was intended for a Package ends here by mistake (because of the wrong class or method category). But it is also useful when doing changes to the base system. Now, we can do changes both to the base system and to a number of packages, all in the same session, without having to be careful about selecting the proper change set before saving a method: The code is automatically added to the proper //Package// or //ChangeSet//, simply following the class or method category. Gone are the days of messed up change sets and lost code!!
 
-When the changes to the base system are complete, it is a good time to review the CuisCore change set and, maybe remove from it changes that we don''t want to keep (for example, experiments, halts, etc). Then, just do right click / File out and remove. This saves the //ChangeSet// on disk. It also removes it from the **ChangeSorter** (but it doesn''t remove any code). This is good, because the next changes done will end in a new CuisCore change set, and there''s no risk of having undesired changes in the old one. As changes to the base image progress, and several CuisCore *ChangeSets* are saved to disk, these numbered files are created in sequence. They will be ready to be loaded back in proper order in a fresh Cuis image, or to be sent to Cuis maintainers for integration in the update stream and in next releases of Cuis.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Loading ChangeSet files into Cuis'; document: ((EruditeDocument contents: '!!!!!! Loading ChangeSet files into Cuis
+When the changes to the base system are complete, it is a good time to review the CuisCore change set and, maybe remove from it changes that we don''t want to keep (for example, experiments, halts, etc). Then, just do right click / File out and remove. This saves the //ChangeSet// on disk. It also removes it from the **ChangeSorter** (but it doesn''t remove any code). This is good, because the next changes done will end in a new CuisCore change set, and there''s no risk of having undesired changes in the old one. As changes to the base image progress, and several CuisCore //ChangeSets// are saved to disk, these numbered files are created in sequence. They will be ready to be loaded back in proper order in a fresh Cuis image, or to be sent to Cuis maintainers for integration in the update stream and in next releases of Cuis.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Loading ChangeSet files into Cuis'; document: ((EruditeDocument contents: '!!!!!! Loading ChangeSet files into Cuis
 
 There are two ways to load //ChangeSet// files (.cs): **[FileIn]** and **[Install]**.
 
