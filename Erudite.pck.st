@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 3:55:54 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 5:10:43 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 99!
+!provides: 'Erudite' 1 100!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -2230,7 +2230,7 @@ booksList
 	pragmas _ Pragma allNamed: #book: in: self class.
 	^ pragmas collect: [:pragma | pragma method valueWithReceiver: self class arguments: #()].! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 15:55:49'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 17:09:35'!
 cuisManual
 
 <book: 'Cuis Manual'>
@@ -2285,7 +2285,7 @@ The Cuis base image includes only kernel functionailty, very basic libraries, an
 
 Some of them are included in the main Cuis GitHub repository, at https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev in the ''Packages'' folder. Loading ''Core-Packages.pck.st'' loads them all:
 
-[[[Feature require: ''Core-Packages.pck.st'']]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Cuis and Github'; document: ((EruditeDocument contents: '!!!! Using Git and GitHub to host and manage Cuis code
+[[[Feature require: ''Core-Packages'']]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Cuis and Github'; document: ((EruditeDocument contents: '!!!! Using Git and GitHub to host and manage Cuis code
 
 Cuis includes tools and procedures for managing Smalltalk code. Central to this is the management of Packages and Package Files (.pck). But Cuis doesn''t do version control. Instead, we suggest using external VCS tools.  In particular, we''re using [GitHub](http://www.github.com/), and the first project we''re hosting there is [StyledTextEditor](https://github.com/bpieber/Cuis-StyledTextEditor).
 
