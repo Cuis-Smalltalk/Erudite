@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 17 December 2018 at 11:53:32 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 12:31:22 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.'!
-!provides: 'Erudite' 1 90!
+!provides: 'Erudite' 1 91!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -1057,12 +1057,14 @@ explorerMenu
 	
 	^ menu! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:43:39'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 00:31:08'!
 getStyledText: aDocument
 	^ styledDocuments
 		at: aDocument
 		ifAbsent: [ | erudite text |
 			erudite _ EruditeMarkupParser parse: aDocument contents.
+			"We transplant the images from document to styledDocument and back. TODO: this is not good!!!! FIX"
+			erudite images: aDocument images.
 			text _ MorphicEruditeDocRenderer render: erudite notifying: self.
 			styledDocuments at: aDocument put: text.
 			"TODO: this is not good!!!! FIX"
@@ -3552,7 +3554,7 @@ contents: anObject
 
 	contents _ anObject! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:02:52'!
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 00:31:18'!
 addImageFromPath: aString
 
 	|form|
