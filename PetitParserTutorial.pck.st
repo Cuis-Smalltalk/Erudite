@@ -1,15 +1,18 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2739] on 12 December 2018 at 11:22:28.122613 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 7:24:25 pm'!
 'Description Please enter a description for this package'!
-!provides: 'PetitParserTutorial' 1 5!
+!provides: 'PetitParserTutorial' 1 8!
+!requires: 'PetitTutorial' 1 0 nil!
 !requires: 'PetitParser' 1 6 nil!
 !requires: 'Erudite' 1 73 nil!
 
-!EruditeBook class methodsFor: '*PetitParserTutorial' stamp: 'MM 12/12/2018 11:16'!
+
+
+!EruditeBook class methodsFor: '*PetitParserTutorial' stamp: 'MM 12/18/2018 19:24:22'!
 petitparserTutorial
 
 <book: 'PetitParser tutorial'>
 
-^(EruditeBook basicNew title: 'PetitParser tutorial'; sections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Introduction'; document: (EruditeDocument contents: '!!!! PetitParser: Building modular parsers
+^(EruditeBook basicNew title: 'PetitParser tutorial'; sections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! PetitParser: Building modular parsers
 
 with the participation of:
 **Jan Kurs** //(kurs@iam.unibe.ch)//
@@ -17,7 +20,7 @@ with the participation of:
 **Lukas Renggli** //(renggli@gmail.com)//
 
 Building parsers to analyze and transform data is a common task in software development. In this chapter we present a powerful parser framework called PetitParser. PetitParser combines many ideas from various parsing technologies to model grammars and parsers as objects that can be reconfigured dynamically. PetitParser was written by Lukas Renggli as part of his work on the Helvetia system 1 but it can be used as a standalone library.
-'); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Writing parsers with PetitParser'; document: (EruditeDocument contents: '!!!! Writing parsers with PetitParser
+') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Writing parsers with PetitParser'; document: ((EruditeDocument contents: '!!!! Writing parsers with PetitParser
 
 PetitParser is a parsing framework different from many other popular parser generators. PetitParser makes it easy to define parsers with Smalltalk code and to dynamically reuse, compose, transform and extend grammars. We can reflect on the resulting grammars and modify them on-the-fly. As such PetitParser fits better the dynamic nature of Smalltalk.
 Furthermore, PetitParser is not based on tables such as SmaCC and ANTLR. Instead it uses a combination of four alternative parser methodologies: scannerless parsers, parser combinators, parsing expression grammars and packrat parsers. As such PetitParser is more powerful in what it can parse. 
@@ -27,13 +30,13 @@ Let''s have a quick look at these four parser methodologies:
 **Scannerless Parsers** combine what is usually done by two independent tools (scanner and parser) into one. This makes writing a grammar much simpler and avoids common problems when grammars are composed.
 **Parser Combinators** are building blocks for parsers modeled as a graph of composable objects; they are modular and maintainable, and can be changed, recomposed, transformed and reflected upon.
 **Parsing Expression Grammars** (PEGs) provide the notion of ordered choices. Unlike parser combinators, the ordered choice of PEGs always follows the first matching alternative and ignores other alternatives. Valid input always results in exactly one parse-tree, the result of a parse is never ambiguous.
-**Packrat Parsers** give linear parse-time guarantees and avoid common problems with left-recursion in PEGs.'); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Writing a simple grammar'; document: (EruditeDocument contents: '!!!!!! Writing a simple grammar
+**Packrat Parsers** give linear parse-time guarantees and avoid common problems with left-recursion in PEGs.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Writing a simple grammar'; document: ((EruditeDocument contents: '!!!!!! Writing a simple grammar
 
 Writing grammars with PetitParser is as simple as writing Smalltalk code. For example, to define a grammar that parses identifiers starting with a letter followed by zero or more letters or digits is defined and used as follows:
 
 [[[identifier := #letter asParser , #word asParser star.
 identifier parse: ''a987jlkj''
-]]] printItHere'); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Parsing some input'; document: (EruditeDocument contents: '!!!!!! Parsing some input
+]]] printItHere') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Parsing some input'; document: ((EruditeDocument contents: '!!!!!! Parsing some input
 
 To actually parse a string (or stream) we use the method {PPParser>>parse: ::method} as follows:
 
@@ -74,7 +77,7 @@ index of last character) in the given input one can use either {PPParser>>matchi
 
 [[[identifier matchingSkipRangesIn: ''foo 123 bar12'']]] printItHere
 [[[identifier matchingRangesIn: ''foo 123 bar12'']]] printItHere
-'); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Different kinds of parsers'; document: (EruditeDocument contents: '!!!!!! Different kinds of parsers
+') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Different kinds of parsers'; document: ((EruditeDocument contents: '!!!!!! Different kinds of parsers
 
 PetitParser provide a large set of ready-made parser that you can compose to consume and transform arbitrarily complex languages. The terminal parsers are the most simple ones. We&#8217;ve already seen a few of those, some more are defined in the protocol Table 1.1.
 
@@ -148,4 +151,80 @@ comment := ''//'' asParser, #newline asParser negate star.
 ignorable := comment / #space asParser.
 line := identifier trim: ignorable.
 line parse: ''// This is a comment
-oneIdentifier // another comment'']]] printItHere'); subsections: ((OrderedCollection new)); yourself); yourself); yourself); yourself); updateParents; yourself)! !
+oneIdentifier // another comment'']]] printItHere
+
+The message PPParser»==> lets you specify a block to be executed when the parser matches an input. The next section presents several examples. Here is a simple way to get a number from its string representation.
+
+[[[number := #digit asParser plus flatten]]] printItHere
+[[[number parse: ''123'']]] printItHere
+
+The table 1.3 shows the basic elements to build parsers. There are a few more well documented and tested factory methods in the operators protocols of PPParser . If you want to know more about these factory methods, browse these protocols. An interesting one is separatedBy: which answers a new parser that parses the input one or more times, with separations specified by another parser.
+') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Writing a more complicated grammar'; document: ((EruditeDocument contents: '!!!!!! Writing a more complicated grammar
+
+We now write a more complicated grammar for evaluating simple arithmetic expressions. With the grammar for a number (actually an integer) defined above, the next step is to define the productions for addition and multiplication in order of precedence. Note that we instantiate the productions as PPDelegateParser upfront, because they recursively refer to each other. The method #setParser: then resolves this recursion. The following script defines three parsers for the addition, multiplication and parenthesis (see Figure 1.4 for the related syntax diagram):
+
+[[[term := PPDelegateParser new.
+prod := PPDelegateParser new.
+prim := PPDelegateParser new.
+term setParser: (prod , $+ asParser trim , term ==> [ :nodes | nodes first + nodes last ])
+/ prod.
+prod setParser: (prim , $* asParser trim , prod ==> [ :nodes | nodes first * nodes last ])
+/ prim.
+prim setParser: ($( asParser trim , term , $) asParser trim ==> [ :nodes | nodes second ])
+/ number.]]]
+
+The term parser is defined as being either (1) a prod followed by ''+'', followed by another term or (2) a prod. In case (1), an action block asks the parser to compute the arithmetic addition of the value of the first node (a prod) and the last node (a term). The prod parser is similar to the term parser. The prim parser is interesting in that it accepts left and right parenthesis before and after a term and has an action block that simply ignores them.
+
+To understand the precedence of productions, see Figure 1.5. The root of the tree in this figure ( term ), is the production that is tried first. A term is either a + or a prod . The term production comes first because + as the lowest priority in mathematics.
+
+To make sure that our parser consumes all input we wrap it with the end parser into the start production:
+
+[[[start := term end]]]
+
+That''s it, we can now test our parser:
+
+[[[start parse: ''1 + 2 * 3'']]] printItHere
+[[[start parse: ''(1 + 2) * 3'']]] printItHere') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); add: (EruditeBookSection basicNew title: 'Composite grammars with PetitParser'; document: ((EruditeDocument contents: '!!!! Composite grammars with PetitParser
+
+In the previous section we saw the basic principles of PetitParser and gave some introductory examples. In this section we are going to present a way to define more complicated grammars. We continue where we left off with the arithmetic expression rammar.
+Writing parsers as a script as we did previously can be  cumbersome, especially when grammar productions are mutually recursive and refer to each other in complicated ways. Furthermore a grammar specified in a single script makes it unnecessary hard to reuse specific parts of that grammar.
+Luckily there is {PPCompositeParser::class} to the rescue.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Defining the grammar'; document: ((EruditeDocument contents: '!!!!!! Defining the grammar
+
+As an example let''s create a composite parser using the same expression grammar we built in the last section but this time we define it inside a class subclass of {PPCompositeParser ::class}.
+
+{ExpressionGrammar::class}[embed]
+
+Again we start with the grammar for an integer number. Define the
+method number as follows:
+
+{ExpressionGrammar>>number ::method}[embed]
+
+Every production in ExpressionGrammar is specified as a method that returns its parser. Similarly, we define the productions term , prod , mul , and prim . Productions refer to each other by reading the respective instance variable of the same name and PetitParser takes care of initializing these instance variables for you automatically. We let Pharo automatically add the necessary instance variables as we refer to them for the first time. We obtain the following class definition:
+
+{ExpressionGrammar::class}[embed]
+
+Define more expression grammar parsers, this time with no associated action:
+
+{ExpressionGrammar>>term ::method}[embed]
+
+{ExpressionGrammar>>add ::method}[embed]
+
+{ExpressionGrammar>>prod ::method}[embed]
+
+{ExpressionGrammar>>mul ::method}[embed]
+
+{ExpressionGrammar>>prim ::method}[embed]
+
+{ExpressionGrammar>>parens ::method}[embed]
+
+Contrary to our previous implementation we do not define the production actions yet (what we previously did by using PPParser»==> ); and we factor out the parts for addition ( add ), multiplication ( mul ), and parenthesis ( parens ) into separate productions. This will give us better reusability later on. For example, a subclass may override such methods to produce slightly different production output. Usually, production methods are categorized in a protocol named grammar (which can be refined into more specific protocol names when necessary such as grammar - literals ).
+
+Last but not least we define the starting point of the expression grammar. This is done by overriding {PPCompositeParser>>start ::method} in the ExpressionGrammar class:
+
+{ExpressionGrammar>>start ::method}[embed]
+
+Instantiating the ExpressionGrammar gives us an expression parser that returns a default abstract-syntax tree:
+
+[[[parser := ExpressionGrammar new.]]]
+[[[parser parse: ''1 + 2 * 3'']]] printItHere
+[[[parser parse: ''(1 + 2) * 3'']]] printItHere') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); yourself); updateParents; yourself)! !
