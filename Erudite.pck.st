@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 12:31:22 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 12:16:06 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.'!
-!provides: 'Erudite' 1 91!
+!provides: 'Erudite' 1 92!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -3554,7 +3554,7 @@ contents: anObject
 
 	contents _ anObject! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 00:31:18'!
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 12:15:23'!
 addImageFromPath: aString
 
 	|form|
@@ -3756,14 +3756,17 @@ renderLink: aDocLink on: aStream
 						class _ Smalltalk at: aDocLink target withBlanksTrimmed asSymbol.
 						self browse: class selector: nil]))! !
 
-!ImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:48:46'!
+!ImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 12:16:01'!
 render: aDocLink in: aDocument on: aStream
 
 	|filePath form imageMorph |
 	
 	filePath _ aDocLink target withBlanksTrimmed.
 	form _ aDocument imageAt: filePath ifAbsent: [
-				aDocument addImageFromPath: filePath].
+				[aDocument addImageFromPath: filePath] 
+					on: Error
+					do: [^aStream nextPut: 'Image not found in ', filePath]].
+	
 	imageMorph _ ImageMorph new
 						image: form.
 							
