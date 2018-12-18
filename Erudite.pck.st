@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 12:54:48 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 12:59:46 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.'!
-!provides: 'Erudite' 1 93!
+!provides: 'Erudite' 1 94!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -2245,7 +2245,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!EruditeBook class methodsFor: 'storage' stamp: 'MM 12/18/2018 12:53:57'!
+!EruditeBook class methodsFor: 'storage' stamp: 'MM 12/18/2018 12:59:42'!
 eruditeManual
 
 <book: 'Erudite Manual'>
@@ -2304,7 +2304,7 @@ When you are done, save the book, from the explorer menu //save//.
 
 **open**. Open an //existing book// with the book reader.
 **save**. Store the book being edited on a method on the class side of {EruditeBook::class}.
-**edit**. Open a //new book// for editing with the book editor.
+**edit**. Open the //current book// for editing with the book editor.
 **save as..**. Save the current book as a new book with a different title.
 **refresh**. Invalidates rendering caches of the book reader/editor. Book documents are rerendered after that.
 **reload**. Forgets the current changes and load the book from the storage.
@@ -2312,7 +2312,7 @@ When you are done, save the book, from the explorer menu //save//.
 
 **explore book**. Open the current book with a Smalltalk explorer.
 **toggle view sources**. Makes the text editing panel visible/invisible.
-**toggle live editing**. By default, in the book editor, the markup renderer panel on the left is updated whenever you edit the markup sources on the right panel. The problem with this is that this can be expensive as the conten works and too much parsing and rendering is being done for each change. Toggling live editing off, prevents the left panel from being updated on each change, and update only when markup changes are accepted (alt-S). //Tip:// toggle live editing off for big documents.') images: ((Dictionary new) add: ('/home/marian/src/erudite-menu.png'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAfIAAAHgCAYAAABej+9AAAC8JElEQVR4XuX9C3wUVbb3jefz
+**toggle live editing**. By default, in the book editor, the markup renderer panel on the left is updated whenever you edit the markup sources on the right panel. The problem with this is that this can be expensive as the content grows and too much parsing and rendering is being done for each change. Toggling live editing off, prevents the left panel from being updated on each change, and update only when markup changes are accepted (alt-S). //Tip:// toggle live editing off for big documents.') images: ((Dictionary new) add: ('/home/marian/src/erudite-menu.png'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAfIAAAHgCAYAAABej+9AAAC8JElEQVR4XuX9C3wUVbb3jefz
 PO/Lw3vG/E/O5DknmDlzbOfSGWYy02I0TI+jrY40MxgzM0QiQU1UTBQhoIFglAnxQrwGhQBK
 NBCVBJUOKp1bJ+l0roICgoAyCgxKEDEJchPB+++/d1V1d3V33bpzIWHVx5/prqq9a++qpr61
 1l61V9SFf3kUFzJdes182K+4A3+/7GZc/4dpmH5pCn3RF33RF33RF30NA3Eucz5zTnNeXyix
