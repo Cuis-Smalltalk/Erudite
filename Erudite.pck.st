@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 3:41:16 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 3:45:20 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.'!
-!provides: 'Erudite' 1 96!
+!provides: 'Erudite' 1 97!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -2228,7 +2228,7 @@ booksList
 	pragmas _ Pragma allNamed: #book: in: self class.
 	^ pragmas collect: [:pragma | pragma method valueWithReceiver: self class arguments: #()].! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 15:39:46'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 15:45:17'!
 cuisManual
 
 <book: 'Cuis Manual'>
@@ -2283,7 +2283,37 @@ The Cuis base image includes only kernel functionailty, very basic libraries, an
 
 Some of them are included in the main Cuis GitHub repository, at https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev in the ''Packages'' folder. Loading ''Core-Packages.pck.st'' loads them all:
 
-[[[Feature require: ''Core-Packages.pck.st'']]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); updateParents; yourself)! !
+[[[Feature require: ''Core-Packages.pck.st'']]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Cuis and Github'; document: ((EruditeDocument contents: '!!!! Using Git and GitHub to host and manage Cuis code
+
+Cuis includes tools and procedures for managing Smalltalk code. Central to this is the management of Packages and Package Files (.pck). But Cuis doesn''t do version control. Instead, we suggest using external VCS tools.  In particular, we''re using [GitHub](http://www.github.com/), and the first project we''re hosting there is [StyledTextEditor](https://github.com/bpieber/Cuis-StyledTextEditor).
+
+The guiding principle is to **not duplicate concepts and behavior**. As we''re using an external tool (Git) for version control, then we use it as it meant to be used. Most people use Git for version control and a file based IDE such as Eclipse for development. Such IDEs don''t do version control themselves. It is done by Git. Do the same: do not include package version control in Cuis. This is a departure from the Monticello /Git integration (smallsource and MonticelloFileTree) by Otto Behrens, Dale Henrichs, etc.
+
+We use GitHub to host, version, diff and merge external packages (.pck files), i.e. code that is maintained independently and outside Cuis.
+
+Package files need to be simple text files. Cuis encoding for latin alphabet (ISO 8859-15) is handled without problems by GitHub. Cuis uses the LF (ascii code 10) newline convention, as preferred in GitHub. This allows Git/GitHub to diff versions, and merge branches.
+
+Each GitHub repository has one set of users and permissions. Each GitHub repository has one state (Git commits repositories, not individual files). Branch and merges are done on the whole repository and not on individual files. Therefore, we need a separate GitHub repository for each project, i.e., for each package or set of closely related packages that are always loaded and maintained together as a whole.
+
+!!!!!! Development process for External Packages
+
+This is the suggested procedure for developing external packages. Usually do this every day.
+
+* Start with a standard (i.e. fresh) Cuis image. Never save the image.
+
+* Set up Git repositories for external packages (if not already done)
+
+* Install packages from Git repositories.
+
+* Develop. Modify and/or create packages.
+
+* Save own packages (to Git repositories).
+
+* Git add / commit / push as appropriate.
+
+* Fileout changes that are not part of any package. These are automatically captured in numbered changesets, separated from changes to packages.
+
+* Exit the image. Usually without saving.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); updateParents; yourself)! !
 
 !EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:31'!
 titled: aString
