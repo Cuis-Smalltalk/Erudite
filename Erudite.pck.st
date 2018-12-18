@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 5:23:06 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 7:37:22 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 101!
+!provides: 'Erudite' 1 102!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -1022,7 +1022,12 @@ exploreBook
 
 	model explore! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:09:39'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 19:09:56'!
+exploreVariables
+
+	bindings explore! !
+
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 19:11:00'!
 explorerMenu
 
 	|menu|
@@ -1043,6 +1048,9 @@ explorerMenu
 	menu lastItem setIcon: Theme current switchIcon.
 	menu add: 'explore book' action: #exploreBook.
 	menu lastItem setIcon: Theme current exploreIcon.
+	menu add: 'explore variables' action: #exploreVariables.
+	menu lastItem setIcon: Theme current exploreIcon.
+	menu add: 'reset variables'	action: #initializeBindings.
 	menu addLine.
 	menu add: 'open' action: #openBook.
 	menu lastItem setIcon: Theme current openIcon.
@@ -1054,8 +1062,7 @@ explorerMenu
 	menu add: 'refresh' action: #refreshBook.
 	menu lastItem setIcon: Theme current changesIcon.
 	menu add: 'edit' action: #editBook.
-	menu lastItem setIcon: Theme current textEditorIcon.
-	menu add: 'reset variables'	action: #initializeBindings.
+	menu lastItem setIcon: Theme current textEditorIcon.	
 	
 	^ menu! !
 
@@ -2199,6 +2206,12 @@ openInSection: aString
 	bookReader _ self open.
 	bookReader gotoSectionNamed: aString! !
 
+!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 19:32:55'!
+parent
+
+	"For navigation. BookSection interface."
+	^ nil! !
+
 !EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 18:06'!
 removeSection: aSection
 
@@ -2334,7 +2347,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!EruditeBook class methodsFor: 'storage' stamp: 'MM 12/18/2018 12:59:42'!
+!EruditeBook class methodsFor: 'storage' stamp: 'MM 12/18/2018 19:37:13'!
 eruditeManual
 
 <book: 'Erudite Manual'>
@@ -3910,7 +3923,7 @@ Literate Programming in Cuis can be realized by the creation of {Book::class|boo
 
 !!!!!! Code blocks
 
-[[[Smalltalk inspect]]]
+[[[Smalltalk at: #Object]]]
 [[[Smalltalk inspect]]] doIt
 [[[Smalltalk]]] exploreIt
 [[[Smalltalk]]] inspectIt
@@ -5387,12 +5400,12 @@ findSectionNamed: aString ifAbsent: aBlock
 	
 	^ aBlock value! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/9/2018 22:18'!
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 19:30:59'!
 nextSection
 
 	^ subsections 
 		ifNotEmpty: [subsections first]
-		ifEmpty: [parent sections after: self]! !
+		ifEmpty: [parent sections after: self ifNone: [parent parent ifNotNil: [:parentParent | parentParent sections after: parent]]]! !
 
 !EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:28'!
 previousSection
@@ -5850,7 +5863,7 @@ render
 	
 	^ stream contents inject: '' into: [:x :y | x, y]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:25:01'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 19:06:59'!
 renderCode: aDocCode
 
 	|text textModel|
@@ -5859,8 +5872,14 @@ renderCode: aDocCode
 	
 	textModel _ EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.
-
-	stream nextPut: textModel actualContents .! !
+	
+	stream nextPut: textModel actualContents.
+	
+	"Besides rendering the code, try to evaluate it, since there may be variable assignments."
+	[requestor 
+		ifNil: [Compiler evaluate: aDocCode code for: self logged: false]
+		ifNotNil: [Compiler evaluate: aDocCode code notifying: requestor logged: false]]
+	on: Error do: [:error | error].! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:27:04'!
 renderCodeDoIt: aDocCode
