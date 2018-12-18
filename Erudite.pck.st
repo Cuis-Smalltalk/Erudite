@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 5:10:43 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 5:23:06 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 100!
+!provides: 'Erudite' 1 101!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -2230,12 +2230,12 @@ booksList
 	pragmas _ Pragma allNamed: #book: in: self class.
 	^ pragmas collect: [:pragma | pragma method valueWithReceiver: self class arguments: #()].! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 17:09:35'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 17:22:41'!
 cuisManual
 
 <book: 'Cuis Manual'>
 
-^(EruditeBook basicNew title: 'Cuis Manual'; sections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Cuis Manual
+^(EruditeBook basicNew title: 'Cuis Manual'; sections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Introduction
 
 This is a manual about Cuis Smalltalk.
 
