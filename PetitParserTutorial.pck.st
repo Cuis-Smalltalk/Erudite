@@ -1,13 +1,13 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 11:19:01 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 19 December 2018 at 12:05:43 pm'!
 'Description Please enter a description for this package'!
-!provides: 'PetitParserTutorial' 1 9!
+!provides: 'PetitParserTutorial' 1 11!
 !requires: 'PetitTutorial' 1 0 nil!
 !requires: 'PetitParser' 1 6 nil!
 !requires: 'Erudite' 1 73 nil!
 
 
 
-!EruditeBook class methodsFor: '*PetitParserTutorial' stamp: 'MM 12/18/2018 23:18:50'!
+!EruditeBook class methodsFor: '*PetitParserTutorial' stamp: 'MM 12/19/2018 12:01:35'!
 petitparserTutorial
 
 <book: 'PetitParser tutorial'>
@@ -164,13 +164,13 @@ The table 1.3 shows the basic elements to build parsers. There are a few more we
 We now write a more complicated grammar for evaluating simple arithmetic expressions. With the grammar for a number (actually an integer) defined above, the next step is to define the productions for addition and multiplication in order of precedence. Note that we instantiate the productions as PPDelegateParser upfront, because they recursively refer to each other. The method #setParser: then resolves this recursion. The following script defines three parsers for the addition, multiplication and parenthesis (see Figure 1.4 for the related syntax diagram):
 
 [[[
-number := #digit asParser plus flatten.
+number := #digit asParser plus flatten ==> [:node | node asNumber].
 term := PPDelegateParser new.
 prod := PPDelegateParser new.
 prim := PPDelegateParser new.
-term setParser: (prod , $+ asParser trim , term ==> [ :nodes | nodes first asNumber + nodes last asNumber ])
+term setParser: (prod , $+ asParser trim , term ==> [ :nodes | nodes first  + nodes last  ])
 / prod.
-prod setParser: (prim , $* asParser trim , prod ==> [ :nodes | nodes first asNumber * nodes last asNumber ])
+prod setParser: (prim , $* asParser trim , prod ==> [ :nodes | nodes first  * nodes last  ])
 / prim.
 prim setParser: ($( asParser trim , term , $) asParser trim ==> [ :nodes | nodes second ])
 / number.]]]
@@ -229,4 +229,93 @@ Instantiating the ExpressionGrammar gives us an expression parser that returns a
 
 [[[parser := ExpressionGrammar new.]]]
 [[[parser parse: ''1 + 2 * 3'']]] printItHere
-[[[parser parse: ''(1 + 2) * 3'']]] printItHere') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); yourself); updateParents; yourself)! !
+[[[parser parse: ''(1 + 2) * 3'']]] printItHere') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Writing dependent grammars'; document: ((EruditeDocument contents: '!!!!!! Writing dependent grammars
+
+You can easily reuse parsers defined by other grammars. For example, imag-
+ine you want to create a new grammar that reuses the definition of number in
+the ExpressionGrammar we have just defined. For this, you have to declare a
+dependency to ExpressionGrammar:
+
+[[[PPCompositeParser subclass: #MyNewGrammar
+instanceVariableNames: ''number''
+classVariableNames: ''''
+poolDictionaries: ''''
+category: ''PetitTutorial''
+
+MyNewGrammar class>>dependencies
+"Answer a collection of PPCompositeParser classes that this parser directly
+dependends on."
+^ {ExpressionGrammar}
+
+MyNewGrammar>>number
+"Answer the same parser as ExpressionGrammar>>number."
+^ (self dependencyAt: ExpressionGrammar) number]]]') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Defining an evaluator'; document: ((EruditeDocument contents: '!!!!!! Defining an evaluator
+
+Now that we have defined a grammar we can reuse this definition to imple-
+ment an evaluator. To do this we create a subclass of {ExpressionGrammar::class} called
+{ExpressionEvaluator::class}:
+
+{ExpressionEvaluator::class}[embed]
+
+We then redefine the implementation of add , mul and parens with our eval-
+uation semantics. This is accomplished by calling the super implementation
+and adapting the returned parser as shown in the following methods:
+
+{ExpressionEvaluator>>add ::method}[embed]
+
+{ExpressionEvaluator>>mul ::method}[embed]
+
+{ExpressionEvaluator>>parens ::method}[embed]
+
+The evaluator is now ready to be tested:
+
+[[[parser := ExpressionEvaluator new.]]]
+[[[parser parse: ''1 + 2 * 3''.]]] printItHere
+[[[parser parse: ''(1 + 2) * 3''.]]] printItHere') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Defining a Pretty-Printer'; document: ((EruditeDocument contents: '!!!!!! Defining a Pretty-Printer
+
+We can reuse the grammar for example to define a simple pretty printer. This
+is as easy as subclassing ExpressionGrammar again!!
+
+{ExpressionPrinter::class}[embed]
+
+{ExpressionPrinter>>add ::method}[embed]
+
+{ExpressionPrinter>>mul ::method}[embed]
+
+{ExpressionPrinter>>parens ::method}[embed]
+
+This pretty printer can be tried out as shown by the following expressions:
+
+[[[parser := ExpressionPrinter new.]]]
+[[[parser parse: ''1+2 *3''.]]] printItHere
+[[[parser parse: ''(1+ 2   )* 3''.]]] printItHere') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Easy expressions with PPExpressionParser'; document: ((EruditeDocument contents: '!!!!!! Easy expressions with PPExpressionParser
+
+PetitParser proposes a powerful tool to create expressions; PPExpressionParser
+is a parser to conveniently define an expression grammar with prefix, postfix, and left- and right-associative infix operators. The operator-groups are defined in descending precedence.
+
+The ExpressionGrammar we previously defined can be implemented in
+few lines:
+[[[
+| expression parens number |
+expression := PPExpressionParser new.
+parens := $( asParser token trim , expression , $) asParser token trim
+==> [ :nodes | nodes second ].
+number := #digit asParser plus flatten trim ==> [ :str | str asNumber ].
+expression term: parens / number.
+expression
+	group: [ :g |
+		g left: $* asParser token trim do: [ :a :op :b | a * b ].
+		g left: $/ asParser token trim do: [ :a :op :b | a / b ] ];
+	group: [ :g |
+		g left: $+ asParser token trim do: [ :a :op :b | a + b ].
+		g left: $ - asParser token trim do: [ :a :op :b | a - b ] ]. 
+]]]
+Now our parser is also able to manage subtraction and division:
+[[[expression parse: ''1 - 2/3''.]]] printItHere
+
+How do you decide when to create a subclass of PPCompositeParser or
+instantiate PPExpressionParser ? On the one hand, you should instantiate a
+PPExpressionParser if you want to do a small parser for a small task. On the
+other hand, if you have a grammar that''s composed of many parsers, you
+should subclass PPCompositeParser .
+') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); yourself); updateParents; yourself)! !
