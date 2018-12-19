@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 7:37:22 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 10:27:23 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 102!
+!provides: 'Erudite' 1 104!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -2243,7 +2243,7 @@ booksList
 	pragmas _ Pragma allNamed: #book: in: self class.
 	^ pragmas collect: [:pragma | pragma method valueWithReceiver: self class arguments: #()].! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 17:22:41'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 22:27:14'!
 cuisManual
 
 <book: 'Cuis Manual'>
@@ -2252,7 +2252,46 @@ cuisManual
 
 This is a manual about Cuis Smalltalk.
 
-NOTE: Most of its content was taken from Cuis documentation at: ```https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/tree/master/Documentation```') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Managing your code in Cuis'; document: ((EruditeDocument contents: '!!!! Managing your code in Cuis
+NOTE: Most of its content was taken from Cuis documentation at: ```https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/tree/master/Documentation```') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!! Cuis Smalltalk
+
+Cuis is:
+
+    - **Small**
+    - **Clean**
+    - **Appropriable**
+
+
+Like Squeak, Cuis is also:
+
+    - **Open Source**
+    - **Self contained**
+    - **Multiplatform**
+
+ 
+Like other Smalltalk-80 environments (including Squeak, Pharo and others), Cuis is also:
+
+    - **A complete development environment written in itself**
+    - **A pure, dynamic Object Oriented language**
+
+
+Cuis shares the ```[OpenSmalltalk Virtual Machine](http://www.opensmalltalk.org)``` with Squeak, Pharo and Newspeak. What sets Cuis apart from the other members of the Squeak family is the focus on Smalltalk-80 and an active attitude towards system complexity:
+
+Unbound complexity growth, together with development strategies focused only in the short term, are the worst long term enemies of all software systems. As systems grow older, they usually become more complex. New features are added as layers on top of whatever is below, sometimes without really understanding it, and almost always without modifying it. Complexity and size grow without control. Evolution slows down. Understanding the system becomes harder every day. Bugs are harder to fix. Codebases become huge for no clear reason. At some point, the system can''t evolve anymore and becomes "legacy code".
+
+Complexity puts a limit to the level of understanding of the system a person might reach, and therefore limits the things that can be done with it. Dan Ingalls says all this in ```["Design Principles Behind Smalltalk"](http://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html)```. Even if you have already done so, please go and read it again!!
+
+Cuis Smalltalk is our attempt at this challenge. Furthermore, we believe we are doing something else that no other Smalltalk, commercial or open source, does. We attempt to give the true Smalltalk-80 experience, and keep Smalltalk-80 not as legacy software historic significance, but as a live, evolving system. We feel we are the keepers of the Smalltalk-80 heritage, and enablers of the Dynabook experience.
+
+Cuis is continuously evolving towards simplicity. Each release is better (i.e. simpler) than the previous one. At the same time, features are enhanced, and any reported bugs fixed. We also adopt recent enhancements from Squeak and share our work with the wider Squeak and Smalltalk community.
+
+
+License
+
+Cuis is distributed subject to the MIT License, as in http://www.opensource.org/licenses/mit-license.php . Any contribution submitted for incorporation into or for distribution with Cuis shall be presumed subject to the same license.
+Portions of Cuis are:
+Copyright (c) Xerox Corp. 1981, 1982
+Copyright (c) Apple Computer, Inc. 1985-1996
+Copyright (c) Contributors to Squeak and Cuis projects. 1997-2018') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Managing your code in Cuis'; document: ((EruditeDocument contents: '!!!! Managing your code in Cuis
 
 Cuis includes tools and procedures for managing Smalltalk code. Code that is not part of the Cuis Core image itself, like applications, frameworks and libraries, should be stored in {CodePackage::class|Packages}. New code that are meant as patches, fixes or additions; that could eventually become part of Cuis itself, is not part of any //Package//, and is therefore automatically stored in {ChangeSet::class|ChangeSets}.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Packages'; document: ((EruditeDocument contents: '!!!!!! Packages
 
@@ -2272,7 +2311,7 @@ The operations available on installed or newly created packages are:
 
 **[Browse package code]** This opens a Class Browser that only shows the code that belongs in the package. This is useful for working on a package, or studying it.
 
-**[Add requirement]** This opens a select list of loaded packages.  Each package provides a *Feature*.  You can CANCEL, require the current Cuis base version (at a minimum) or require any of the packages on the list.  Required packages will be loaded before the selected package (**Feature require: #''your-package''.**).  When a package is selected, the lower browser pane shows its requirents, which may be deleted.  Don''t forget to //Save// your package after adding or deleting  requirements!!
+**[Add requirement]** This opens a select list of loaded packages.  Each package provides a //Feature//.  You can CANCEL, require the current Cuis base version (at a minimum) or require any of the packages on the list.  Required packages will be loaded before the selected package (**Feature require: #''your-package''.**).  When a package is selected, the lower browser pane shows its requirents, which may be deleted.  Don''t forget to //Save// your package after adding or deleting  requirements!!
 
 The tool shows, for each Package, the name, whether it is dirty (has unsaved changes) and the file it was installed from / saved to.
 
@@ -2292,7 +2331,7 @@ There are two ways to load //ChangeSet// files (.cs): **[FileIn]** and **[Instal
 
 **[FileIn]** loads the code without creating a new //ChangeSet// object. This means that changes that belong in the base image (and not in a package) will be added to the current ChangeSet for Cuis core changes, as if they were done by the user. This is appropriate when we are combining code from more than one source into a single ChangeSet. Any change that belongs in an installed package will be added to it, and the package will appear as dirty.
 
-**[Install]** loads the code into a separate //ChangeSet// object (viewable in the **ChangeSorter** tool). This is appropriate for loading Cuis updates, or other code that we are not authoring, as it doesn''t add new items (class or method definitions) to the current ChangeSet for our changes to Cuis. Usually any ChangeSets should be installed before doing changes to the image. The reason is that an installed ChangeSet could overwrite changes done by you, or packages you have installed. If this is the case, the affected packages would appear as dirty, and your change set would include any installed changes (that don''t belong in a package). Be careful when saving packages or change sets if this was the case!!') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); add: (EruditeBookSection basicNew title: 'Additional Packages for Cuis'; document: ((EruditeDocument contents: '!!!! Additional Packages for Cuis
+**[Install]** loads the code into a separate //ChangeSet// object (viewable in the [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: ChangeSorter tool). This is appropriate for loading Cuis updates, or other code that we are not authoring, as it doesn''t add new items (class or method definitions) to the current ChangeSet for our changes to Cuis. Usually any ChangeSets should be installed before doing changes to the image. The reason is that an installed ChangeSet could overwrite changes done by you, or packages you have installed. If this is the case, the affected packages would appear as dirty, and your change set would include any installed changes (that don''t belong in a package). Be careful when saving packages or change sets if this was the case!!') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); add: (EruditeBookSection basicNew title: 'Additional Packages for Cuis'; document: ((EruditeDocument contents: '!!!! Additional Packages for Cuis
 
 The Cuis base image includes only kernel functionailty, very basic libraries, and development tools. Optional functionality, that can be loaded as needed, is stored in separate code Packages. The Cuis community developes and maintains several dozens of such Packages.
 
