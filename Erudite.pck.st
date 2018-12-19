@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 19 December 2018 at 12:56:44 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 19 December 2018 at 5:28:46 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 107!
+!provides: 'Erudite' 1 108!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -51,6 +51,16 @@ TextEditor subclass: #EruditeDocEditor
 !classDefinition: 'EruditeDocEditor class' category: #'Erudite-Morphic'!
 EruditeDocEditor class
 	instanceVariableNames: 'menu2'!
+
+!classDefinition: #EruditeTextURL category: #'Erudite-Morphic'!
+TextURL subclass: #EruditeTextURL
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeTextURL class' category: #'Erudite-Morphic'!
+EruditeTextURL class
+	instanceVariableNames: ''!
 
 !classDefinition: #BlockTextAction category: #'Erudite-Morphic'!
 TextAction subclass: #BlockTextAction
@@ -370,6 +380,16 @@ DocLinkRenderer subclass: #SelectorDocLinkRenderer
 	category: 'Erudite-Morphic'!
 !classDefinition: 'SelectorDocLinkRenderer class' category: #'Erudite-Morphic'!
 SelectorDocLinkRenderer class
+	instanceVariableNames: ''!
+
+!classDefinition: #UrlDocLinkRenderer category: #'Erudite-Morphic'!
+DocLinkRenderer subclass: #UrlDocLinkRenderer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Morphic'!
+!classDefinition: 'UrlDocLinkRenderer class' category: #'Erudite-Morphic'!
+UrlDocLinkRenderer class
 	instanceVariableNames: ''!
 
 !classDefinition: #MorphicEruditeDocRenderer category: #'Erudite-Morphic'!
@@ -725,6 +745,21 @@ cmdShortcutsSpec
 		#(		$l	#cancelEdits:						'Cancel')
 		#(       $i  #insertMarkup:                         'Insert markup')
 	)! !
+
+!EruditeTextURL methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 16:34:46'!
+actOnClickFor: anObject 
+	"Copy url to the clipboard and inform."
+	
+	Clipboard default storeObject: self url.
+	self inform: (String streamContents: [:s |
+					s nextPutAll: url; newLine;
+					   nextPutAll: '(copied to the clipboard)']).
+	^true! !
+
+!EruditeTextURL class methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 16:38:33'!
+url: aString
+
+	^ self new url: aString; yourself! !
 
 !BlockTextAction methodsFor: 'as yet unclassified' stamp: 'MM 11/17/2018 11:59'!
 actOnClickFor: anObject
@@ -2209,7 +2244,7 @@ booksList
 	pragmas _ Pragma allNamed: #book: in: self class.
 	^ pragmas collect: [:pragma | pragma method valueWithReceiver: self class arguments: #()].! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 23:20:39'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 17:25:13'!
 cuisManual
 
 <book: 'Cuis Manual'>
@@ -2218,50 +2253,65 @@ cuisManual
 
 This is a manual about Cuis Smalltalk.
 
-NOTE: Most of its content was taken from Cuis documentation at: ```https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/tree/master/Documentation```') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!! Cuis Smalltalk
+NOTE: Most of its content was taken from Cuis documentation at: {https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/tree/master/Documentation::url}') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!! Cuis Smalltalk
 
-Cuis is:
+{http://www.cuis-smalltalk.org::url|Cuis} is a free {https://en.wikipedia.org/wiki/Smalltalk::url|Smalltalk-80} environment originally derived from {http://www.squeak.org::url|Squeak} with a specific set of goals: being simple and powerful. It is also portable to any platform, fast and efficient. This means it is a great tool for running on any hardware, ranging from RasPis and the like, and phones, up to cloud servers, and everything in between, including regular laptops and PCs.
 
-    - **Small**
-    - **Clean**
-    - **Appropriable**
+Cuis is
 
+* **Small**
+* **Clean**
+* **Appropriable**
 
 Like Squeak, Cuis is also:
 
-    - **Open Source**
-    - **Self contained**
-    - **Multiplatform**
+* **Open Source**
+* **Self contained**
+* **Multiplatform**
 
- 
 Like other Smalltalk-80 environments (including Squeak, Pharo and others), Cuis is also:
 
-    - **A complete development environment written in itself**
-    - **A pure, dynamic Object Oriented language**
+* **A complete development environment written in itself**
+* **A pure, dynamic Object Oriented language**
 
-
-Cuis shares the ```[OpenSmalltalk Virtual Machine](http://www.opensmalltalk.org)``` with Squeak, Pharo and Newspeak. What sets Cuis apart from the other members of the Squeak family is the focus on Smalltalk-80 and an active attitude towards system complexity:
+Cuis shares the {http://www.opensmalltalk.org::url|OpenSmalltalk Virtual Machine} with Squeak, Pharo and Newspeak. What sets Cuis apart from the other members of the Squeak family is the focus on Smalltalk-80 and an active attitude towards system complexity:
 
 Unbound complexity growth, together with development strategies focused only in the short term, are the worst long term enemies of all software systems. As systems grow older, they usually become more complex. New features are added as layers on top of whatever is below, sometimes without really understanding it, and almost always without modifying it. Complexity and size grow without control. Evolution slows down. Understanding the system becomes harder every day. Bugs are harder to fix. Codebases become huge for no clear reason. At some point, the system can''t evolve anymore and becomes "legacy code".
 
-Complexity puts a limit to the level of understanding of the system a person might reach, and therefore limits the things that can be done with it. Dan Ingalls says all this in ```["Design Principles Behind Smalltalk"](http://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html)```. Even if you have already done so, please go and read it again!!
+Complexity puts a limit to the level of understanding of the system a person might reach, and therefore limits the things that can be done with it. Dan Ingalls says all this in {http://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html::url|"Design Principles Behind Smalltalk"}. Even if you have already done so, please go and read it again!!
+
+This presentation by Rich Hickey, {http://www.infoq.com/presentations/Simple-Made-Easy::url|"Simple made Easy"} is also an excellent reflection on these values.
+
+We follow a set of ideas that started with Jean Piaget''s {https://en.wikipedia.org/wiki/Constructivism_(philosophy_of_education::url|Constructivism}, and were further developed in Seymour Papert''s {https://en.wikipedia.org/wiki/Experiential_learning::url|Mathland}. These lead to Alan Kay''s Learning Research Group''s {http://www.vpri.org/pdf/hc_pers_comp_for_children.pdf::url|Personal Computer for Children of All Ages}, {http://www.vpri.org/pdf/m1977001_dynamedia.pdf::url|Personal Dynamic Media}, i.e. the {http://www.vpri.org/pdf/hc_what_Is_a_dynabook.pdf::url|Dynabook} and to {https://en.wikipedia.org/wiki/Smalltalk::url|Smalltalk-80}. To us, a Smalltalk system is a Dynabook. A place to experiment and learn, and a medium to express and register the knlowledge we acquire. We understand software development as the activity of learning and documenting knowledge, for us and others to use, and also to be run on a computer. The fact that the computer run is useful, is a consequence of the knowldege being sound and relevant. (Just making it work is _not_ the important part!!)
 
 Cuis Smalltalk is our attempt at this challenge. Furthermore, we believe we are doing something else that no other Smalltalk, commercial or open source, does. We attempt to give the true Smalltalk-80 experience, and keep Smalltalk-80 not as legacy software historic significance, but as a live, evolving system. We feel we are the keepers of the Smalltalk-80 heritage, and enablers of the Dynabook experience.
 
-Cuis is continuously evolving towards simplicity. Each release is better (i.e. simpler) than the previous one. At the same time, features are enhanced, and any reported bugs fixed. We also adopt recent enhancements from Squeak and share our work with the wider Squeak and Smalltalk community.
+Cuis is continuously evolving towards simplicity. Each release is better (i.e. simpler) than the previous one. At the same time, features are enhanced, and any reported bugs fixed. We also adopt recent enhancements from Squeak and share our work with the wider Squeak and Smalltalk community.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'About the name Cuis'; document: ((EruditeDocument contents: '!!!!!! About the name Cuis
 
+Cuis is the common name of a {https://en.wikipedia.org/wiki/Southern_mountain_cavy::url|small animal} that lives in Argentina''s countryside. Cuis Smalltalk was originally forked from Squeak Smalltalk and many of us are also active in the Squeak community. So, picking the onomatopoeia of the voice of a mouse for the name makes sense. As the project was started in Buenos Aires, ''Cuis'' (essentially ''Squeak'' in Rioplatense Spanish) was the obvious choice.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Learning about Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!!!! Learning about Cuis Smalltalk
 
-**License**
+If you are learning Smalltalk, the Cuis community can help you. Check the {https://github.com/Cuis-Smalltalk-Learning/Learning-Cuis::url|"Learning Cuis Smalltalk"} repository. It includes several great tutorials. Also, the TerseGuide.pck.st package (in the /Packages folder in this repo) is useful both as a guide and a reference.
 
-Cuis is distributed subject to the MIT License, as in http://www.opensource.org/licenses/mit-license.php . Any contribution submitted for incorporation into or for distribution with Cuis shall be presumed subject to the same license.
-Portions of Cuis are:
-Copyright (c) Xerox Corp. 1981, 1982
-Copyright (c) Apple Computer, Inc. 1985-1996
-Copyright (c) Contributors to Squeak and Cuis projects. 1997-2018') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Managing your code in Cuis'; document: ((EruditeDocument contents: '!!!! Managing your code in Cuis
+Additionally, there are many tutorials and references for Smalltalk in the web. They apply quite well to Cuis, especially those written originally for Smalltalk-80 or Squeak. These books {http://stephane.ducasse.free.fr/FreeBooks/BlueBook/Bluebook.pdf::url|"Smalltalk-80 the language and its implementation"} and {http://stephane.ducasse.free.fr/FreeBooks/InsideST/InsideSmalltalk.pdf::url|"Inside Smalltalk volume I"} are great introductory texts, and they are also the reference for the language and basic class library. Both are freely available.
+
+The user interface enables you to access most of the code and conduct Smalltalk experiments on your own. You can review its features at {https://github.com/Cuis-Smalltalk-Learning/Learning-Cuis/blob/master/Quick-UI-Tour.md::url|"Quick Tour of the UI"}. ') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Contributing to Cuis'; document: ((EruditeDocument contents: '!!!!!! Contributing to Cuis
+
+Cuis is maintained on {https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev::url}. The main meeting point for Cuis users and developers is the mail list http://cuis-smalltalk.org/mailman/listinfo/cuis-dev_cuis-smalltalk.org . You can broswse the archives for a glimpse of our discussions.
+
+If you want to contribute code to the project, please read {Managing your code in Cuis::section}, about developing packages for Cuis, and {Cuis and Github::section}. While Cuis should work equally well with any file-based DVCS, we encourage the use of Git and GitHub.
+
+In any case, we also accept contributions as ChangeSet files in email. Any contribution must be under the MIT license.
+
+To contribute code, please use an image with all included packages already loaded, using updated versions, especially, of any affected packages. This will ensure we don''t break them while we evolve Cuis.
+Here is a Smalltalk script to load all packages currently included:
+
+[[[Feature require: ''Core-Packages'']]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'License'; document: ((EruditeDocument contents: '!!!!!! Cuis License
+
+Cuis is distributed subject to the MIT License. See the LICENSE file. Any contribution submitted for incorporation into or for distribution with Cuis shall be presumed subject to the same license.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); add: (EruditeBookSection basicNew title: 'Managing your code in Cuis'; document: ((EruditeDocument contents: '!!!! Managing your code in Cuis
 
 Cuis includes tools and procedures for managing Smalltalk code. Code that is not part of the Cuis Core image itself, like applications, frameworks and libraries, should be stored in {CodePackage::class|Packages}. New code that are meant as patches, fixes or additions; that could eventually become part of Cuis itself, is not part of any //Package//, and is therefore automatically stored in {ChangeSet::class|ChangeSets}.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Packages'; document: ((EruditeDocument contents: '!!!!!! Packages
 
-Let''s start with //Packages// . The Package implementation in Cuis is based on PackageInfo, the standard way to specify packages in Squeak and its derivatives, and used, for example, by Monticello. It uses Package names to specify prefixes for Class and Method categories. Classes and Methods whose categories match a Package''s prefixes belong in that Package. More details about how PackageInfo decides what code belongs in a package are available at ```http://wiki.squeak.org/squeak/3329``` .
+Let''s start with //Packages// . The Package implementation in Cuis is based on PackageInfo, the standard way to specify packages in Squeak and its derivatives, and used, for example, by Monticello. It uses Package names to specify prefixes for Class and Method categories. Classes and Methods whose categories match a Package''s prefixes belong in that Package. More details about how PackageInfo decides what code belongs in a package are available at {http://wiki.squeak.org/squeak/3329::url} .
 
 To install packages //(.pck.st files)// in Cuis, use the [[[FileListWindow openFileList]]] doItWithButton: FileList., navigate to the appropriate directory (on disk, or in a GitHub repository, etc), select the package file and click on **[Install Package]**.
 
@@ -2305,7 +2355,7 @@ Some of them are included in the main Cuis GitHub repository, at https://github.
 
 [[[Feature require: ''Core-Packages'']]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Cuis and Github'; document: ((EruditeDocument contents: '!!!! Using Git and GitHub to host and manage Cuis code
 
-Cuis includes tools and procedures for managing Smalltalk code. Central to this is the management of Packages and Package Files (.pck). But Cuis doesn''t do version control. Instead, we suggest using external VCS tools.  In particular, we''re using [GitHub](http://www.github.com/), and the first project we''re hosting there is [StyledTextEditor](https://github.com/bpieber/Cuis-StyledTextEditor).
+Cuis includes tools and procedures for managing Smalltalk code. Central to this is the management of Packages and Package Files (.pck). But Cuis doesn''t do version control. Instead, we suggest using external VCS tools.  In particular, we''re using {http://www.github.com::url|GitHub}, and the first project we''re hosting there is {https://github.com/bpieber/Cuis-StyledTextEditor::url|StyledTextEditor}.
 
 The guiding principle is to **not duplicate concepts and behavior**. As we''re using an external tool (Git) for version control, then we use it as it meant to be used. Most people use Git for version control and a file based IDE such as Eclipse for development. Such IDEs don''t do version control themselves. It is done by Git. Do the same: do not include package version control in Cuis. This is a departure from the Monticello /Git integration (smallsource and MonticelloFileTree) by Otto Behrens, Dale Henrichs, etc.
 
@@ -2352,7 +2402,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!EruditeBook class methodsFor: 'storage' stamp: 'MM 12/18/2018 19:37:13'!
+!EruditeBook class methodsFor: 'storage' stamp: 'MM 12/19/2018 17:28:40'!
 eruditeManual
 
 <book: 'Erudite Manual'>
@@ -3385,6 +3435,12 @@ Example:
 =>
 {EruditeBook>>initialize: ::method} [embed]
 
+!!!!!!!! HTTP URLs
+
+**Syntax:** ```{HTTP url address ::url|optional label}```
+
+**Example:** ```{http://cuis-smalltalk.org::url|Cuis Smalltalk}``` => {http://cuis-smalltalk.org::url|Cuis Smalltalk}
+
 !!!!!! Images
 
 Images from files can be inserted via links:
@@ -3961,6 +4017,9 @@ Read the {Introduction::section|introduction}.
 {print::selector}[senders]
 {print::selector}[implementors]
 {at:put: ::selector}
+
+{http://www.cuis-smalltalk.org::url}
+{http://www.cuis-smalltalk.org::url|Cuis Smalltalk}
 
 !!!!!! Images
 
@@ -5840,6 +5899,16 @@ render: aDocLink in: aDocument on: aStream
 	
 	action _ [:anObject | Smalltalk browseAllImplementorsOf: selector].
 	renderLink value: action! !
+
+!UrlDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 16:38:52'!
+render: aDocLink in: aDocument on: aStream
+
+	|url |
+	
+	url _ aDocLink target withBlanksTrimmed.
+	
+	aStream nextPut: (Text string: aDocLink labelOrTarget
+				attributes: {EruditeTextURL url: url}).! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 23:28'!
 initialize: aDocument
