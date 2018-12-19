@@ -1,13 +1,13 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 7:24:25 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 18 December 2018 at 11:19:01 pm'!
 'Description Please enter a description for this package'!
-!provides: 'PetitParserTutorial' 1 8!
+!provides: 'PetitParserTutorial' 1 9!
 !requires: 'PetitTutorial' 1 0 nil!
 !requires: 'PetitParser' 1 6 nil!
 !requires: 'Erudite' 1 73 nil!
 
 
 
-!EruditeBook class methodsFor: '*PetitParserTutorial' stamp: 'MM 12/18/2018 19:24:22'!
+!EruditeBook class methodsFor: '*PetitParserTutorial' stamp: 'MM 12/18/2018 23:18:50'!
 petitparserTutorial
 
 <book: 'PetitParser tutorial'>
@@ -163,12 +163,14 @@ The table 1.3 shows the basic elements to build parsers. There are a few more we
 
 We now write a more complicated grammar for evaluating simple arithmetic expressions. With the grammar for a number (actually an integer) defined above, the next step is to define the productions for addition and multiplication in order of precedence. Note that we instantiate the productions as PPDelegateParser upfront, because they recursively refer to each other. The method #setParser: then resolves this recursion. The following script defines three parsers for the addition, multiplication and parenthesis (see Figure 1.4 for the related syntax diagram):
 
-[[[term := PPDelegateParser new.
+[[[
+number := #digit asParser plus flatten.
+term := PPDelegateParser new.
 prod := PPDelegateParser new.
 prim := PPDelegateParser new.
-term setParser: (prod , $+ asParser trim , term ==> [ :nodes | nodes first + nodes last ])
+term setParser: (prod , $+ asParser trim , term ==> [ :nodes | nodes first asNumber + nodes last asNumber ])
 / prod.
-prod setParser: (prim , $* asParser trim , prod ==> [ :nodes | nodes first * nodes last ])
+prod setParser: (prim , $* asParser trim , prod ==> [ :nodes | nodes first asNumber * nodes last asNumber ])
 / prim.
 prim setParser: ($( asParser trim , term , $) asParser trim ==> [ :nodes | nodes second ])
 / number.]]]
