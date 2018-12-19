@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 19 December 2018 at 5:28:46 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 19 December 2018 at 5:43:05 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 108!
+!provides: 'Erudite' 1 109!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -5464,6 +5464,13 @@ findSectionNamed: aString ifAbsent: aBlock
 	
 	^ aBlock value! !
 
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 17:39:26'!
+latestAndDeepestSection
+
+	^ subsections 
+		ifEmpty: [self]
+		ifNotEmpty: [subsections last latestAndDeepestSection]! !
+
 !EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 19:30:59'!
 nextSection
 
@@ -5471,12 +5478,19 @@ nextSection
 		ifNotEmpty: [subsections first]
 		ifEmpty: [parent sections after: self ifNone: [parent parent ifNotNil: [:parentParent | parentParent sections after: parent]]]! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:28'!
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 17:42:13'!
 previousSection
-	^ parent sections
-		before: self
-		ifNone: [
-			(parent isKindOf: EruditeBookSection) ifTrue: [ parent ]].! !
+	|beforeMe| 
+	
+	beforeMe _ self parent sections
+					before: self
+					ifNone: [nil].
+		
+	^ beforeMe 
+		ifNil: [
+			(parent isKindOf: EruditeBookSection) ifTrue: [ parent ]]
+		ifNotNil: [
+			beforeMe latestAndDeepestSection]! !
 
 !EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 18:04'!
 removeSection: aSection
