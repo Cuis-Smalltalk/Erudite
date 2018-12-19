@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 19 December 2018 at 12:05:35 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 19 December 2018 at 12:56:44 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 106!
+!provides: 'Erudite' 1 107!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -620,13 +620,35 @@ on: aBook
 
 	^ self new initialize: aBook! !
 
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 23:49'!
-getMenu2
+!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 12:54:08'!
+getInsertMarkupMenu
 	
 	| menu |
-	menu _ MenuMorph new defaultTarget: self.
-	self class paneMenu2: menu.
+	menu _ (MenuMorph new defaultTarget: self)
+			add: 'Heading' action: #insertHeading;
+			add:  'Subheading' action: #insertSubheading;
+			addLine;
+			add: 'Bold' action: #insertBold;
+			add: 'Italics' action: #insertItalics;
+			addLine;
+			add: 'Link' action: #insertLink;
+			add: 'Code' action: #insertCode;
+			yourself.
+			
 	menu popUpInWorld: morph world.! !
+
+!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 12:44:15'!
+getMenu
+
+	|menu|
+	
+	menu _ super getMenu.
+	
+	menu addLine;
+		    add: 'Toggle editing' action: #toggleEditing;
+		    add: 'Insert markup (i)...' action: #getInsertMarkupMenu.
+		
+	^ menu! !
 
 !EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/8/2018 12:17'!
 insertBold
@@ -666,10 +688,10 @@ insertLink
 	self addString: '{target::type|label}'
 	! !
 
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/12/2018 18:58'!
+!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 12:55:57'!
 insertMarkup: aKeyboardEvent
 
-	self getMenu2.
+	self getInsertMarkupMenu .
 	^ true! !
 
 !EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/8/2018 12:00'!
@@ -703,62 +725,6 @@ cmdShortcutsSpec
 		#(		$l	#cancelEdits:						'Cancel')
 		#(       $i  #insertMarkup:                         'Insert markup')
 	)! !
-
-!EruditeDocEditor class methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:23'!
-initializeMenu
-	"Initialize the mouseButton2 (right button) pop-up menu and corresponding messages."
-	"
-	Editor initialize
-	"
-
-	menu _ SelectionMenu fromArray: {
-		{'Help...'.						#openHelp}.
-		#-.
-		{'Find...(f)'.						#find}.
-		{'Find Again (g)'.				#findAgain}.
-		{'Use Selection for Find (j)'.		#setSearchString}.
-		#-.
-		{'Undo - multiple (z)'.			#undo}.
-		{'Redo - multiple (Z)'.			#redo}.
-		{'Undo / Redo history'.			#offerUndoHistory}.
-		#-.
-		{'Copy (c)'.						#copySelection}.
-		{'Cut (x)'.						#cut}.
-		{'Paste (v)'.						#paste}.
-		{'Paste without Format'.		#pasteString}.
-		{'Paste...'.						#pasteRecent}.
-		#-.
-		{'Accept (s)'.					#acceptContents}.
-		{'Cancel (l)'.					#cancelEdits}.
-		#-.
-		{'Toggle WordWrap'.			#wrapOnOff}.
-		{'Toggle editing'. #toggleEditing}.
-		{'Insert markup (i)...'.			#getMenu2}.
-	}.
-	menu2 _ SelectionMenu fromArray: {
-		{'Heading'.	#insertHeading}.
-		{'Subheading'.	#insertSubheading}.
-		#-.
-		{'Bold'. #insertBold}.
-		{'Italics'. #insertItalics}.
-		#-.
-		{'Link'. #insertLink}.
-		{'Code'. #insertCode}
-	}! !
-
-!EruditeDocEditor class methodsFor: 'as yet unclassified' stamp: 'MM 12/2/2018 00:00'!
-menu2
-
-	^ menu2! !
-
-!EruditeDocEditor class methodsFor: 'as yet unclassified' stamp: 'MM 12/12/2018 19:06'!
-paneMenu2:  aMenu
-
-	| m |
-	m _ self menu2.
-	aMenu labels: m labelString lines: m lineArray selections: m selections.
-	aMenu addTitle: 'Insert markup'; addStayUpIcons.
-	^ aMenu! !
 
 !BlockTextAction methodsFor: 'as yet unclassified' stamp: 'MM 11/17/2018 11:59'!
 actOnClickFor: anObject
