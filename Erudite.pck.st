@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 19 December 2018 at 5:43:05 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 19 December 2018 at 7:03:19 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 109!
+!provides: 'Erudite' 1 110!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -2402,7 +2402,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!EruditeBook class methodsFor: 'storage' stamp: 'MM 12/19/2018 17:28:40'!
+!EruditeBook class methodsFor: 'storage' stamp: 'MM 12/19/2018 19:03:01'!
 eruditeManual
 
 <book: 'Erudite Manual'>
@@ -5374,7 +5374,25 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 4YOPPr55eaRd0dHThGt37nxPyt/22Q+A3zgAmPXDDz/smLxz58a9997Dg8fv/zw2WKG4fHn0
 +/c++nr2A2C2VIFz169vunDt2tSDx4/R11WHodMDf7z23nuzHwCzDgRTUya37ty6cfP27ZDz
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
-AAAAAElFTkSuQmCC')); yourself); yourself); subsections: ((OrderedCollection new)); yourself); yourself); updateParents; yourself)! !
+AAAAAElFTkSuQmCC')); yourself); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
+
+Extensions to Smalltalk tools are shipped separately.
+
+To install: [[[Feature require: ''EruditeToolsExtensions'']]] doIt
+
+!!!!!! List of extensions
+
+**Markup and formatting in class comments**
+
+This is implemented.
+
+**Markup and formatting of code comments**
+
+TODO. Not implemented yet. ') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Extras'; document: ((EruditeDocument contents: '!!!! Extras
+
+A PetitParser tutorial is included in the Erudite distribution.
+
+To install: [[[Feature require: ''PetitParserTutorial'']]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); updateParents; yourself)! !
 
 !EruditeBookSection methodsFor: 'accessing' stamp: 'MM 12/4/2018 17:59'!
 addSection: aBookSection
