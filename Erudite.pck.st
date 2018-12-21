@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 19 December 2018 at 7:03:19 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 20 December 2018 at 11:47:55 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 110!
+!provides: 'Erudite' 1 111!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -900,14 +900,13 @@ bookIsUnsaved
 
 	^ sourcesChanged! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 13:51:49'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/20/2018 23:47:16'!
 buildMorphicWindow
 	| leftColumn previousButton nextButton navRow |
 	layoutMorph beRow.
 	leftColumn _ LayoutMorph newColumn.
 	explorer _ EruditeBookExplorer on: model.
 	explorer addDependent: self.
-	model sections ifNotEmpty: [ currentSection _ model sections first ].
 	explorerMorph _ HierarchicalListMorph
 		model: explorer
 		listGetter: #explorerList
@@ -919,7 +918,7 @@ buildMorphicWindow
 	explorerMorph
 		autoDeselect: true;
 		color: Color white.
-	model sections ifNotEmpty: [ explorerMorph expandRoot ].
+	
 	leftColumn addMorphUseAll: explorerMorph.
 	previousButton _ PluggableButtonMorph
 		model: self
@@ -948,6 +947,12 @@ buildMorphicWindow
 		textSetter: #contents:notifying:.
 	eruditeViewerMorph model when: #gotoSection send: #gotoSectionNamed: to: self.
 	eruditeViewerMorph disableEditing.
+	
+	
+	model sections ifNotEmpty: [ 
+		explorerMorph expandRoot.
+		self gotoSection: model sections first].
+	
 	layoutMorph addMorphUseAll: eruditeViewerMorph.! !
 
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 11:39'!
