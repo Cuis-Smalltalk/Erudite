@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 20 December 2018 at 11:47:55 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 23 December 2018 at 11:27:18 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 111!
+!provides: 'Erudite' 1 112!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -2407,7 +2407,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!EruditeBook class methodsFor: 'storage' stamp: 'MM 12/19/2018 19:03:01'!
+!EruditeBook class methodsFor: 'storage' stamp: 'MM 12/23/2018 11:27:05'!
 eruditeManual
 
 <book: 'Erudite Manual'>
@@ -2416,15 +2416,13 @@ eruditeManual
 
 by **Mariano Montone** //(marianomontone@gmail.com)//
 
-This is a manual and reference of Erudite package por Cuis.
+This is a manual and reference of Erudite Documentation System.
 
-Erudite packages provides several things to augment Smalltalk documentation:
+Erudite {EruditeDocument::class|documents} are edited using a wiki-like markup with capabilities for linking and embedding Smalltalk code. 
 
-* A {EruditeDocument::class} parser. A Document is the container of formatted text. There are two classes available to parse and format Documents. {EruditeMarkupParser::class} and {SmalltalkEruditeParser::class}.
-* {EruditeBook::class}s. Books are basically a collection of Documents organized in {EruditeBookSection::class|sections}.
-* Book {EruditeBookReaderMorph::class|reader} and {EruditeBookEditorMorph::class|editor}. Morphic applications for Book reading and editing.
+Main documentation is realized via {EruditeBook::class|books}, a collection of documents organized in {EruditeBookSection::class|sections}.
 
-') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Book reader and editor'; document: ((EruditeDocument contents: '!!!! Book reader and editor
+Books are read and edited via the {EruditeBookReaderMorph::class|reader} and {EruditeBookEditorMorph::class|editor} morphic applications.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Book reader and editor'; document: ((EruditeDocument contents: '!!!! Book reader and editor
 
 To read a book, send {open::selector} to a {Book::class}:
 
@@ -3478,7 +3476,7 @@ Code is enclosed between triple brackets, like: ```[[[code]]]```. Only Smalltalk
 **Examples:**
 
 Plain Smalltalk code: [[[Dictionary new at: #foo put: ''bar'']]].
-[[[Dictionary new at: #foo put: ''bar'']]] exploreIt.
+[[[Dictionary new at: #foo put: ''bar''; yourself]]] exploreIt.
 [[[Dictionary new at: #foo put: ''bar''; yourself]]] exploreItWithButton: Explore dictionary.
 [[[2 + 4 * 5]]] printItHere
 [[[ImageMorph new]]] embedIt
@@ -3943,19 +3941,21 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
 AAAAAElFTkSuQmCC')); yourself); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Literate Programming'; document: ((EruditeDocument contents: '!!!! Literate Programming
 
+!!!!!! Concept
+
 Literate programming is a style of programming invented by Donald Knuth, where the main idea is that a program''s source code is made primarily to be read and understood by other people, and secondarily to be executed by the computer.
 
 This frees the programmer from the structure of a program imposed by the computer and means that the programmer can develop programs in the order of the flow of their thoughts.
 
 A Literate program consists of explanation of the code in a natural language such as English, interspersed with snippets of code to be executed. This means that Literate programs are very easy to understand and share, as all the code is well explained.
 
-!!!!!! Donald Knuth. "Literate Programming (1984)" in Literate Programming. CSLI, 1992, pg. 99.
+**Donald Knuth. "Literate Programming (1984)" in Literate Programming. CSLI, 1992, pg. 99.:**
 
-I believe that the time is ripe for significantly better documentation of programs, and that we can best achieve this by considering programs to be works of literature. Hence, my title: "Literate Programming."
+//"I believe that the time is ripe for significantly better documentation of programs, and that we can best achieve this by considering programs to be works of literature. Hence, my title: "Literate Programming."
 
 Let us change our traditional attitude to the construction of programs: Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.
 
-The practitioner of literate programming can be regarded as an essayist, whose main concern is with exposition and excellence of style. Such an author, with thesaurus in hand, chooses the names of variables carefully and explains what each variable means. He or she strives for a program that is comprehensible because its concepts have been introduced in an order that is best for human understanding, using a mixture of formal and informal methods that reinforce each other.
+The practitioner of literate programming can be regarded as an essayist, whose main concern is with exposition and excellence of style. Such an author, with thesaurus in hand, chooses the names of variables carefully and explains what each variable means. He or she strives for a program that is comprehensible because its concepts have been introduced in an order that is best for human understanding, using a mixture of formal and informal methods that reinforce each other."//
 
 !!!!!! Advantages
 
@@ -3965,11 +3965,11 @@ According to Knuth, literate programming provides higher-quality programs, since
 
 Literate programming is very often misunderstood to refer only to formatted documentation produced from a common file with both source code and comments -which is properly called documentation generation-; or to voluminous commentaries included with code. This is backwards: well-documented code or documentation extracted from code follows the structure of the code, with documentation embedded in the code; in literate programming code is embedded in documentation, with the code following the structure of the documentation.
 
-This misconception has led to claims that comment-extraction tools, such as the Perl Plain Old Documentation or Java Javaerudite systems, are "literate programming tools". However, because these tools do not implement the "web of abstract concepts" hiding behind the system of natural-language macros, or provide an ability to change the order of the source code from a machine-imposed sequence to one convenient to the human mind, they cannot properly be called literate programming tools in the sense intended by Knuth.
+This misconception has led to claims that comment-extraction tools, such as the Perl Plain Old Documentation or Java Javadoc systems, are "literate programming tools". However, because these tools do not implement the "web of abstract concepts" hiding behind the system of natural-language macros, or provide an ability to change the order of the source code from a machine-imposed sequence to one convenient to the human mind, they cannot properly be called literate programming tools in the sense intended by Knuth.
 
-!!!!!! Literate Programming in Cuis
+!!!!!! Literate Programming with Erudite
 
-Literate Programming in Cuis can be realized by the creation of {Book::class|books}. In particular, via code embedding in its different forms. Contrary to other LP systems, there''s no need for a tangling and weaving phase; document source is kept separatly from the source code, and the code is referenced and embeded from the documentation. Also, there''s no copying and pasting, the referenced code is always uptodate.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Syntax test'; document: ((EruditeDocument contents: '!!!! Syntax test
+Literate Programming can be realized by the creation of Erudite {EruditeBook::class|books}. In particular, via code embedding in its different forms. Contrary to other LP systems, there''s no need for a tangling and weaving phase; the document source is kept separately from the source code, Smalltalk code is referenced and embedded from the documentation. That means that in spite of documentation and code being separate, the referenced code is always up to date. Finally, the possibility of evaluating Smalltalk code from the documentation makes Erudite very unique compared to the other LP systems.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Syntax test'; document: ((EruditeDocument contents: '!!!! Syntax test
 
 !!!!!! Headings
 
