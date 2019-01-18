@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 23 December 2018 at 11:27:18 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3579] on 18 January 2019 at 10:22:29 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 112!
+!provides: 'Erudite' 1 113!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -530,11 +530,17 @@ Tries to match particular entities in Smalltalk comments.
 The context for the link actions is the class the comment belongs to. That can be used to browse the selector.
 3. Match methods. Class>>method format. !
 
+!SmalltalkEruditeParser commentStamp: '<historical>' prior: 0!
+A parser of Smalltalk comments into Erudite documents. This parser tries to interpret the different type of references in Smalltalk comments, like classes methods and selectors.!
+
 !EruditeBook commentStamp: '<historical>' prior: 0!
 A book with title, sections, documents.!
 
 !EruditeBookSection commentStamp: '<historical>' prior: 0!
 A section of a Book.!
+
+!EruditeDocument commentStamp: '<historical>' prior: 0!
+An Erudite document. A piece of text meant to be formatted.!
 
 !MorphicEruditeDocRenderer commentStamp: '<historical>' prior: 0!
 Renders a Document to a TextMorph.
@@ -546,9 +552,9 @@ SmalltalkEruditeParser parse: 'This is an Object.
 
 Look at Object>>at:
 
-Properties are defined via #triggerEvent:'.
+Properties are triggered via #triggerEvent:'.
 
-(MorphicEruditeRenderer on: erudite) render edit.!
+(MorphicEruditeDocRenderer on: erudite) render edit.!
 
 !EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 12/13/2018 16:17'!
 editing
@@ -2407,7 +2413,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!EruditeBook class methodsFor: 'storage' stamp: 'MM 12/23/2018 11:27:05'!
+!EruditeBook class methodsFor: 'storage' stamp: 'MM 1/18/2019 10:22:13'!
 eruditeManual
 
 <book: 'Erudite Manual'>
@@ -5379,7 +5385,47 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 4YOPPr55eaRd0dHThGt37nxPyt/22Q+A3zgAmPXDDz/smLxz58a9997Dg8fv/zw2WKG4fHn0
 +/c++nr2A2C2VIFz169vunDt2tSDx4/R11WHodMDf7z23nuzHwCzDgRTUya37ty6cfP27ZDz
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
-AAAAAElFTkSuQmCC')); yourself); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
+AAAAAElFTkSuQmCC')); yourself); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Implementation'; document: ((EruditeDocument contents: '!!!! Implementation
+
+This section describes how Erudite is implemented. It is a simple example of how literate-programming can be realized with Erudite.
+
+!!!!!! Model
+
+The model in Erudite consists of {EruditeDocument::class} and {EruditeBook::class} classes.
+
+Erudite documents are piece of text meant to be formatted. Their content is Erudite source code.
+
+Erudite books are formed of {EruditeBookSection::class|sections}. Each section has a document and other subsections as children. Each subsection also has a document and other subsubsections as children, and so on, and so on.
+
+!!!!!! Parser
+
+The Erudite source code parser is implemented as a PEG parser using {PetitParser tutorial#Introduction::section|PetitParser}. {EruditeMarkupGrammar::class} describes the grammar abstractly and {EruditeMarkupParser::class} is the actual parser (returns parse nodes). You can test the parser invoking the {parse: ::selector} message on it:
+
+[[[EruditeMarkupParser parse: ''!!!!!! A heading'']]] inspectIt
+
+You can also test particular grammar rules:
+
+[[[EruditeMarkupParser new heading2 parse: ''!!!!!! A heading'']]] printItHere
+
+!!!!!!!! Smalltalk parser
+
+The {SmalltalkEruditeParser::class|Smalltalk parser} parses Smalltalk comments into Erudite documents. This parser tries to interpret the different type of references in Smalltalk comments, like classes methods and selectors. This parser is used by the Erudite tools extensions.
+
+!!!!!! Formatter
+
+The only formatter implemented at the moment is a Morphic formatter used by the Morphic book reader and editor. It is implemented in {MorphicEruditeDocRenderer::class}. It is implemented as a visitor that outputs attributed Morphic {Text::class} on each visit to a parse node.
+
+Here is an example of how it is used:
+
+[[[|erudite|
+erudite _ SmalltalkEruditeParser parse: ''This is an Object. Look at Object>>at:
+Events are triggered via #triggerEvent:''.
+
+(MorphicEruditeDocRenderer on: erudite) render edit]]] doIt
+
+!!!!!!!! Links renderers
+
+Erudite document links are parsed in a generic way. Their syntax is like this: ```{target::linkClass|optionalLabel}```. That linkClass is then used to match a valid renderer. Links renderers are subclasses of {DocLinkRenderer::class} and are matched looking for the class named <linkClass>DocLinkRenderer (DocLinkRenderer classes with linkClass as prefix), and invoked via {render:in:on: ::selector|render: aDocLink in: aDocument on: aStream} message. ') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
 
 Extensions to Smalltalk tools are shipped separately.
 
