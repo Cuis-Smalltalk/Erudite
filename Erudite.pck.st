@@ -1,14 +1,15 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 19 January 2019 at 10:13:01 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 19 January 2019 at 7:53:39 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 114!
+!provides: 'Erudite' 1 117!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
 SystemOrganization addCategory: #'Erudite-Core'!
 SystemOrganization addCategory: #'Erudite-Morphic'!
 SystemOrganization addCategory: #'Erudite-Parser'!
+SystemOrganization addCategory: #'Erudite-Latex'!
 SystemOrganization addCategory: #'Erudite-Test'!
 
 
@@ -473,13 +474,23 @@ DocUnformatted class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeStyledText category: #'Erudite-Parser'!
-Object subclass: #EruditeStyledText
+DocNode subclass: #EruditeStyledText
 	instanceVariableNames: 'text style'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
 !classDefinition: 'EruditeStyledText class' category: #'Erudite-Parser'!
 EruditeStyledText class
+	instanceVariableNames: ''!
+
+!classDefinition: #LatexEruditeDocRenderer category: #'Erudite-Latex'!
+Object subclass: #LatexEruditeDocRenderer
+	instanceVariableNames: 'stream requestor highlightSyntax book documentClass texFilePath'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Latex'!
+!classDefinition: 'LatexEruditeDocRenderer class' category: #'Erudite-Latex'!
+LatexEruditeDocRenderer class
 	instanceVariableNames: ''!
 
 
@@ -565,6 +576,21 @@ Look at Object>>at:
 Properties are triggered via #triggerEvent:'.
 
 (MorphicEruditeDocRenderer on: erudite) render edit.!
+
+!LatexEruditeDocRenderer commentStamp: '<historical>' prior: 0!
+Renders a Book to a Latex file.
+
+Example:
+
+(LatexEruditeDocRenderer on: EruditeBook cuisManual)
+	texFilePath: '/home/marian/src/Cuis-Smalltalk-Erudite/CuisManual.tex';
+	render.
+	
+(LatexEruditeDocRenderer on: EruditeBook eruditeManual)
+	texFilePath: '/home/marian/src/Cuis-Smalltalk-Erudite/EruditeManual.tex';
+	render.
+
+Then process with pdflatex -shell-escape <file.tex>!
 
 !EruditeForm methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:46:23'!
 storeOn: aStream
@@ -2286,7 +2312,7 @@ booksList
 	pragmas _ Pragma allNamed: #book: in: self class.
 	^ pragmas collect: [:pragma | pragma method valueWithReceiver: self class arguments: #()].! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 17:25:13'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:36:36'!
 cuisManual
 
 <book: 'Cuis Manual'>
@@ -2324,7 +2350,7 @@ Complexity puts a limit to the level of understanding of the system a person mig
 
 This presentation by Rich Hickey, {http://www.infoq.com/presentations/Simple-Made-Easy::url|"Simple made Easy"} is also an excellent reflection on these values.
 
-We follow a set of ideas that started with Jean Piaget''s {https://en.wikipedia.org/wiki/Constructivism_(philosophy_of_education::url|Constructivism}, and were further developed in Seymour Papert''s {https://en.wikipedia.org/wiki/Experiential_learning::url|Mathland}. These lead to Alan Kay''s Learning Research Group''s {http://www.vpri.org/pdf/hc_pers_comp_for_children.pdf::url|Personal Computer for Children of All Ages}, {http://www.vpri.org/pdf/m1977001_dynamedia.pdf::url|Personal Dynamic Media}, i.e. the {http://www.vpri.org/pdf/hc_what_Is_a_dynabook.pdf::url|Dynabook} and to {https://en.wikipedia.org/wiki/Smalltalk::url|Smalltalk-80}. To us, a Smalltalk system is a Dynabook. A place to experiment and learn, and a medium to express and register the knlowledge we acquire. We understand software development as the activity of learning and documenting knowledge, for us and others to use, and also to be run on a computer. The fact that the computer run is useful, is a consequence of the knowldege being sound and relevant. (Just making it work is _not_ the important part!!)
+We follow a set of ideas that started with Jean Piaget''s {https://en.wikipedia.org/wiki/Constructivism_(philosophy_of_education::url|Constructivism}, and were further developed in Seymour Papert''s {https://en.wikipedia.org/wiki/Experiential_learning::url|Mathland}. These lead to Alan Kay''s Learning Research Group''s {http://www.vpri.org/pdf/hc_pers_comp_for_children.pdf::url|Personal Computer for Children of All Ages}, {http://www.vpri.org/pdf/m1977001_dynamedia.pdf::url|Personal Dynamic Media}, i.e. the {http://www.vpri.org/pdf/hc_what_Is_a_dynabook.pdf::url|Dynabook} and to {https://en.wikipedia.org/wiki/Smalltalk::url|Smalltalk-80}. To us, a Smalltalk system is a Dynabook. A place to experiment and learn, and a medium to express and register the knlowledge we acquire. We understand software development as the activity of learning and documenting knowledge, for us and others to use, and also to be run on a computer. The fact that the computer run is useful, is a consequence of the knowldege being sound and relevant. (Just making it work is **not** the important part!!)
 
 Cuis Smalltalk is our attempt at this challenge. Furthermore, we believe we are doing something else that no other Smalltalk, commercial or open source, does. We attempt to give the true Smalltalk-80 experience, and keep Smalltalk-80 not as legacy software historic significance, but as a live, evolving system. We feel we are the keepers of the Smalltalk-80 heritage, and enablers of the Dynabook experience.
 
@@ -2338,7 +2364,7 @@ Additionally, there are many tutorials and references for Smalltalk in the web. 
 
 The user interface enables you to access most of the code and conduct Smalltalk experiments on your own. You can review its features at {https://github.com/Cuis-Smalltalk-Learning/Learning-Cuis/blob/master/Quick-UI-Tour.md::url|"Quick Tour of the UI"}. ') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Contributing to Cuis'; document: ((EruditeDocument contents: '!!!!!! Contributing to Cuis
 
-Cuis is maintained on {https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev::url}. The main meeting point for Cuis users and developers is the mail list http://cuis-smalltalk.org/mailman/listinfo/cuis-dev_cuis-smalltalk.org . You can broswse the archives for a glimpse of our discussions.
+Cuis is maintained on {https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev::url}. The main meeting point for Cuis users and developers is the mail list {http://cuis-smalltalk.org/mailman/listinfo/cuis-dev_cuis-smalltalk::url}.org . You can broswse the archives for a glimpse of our discussions.
 
 If you want to contribute code to the project, please read {Managing your code in Cuis::section}, about developing packages for Cuis, and {Cuis and Github::section}. While Cuis should work equally well with any file-based DVCS, we encourage the use of Git and GitHub.
 
@@ -2369,7 +2395,7 @@ The operations available on installed or newly created packages are:
 
 **[Browse package code]** This opens a Class Browser that only shows the code that belongs in the package. This is useful for working on a package, or studying it.
 
-**[Add requirement]** This opens a select list of loaded packages.  Each package provides a //Feature//.  You can CANCEL, require the current Cuis base version (at a minimum) or require any of the packages on the list.  Required packages will be loaded before the selected package (**Feature require: #''your-package''.**).  When a package is selected, the lower browser pane shows its requirents, which may be deleted.  Don''t forget to //Save// your package after adding or deleting  requirements!!
+**[Add requirement]** This opens a select list of loaded packages.  Each package provides a //Feature//.  You can CANCEL, require the current Cuis base version (at a minimum) or require any of the packages on the list.  Required packages will be loaded before the selected package (```Feature require: #''your-package''.```).  When a package is selected, the lower browser pane shows its requirents, which may be deleted.  Don''t forget to //Save// your package after adding or deleting  requirements!!
 
 The tool shows, for each Package, the name, whether it is dirty (has unsaved changes) and the file it was installed from / saved to.
 
@@ -6545,6 +6571,425 @@ text: anObject
 text: aString style: aSymbol
 
 	^ self new initialize: aString style: aSymbol! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:06:48'!
+initialize: aBook
+
+	book _ aBook.
+	stream _ WriteStream on: String new.
+	documentClass _ #book.
+	highlightSyntax _ true! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+linkRendererFor: aLinkType
+
+	|handlerClassName|
+	
+	handlerClassName _ aLinkType asString capitalized, 'DocLinkRenderer'.
+	^ Smalltalk at: handlerClassName asSymbol ifAbsent: ["self error: 'No link renderer for: ', aLinkType asString" nil]! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:02:33'!
+render
+
+	self renderWithTemplate: [
+		book sections do: [:aBookSection | 
+			self renderSection: aBookSection]].
+	
+	texFilePath fileContents: stream contents! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 17:02:11'!
+renderArticle
+
+	documentClass _ #article.
+	self render! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 17:01:59'!
+renderBook
+
+	documentClass _ #book.
+	self render! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:47:36'!
+renderCode: aDocCode
+
+	highlightSyntax 
+		ifTrue: [stream nextPutAll: '\begin{minted}[fontsize=\footnotesize]{smalltalk}'; newLine]
+		ifFalse: [stream nextPutAll: '\begin{code}';newLine].
+		
+	stream nextPutAll: aDocCode code.
+		
+	highlightSyntax
+		ifTrue: [stream newLine;nextPutAll: '\end{minted}'; newLine]
+		ifFalse: [stream newLine;nextPutAll: '\end{code}'; newLine].
+	
+	"Besides rendering the code, try to evaluate it, since there may be variable assignments."
+	"[requestor 
+		ifNil: [Compiler evaluate: aDocCode code for: self logged: false]
+		ifNotNil: [Compiler evaluate: aDocCode code notifying: requestor logged: false]]
+	on: Error do: [:error | error]"! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+renderCodeDoIt: aDocCode
+
+	|text button textModel |
+	
+	text _ Text string: aDocCode code.							.
+							
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
+		
+	stream nextPut: textModel actualContents.
+	stream nextPut: ' '.
+	
+	button _ Text string: '[doIt]' attributes: 
+					{TextEmphasis underlined. 
+						BlockTextAction do: [:anObject | Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false]}.
+	stream nextPut: button.
+	
+	"button _ PluggableButtonMorph model: nil action: #doIt label: 'DoIt'.
+ 	button morphExtent: 40@15.
+	stream nextPut: (Text withForm: button)."! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+renderCodeDoItWithButton: aDocCode
+
+	stream nextPut: (Text string: (aDocCode action at: #button)
+							attributes: 
+							{TextColor magenta.
+							TextEmphasis italic.
+							TextEmphasis underlined .
+							BlockTextAction do: [:anObject | Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false]})! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+renderCodeEmbedIt: aDocCode
+
+	| evalString result |
+	
+	evalString _ aDocCode code.
+	
+	requestor 
+		ifNil: [
+			result _ [Compiler evaluate: evalString for: self logged: false]
+				on: Error do: [:error | error]]
+		ifNotNil: [
+			result _ [Compiler evaluate: evalString notifying: requestor logged: false]
+				on: Error do: [:error | error]].
+	
+	stream nextPut: (Text streamContents: [:s | result printOn: s])! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+renderCodeExploreIt: aDocCode
+
+	|text button evalString textModel |
+	
+	evalString _ aDocCode code.
+	
+	text _ Text string: aDocCode code.							.
+							
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
+		
+	stream nextPut: textModel actualContents.
+	stream nextPut: ' '.
+	
+	button _ Text string: '[exploreIt]' 
+		attributes: {TextEmphasis underlined. 
+					BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) explore]}.
+	stream nextPut: button.! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+renderCodeExploreItWithButton: aDocCode
+
+	stream nextPut: (Text string: (aDocCode action at: #button)
+							attributes: 
+							{TextColor magenta.
+							TextEmphasis italic.
+							TextEmphasis underlined .
+							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) explore]})! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+renderCodeInspectIt: aDocCode
+
+	|text button evalString textModel |
+	
+	evalString _ aDocCode code.
+	
+	text _ Text string: aDocCode code.							.
+							
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
+		
+	stream nextPut: textModel actualContents.
+	stream nextPut: ' '.
+	
+	button _ Text string: '[inspectIt]' 
+		attributes: {TextEmphasis underlined. 
+					BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) inspect]}.
+	stream nextPut: button.! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+renderCodeInspectItWithButton: aDocCode
+
+	stream nextPut: (Text string: (aDocCode action at: #button)
+							attributes: 
+							{TextColor magenta.
+							TextEmphasis italic.
+							TextEmphasis underlined .
+							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) inspect]})! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+renderCodePrintIt: aDocCode
+
+	|text button evalString textModel |
+	
+	evalString _ aDocCode code.
+	
+	text _ Text string: aDocCode code.							.
+							
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
+		
+	stream nextPut: textModel actualContents.
+	stream nextPut: ' '.
+	
+	button _ Text string: '[printIt]' 
+		attributes: {TextEmphasis underlined. 
+					BlockTextAction do: [:anObject | Transcript show: (Compiler evaluate: evalString notifying: anObject textProvider logged: false) printString]}.
+	stream nextPut: button.! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+renderCodePrintItHere: aDocCode
+
+	|text evalString result textModel |
+	
+	evalString _ aDocCode code.
+	
+	text _ Text string: aDocCode code.							.
+							
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
+		
+	stream nextPut: textModel actualContents.
+	stream nextPut: ' '.
+	
+	requestor ifNil: [
+		result _ [Compiler evaluate: evalString for: self logged: false]
+			on: Error do: [:error | error]]
+		ifNotNil: [
+			result _ [Compiler evaluate: evalString notifying: requestor logged: false]
+				on: Error do: [:error | error]].
+	
+	stream nextPut: '==> ';
+			nextPut: (Text streamContents: [:s | result printOn: s]).! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:07:49'!
+renderDocument: aDocument
+	
+	|doc|
+	
+	doc _ EruditeMarkupParser parse: aDocument contents.
+	
+	doc contents do: [:node |
+		node isString ifTrue: [
+			stream nextPutAll: node]
+		ifFalse: [
+			node accept: self]]! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 17:00:55'!
+renderSection: aBookSection
+
+	documentClass caseOf: {
+		[#book] -> [stream nextPutAll: '\chapter{'].
+		[#article] -> [stream nextPutAll: '\section{'].
+	}.
+	stream nextPutAll: aBookSection title;
+			nextPutAll: '}'; newLine.
+			
+	self renderDocument: aBookSection document.
+	
+	aBookSection sections do: [:section |
+		self renderSubsection: section]! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 17:01:18'!
+renderSubsection: aBookSection
+
+	documentClass caseOf: {
+		[#book] -> [stream nextPutAll: '\section{'].
+		[#article] -> [stream nextPutAll: '\subsection{'].
+	}.
+	stream nextPutAll: aBookSection title;
+			nextPutAll: '}'; newLine.
+			
+	self renderDocument: aBookSection document.
+	
+	aBookSection sections do: [:section |
+		self renderSubsubsection: section]! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 17:00:26'!
+renderSubsubsection: aBookSection
+
+	documentClass caseOf: {
+		[#book] -> [stream nextPutAll: '\subsection{'].
+		[#article] -> [stream nextPutAll: '\subsubsection{'].
+	}.
+	stream nextPutAll: aBookSection title;
+			nextPutAll: '}'; newLine.
+			
+	self renderDocument: aBookSection document.
+	
+	! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:43:55'!
+renderWithTemplate: aBlock
+
+	stream nextPutAll: '\documentclass[11pt,pdflatex,makeidx]{scrbook}   % Book class in 11 points'; newLine;
+			nextPutAll: '\usepackage[margin=0.5in]{geometry}'; newLine;
+			nextPutAll: '\usepackage{color}'; newLine;
+			nextPutAll: '\usepackage{makeidx}'; newLine;
+			nextPutAll: '\usepackage{hyperref}'; newLine.
+		
+	highlightSyntax 
+		ifTrue: [ stream nextPutAll: '\usepackage{minted}'; newLine]
+		ifFalse: [ stream nextPutAll: '\usepackage{listings}'; newLine].
+	
+	stream nextPutAll: '\usepackage{hyperref}'; newLine;
+			nextPutAll: '\usepackage{courier}'; newLine;
+			nextPutAll: '\hypersetup{colorlinks=true,linkcolor=blue}';newLine.
+			
+	highlightSyntax ifFalse: [
+		stream nextPutAll: '\lstloadlanguages{Lisp}'; newLine;
+				nextPutAll: '\lstset{frame=none,language=Lisp,basicstyle=\ttfamily\small,
+keywordstyle=\color{black}\bfseries,stringstyle=\ttfamily,showstringspaces=false,breaklines}'; newLine;
+				nextPutAll: '\lstnewenvironment{code}{}{}']
+	ifTrue: [stream nextPutAll: '\definecolor{bg}{rgb}{0.95,0.95,0.95}'; newLine].
+	
+	stream nextPutAll: '\parindent0pt  \parskip10pt             % make block paragraphs'; newLine;
+			 nextPutAll: '\raggedright                            % do not right justify'; newLine;
+			nextPutAll: '% Note that book class by default is formatted to be printed back-to-back.'; newLine;
+			nextPutAll: '\makeindex'; newLine;
+			nextPutAll: '\begin{document}                        % End of preamble, start of text.'; newLine;
+			nextPutAll: '\title{\bf '; nextPutAll: book title; nextPutAll: '}'; newLine;
+			nextPutAll: '\date{\today}                           %   Use current date.'; newLine;
+			nextPutAll: '\frontmatter                            % only in book class (roman page #s)'; newLine;
+			nextPutAll: '\maketitle                              % Print title page.'; newLine;
+			nextPutAll: '\tableofcontents                        % Print table of contents'; newLine;
+			nextPutAll: '\mainmatter                             % only in book class (arabic page #s)'; newLine;
+			nextPutAll: '\long\def\ignore#1{}'; newLine.
+			aBlock value.
+	stream nextPutAll: '\chapter{Index}'; newLine;
+			nextPutAll: '\printindex'; newLine;
+			nextPutAll: '\end{document}'! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 18:45:27'!
+visitActionLink: aDocLink
+
+	stream nextPutAll: '\underline{';
+			nextPutAll: aDocLink title;
+			nextPutAll: '}'! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 17:10:24'!
+visitCode: aDocCode
+
+	self renderCode: aDocCode
+
+	"aDocCode action ifNil: [
+		^ self renderCode: aDocCode].
+						
+	(aDocCode action at: #action) caseOf: {
+		[#doIt] -> [self renderCodeDoIt: aDocCode].
+		[#exploreIt] -> [self renderCodeExploreIt: aDocCode].
+		[#inspectIt] -> [self renderCodeInspectIt: aDocCode].
+		[#printIt] -> [self renderCodePrintIt: aDocCode].
+		[#printItHere] -> [self renderCodePrintItHere: aDocCode].
+		[#embedIt] -> [self renderCodeEmbedIt: aDocCode].
+		[#doItWithButton] -> [self renderCodeDoItWithButton: aDocCode].
+		[#exploreItWithButton] -> [self renderCodeExploreItWithButton: aDocCode].
+		[#inspectItWithButton] -> [self renderCodeInspectItWithButton: aDocCode].
+		[#printItWithButton] -> [self renderCodePrintItWithButton: aDocCode]
+	}."! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:40:58'!
+visitHeading: aEruditeHeading
+
+	aEruditeHeading level caseOf: {
+		[1] -> [stream nextPutAll: '\section*{'].
+		[2] -> [stream nextPutAll: '\subsection*{'].
+		[3] -> [stream nextPutAll: '\subsubsection*{'].
+		[4] -> [stream nextPutAll: '\textbf{']
+	}.
+	stream nextPutAll: aEruditeHeading heading; nextPutAll: '}'; newLine; newLine! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:32:41'!
+visitLink: aDocLink
+	
+	"(self linkRendererFor: aDocLink type) ifNotNil: [:aLinkRenderer |
+		aLinkRenderer render: aDocLink in: document on: stream]"
+	
+	aDocLink label 
+		ifNotNil: [
+			stream nextPutAll: '\href{'; nextPutAll: aDocLink target;
+					nextPutAll: '}{'; nextPutAll: aDocLink label; nextPutAll:'}']
+		ifNil: [
+			stream nextPutAll: '\url{';
+				nextPutAll: aDocLink target;
+				nextPutAll: '}']! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 18:50:37'!
+visitStyledText: aStyledText
+
+	aStyledText style caseOf: {
+		[#bold] -> [stream nextPutAll: '\textbf{';
+							    nextPutAll: aStyledText text;
+								nextPutAll: '}'].
+		[#italic] -> [stream nextPutAll: '\textit{';
+							    nextPutAll: aStyledText text;
+								nextPutAll: '}'].
+		[#unformatted] -> [stream nextPutAll: '\begin{verbatim}'; newLine;
+										nextPutAll: aStyledText text; newLine;
+										nextPutAll: '\end{verbatim}'; newLine].
+	}! !
+
+!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 19:03:51'!
+book: aBook
+
+	book _ aBook! !
+
+!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 16:21:07'!
+requestor
+
+	^ requestor! !
+
+!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 16:21:07'!
+requestor: anObject
+
+	requestor _ anObject! !
+
+!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 18:52:04'!
+texFilePath
+
+	^ texFilePath! !
+
+!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 18:51:49'!
+texFilePath: aFilePath
+
+	texFilePath _ aFilePath! !
+
+!LatexEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:05:45'!
+on: aBook
+
+	^ self new initialize: aBook! !
+
+!LatexEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:05:57'!
+render: aBook
+	
+	^ (self on: aBook) render! !
+
+!LatexEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:06:11'!
+render: aBook notifying: anObject
+	
+	^ (self on: aBook)
+		requestor: anObject; 
+		render! !
 
 !Browser methodsFor: '*Erudite' stamp: 'MM 12/13/2018 18:25'!
 selectionInterval
