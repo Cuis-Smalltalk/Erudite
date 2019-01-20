@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 19 January 2019 at 7:53:39 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 19 January 2019 at 10:50:56 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 117!
+!provides: 'Erudite' 1 118!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -6572,6 +6572,24 @@ text: aString style: aSymbol
 
 	^ self new initialize: aString style: aSymbol! !
 
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 22:49:39'!
+escapeLatex: aString
+	
+	|escapedString|
+	
+	escapedString _ aString copyReplaceAll: '\' with: '\textbackslash'.
+	escapedString _ escapedString copyReplaceAll: '&' with: '\&'.
+	escapedString _ escapedString copyReplaceAll: '%' with: '\%'.
+	escapedString _ escapedString copyReplaceAll: '#' with: '\#'.
+	escapedString _ escapedString copyReplaceAll: '$' with: '\$'.
+	escapedString _ escapedString copyReplaceAll: '_' with: '\_'.
+	escapedString _ escapedString copyReplaceAll: '{' with: '\{'.
+	escapedString _ escapedString copyReplaceAll: '}' with: '\}'.
+	escapedString _ escapedString copyReplaceAll: '~' with: '\textasciitilde'.
+	escapedString _ escapedString copyReplaceAll: '^' with: '\textasciicircum'.
+	^ escapedString
+	! !
+
 !LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:06:48'!
 initialize: aBook
 
@@ -6782,7 +6800,7 @@ renderCodePrintItHere: aDocCode
 	stream nextPut: '==> ';
 			nextPut: (Text streamContents: [:s | result printOn: s]).! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:07:49'!
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 22:32:36'!
 renderDocument: aDocument
 	
 	|doc|
@@ -6791,7 +6809,7 @@ renderDocument: aDocument
 	
 	doc contents do: [:node |
 		node isString ifTrue: [
-			stream nextPutAll: node]
+			stream nextPutAll: (self escapeLatex: node)]
 		ifFalse: [
 			node accept: self]]! !
 
