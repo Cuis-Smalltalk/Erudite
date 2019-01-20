@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 20 January 2019 at 10:43:59 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 20 January 2019 at 10:49:00 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 120!
+!provides: 'Erudite' 1 121!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -6860,7 +6860,7 @@ renderSubsubsection: aBookSection
 	
 	! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:43:55'!
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/20/2019 10:46:50'!
 renderWithTemplate: aBlock
 
 	stream nextPutAll: '\documentclass[11pt,pdflatex,makeidx]{scrbook}   % Book class in 11 points'; newLine;
@@ -6897,8 +6897,8 @@ keywordstyle=\color{black}\bfseries,stringstyle=\ttfamily,showstringspaces=false
 			nextPutAll: '\mainmatter                             % only in book class (arabic page #s)'; newLine;
 			nextPutAll: '\long\def\ignore#1{}'; newLine.
 			aBlock value.
-	stream nextPutAll: '\chapter{Index}'; newLine;
-			nextPutAll: '\printindex'; newLine;
+	stream "nextPutAll: '\chapter{Index}'; newLine;"  "No index for now..."
+			"nextPutAll: '\printindex'; newLine;"
 			nextPutAll: '\end{document}'! !
 
 !LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 18:45:27'!
