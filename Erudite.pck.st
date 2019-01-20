@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 20 January 2019 at 10:49:00 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 20 January 2019 at 1:53:19 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 121!
+!provides: 'Erudite' 1 122!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -2470,7 +2470,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!EruditeBook class methodsFor: 'storage' stamp: 'MM 1/20/2019 10:43:14'!
+!EruditeBook class methodsFor: 'storage' stamp: 'MM 1/20/2019 13:53:14'!
 eruditeManual
 
 <book: 'Erudite Manual'>
@@ -5470,7 +5470,11 @@ The {SmalltalkEruditeParser::class|Smalltalk parser} parses Smalltalk comments i
 
 !!!!!! Formatter
 
-The only formatter implemented at the moment is a Morphic formatter used by the Morphic book reader and editor. It is implemented in {MorphicEruditeDocRenderer::class}. It is implemented as a visitor that outputs attributed Morphic {Text::class} on each visit to a parse node.
+There are two formatters implemented at the moment. A Morphic formatter, used by the Morphic book reader and editor. And a Latex formatter with which you can generate PDF documents.
+
+!!!!!!!! Morphic formatter
+
+The Morphic formatter is implemented in {MorphicEruditeDocRenderer::class}. It is implemented as a visitor that outputs attributed Morphic {Text::class} on each visit to a parse node.
 
 Here is an example of how it is used:
 
@@ -5479,6 +5483,20 @@ erudite _ SmalltalkEruditeParser parse: ''This is an Object. Look at Object>>at:
 Events are triggered via #triggerEvent:''.
 
 (MorphicEruditeDocRenderer on: erudite) render edit]]] doIt
+
+!!!!!!!! Latex formatter
+
+The Latex formatter is implemented in {LatexEruditeDocRenderer::class}.
+
+For example, this is how to generate a Latex/PDF for Erudite manual. First generate the ```.tex``` file:
+
+[[[ (LatexEruditeDocRenderer on: EruditeBook eruditeManual)
+	texFilePath: ''/tmp/EruditeManual.tex'';
+	render]]] doIt
+
+Then process it with ```pdflatex``` command:
+
+```pdflatex -shell-escape /tmp/EruditeManual.tex```
 
 !!!!!!!! Links renderers
 
