@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 20 January 2019 at 10:39:36 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 20 January 2019 at 10:43:59 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 119!
+!provides: 'Erudite' 1 120!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -2470,7 +2470,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!EruditeBook class methodsFor: 'storage' stamp: 'MM 1/18/2019 10:22:13'!
+!EruditeBook class methodsFor: 'storage' stamp: 'MM 1/20/2019 10:43:14'!
 eruditeManual
 
 <book: 'Erudite Manual'>
@@ -4014,11 +4014,11 @@ A Literate program consists of explanation of the code in a natural language suc
 
 **Donald Knuth. "Literate Programming (1984)" in Literate Programming. CSLI, 1992, pg. 99.:**
 
-//"I believe that the time is ripe for significantly better documentation of programs, and that we can best achieve this by considering programs to be works of literature. Hence, my title: "Literate Programming."
+//"I believe that the time is ripe for significantly better documentation of programs, and that we can best achieve this by considering programs to be works of literature. Hence, my title: "Literate Programming."//
 
-Let us change our traditional attitude to the construction of programs: Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.
+//Let us change our traditional attitude to the construction of programs: Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.//
 
-The practitioner of literate programming can be regarded as an essayist, whose main concern is with exposition and excellence of style. Such an author, with thesaurus in hand, chooses the names of variables carefully and explains what each variable means. He or she strives for a program that is comprehensible because its concepts have been introduced in an order that is best for human understanding, using a mixture of formal and informal methods that reinforce each other."//
+//The practitioner of literate programming can be regarded as an essayist, whose main concern is with exposition and excellence of style. Such an author, with thesaurus in hand, chooses the names of variables carefully and explains what each variable means. He or she strives for a program that is comprehensible because its concepts have been introduced in an order that is best for human understanding, using a mixture of formal and informal methods that reinforce each other."//
 
 !!!!!! Advantages
 
