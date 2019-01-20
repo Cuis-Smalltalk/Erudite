@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 19 January 2019 at 10:50:56 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 20 January 2019 at 10:39:36 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 118!
+!provides: 'Erudite' 1 119!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -6572,7 +6572,7 @@ text: aString style: aSymbol
 
 	^ self new initialize: aString style: aSymbol! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 22:49:39'!
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/20/2019 10:38:17'!
 escapeLatex: aString
 	
 	|escapedString|
@@ -6587,6 +6587,9 @@ escapeLatex: aString
 	escapedString _ escapedString copyReplaceAll: '}' with: '\}'.
 	escapedString _ escapedString copyReplaceAll: '~' with: '\textasciitilde'.
 	escapedString _ escapedString copyReplaceAll: '^' with: '\textasciicircum'.
+	escapedString _ escapedString copyReplaceAll: '
+' with: '\leavevmode\\
+'.
 	^ escapedString
 	! !
 
