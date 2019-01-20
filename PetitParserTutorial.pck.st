@@ -1,13 +1,13 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 19 December 2018 at 12:05:43 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 20 January 2019 at 10:21:05 am'!
 'Description Please enter a description for this package'!
-!provides: 'PetitParserTutorial' 1 11!
+!provides: 'PetitParserTutorial' 1 12!
 !requires: 'PetitTutorial' 1 0 nil!
-!requires: 'PetitParser' 1 6 nil!
 !requires: 'Erudite' 1 73 nil!
+!requires: 'PetitParser' 1 6 nil!
 
 
 
-!EruditeBook class methodsFor: '*PetitParserTutorial' stamp: 'MM 12/19/2018 12:01:35'!
+!EruditeBook class methodsFor: '*PetitParserTutorial' stamp: 'MM 1/19/2019 22:47:21'!
 petitparserTutorial
 
 <book: 'PetitParser tutorial'>
@@ -79,7 +79,7 @@ index of last character) in the given input one can use either {PPParser>>matchi
 [[[identifier matchingRangesIn: ''foo 123 bar12'']]] printItHere
 ') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Different kinds of parsers'; document: ((EruditeDocument contents: '!!!!!! Different kinds of parsers
 
-PetitParser provide a large set of ready-made parser that you can compose to consume and transform arbitrarily complex languages. The terminal parsers are the most simple ones. We&#8217;ve already seen a few of those, some more are defined in the protocol Table 1.1.
+PetitParser provide a large set of ready-made parser that you can compose to consume and transform arbitrarily complex languages. The terminal parsers are the most simple ones. We''ve already seen a few of those, some more are defined in the protocol Table 1.1.
 
 The class side of {PPPredicateObjectParser::class} provides a lot of other factory methods that can be used to build more complex terminal parsers. To use them, send the message {PPParser>>asParser ::method} to a symbol containing the name of the factory method (such as [[[#punctuation asParser]]] ).
 
@@ -103,7 +103,7 @@ defined in the protocol:
 
 **Parser Combinators**
 **p1 , p2**. Parses p1 followed by p2 (sequence).
-**p1 / p2**. Parses p1, if that doesn&#8217;t work parses p2.
+**p1 / p2**. Parses p1, if that doesn''t work parses p2.
 **p star**. Parses zero or more p.
 **p plus**. Parses one or more p.
 **p optional**. Parses p if possible.
