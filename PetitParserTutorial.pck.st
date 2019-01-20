@@ -1,13 +1,13 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 20 January 2019 at 10:21:05 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 20 January 2019 at 10:22:40 am'!
 'Description Please enter a description for this package'!
-!provides: 'PetitParserTutorial' 1 12!
+!provides: 'PetitParserTutorial' 1 13!
 !requires: 'PetitTutorial' 1 0 nil!
 !requires: 'Erudite' 1 73 nil!
 !requires: 'PetitParser' 1 6 nil!
 
 
 
-!EruditeBook class methodsFor: '*PetitParserTutorial' stamp: 'MM 1/19/2019 22:47:21'!
+!EruditeBook class methodsFor: '*PetitParserTutorial' stamp: 'MM 1/20/2019 10:22:36'!
 petitparserTutorial
 
 <book: 'PetitParser tutorial'>
@@ -201,7 +201,7 @@ method number as follows:
 
 {ExpressionGrammar>>number ::method}[embed]
 
-Every production in ExpressionGrammar is specified as a method that returns its parser. Similarly, we define the productions term , prod , mul , and prim . Productions refer to each other by reading the respective instance variable of the same name and PetitParser takes care of initializing these instance variables for you automatically. We let Pharo automatically add the necessary instance variables as we refer to them for the first time. We obtain the following class definition:
+Every production in ExpressionGrammar is specified as a method that returns its parser. Similarly, we define the productions term , prod , mul , and prim . Productions refer to each other by reading the respective instance variable of the same name and PetitParser takes care of initializing these instance variables for you automatically. We let Smalltalk automatically add the necessary instance variables as we refer to them for the first time. We obtain the following class definition:
 
 {ExpressionGrammar::class}[embed]
 
