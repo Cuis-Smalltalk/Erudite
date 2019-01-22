@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 20 January 2019 at 1:53:19 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 22 January 2019 at 8:03:53 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 122!
+!provides: 'Erudite' 1 124!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -1073,6 +1073,10 @@ contentsChanged
 
 	self changed: #contents! !
 
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 18:34:01'!
+correctFrom: aSmallInteger to: aSmallInteger2 with: aString 
+	! !
+
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 22:46'!
 drawLabelOn: aCanvas
 
@@ -1243,6 +1247,10 @@ moveSectionUp
 		parent sections add: currentSection before: before.
 		self sectionsChanged]! !
 
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 18:43:20'!
+notify: aString at: aSmallInteger in: aReadStream 
+	self inform: aString! !
+
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:27'!
 openBook
 	EruditeBook withBookSelectionDo: [ :book |
@@ -1306,6 +1314,14 @@ saveBookAs
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 17:44'!
 sectionsChanged
 	explorer changed: #explorerList! !
+
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 18:32:46'!
+selectFrom: aSmallInteger to: aSmallInteger2 
+! !
+
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 18:33:19'!
+selectInvisiblyFrom: aSmallInteger to: aSmallInteger2 
+! !
 
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 11:36'!
 sourcesChanged
@@ -2470,7 +2486,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!EruditeBook class methodsFor: 'storage' stamp: 'MM 1/20/2019 13:53:14'!
+!EruditeBook class methodsFor: 'storage' stamp: 'MM 1/22/2019 20:03:46'!
 eruditeManual
 
 <book: 'Erudite Manual'>
@@ -5518,7 +5534,11 @@ TODO. Not implemented yet. ') images: ((Dictionary new)); yourself); subsections
 
 A PetitParser tutorial is included in the Erudite distribution.
 
-To install: [[[Feature require: ''PetitParserTutorial'']]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); updateParents; yourself)! !
+To install: [[[Feature require: ''PetitParserTutorial'']]] doIt
+
+Also, a book on Morphic, the Cuis UI system:
+
+To install: [[[Feature require: ''MorphicBook'']]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); updateParents; yourself)! !
 
 !EruditeBookSection methodsFor: 'accessing' stamp: 'MM 12/4/2018 17:59'!
 addSection: aBookSection
