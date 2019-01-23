@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 22 January 2019 at 8:06:27 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 22 January 2019 at 10:24:46 pm'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 3!
+!provides: 'MorphicBook' 1 5!
 SystemOrganization addCategory: #MorphicBook!
 
 
@@ -27,6 +27,10 @@ drawOn: aCanvas
 	aCanvas fillRectangle: horizontalBar color: self color.
 	aCanvas fillRectangle: verticalBar color: self color! !
 
+!CrossMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 21:39:23'!
+handlesMouseDown: anEvent
+	^ true! !
+
 !CrossMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 19:56:16'!
 initialize
 
@@ -52,6 +56,18 @@ morphContainsPoint: aPoint
 	^ (horizontalBar containsPoint: aPoint) or: [ verticalBar
 		containsPoint: aPoint ]! !
 
+!CrossMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 21:43:25'!
+mouseButton1Down: anEvent localPosition: aPosition
+
+	self color: Color red.
+	self changed! !
+
+!CrossMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 21:43:34'!
+mouseButton2Down: anEvent localPosition: aPosition
+
+	self color: Color yellow.
+	self changed! !
+
 !CrossMorph methodsFor: 'accessing' stamp: 'MM 1/22/2019 19:49:55'!
 color
 	^ color! !
@@ -62,7 +78,7 @@ color: anObject
 
 	color _ anObject! !
 
-!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/22/2019 20:02:15'!
+!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/22/2019 22:24:44'!
 morphicBook
 
 <book: 'Morphic Book'>
@@ -157,4 +173,68 @@ To build live user interfaces using morphs, we need to be able to interact with 
 !!!!!! Mouse events
 
 When a mouse button is pressed, Morphic sends each morph under the mouse pointer the message {handlesMouseDown: ::selector}. If a morph answers true , then Morphic immediately sends it the {mouseButton1Down:localPosition: ::selector} message; it also sends the {mouseButton1Up:localPosition: ::selector} message when the user releases the mouse button. If all morphs answer false, then Morphic initiates a drag-and-drop operation. As we will discuss below, the {mouseButton1Down:localPosition: ::selector} and {mouseButton1Up:localPosition: ::selector} messages are sent with an argument - a {MouseEvent::class} object- that encodes the details of the mouse action.
-Let''s extend {CrossMorph::class} to handle mouse events. We start by ensuring that all crossMorphs answer true to the {handlesMouseDown: ::selector} message.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); updateParents; yourself)! !
+Let''s extend {CrossMorph::class} to handle mouse events. We start by ensuring that all crossMorphs answer true to the {handlesMouseDown: ::selector} message.
+
+Let''s extend CrossMorph to handle mouse events. We start by ensuring that all
+crossMorphs answer true to the handlesMouseDown: message:
+
+{CrossMorph>>handlesMouseDown: ::method}[embed]
+
+Suppose that when we click on the cross, we want to change the color of the cross to red, and when we action-click on it, we want to change the color to yellow. This can be  accomplished by the mouse down methods as follows:
+
+{CrossMorph>>mouseButton1Down:localPosition: ::method}[embed]
+
+{CrossMorph>>mouseButton2Down:localPosition: ::method}[embed]
+
+Notice that in addition to changing the color of the morph, this method also sends self changed . This makes sure that morphic sends drawOn: in a timely fashion.
+
+Note also that once the morph handles mouse events, you can no longer grab it with the mouse and move it. Instead you have to use the halo: meta-click on the morph to make the halo appear and grab either the brown move handle or the black pickup handle  at the top of the morph.
+The anEvent argument of mouseDown: is an instance of {MouseEvent::class} , which is
+a subclass of {MorphicEvent::class} . MouseEvent defines the redButtonPressed and
+yellowButtonPressed methods. Browse this class to see what other methods
+it provides to interrogate the mouse event.
+
+!!!!!! Keyboard events
+
+To catch keyboard events, we need to take three steps.
+
+1. Give the keyboard focus to a specific morph. For instance, we can give focus to our morph when the mouse is over it.
+2. Handle the keyboard event itself with the handleKeystroke: method. This message is sent to the morph that has keyboard focus when the user presses a key.
+3. Release the keyboard focus when the mouse is no longer over our morph.
+
+Let''s extend CrossMorph so that it reacts to keystrokes. First, we need to arrange to be notified when the mouse is over the morph. This will happen if our morph answers true to the handlesMouseOver: message') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'How Morphic works'; document: ((EruditeDocument contents: '!!!! How Morphic works
+
+This section gives an overview of how morphic works in just enough detail to help the morphic programmer get the most out of the system.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'The UI loop'; document: ((EruditeDocument contents: '!!!!!! The UI Loop
+
+At the heart of every interactive user interface framework lies the modern equivalent of the read-evaluate-print loop of the earliest interactive computer systems. However, in this modern version, "read" processes events instead of characters and "print" performs drawing operations to update a graphical display instead of outputting text. Morphic''s version of this loop adds two additional steps to provide hooks for liveness and automatic layout:
+
+do forever:
+	process inputs
+	send step to all active morphs
+	update morph layouts
+	update the display
+
+Sometimes, none of these steps will have anything to do; there are no events to process, no morph that needs to be stepped, no layout updates, and no display updates. In such cases, morphic sleeps for a few milliseconds so that it doesn''t hog the CPU when it''s idle.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Input Processing'; document: ((EruditeDocument contents: '!!!!!! Input Processing
+
+Input processing is a matter of dispatching incoming events to the appropriate morphs. Keystroke events are sent to the current keyboard focus morph, which is typically established by a mouse click. If no keyboard focus has been established, the keystroke event is discarded. There is at most one keyboard focus morph at any time.
+
+Mouse down events are dispatched by location; the front-most morph at the event location gets to handle the event. Events do not pass through morphs; you can''t accidentally press a button that''s hidden behind some other morph. Morphic needs to know which morphs are interested in getting mouse events. It does this by sending each candidate morph the handlesMouseDown: message. The event is supplied so that a morph can decide if it wants to handle the event based on which mouse button was pressed and which modifier keys were held when the event occurred. If no morph can be found to handle the event, the default behavior is to pick up the front-most morph under the cursor.
+
+Within a composite morph, its front-most submorph is given the first chance to handle an event, consistent with the fact that submorphs appear in front of their owner. If that submorph does not want to handle the event, its owner is given a chance. If its owner doesn''t want it, then the owner''s owner gets a chance, and so on, up the owner chain. This policy allows a mouse sensitive morph, such as a button, to be decorated with a label or graphic and still get mouse clicks. In our first attempt at event dispatching, mouse clicks on a submorph were not passed on to its owner, so clicks that hit a button''s label were blocked. It is not so easy to click on a button without hitting its label!!
+
+What about mouse move and mouse up events? Consider what happens when the user drags the handle of a scroll bar. When the mouse goes down on the scroll bar, the scroll bar starts tracking the mouse as it is dragged. It continues to track the mouse if the cursor
+moves outside of the scroll bar, and even if the cursor is dragged over a button or some other scroll bar. That is because morphic considers the entire sequence of mouse down, repeated mouse moves, and mouse up to be a single transaction. Whichever morph accepts the mouse down event is considered the mouse focus until the mouse goes up again. The mouse focus morph is guaranteed to get the entire mouse drag transaction: a mouse down event, at least one mouse move event, and a mouse up event. Thus, a morph can perform some initialization on mouse down and cleanup on mouse up, and be assured that the initialization and cleanup will always get done.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Liveness'; document: ((EruditeDocument contents: '!!!!!! Liveness
+
+Liveness is handled by keeping a list of morphs that need to be stepped, along with their desired next step time. Every cycle, the step message is sent to any morphs that are due for stepping and their next step time is updated. Deleted morphs are pruned from the step list, both to avoid stepping morphs that are no longer on the screen, and to allow those morphs to be garbage collected.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Layout Updating'; document: ((EruditeDocument contents: '!!!!!! Layout Updating
+
+Morphic maintains morph layout incrementally. When a morph is changed in a way that could influence layout (e.g., when a new submorph is added to it), the message layoutChanged is sent to it. This triggers a chain of activity. First, the layout of the changed morph is updated. This may change the amount of space given to some of its submorphs, causing their layouts to be updated. Then, if the space requirements of the changed morph have changed (e.g., if it needs more space to accommodate a newly added submorph), the layout of its owner is updated, and possibly its owner''s owner, and so on. In some cases, the layout of every submorph in a deeply-nested composite morph may need to be updated. Fortunately, there are many cases where layout updates can be localized, thus saving a great deal of work.
+
+As with changed messages, morph clients usually need not send layoutChanged explicitly since the most common operations that affect the layout of a morph -such as adding and removing submorphs or changing the morph''s size- do this already. The alert reader might worry that updating the layout after adding a morph might slow things down when building a row or column with lots of submorphs. In fact, since the cost of updating the layout is proportional to the number of morphs already in the row or column, then adding N morphs one at a time and updating the layout after every morph would have a cost proportional to N 2 . This cost would mount up fast when building a complex morph like a ScorePlayerMorph . To avoid this problem, morphic defers all layout updates until the next display cycle. After all, the user can''t see any layout changes until the screen is next repainted. Thus, a program can perform any number of layout-changing operations on a given morph between display cycles and morphic will only update that morph''s layout once.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Display Updating'; document: ((EruditeDocument contents: '!!!!!! Display Updating
+
+Morphic uses a double-buffered, incremental algorithm to keep the screen updated. This algorithm is efficient (it tries to do as little work as possible to update the screen
+after a change) and high-quality (the user does not see the screen being repainted). It is also mostly automatic; many applications can be built without the programmer ever being aware of how the display is maintained. The description here is mostly for the benefit of those curious about how the system works.
+
+Morphic keeps a list, called the damage list of those portions of the screen that must be redrawn. Every morph has a bounds rectangle that encloses its entire visible representation. When a morph changes any aspect appearance (for example, its color), it sends itself the
+message c h a n g e d , which adds its bounds rectangle to the damage list. The display update phase of the morphic UI loop is responsible for bringing the screen up to date.
+For each rectangle in the damage list, it redraws (in back-to-front order) all the morphs intersecting the damage rectangle. This redrawing is done in an off-screen buffer which is then copied to the screen. Since individual morphs are drawn off screen, the user never sees the intermediate stages of the drawing process, and the final copy from the off-screen buffer to the screen is quite fast. The result is the smooth animation of objects
+that seem solid regardless of the sequence of individual drawing operations. When all the damage rectangles have been processed, morphic clears the damage list to prepare for the next cycle.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); yourself); updateParents; yourself)! !
