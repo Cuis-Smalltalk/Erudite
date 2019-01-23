@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 23 January 2019 at 12:30:05 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 23 January 2019 at 12:49:49 pm'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 11!
+!provides: 'MorphicBook' 1 12!
 SystemOrganization addCategory: #MorphicBook!
 
 
@@ -42,6 +42,16 @@ CrossMorph3 subclass: #CrossMorph4
 	category: 'MorphicBook'!
 !classDefinition: 'CrossMorph4 class' category: #MorphicBook!
 CrossMorph4 class
+	instanceVariableNames: ''!
+
+!classDefinition: #CrossMorph5 category: #MorphicBook!
+CrossMorph4 subclass: #CrossMorph5
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MorphicBook'!
+!classDefinition: 'CrossMorph5 class' category: #MorphicBook!
+CrossMorph5 class
 	instanceVariableNames: ''!
 
 
@@ -130,7 +140,33 @@ mouseButton2Down: anEvent localPosition: aPosition
 	self color: Color yellow.
 	self redrawNeeded! !
 
-!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/23/2019 12:26:43'!
+!CrossMorph5 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 12:33:38'!
+handlesMouseOver: anEvent
+	^true! !
+
+!CrossMorph5 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 12:34:06'!
+mouseEnter: anEvent
+	anEvent hand newKeyboardFocus: self! !
+
+!CrossMorph5 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 12:34:20'!
+mouseLeave: anEvent
+	anEvent hand newKeyboardFocus: nil! !
+
+!CrossMorph5 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 12:41:53'!
+processKeystroke: anEvent localPosition: localEventPosition
+
+	| keyValue |
+	keyValue := anEvent keyValue.
+	keyValue = 30 "up arrow"
+		ifTrue: [self morphPosition: self morphPosition - (0 @ 1)].
+	keyValue = 31 "down arrow"
+		ifTrue: [self morphPosition: self morphPosition + (0 @ 1)].
+	keyValue = 29 "right arrow"
+		ifTrue: [self morphPosition: self morphPosition + (1 @ 0)].
+	keyValue = 28 "left arrow"
+		ifTrue: [self morphPosition: self morphPosition - (1 @ 0)]! !
+
+!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/23/2019 12:49:39'!
 morphicBook
 
 <book: 'Morphic Book'>
@@ -232,7 +268,9 @@ We can then define both drawOn: and morphContainsPoint: using these methods:
 {CrossMorph3>>morphContainsPoint: ::method}[embed]
 
 This code is much simpler to understand, largely because we have given
-meaningful names to the private methods.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Interaction and animation'; document: ((EruditeDocument contents: '!!!! Interaction and animation
+meaningful names to the private methods.
+
+[[[CrossMorph3 new openInWorld]]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Interaction and animation'; document: ((EruditeDocument contents: '!!!! Interaction and animation
 
 To build live user interfaces using morphs, we need to be able to interact with them using the mouse and keyboard. Moreover, the morphs need to be able respond to user input by changing their appearance and position; - that is, by animating themselves.
 
@@ -267,7 +305,30 @@ To catch keyboard events, we need to take three steps.
 2. Handle the keyboard event itself with the handleKeystroke: method. This message is sent to the morph that has keyboard focus when the user presses a key.
 3. Release the keyboard focus when the mouse is no longer over our morph.
 
-Let''s extend CrossMorph so that it reacts to keystrokes. First, we need to arrange to be notified when the mouse is over the morph. This will happen if our morph answers true to the handlesMouseOver: message') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'How Morphic works'; document: ((EruditeDocument contents: '!!!! How Morphic works
+Let''s extend CrossMorph so that it reacts to keystrokes. First, we need to arrange to be notified when the mouse is over the morph. This will happen if our morph answers true to the handlesMouseOver: message.
+
+Declare that CrossMorph will react when it is under the mouse pointer.
+
+{CrossMorph5>>handlesMouseOver: ::method}[embed]
+
+This message is the equivalent of handlesMouseDown: for the mouse position. When the mouse pointer enters or leaves the morph, the mouseEnter: and mouseLeave: messages are sent to it.
+
+Define two methods so that CrossMorph catches and releases the keyboard focus, and a third method to actually handle the keystrokes.
+
+{CrossMorph5>>mouseEnter: ::method}[embed]
+
+{CrossMorph5>>mouseLeave: ::method}[embed]
+
+{CrossMorph5>>processKeystroke:localPosition: ::method}[embed]
+
+[[[CrossMorph5 new openInWorld]]] doIt
+
+We have written this method so that you can move the morph using the
+arrow keys. Note that when the mouse is no longer over the morph, the
+{processKeystroke:localPosition: ::selector} message is not sent, so the morph stops responding to keyboard commands. To discover the key values, you can open a Transcript window and add Transcript show: anEvent keyValue to the handleKeystroke:
+method.
+
+The anEvent argument of {processKeystroke:localPosition: ::selector} is an instance of {KeyboardEvent::class}, another subclass of {MorphicEvent::class}. Browse this class to learn more about keyboard events.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'How Morphic works'; document: ((EruditeDocument contents: '!!!! How Morphic works
 
 This section gives an overview of how morphic works in just enough detail to help the morphic programmer get the most out of the system.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'The UI loop'; document: ((EruditeDocument contents: '!!!!!! The UI Loop
 
