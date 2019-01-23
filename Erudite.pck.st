@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 22 January 2019 at 8:03:53 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 23 January 2019 at 12:30:09 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 124!
+!provides: 'Erudite' 1 125!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -5954,7 +5954,7 @@ browse: aClass selector: aSymbol
 			open: browser
 			label: 'System Browser' ! !
 
-!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/16/2018 11:04:04'!
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 12:21:03'!
 embed: aDocLink on: aStream
 
 	|text methodReference textModel |
@@ -5963,7 +5963,7 @@ embed: aDocLink on: aStream
 	
 	methodReference ifNil: [^nil].
 	
-	text _ Text string: methodReference sourceCode.
+	text _ Text string: ([methodReference sourceCode] on: Error do: [:e | 'Method not found']).
 							
 	textModel _ EruditeSmalltalkTextModel withText: text.
 	textModel classOrMetaClass: methodReference actualClass;

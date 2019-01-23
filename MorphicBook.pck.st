@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 23 January 2019 at 9:54:24 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 23 January 2019 at 12:30:05 pm'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 10!
+!provides: 'MorphicBook' 1 11!
 SystemOrganization addCategory: #MorphicBook!
 
 
@@ -14,22 +14,48 @@ Morph subclass: #CrossMorph
 CrossMorph class
 	instanceVariableNames: ''!
 
+!classDefinition: #CrossMorph2 category: #MorphicBook!
+CrossMorph subclass: #CrossMorph2
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MorphicBook'!
+!classDefinition: 'CrossMorph2 class' category: #MorphicBook!
+CrossMorph2 class
+	instanceVariableNames: ''!
 
-!CrossMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 19:39:17'!
+!classDefinition: #CrossMorph3 category: #MorphicBook!
+CrossMorph2 subclass: #CrossMorph3
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MorphicBook'!
+!classDefinition: 'CrossMorph3 class' category: #MorphicBook!
+CrossMorph3 class
+	instanceVariableNames: ''!
+
+!classDefinition: #CrossMorph4 category: #MorphicBook!
+CrossMorph3 subclass: #CrossMorph4
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MorphicBook'!
+!classDefinition: 'CrossMorph4 class' category: #MorphicBook!
+CrossMorph4 class
+	instanceVariableNames: ''!
+
+
+!CrossMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 11:42:25'!
 drawOn: aCanvas
 	
 	| crossHeight crossWidth horizontalBar verticalBar |
 	
 	crossHeight := self morphHeight / 3.0.
 	crossWidth := self morphWidth / 3.0.
-	horizontalBar := self morphBounds insetBy: 0 @ crossHeight.
-	verticalBar := self morphBounds insetBy: crossWidth @ 0.
+	horizontalBar := self morphLocalBounds insetBy: 0 @ crossHeight.
+	verticalBar := self morphLocalBounds insetBy: crossWidth @ 0.
 	aCanvas fillRectangle: horizontalBar color: self color.
 	aCanvas fillRectangle: verticalBar color: self color! !
-
-!CrossMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 21:39:23'!
-handlesMouseDown: anEvent
-	^ true! !
 
 !CrossMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 19:56:16'!
 initialize
@@ -44,30 +70,6 @@ minimumExtent
 
 	^ 200@200! !
 
-!CrossMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 19:45:48'!
-morphContainsPoint: aPoint
-
-	| crossHeight crossWidth horizontalBar verticalBar |
-
-	crossHeight := self morphHeight / 3.0.
-	crossWidth := self morphWidth / 3.0.
-	horizontalBar := self morphBounds insetBy: 0 @ crossHeight.
-	verticalBar := self morphBounds insetBy: crossWidth @ 0.
-	^ (horizontalBar containsPoint: aPoint) or: [ verticalBar
-		containsPoint: aPoint ]! !
-
-!CrossMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 21:43:25'!
-mouseButton1Down: anEvent localPosition: aPosition
-
-	self color: Color red.
-	self changed! !
-
-!CrossMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 21:43:34'!
-mouseButton2Down: anEvent localPosition: aPosition
-
-	self color: Color yellow.
-	self changed! !
-
 !CrossMorph methodsFor: 'accessing' stamp: 'MM 1/22/2019 19:49:55'!
 color
 	^ color! !
@@ -78,7 +80,57 @@ color: anObject
 
 	color _ anObject! !
 
-!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/23/2019 09:52:54'!
+!CrossMorph2 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 11:43:47'!
+morphContainsPoint: aPoint
+
+	| crossHeight crossWidth horizontalBar verticalBar |
+
+	crossHeight := self morphHeight / 3.0.
+	crossWidth := self morphWidth / 3.0.
+	horizontalBar := self morphLocalBounds insetBy: 0 @ crossHeight.
+	verticalBar := self morphLocalBounds insetBy: crossWidth @ 0.
+	^ (horizontalBar containsPoint: aPoint) or: [ verticalBar
+		containsPoint: aPoint ]! !
+
+!CrossMorph3 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 12:02:11'!
+drawOn: aCanvas
+
+	aCanvas fillRectangle: self horizontalBar color: self color.
+	aCanvas fillRectangle: self verticalBar color: self color! !
+
+!CrossMorph3 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 12:01:46'!
+horizontalBar
+	| crossHeight |
+	crossHeight := self morphHeight / 3.0.
+	^ self morphLocalBounds insetBy: 0 @ crossHeight! !
+
+!CrossMorph3 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 12:05:37'!
+morphContainsPoint: aPoint
+	^ (self horizontalBar containsPoint: aPoint) or: [ self verticalBar containsPoint: aPoint ]! !
+
+!CrossMorph3 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 12:01:39'!
+verticalBar
+	| crossWidth |
+	crossWidth := self morphWidth / 3.0.
+	^ self morphLocalBounds insetBy: crossWidth @ 0! !
+
+!CrossMorph4 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 11:45:06'!
+handlesMouseDown: anEvent
+	^ true! !
+
+!CrossMorph4 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 11:58:23'!
+mouseButton1Down: anEvent localPosition: aPosition
+
+	self color: Color red.
+	self redrawNeeded! !
+
+!CrossMorph4 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 11:58:29'!
+mouseButton2Down: anEvent localPosition: aPosition
+
+	self color: Color yellow.
+	self redrawNeeded! !
+
+!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/23/2019 12:26:43'!
 morphicBook
 
 <book: 'Morphic Book'>
@@ -156,14 +208,31 @@ However, you will notice that the sensitive zone -where you can click to grab th
 When the Morphic framework needs to find out which Morphs lie under the cursor, it sends the message {morphContainsPoint: ::selector} to all the morphs whose bounding boxes lie under the mouse pointer. So, to limit the sensitive zone of the morph to the cross shape, we need to override the {morphContainsPoint: ::selector} method.
 Define the following method in class {CrossMorph::class}:
 
-{CrossMorph>>morphContainsPoint: ::method}[embed]
+{CrossMorph2>>morphContainsPoint: ::method}[embed]
 
 This method uses the same logic as {drawOn: ::selector}, so we can be confident that the points for which containsPoint: answers true are the same ones that will be colored in by drawOn . Notice how we leverage the {morphContainsPoint: ::selector} method in class Rectangle to do the hard work.
 
 Execute the following code:
-[[[CrossMorph new openInWorld;
-morphBounds: (0@0 corner: 200@200);
-color: (Color blue alpha: 0.4)]]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Interaction and animation'; document: ((EruditeDocument contents: '!!!! Interaction and animation
+
+[[[CrossMorph2 new openInWorld; color: (Color blue alpha: 0.4)]]] doIt
+
+There are two problems with the code in the two methods above.
+The most obvious is that we have duplicated code. This is a cardinal error: if we find that we need to change the way that horizontalBar or verticalBar
+are calculated, we are quite likely to forget to change one of the two occur
+rences. The solution is to factor out these calculations into two new methods, which we put in the private protocol:
+
+{CrossMorph3>>horizontalBar::method}[embed]
+
+{CrossMorph3>>verticalBar::method}[embed]
+
+We can then define both drawOn: and morphContainsPoint: using these methods:
+
+{CrossMorph3>>drawOn: ::method}[embed]
+
+{CrossMorph3>>morphContainsPoint: ::method}[embed]
+
+This code is much simpler to understand, largely because we have given
+meaningful names to the private methods.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Interaction and animation'; document: ((EruditeDocument contents: '!!!! Interaction and animation
 
 To build live user interfaces using morphs, we need to be able to interact with them using the mouse and keyboard. Moreover, the morphs need to be able respond to user input by changing their appearance and position; - that is, by animating themselves.
 
@@ -175,15 +244,17 @@ Let''s extend {CrossMorph::class} to handle mouse events. We start by ensuring t
 Let''s extend CrossMorph to handle mouse events. We start by ensuring that all
 crossMorphs answer true to the handlesMouseDown: message:
 
-{CrossMorph>>handlesMouseDown: ::method}[embed]
+{CrossMorph4>>handlesMouseDown: ::method}[embed]
 
 Suppose that when we click on the cross, we want to change the color of the cross to red, and when we action-click on it, we want to change the color to yellow. This can be  accomplished by the mouse down methods as follows:
 
-{CrossMorph>>mouseButton1Down:localPosition: ::method}[embed]
+{CrossMorph4>>mouseButton1Down:localPosition: ::method}[embed]
 
-{CrossMorph>>mouseButton2Down:localPosition: ::method}[embed]
+{CrossMorph4>>mouseButton2Down:localPosition: ::method}[embed]
 
-Notice that in addition to changing the color of the morph, this method also sends self changed . This makes sure that morphic sends drawOn: in a timely fashion.
+Notice that in addition to changing the color of the morph, this method also sends self {redrawNeeded::selector}. This makes sure that morphic sends drawOn: in a timely fashion.
+
+Open the CrossMorph: [[[CrossMorph4 new openInWorld]]] doIt
 
 Note also that once the morph handles mouse events, you can no longer grab it with the mouse and move it. Instead you have to use the halo: meta-click on the morph to make the halo appear and grab either the brown move handle or the black pickup handle  at the top of the morph.
 The anEvent argument of mouseDown: is an instance of {MouseEvent::class} , which is a subclass of {MorphicEvent::class} . MouseEvent defines the redButtonPressed and yellowButtonPressed methods. Browse this class to see what other methods it provides to interrogate the mouse event.
