@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 23 January 2019 at 2:07:29 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 23 January 2019 at 4:15:53 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 127!
+!provides: 'Erudite' 1 128!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -2496,7 +2496,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!EruditeBook class methodsFor: 'storage' stamp: 'MM 1/22/2019 20:03:46'!
+!EruditeBook class methodsFor: 'storage' stamp: 'MM 1/23/2019 16:15:46'!
 eruditeManual
 
 <book: 'Erudite Manual'>
@@ -3498,6 +3498,12 @@ Links to sections in another book:
 **Syntax:** ```{bookName#sectionName::section|optional label}```
 
 Example: ```{EruditeManual#Syntax test::section}``` ==> {Erudite Manual#Syntax test::section}
+
+!!!!!!!! Selectors links
+
+**Syntax:** ```{selectorName::selector}```
+
+Example: ```{at:put: ::selector}``` => {at:put: ::selector}
 
 !!!!!!!! Class links
 
