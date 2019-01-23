@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 23 January 2019 at 12:30:09 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 23 January 2019 at 2:07:29 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 125!
+!provides: 'Erudite' 1 127!
 !requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'PetitParser' 1 5 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
@@ -1213,6 +1213,11 @@ gotoSectionNamed: aString
 						
 	self gotoSection: section! !
 
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 14:05:18'!
+initialExtent
+
+	^ 600@600! !
+
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 23:29'!
 invalidateDocumentStyle: aDocument
 
@@ -1380,7 +1385,7 @@ text
 	"Needed for bindings handling."
 	^ ''! !
 
-!EruditeBookReaderMorph methodsFor: 'initialization' stamp: 'MM 12/11/2018 16:28'!
+!EruditeBookReaderMorph methodsFor: 'initialization' stamp: 'MM 1/23/2019 14:03:42'!
 initialize
 
 	super initialize.
@@ -1427,6 +1432,11 @@ explorerMenu
 	menu lastItem setIcon: Theme current switchIcon.
 	
 	^ menu! !
+
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 14:06:54'!
+initialExtent
+
+	^ RealEstateAgent standardWindowExtent ! !
 
 !EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/9/2018 21:21'!
 initialize
