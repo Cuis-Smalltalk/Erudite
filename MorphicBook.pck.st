@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 23 January 2019 at 10:14:09 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3368] on 24 January 2019 at 12:30:12 pm'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 15!
+!provides: 'MorphicBook' 1 16!
 !requires: 'Dice' 1 0 nil!
 SystemOrganization addCategory: #MorphicBook!
 
@@ -188,7 +188,7 @@ step
 stepTime
 	^ 100! !
 
-!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/23/2019 22:14:04'!
+!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/24/2019 12:28:03'!
 morphicBook
 
 <book: 'Morphic Book'>
@@ -413,6 +413,14 @@ Now we will use the animation system to show quickly all the faces:
 {DiceMorph>>stepTime::method}[embed]
 
 {DiceMorph>>step::method}[embed]
+
+The rolling state is controlled by the boolean instance variable ```isRolling```:
+
+{DiceMorph>>wantsSteps::method}[embed]
+
+{DiceMorph>>startRolling::method}[embed]
+
+{DiceMorph>>stopRolling::method}[embed]
 
 Now the dice is rolling!!
 
