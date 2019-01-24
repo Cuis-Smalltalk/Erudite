@@ -1,6 +1,7 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 23 January 2019 at 12:49:49 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 23 January 2019 at 10:14:09 pm'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 12!
+!provides: 'MorphicBook' 1 15!
+!requires: 'Dice' 1 0 nil!
 SystemOrganization addCategory: #MorphicBook!
 
 
@@ -52,6 +53,16 @@ CrossMorph4 subclass: #CrossMorph5
 	category: 'MorphicBook'!
 !classDefinition: 'CrossMorph5 class' category: #MorphicBook!
 CrossMorph5 class
+	instanceVariableNames: ''!
+
+!classDefinition: #CrossMorph6 category: #MorphicBook!
+CrossMorph5 subclass: #CrossMorph6
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MorphicBook'!
+!classDefinition: 'CrossMorph6 class' category: #MorphicBook!
+CrossMorph6 class
 	instanceVariableNames: ''!
 
 
@@ -166,7 +177,18 @@ processKeystroke: anEvent localPosition: localEventPosition
 	keyValue = 28 "left arrow"
 		ifTrue: [self morphPosition: self morphPosition - (1 @ 0)]! !
 
-!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/23/2019 12:49:39'!
+!CrossMorph6 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 13:47:10'!
+step
+	(self color diff: Color black) < 0.1
+		ifTrue: [ self color: Color red ]
+		ifFalse: [ self color: self color darker ].
+	self redrawNeeded ! !
+
+!CrossMorph6 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 13:44:13'!
+stepTime
+	^ 100! !
+
+!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/23/2019 22:14:04'!
 morphicBook
 
 <book: 'Morphic Book'>
@@ -328,7 +350,75 @@ arrow keys. Note that when the mouse is no longer over the morph, the
 {processKeystroke:localPosition: ::selector} message is not sent, so the morph stops responding to keyboard commands. To discover the key values, you can open a Transcript window and add Transcript show: anEvent keyValue to the handleKeystroke:
 method.
 
-The anEvent argument of {processKeystroke:localPosition: ::selector} is an instance of {KeyboardEvent::class}, another subclass of {MorphicEvent::class}. Browse this class to learn more about keyboard events.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'How Morphic works'; document: ((EruditeDocument contents: '!!!! How Morphic works
+The anEvent argument of {processKeystroke:localPosition: ::selector} is an instance of {KeyboardEvent::class}, another subclass of {MorphicEvent::class}. Browse this class to learn more about keyboard events.
+
+!!!!!! Morphic animations
+
+Morphic provides a simple animation system with two main methods: {step::selector} is sent to a morph at regular intervals of time, while {stepTime::selector} specifies the time in milliseconds between steps . stepTime is actually the minimum time between steps . If you ask for a stepTime of 1 ms, don''t be surprised if Cuis is too busy to step your morph that often. In addition, startStepping turns on the stepping mechanism, while stopStepping turns it off again. isStepping can be used to find out whether a morph is currently being stepped.
+
+Make CrossMorph blink by defining these methods as follows:
+
+{CrossMorph6>>stepTime::method}[embed]
+
+{CrossMorph6>>step::method}[embed]
+
+[[[CrossMorph6 new openInWorld; startStepping]]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'A complete example'; document: ((EruditeDocument contents: '!!!! A complete example
+
+Let''s design a morph to roll a die. Define the die as a subclass of {RectangleLikeMorph::class} instead of Morph, because we will make use of the border.
+
+{DiceMorph::class}[embed]
+
+To create a die instance, we define the {faces: ::selector} n method on the class side of DiceMorph to create a new dice with n faces.
+
+{DiceMorph>>faces: ::method}[embed]
+
+The initialize method is defined on the instance side in the usual way; remember that new automatically sends initialize to the newly-created instance.
+
+{DiceMorph>>initialize::method}[embed]
+
+Before defining {drawOn: ::selector}, we need a few methods to place the dots on the displayed face:
+
+{DiceMorph>>face1::method}[embed]
+
+{DiceMorph>>face2::method}[embed]
+
+{DiceMorph>>face3::method}[embed]
+
+{DiceMorph>>face4::method}[embed]
+
+{DiceMorph>>face5::method}[embed]
+
+{DiceMorph>>face6::method}[embed]
+
+{DiceMorph>>face7::method}[embed]
+
+{DiceMorph>>face8::method}[embed]
+
+{DiceMorph>>face9::method}[embed]
+
+These methods define collections of the coordinates of dots for each face. The coordinates are in a square of size 1x1; we will simply need to scale them to place the actual dots. The drawOn: method does two things: it draws the die background with the super -send, and then draws the dots.
+
+{DiceMorph>>drawOn: ::method}[embed]
+
+The second part of this method uses the reflective capacities of Pharo. Drawing the dots of a face is a simple matter of iterating over the collection given by the faceX method for that face, sending the drawDotOn:at: message for each coordinate. To call the correct faceX method, we use the perform: method which sends a message built from a string, (''face'', dieValue asString) asSymbol . You will encounter this use of perform: quite regularly.
+
+{DiceMorph>>drawDotOn:at: ::method}[embed]
+
+Since the coordinates are normalized to the [0:1] interval, we scale them to the dimensions of our die: self extent * aPoint. We can already create a dice instance:
+
+[[[dice := DiceMorph new]]] embedIt
+
+Now we will use the animation system to show quickly all the faces:
+
+{DiceMorph>>stepTime::method}[embed]
+
+{DiceMorph>>step::method}[embed]
+
+Now the dice is rolling!!
+
+Roll the dice: [[[dice startRolling]]] doIt
+
+Stop rolling: [[[dice stopRolling]]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'How Morphic works'; document: ((EruditeDocument contents: '!!!! How Morphic works
 
 This section gives an overview of how morphic works in just enough detail to help the morphic programmer get the most out of the system.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'The UI loop'; document: ((EruditeDocument contents: '!!!!!! The UI Loop
 
@@ -363,7 +453,7 @@ Morphic uses a double-buffered, incremental algorithm to keep the screen updated
 Morphic keeps a list, called the damage list of those portions of the screen that must be redrawn. Every morph has a bounds rectangle that encloses its entire visible representation. When a morph changes any aspect appearance (for example, its color), it sends itself the message {changed::selector}, which adds its bounds rectangle to the damage list. The display update phase of the morphic UI loop is responsible for bringing the screen up to date.
 For each rectangle in the damage list, it redraws (in back-to-front order) all the morphs intersecting the damage rectangle. This redrawing is done in an off-screen buffer which is then copied to the screen. Since individual morphs are drawn off screen, the user never sees the intermediate stages of the drawing process, and the final copy from the off-screen buffer to the screen is quite fast. The result is the smooth animation of objects that seem solid regardless of the sequence of individual drawing operations. When all the damage rectangles have been processed, morphic clears the damage list to prepare for the next cycle.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); add: (EruditeBookSection basicNew title: 'Design Principles Behind Morphic'; document: ((EruditeDocument contents: '!!!! Design Principles Behind Morphic
 
-The design principles behind a system -why things are done one way and not some other way- ;are often not manifest in the system itself. Yet understanding the design philosophy behind a system like morphic can help programmers extend the system in ways that are harmonious with the original design. This section articulates three important design principles underlying morphic: concreteness, liveness, and uniformity.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Concreteness and Directness'; document: ((EruditeDocument contents: '!!!!!! Concreteness and Directness
+The design principles behind a system -why things are done one way and not some other way- are often not manifest in the system itself. Yet understanding the design philosophy behind a system like morphic can help programmers extend the system in ways that are harmonious with the original design. This section articulates three important design principles underlying morphic: concreteness, liveness, and uniformity.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Concreteness and Directness'; document: ((EruditeDocument contents: '!!!!!! Concreteness and Directness
 
 We live in a world of physical objects that we constantly manipulate. We take a book from a shelf, we shuffle through stacks of papers, we pack a bag. These things seem easy because we''ve internalized the laws of the physical world: objects are persistent, they can be moved around, and if one is careful about how one stacks things, they generally stay where they are put. Morphic strives to create an illusion of concrete objects within the computer that has some of the properties of objects the physical world. We call this principle concreteness.
 
