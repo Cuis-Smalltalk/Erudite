@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3368] on 24 January 2019 at 12:30:12 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3368] on 27 January 2019 at 8:24:00 am'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 16!
+!provides: 'MorphicBook' 1 17!
 !requires: 'Dice' 1 0 nil!
 SystemOrganization addCategory: #MorphicBook!
 
@@ -188,7 +188,7 @@ step
 stepTime
 	^ 100! !
 
-!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/24/2019 12:28:03'!
+!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/27/2019 08:23:42'!
 morphicBook
 
 <book: 'Morphic Book'>
@@ -513,4 +513,19 @@ Yet another inspiring property of the physical world is its uniformity. No matte
 
 Morphic strives to create a similar uniformity for objects on the screen, a kind of "physics" of morph interactions. This helps users reason about the system and helps them put morphs together in ways not anticipated by the designers. For example, since menus in morphic are just composite morphs, one can extract a few handy commands from a menu and embed them in some other morph to make a custom control panel.
 
-Uniformity is achieved in morphic by striving to avoid special cases. Everything on the screen is a morph, all morphs inherit from M o r p h , any morph can have submorphs or be a submorph, and composite morphs behave like atomic morphs. In these and other design choices, morphic seeks to merge different things under a single general model and avoids making distinctions that would undermine uniformity.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); yourself); updateParents; yourself)! !
+Uniformity is achieved in morphic by striving to avoid special cases. Everything on the screen is a morph, all morphs inherit from M o r p h , any morph can have submorphs or be a submorph, and composite morphs behave like atomic morphs. In these and other design choices, morphic seeks to merge different things under a single general model and avoids making distinctions that would undermine uniformity.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); add: (EruditeBookSection basicNew title: 'The Past and Future of Morphic'; document: ((EruditeDocument contents: '!!!! The Past and Future of Morphic
+
+The first version of morphic was developed by John Maloney and Randy Smith at Sun Microsystems Laboratories as the user interface construction environment for the Self 4.0 system. Self is a prototype-based language, similar to Smalltalk but without classes
+or assignment. Randy''s previous work with the Alternate Reality Kit and his passion for concreteness and uniformity contributed strongly to morphic''s design. For Squeak, morphic was re-written from scratch in Smalltalk. While the details differ, the Squeak version retains the spirit and feel of the original morphic, and it is important to acknowledge the debt it owes to the Self project.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Morphic versus the MVC Framework'; document: ((EruditeDocument contents: '!!!!!! Morphic versus the Model-View-Controller Framework
+
+How does morphic differ from the traditional Smalltalk Model-View-Controller (MVC) framework? One difference is that a morph combines the roles of the controller and view objects by handling both user input and display. This design arose from a desire to simplify and from the observation that most view and controller
+classes were so interdependent that they had to be used
+as an inseparable pair.
+
+What about the model? Many morphs are stand-alone graphical objects that need no model, and some morphs are their own model. For example, a {StringMorph::class} holds its own string, rather than a reference to a potentially shared //StringHolder// model. However, morphic also supports MVC''s ability to have multiple views on the same model, using the update mechanism to inform all views of changes to the model. The morphic browser and other programming tools interface to their models exactly the same way their MVC counterparts do.
+
+Morphic also differs from MVC in its liveness goal. In MVC, only one top view (i.e., window) is in control at any given time. Only that view can draw on the display, and it must only draw within its own bounds. If it displays anything outside those bounds, by popping up a menu or scroll bar for instance, then it must save and restore the display pixels below the popped-up object. This display management design is more efficient than morphic''s incremental redisplay mechanism, since nothing behind the front-most window is ever redrawn while that window retains control. This was an excellent choice for the relatively slow machines on which MVC was developed. However, the MVC design makes it hard to support liveness because there''s no easy way for several live views to interleave their screen updates
+without drawing over each other. In contrast, Morphic''s centralization of damage reporting and incremental screen updating makes liveness easy.
+
+Morphic''s concreteness is also a departure from MVC. In MVC, feedback for moving or resizing a window is provided as a hollow rectangle, as opposed to a solid object. Again, this is more efficient--only a few screen pixels are updated as the feedback rectangle is dragged around, and no view display code must be run--the right choice for slower machines In fact, morphic itself
+supports outline-only window dragging and resizing as an option for slow machines.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); yourself); updateParents; yourself)! !
