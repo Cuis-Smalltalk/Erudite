@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3368] on 27 January 2019 at 8:24:00 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3368] on 27 January 2019 at 8:47:18 am'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 17!
+!provides: 'MorphicBook' 1 18!
 !requires: 'Dice' 1 0 nil!
 SystemOrganization addCategory: #MorphicBook!
 
@@ -188,14 +188,21 @@ step
 stepTime
 	^ 100! !
 
-!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/27/2019 08:23:42'!
+!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/27/2019 08:46:23'!
 morphicBook
 
 <book: 'Morphic Book'>
 
 ^(EruditeBook basicNew title: 'Morphic Book'; sections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Morphic
 
-Morphic is the name given to Cuis graphical interface. Morphic is written in Smalltalk, so it is fully portable between operating systems. As a consequence, Cuis looks exactly the same on Unix, MacOS and Windows. What distinguishes Morphic from most other user interface toolkits is that it does not have separate modes for composing and running the interface: all the graphical elements can be assembled and disassembled by the user, at any time. (We thank Hilaire Fernandes for permission to base this chapter on his original article in French.)') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'The history of Morphic'; document: ((EruditeDocument contents: '!!!! The history of Morphic
+Morphic is the name given to Cuis graphical interface. Morphic is written in Smalltalk, so it is fully portable between operating systems. As a consequence, Cuis looks exactly the same on Unix, MacOS and Windows. What distinguishes Morphic from most other user interface toolkits is that it does not have separate modes for composing and running the interface: all the graphical elements can be assembled and disassembled by the user, at any time. (We thank Hilaire Fernandes for permission to base this chapter on his original article in French.)
+
+!!!! Copyright
+
+The contents of this book were mostly copied and sometimes adapted from:
+
+* "Pharo by Example" book, chapter 13.
+* "An Introduction to Morphic: The Squeak User Interface Framework" by John Maloney.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'The history of Morphic'; document: ((EruditeDocument contents: '!!!! The history of Morphic
 
 Morphic was developed by John Maloney and Randy Smith for the Self programming language, starting around 1993. Maloney later wrote a new version of Morphic for Squeak, but the basic ideas behind the Self version are still alive and well in Pharo Morphic: directness and liveness. Directness means that the shapes on the screen are objects that can be examined or changed directly, that is, by clicking on them using a mouse. Liveness means that the user interface is always able to respond to user actions: information on the screen is continuously updated as the world that it describes changes. A simple example of this is that you can detach a menu item and keep it as a button.
 Bring up the World Menu and meta-click once on it to bring up its morphic halo, then meta-click again on a menu item you want to detach, to bring up that item''s halo. (Recall that you should set halosEnabled in the Preferences browser.) Now drag that item elsewhere on the screen by grabbing the black handle (see Figure 13.1), as shown in Figure 13.2.
