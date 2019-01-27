@@ -1,10 +1,10 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3584] on 23 January 2019 at 4:15:53 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3368] on 27 January 2019 at 8:36:44 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 128!
-!requires: 'PetitParser-Binding' 1 0 nil!
+!provides: 'Erudite' 1 130!
 !requires: 'PetitParser' 1 5 nil!
+!requires: 'PetitParser-Binding' 1 0 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
 SystemOrganization addCategory: #'Erudite-Core'!
 SystemOrganization addCategory: #'Erudite-Morphic'!
@@ -592,55 +592,6 @@ Example:
 
 Then process with pdflatex -shell-escape <file.tex>!
 
-!EruditeForm methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:46:23'!
-storeOn: aStream
-
-	aStream nextPutAll: '(EruditeForm fromBase64String:'.
-	self base64String storeOn: aStream.
-	aStream nextPut: $).
-	
-	! !
-
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:20'!
-bindingOf: aString
-
-	(bindings includesKey: aString) ifFalse: [
-		aString first isUppercase
-			ifTrue: [^nil]
-			ifFalse: [bindings at: aString put: nil]].
-	^bindings associationAt: aString! !
-
-!EruditeBook methodsFor: 'storage' stamp: 'MM 12/4/2018 20:16'!
-storeOn: aStream
-
-	aStream nextPutAll: '(';
-	              nextPutAll: self class name;
-	              nextPutAll: ' basicNew';
-	              nextPutAll: ' title: '; store: title;
-	              nextPutAll: '; sections: '; store: sections;
-			   nextPutAll: '; updateParents; yourself)'! !
-
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:10'!
-storeOn: aStream
-
-	aStream
-		nextPutAll: '('; 
-	 	nextPutAll: self class name;
-		nextPutAll: ' basicNew';
-		nextPutAll: ' title: '; store: title;
-		nextPutAll: '; document: '; store: document;
-		nextPutAll: '; subsections: '; store: subsections;
-		nextPutAll: '; yourself)'
-		        ! !
-
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:15:42'!
-storeOn: aStream
-
-	aStream nextPutAll: '((EruditeDocument contents: ';
-			nextPutAll: contents asString printString;
-			nextPutAll: ') images: '; store: images;
-			nextPutAll: '; yourself)'! !
-
 !EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 12/13/2018 16:17'!
 editing
 	"Answer the value of editing"
@@ -877,6 +828,15 @@ base64String
 	"TODO: how to support other image formats apart from PNG?"
 	 ^ ("ImageReadWriter" PNGReadWriter bytesFor: self) base64Encoded.! !
 
+!EruditeForm methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:46:23'!
+storeOn: aStream
+
+	aStream nextPutAll: '(EruditeForm fromBase64String:'.
+	self base64String storeOn: aStream.
+	aStream nextPut: $).
+	
+	! !
+
 !EruditeForm class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 20:16:23'!
 fromBase64String: aString
 
@@ -963,6 +923,48 @@ acceptsContentsOnChange
 !EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:30'!
 innerMorphClass
 	^ InnerEruditeDocMorph.! !
+
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
+bindingNamesDo: aBlock
+
+	bindings keysDo: aBlock! !
+
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:20'!
+bindingOf: aString
+
+	(bindings includesKey: aString) ifFalse: [
+		aString first isUppercase
+			ifTrue: [^nil]
+			ifFalse: [bindings at: aString put: nil]].
+	^bindings associationAt: aString! !
+
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
+hasBindingOf: aString
+	^bindings includesKey: aString! !
+
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
+hasBindingThatBeginsWith: aString 
+
+	bindings keysDo: [ :each |
+		(each beginsWith: aString) ifTrue: [ ^true ] ].
+	^false! !
+
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
+initializeBindings
+	
+	bindings _ Dictionary new! !
+
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:29'!
+selectionInterval
+
+	"Needed for bindings handling."
+
+	^ 1 to: 1! !
+
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:28'!
+text
+	"Needed for bindings handling."
+	^ ''! !
 
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 11:35'!
 addSection
@@ -1351,39 +1353,6 @@ update: aSymbol
 windowColor
 
 	^ Color pink veryMuchDarker ! !
-
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
-bindingNamesDo: aBlock
-
-	bindings keysDo: aBlock! !
-
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
-hasBindingOf: aString
-	^bindings includesKey: aString! !
-
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
-hasBindingThatBeginsWith: aString 
-
-	bindings keysDo: [ :each |
-		(each beginsWith: aString) ifTrue: [ ^true ] ].
-	^false! !
-
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
-initializeBindings
-	
-	bindings _ Dictionary new! !
-
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:29'!
-selectionInterval
-
-	"Needed for bindings handling."
-
-	^ 1 to: 1! !
-
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:28'!
-text
-	"Needed for bindings handling."
-	^ ''! !
 
 !EruditeBookReaderMorph methodsFor: 'initialization' stamp: 'MM 1/23/2019 14:03:42'!
 initialize
@@ -2169,6 +2138,65 @@ style: aString
 	
 	^ styler ranges! !
 
+!EruditeBook methodsFor: 'storage' stamp: 'MM 12/10/2018 21:27'!
+defaultStorageMethodReferenceFor: aBook
+	^ MethodReference
+		class: EruditeBook class
+		selector: (self selectorFromTitle: aBook title).! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 12/10/2018 21:27'!
+load
+	| storageMethod book |
+	storageMethod _ self storageMethod.
+	book _ storageMethod compiledMethod
+		valueWithReceiver: EruditeBook class
+		arguments: #().
+	self become: book.! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 12/4/2018 10:55'!
+selectorFromTitle: aString
+
+	|parts|
+	
+	parts _ (aString subStrings: ' ') collect: [:s | s translateToLowercase].
+	
+	^ String streamContents: [:s |
+		s nextPutAll: parts first.
+		parts allButFirst do: [:part |
+			s nextPutAll: part capitalized]]
+	! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 12/7/2018 12:31'!
+store
+
+	^ self storeOnMethod: self storageMethod
+	! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 12/4/2018 20:16'!
+storeOn: aStream
+
+	aStream nextPutAll: '(';
+	              nextPutAll: self class name;
+	              nextPutAll: ' basicNew';
+	              nextPutAll: ' title: '; store: title;
+	              nextPutAll: '; sections: '; store: sections;
+			   nextPutAll: '; updateParents; yourself)'! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 12/10/2018 18:51'!
+storeOnMethod: aMethodReference
+
+	|source|
+	
+	source _ String streamContents: [:s |
+		s nextPutAll: aMethodReference selector;
+		   newLine; newLine;
+		   nextPutAll: '<book: '''; nextPutAll: self title; nextPutAll: '''>';
+		   newLine; newLine;
+		   nextPutAll: '^';
+		   store: self].
+	
+	aMethodReference actualClass compile: source notifying: nil.! !
+
 !EruditeBook methodsFor: 'accessing' stamp: 'MM 12/4/2018 17:59'!
 addSection: aBookSection
 
@@ -2224,55 +2252,6 @@ title: anObject
 	"Set the value of title"
 
 	title _ anObject! !
-
-!EruditeBook methodsFor: 'storage' stamp: 'MM 12/10/2018 21:27'!
-defaultStorageMethodReferenceFor: aBook
-	^ MethodReference
-		class: EruditeBook class
-		selector: (self selectorFromTitle: aBook title).! !
-
-!EruditeBook methodsFor: 'storage' stamp: 'MM 12/10/2018 21:27'!
-load
-	| storageMethod book |
-	storageMethod _ self storageMethod.
-	book _ storageMethod compiledMethod
-		valueWithReceiver: EruditeBook class
-		arguments: #().
-	self become: book.! !
-
-!EruditeBook methodsFor: 'storage' stamp: 'MM 12/4/2018 10:55'!
-selectorFromTitle: aString
-
-	|parts|
-	
-	parts _ (aString subStrings: ' ') collect: [:s | s translateToLowercase].
-	
-	^ String streamContents: [:s |
-		s nextPutAll: parts first.
-		parts allButFirst do: [:part |
-			s nextPutAll: part capitalized]]
-	! !
-
-!EruditeBook methodsFor: 'storage' stamp: 'MM 12/7/2018 12:31'!
-store
-
-	^ self storeOnMethod: self storageMethod
-	! !
-
-!EruditeBook methodsFor: 'storage' stamp: 'MM 12/10/2018 18:51'!
-storeOnMethod: aMethodReference
-
-	|source|
-	
-	source _ String streamContents: [:s |
-		s nextPutAll: aMethodReference selector;
-		   newLine; newLine;
-		   nextPutAll: '<book: '''; nextPutAll: self title; nextPutAll: '''>';
-		   newLine; newLine;
-		   nextPutAll: '^';
-		   store: self].
-	
-	aMethodReference actualClass compile: source notifying: nil.! !
 
 !EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:48'!
 edit
@@ -2496,7 +2475,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!EruditeBook class methodsFor: 'storage' stamp: 'MM 1/23/2019 16:15:46'!
+!EruditeBook class methodsFor: 'storage' stamp: 'MM 1/27/2019 08:36:28'!
 eruditeManual
 
 <book: 'Erudite Manual'>
@@ -5532,7 +5511,25 @@ Then process it with ```pdflatex``` command:
 
 !!!!!!!! Links renderers
 
-Erudite document links are parsed in a generic way. Their syntax is like this: ```{target::linkClass|optionalLabel}```. That linkClass is then used to match a valid renderer. Links renderers are subclasses of {DocLinkRenderer::class} and are matched looking for the class named <linkClass>DocLinkRenderer (DocLinkRenderer classes with linkClass as prefix), and invoked via {render:in:on: ::selector|render: aDocLink in: aDocument on: aStream} message. ') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
+Erudite document links are parsed in a generic way. Their syntax is like this: ```{target::linkClass|optionalLabel}```. That linkClass is then used to match a valid renderer. Links renderers are subclasses of {DocLinkRenderer::class} and are matched looking for the class named <linkClass>DocLinkRenderer (DocLinkRenderer classes with linkClass as prefix), and invoked via {render:in:on: ::selector|render: aDocLink in: aDocument on: aStream} message.
+
+!!!!!! Book storage
+
+Books are stored as serialized Smalltalk objects inside methods at the class side of {EruditeBook::class}:
+
+{EruditeBook>>store::method}[embed]
+
+{EruditeBook>>storeOnMethod: ::method}[embed]
+
+As you can see, it is done via the {storeOn: ::selector} method (it is indirectly call from {WriteStream>>store: ::method} method).
+
+Invoking the serialized methods returns the book:
+
+[[[EruditeBook cuisManual]]] inspectIt
+
+Methods with Books are tagged with a //book// pragma, that is used later for listing available books:
+
+{EruditeBook class>>booksList::method}[embed]') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
 
 Extensions to Smalltalk tools are shipped separately.
 
@@ -5555,6 +5552,84 @@ To install: [[[Feature require: ''PetitParserTutorial'']]] doIt
 Also, a book on Morphic, the Cuis UI system:
 
 To install: [[[Feature require: ''MorphicBook'']]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); updateParents; yourself)! !
+
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:52'!
+contents: aString
+
+	self document: (self documentClass contents: aString asString)! !
+
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:27'!
+documentClass
+	^ EruditeDocument.! !
+
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 13:54'!
+findSectionNamed: aString ifAbsent: aBlock
+
+	subsections do: [:aSection |
+		aSection title = aString ifTrue: [^ aSection]].
+	
+	subsections do: [:aSection |
+		aSection findSectionNamed: aString ifAbsent: [^ aBlock value]].
+	
+	^ aBlock value! !
+
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 17:39:26'!
+latestAndDeepestSection
+
+	^ subsections 
+		ifEmpty: [self]
+		ifNotEmpty: [subsections last latestAndDeepestSection]! !
+
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 19:30:59'!
+nextSection
+
+	^ subsections 
+		ifNotEmpty: [subsections first]
+		ifEmpty: [parent sections after: self ifNone: [parent parent ifNotNil: [:parentParent | parentParent sections after: parent]]]! !
+
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 17:42:13'!
+previousSection
+	|beforeMe| 
+	
+	beforeMe _ self parent sections
+					before: self
+					ifNone: [nil].
+		
+	^ beforeMe 
+		ifNil: [
+			(parent isKindOf: EruditeBookSection) ifTrue: [ parent ]]
+		ifNotNil: [
+			beforeMe latestAndDeepestSection]! !
+
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 18:04'!
+removeSection: aSection
+
+	subsections remove: aSection! !
+
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 17:48'!
+sections
+
+	^ subsections! !
+
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:10'!
+storeOn: aStream
+
+	aStream
+		nextPutAll: '('; 
+	 	nextPutAll: self class name;
+		nextPutAll: ' basicNew';
+		nextPutAll: ' title: '; store: title;
+		nextPutAll: '; document: '; store: document;
+		nextPutAll: '; subsections: '; store: subsections;
+		nextPutAll: '; yourself)'
+		        ! !
+
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:12'!
+updateParents
+
+	subsections do: [:subsection |
+		subsection parent: self.
+		subsection updateParents]! !
 
 !EruditeBookSection methodsFor: 'accessing' stamp: 'MM 12/4/2018 17:59'!
 addSection: aBookSection
@@ -5624,71 +5699,6 @@ title: anObject
 
 	title _ anObject! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:52'!
-contents: aString
-
-	self document: (self documentClass contents: aString asString)! !
-
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:27'!
-documentClass
-	^ EruditeDocument.! !
-
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 13:54'!
-findSectionNamed: aString ifAbsent: aBlock
-
-	subsections do: [:aSection |
-		aSection title = aString ifTrue: [^ aSection]].
-	
-	subsections do: [:aSection |
-		aSection findSectionNamed: aString ifAbsent: [^ aBlock value]].
-	
-	^ aBlock value! !
-
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 17:39:26'!
-latestAndDeepestSection
-
-	^ subsections 
-		ifEmpty: [self]
-		ifNotEmpty: [subsections last latestAndDeepestSection]! !
-
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 19:30:59'!
-nextSection
-
-	^ subsections 
-		ifNotEmpty: [subsections first]
-		ifEmpty: [parent sections after: self ifNone: [parent parent ifNotNil: [:parentParent | parentParent sections after: parent]]]! !
-
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 17:42:13'!
-previousSection
-	|beforeMe| 
-	
-	beforeMe _ self parent sections
-					before: self
-					ifNone: [nil].
-		
-	^ beforeMe 
-		ifNil: [
-			(parent isKindOf: EruditeBookSection) ifTrue: [ parent ]]
-		ifNotNil: [
-			beforeMe latestAndDeepestSection]! !
-
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 18:04'!
-removeSection: aSection
-
-	subsections remove: aSection! !
-
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 17:48'!
-sections
-
-	^ subsections! !
-
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:12'!
-updateParents
-
-	subsections do: [:subsection |
-		subsection parent: self.
-		subsection updateParents]! !
-
 !EruditeBookSection methodsFor: 'initialization' stamp: 'MM 11/30/2018 13:38'!
 initialize
 
@@ -5709,18 +5719,6 @@ title: aString document: aDocument
 		title: aString;
 		document: aDocument;
 		yourself! !
-
-!EruditeDocument methodsFor: 'accessing' stamp: 'MM 11/29/2018 19:25'!
-contents
-	"Answer the value of contents"
-
-	^ contents! !
-
-!EruditeDocument methodsFor: 'accessing' stamp: 'MM 12/10/2018 21:38'!
-contents: anObject
-	"Set the value of contents"
-
-	contents _ anObject! !
 
 !EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 12:15:23'!
 addImageFromPath: aString
@@ -5767,6 +5765,26 @@ initialize
 removeImage: aKey
 
 	images removeKey: aKey! !
+
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:15:42'!
+storeOn: aStream
+
+	aStream nextPutAll: '((EruditeDocument contents: ';
+			nextPutAll: contents asString printString;
+			nextPutAll: ') images: '; store: images;
+			nextPutAll: '; yourself)'! !
+
+!EruditeDocument methodsFor: 'accessing' stamp: 'MM 11/29/2018 19:25'!
+contents
+	"Answer the value of contents"
+
+	^ contents! !
+
+!EruditeDocument methodsFor: 'accessing' stamp: 'MM 12/10/2018 21:38'!
+contents: anObject
+	"Set the value of contents"
+
+	contents _ anObject! !
 
 !EruditeDocument class methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 23:33'!
 contents: aCollection
