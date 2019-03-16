@@ -1,11 +1,11 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3368] on 27 January 2019 at 8:36:44 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3665] on 16 March 2019 at 12:41:40 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 130!
-!requires: 'PetitParser' 1 5 nil!
-!requires: 'PetitParser-Binding' 1 0 nil!
+!provides: 'Erudite' 1 132!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
+!requires: 'PetitParser' 1 5 nil!
+!requires: 'PetitParserBinding' 1 0 nil!
 SystemOrganization addCategory: #'Erudite-Core'!
 SystemOrganization addCategory: #'Erudite-Morphic'!
 SystemOrganization addCategory: #'Erudite-Parser'!
@@ -592,6 +592,55 @@ Example:
 
 Then process with pdflatex -shell-escape <file.tex>!
 
+!EruditeForm methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:46:23'!
+storeOn: aStream
+
+	aStream nextPutAll: '(EruditeForm fromBase64String:'.
+	self base64String storeOn: aStream.
+	aStream nextPut: $).
+	
+	! !
+
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:20'!
+bindingOf: aString
+
+	(bindings includesKey: aString) ifFalse: [
+		aString first isUppercase
+			ifTrue: [^nil]
+			ifFalse: [bindings at: aString put: nil]].
+	^bindings associationAt: aString! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 12/4/2018 20:16'!
+storeOn: aStream
+
+	aStream nextPutAll: '(';
+	              nextPutAll: self class name;
+	              nextPutAll: ' basicNew';
+	              nextPutAll: ' title: '; store: title;
+	              nextPutAll: '; sections: '; store: sections;
+			   nextPutAll: '; updateParents; yourself)'! !
+
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:10'!
+storeOn: aStream
+
+	aStream
+		nextPutAll: '('; 
+	 	nextPutAll: self class name;
+		nextPutAll: ' basicNew';
+		nextPutAll: ' title: '; store: title;
+		nextPutAll: '; document: '; store: document;
+		nextPutAll: '; subsections: '; store: subsections;
+		nextPutAll: '; yourself)'
+		        ! !
+
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:15:42'!
+storeOn: aStream
+
+	aStream nextPutAll: '((EruditeDocument contents: ';
+			nextPutAll: contents asString printString;
+			nextPutAll: ') images: '; store: images;
+			nextPutAll: '; yourself)'! !
+
 !EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 12/13/2018 16:17'!
 editing
 	"Answer the value of editing"
@@ -828,15 +877,6 @@ base64String
 	"TODO: how to support other image formats apart from PNG?"
 	 ^ ("ImageReadWriter" PNGReadWriter bytesFor: self) base64Encoded.! !
 
-!EruditeForm methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:46:23'!
-storeOn: aStream
-
-	aStream nextPutAll: '(EruditeForm fromBase64String:'.
-	self base64String storeOn: aStream.
-	aStream nextPut: $).
-	
-	! !
-
 !EruditeForm class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 20:16:23'!
 fromBase64String: aString
 
@@ -928,15 +968,6 @@ innerMorphClass
 bindingNamesDo: aBlock
 
 	bindings keysDo: aBlock! !
-
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:20'!
-bindingOf: aString
-
-	(bindings includesKey: aString) ifFalse: [
-		aString first isUppercase
-			ifTrue: [^nil]
-			ifFalse: [bindings at: aString put: nil]].
-	^bindings associationAt: aString! !
 
 !EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
 hasBindingOf: aString
@@ -2171,16 +2202,6 @@ store
 
 	^ self storeOnMethod: self storageMethod
 	! !
-
-!EruditeBook methodsFor: 'storage' stamp: 'MM 12/4/2018 20:16'!
-storeOn: aStream
-
-	aStream nextPutAll: '(';
-	              nextPutAll: self class name;
-	              nextPutAll: ' basicNew';
-	              nextPutAll: ' title: '; store: title;
-	              nextPutAll: '; sections: '; store: sections;
-			   nextPutAll: '; updateParents; yourself)'! !
 
 !EruditeBook methodsFor: 'storage' stamp: 'MM 12/10/2018 18:51'!
 storeOnMethod: aMethodReference
@@ -5611,19 +5632,6 @@ sections
 
 	^ subsections! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:10'!
-storeOn: aStream
-
-	aStream
-		nextPutAll: '('; 
-	 	nextPutAll: self class name;
-		nextPutAll: ' basicNew';
-		nextPutAll: ' title: '; store: title;
-		nextPutAll: '; document: '; store: document;
-		nextPutAll: '; subsections: '; store: subsections;
-		nextPutAll: '; yourself)'
-		        ! !
-
 !EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:12'!
 updateParents
 
@@ -5765,14 +5773,6 @@ initialize
 removeImage: aKey
 
 	images removeKey: aKey! !
-
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:15:42'!
-storeOn: aStream
-
-	aStream nextPutAll: '((EruditeDocument contents: ';
-			nextPutAll: contents asString printString;
-			nextPutAll: ') images: '; store: images;
-			nextPutAll: '; yourself)'! !
 
 !EruditeDocument methodsFor: 'accessing' stamp: 'MM 11/29/2018 19:25'!
 contents

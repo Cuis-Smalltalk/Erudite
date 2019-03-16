@@ -1,7 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3525] on 15 December 2018 at 2:20:46 pm'!
-'Description Please enter a description for this package '!
-!provides: 'PetitParser' 1 7!
-SystemOrganization addCategory: #'PetitParser-Binding'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3665] on 16 March 2019 at 2:11:47 pm'!
+'Description Petit Parser is a framework for building parsers. It was originally developed by Lukas Renggli.'!
+!provides: 'PetitParser' 1 8!
 SystemOrganization addCategory: #'PetitParser-Parsers'!
 SystemOrganization addCategory: #'PetitParser-Tools'!
 SystemOrganization addCategory: #'PetitParser-Core'!
@@ -15,16 +14,6 @@ ReadStream subclass: #PPStream
 	category: 'PetitParser-Core'!
 !classDefinition: 'PPStream class' category: #'PetitParser-Core'!
 PPStream class
-	instanceVariableNames: ''!
-
-!classDefinition: #PPBoundParserResult category: #'PetitParser-Binding'!
-Object subclass: #PPBoundParserResult
-	instanceVariableNames: 'binding value'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'PetitParser-Binding'!
-!classDefinition: 'PPBoundParserResult class' category: #'PetitParser-Binding'!
-PPBoundParserResult class
 	instanceVariableNames: ''!
 
 !classDefinition: #PPParser category: #'PetitParser-Parsers'!
@@ -47,16 +36,6 @@ PPParser subclass: #PPDelegateParser
 PPDelegateParser class
 	instanceVariableNames: ''!
 
-!classDefinition: #PPBindParser category: #'PetitParser-Binding'!
-PPDelegateParser subclass: #PPBindParser
-	instanceVariableNames: 'binding'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'PetitParser-Binding'!
-!classDefinition: 'PPBindParser class' category: #'PetitParser-Binding'!
-PPBindParser class
-	instanceVariableNames: ''!
-
 !classDefinition: #PPActionParser category: #'PetitParser-Parsers'!
 PPDelegateParser subclass: #PPActionParser
 	instanceVariableNames: 'block'
@@ -65,16 +44,6 @@ PPDelegateParser subclass: #PPActionParser
 	category: 'PetitParser-Parsers'!
 !classDefinition: 'PPActionParser class' category: #'PetitParser-Parsers'!
 PPActionParser class
-	instanceVariableNames: ''!
-
-!classDefinition: #PPBoundActionParser category: #'PetitParser-Binding'!
-PPActionParser subclass: #PPBoundActionParser
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'PetitParser-Binding'!
-!classDefinition: 'PPBoundActionParser class' category: #'PetitParser-Binding'!
-PPBoundActionParser class
 	instanceVariableNames: ''!
 
 !classDefinition: #PPWrappingParser category: #'PetitParser-Parsers'!
@@ -417,21 +386,6 @@ An abstract parser for all parsers in PetitParser. Subclasses implement #parseOn
 !PPDelegateParser commentStamp: '<historical>' prior: 0!
 A parser that delegates to another parser.Instance Variables:	parser	<PPParser>	The parser to delegate to.!
 
-!PPBindParser commentStamp: '<historical>' prior: 0!
-Bind a parser to a variable name (symbol).
-
-The binding can be used via #withBindingsDo: message (~=>).
-
-Example:
-
-number _ #digit asParser plus flatten ==> [:x | x asNumber].
-
-sum _ number bind, '+' asParser trim, number bind ~=> [:x :y | x + y].
-
-sum parse: '22 + 434'.
-
-!
-
 !PPActionParser commentStamp: '<historical>' prior: 0!
 A parser that performs an action block with the successful parse result of the delegate.Instance Variables:	block	<BlockClosure>	The action block to be executed.!
 
@@ -531,6 +485,30 @@ PPMemento is an internal class used by PPMemoizedParser to cache results and det
 !PPToken commentStamp: '<historical>' prior: 0!
 PPToken represents a parsed part of the input stream. Contrary to a simple String it remembers where it came from, the original collection and its start and stop position.Instance Variables:	collection	<SequenceableCollection>	The collection this token comes from.	start	<Integer>	The start position in the collection.	stop	<Integer>	The stop position in the collection.!
 
+!PPStream methodsFor: 'printing' stamp: 'lr 11/4/2010 19:23'!
+printOn: aStream	collection isString		ifFalse: [ ^ super printOn: aStream ].	aStream		nextPutAll: (collection copyFrom: 1 to: position);		nextPutAll: '·';		nextPutAll: (collection copyFrom: position + 1 to: readLimit)! !
+
+!PPParser methodsFor: 'accessing' stamp: 'lr 4/19/2010 10:35'!
+name	"Answer the production name of the receiver."		^ self propertyAt: #name ifAbsent: [ nil ]! !
+
+!PPParser methodsFor: 'copying' stamp: 'lr 4/19/2010 10:33'!
+postCopy	super postCopy.	properties := properties copy! !
+
+!PPParser methodsFor: 'printing' stamp: 'lr 4/16/2010 16:36'!
+printOn: aStream	super printOn: aStream.	aStream nextPut: $(.	self printNameOn: aStream.	aStream nextPut: $)! !
+
+!PPRepeatingParser methodsFor: 'printing' stamp: 'lr 6/3/2010 14:00'!
+printOn: aStream	super printOn: aStream.	aStream nextPutAll: ' ['; print: min; nextPutAll: ', '; nextPutAll: (max = SmallInteger maxVal		ifTrue: [ '*' ] ifFalse: [ max printString ]); nextPut: $]! !
+
+!PPListParser methodsFor: 'copying' stamp: 'lr 5/22/2010 10:26'!
+postCopy	super postCopy.	parsers := parsers copy! !
+
+!PPFailure methodsFor: 'printing' stamp: 'lr 5/5/2010 14:01'!
+printOn: aStream	aStream nextPutAll: self message; nextPutAll: ' at '; print: position! !
+
+!PPToken methodsFor: 'printing' stamp: 'lr 6/16/2008 10:13'!
+printOn: aStream	super printOn: aStream.	aStream nextPut: $(; nextPutAll: self value; nextPut: $)! !
+
 !PPStream methodsFor: 'converting' stamp: 'lr 2/7/2010 20:53'!
 asPetitStream	^ self! !
 
@@ -545,34 +523,6 @@ position: anInteger	"The receiver does not check for invalid arguments passed t
 
 !PPStream methodsFor: 'accessing' stamp: 'lr 10/5/2010 16:29'!
 uncheckedPeek	"An unchecked version of peek that throws an error if we try to peek over the end of the stream, even faster than #peek."	^ collection at: position + 1! !
-
-!PPStream methodsFor: 'printing' stamp: 'lr 11/4/2010 19:23'!
-printOn: aStream	collection isString		ifFalse: [ ^ super printOn: aStream ].	aStream		nextPutAll: (collection copyFrom: 1 to: position);		nextPutAll: '·';		nextPutAll: (collection copyFrom: position + 1 to: readLimit)! !
-
-!PPBoundParserResult methodsFor: 'accessing' stamp: 'MM 10/30/2018 18:58'!
-binding
-
-	^ binding
-! !
-
-!PPBoundParserResult methodsFor: 'accessing' stamp: 'MM 10/30/2018 18:56'!
-value
-
-	^ value! !
-
-!PPBoundParserResult methodsFor: 'accessing' stamp: 'MM 10/30/2018 18:56'!
-value: anObject
-	"Set the value of value"
-
-	value _ anObject! !
-
-!PPBoundParserResult methodsFor: 'as yet unclassified' stamp: 'MM 10/30/2018 18:58'!
-binding: aSymbol
-	binding _ aSymbol! !
-
-!PPBoundParserResult class methodsFor: 'as yet unclassified' stamp: 'MM 10/30/2018 18:57'!
-on: anObject
-	^ self new value: anObject; yourself! !
 
 !PPParser methodsFor: 'operators' stamp: 'lr 9/23/2008 18:32'!
 , aParser 	"Answer a new parser that parses the receiver followed by aParser."	^ PPSequenceParser with: self with: aParser! !
@@ -651,9 +601,6 @@ asParser	"Answer the receiving parser."		^ self! !
 
 !PPParser methodsFor: 'accessing' stamp: 'lr 10/21/2009 16:38'!
 children	"Answer a set of child parsers that could follow the receiver."	^ #()! !
-
-!PPParser methodsFor: 'accessing' stamp: 'lr 4/19/2010 10:35'!
-name	"Answer the production name of the receiver."		^ self propertyAt: #name ifAbsent: [ nil ]! !
 
 !PPParser methodsFor: 'accessing' stamp: 'lr 4/19/2010 10:38'!
 name: aString	self propertyAt: #name put: aString! !
@@ -781,14 +728,8 @@ starLazy: aParser	"Answer a new parser that parses the receiver zero or more ti
 !PPParser methodsFor: 'operators-repeating' stamp: 'lr 9/15/2010 09:34'!
 times: anInteger	"Answer a new parser that parses the receiver exactly anInteger times."		^ self min: anInteger max: anInteger! !
 
-!PPParser methodsFor: 'copying' stamp: 'lr 4/19/2010 10:33'!
-postCopy	super postCopy.	properties := properties copy! !
-
 !PPParser methodsFor: 'printing' stamp: 'lr 4/16/2010 16:36'!
 printNameOn: aStream	self name isNil		ifTrue: [ aStream print: self hash ]		ifFalse: [ aStream nextPutAll: self name ]! !
-
-!PPParser methodsFor: 'printing' stamp: 'lr 4/16/2010 16:36'!
-printOn: aStream	super printOn: aStream.	aStream nextPut: $(.	self printNameOn: aStream.	aStream nextPut: $)! !
 
 !PPParser methodsFor: 'as yet unclassified' stamp: 'MM 10/26/2018 14:33'!
 traverse: aBlock
@@ -839,36 +780,6 @@ traverse: aBlock.
 !PPDelegateParser class methodsFor: 'instance creation' stamp: 'lr 4/20/2008 16:22'!
 on: aParser	^ self new setParser: aParser! !
 
-!PPBindParser methodsFor: 'as yet unclassified' stamp: 'MM 10/30/2018 18:31'!
-binding
-	^ binding! !
-
-!PPBindParser methodsFor: 'as yet unclassified' stamp: 'MM 10/30/2018 18:31'!
-binding: aSymbol
-
-	binding _ aSymbol! !
-
-!PPBindParser methodsFor: 'as yet unclassified' stamp: 'MM 10/30/2018 19:48'!
-parseOn: aStream
-
-	|position element|
-	
-	position _ aStream position.
-	element _ parser parseOn: aStream.
-	element isPetitFailure ifTrue: [
-		aStream position: position.
-		^ element].
-	
-	^ PPBoundParserResult new 
-			binding: binding;
-			value: element;
-			yourself! !
-
-!PPBindParser class methodsFor: 'as yet unclassified' stamp: 'MM 10/30/2018 18:30'!
-on: aParser binding: aSymbol
-
-	^ (self on: aParser) binding: aSymbol; yourself! !
-
 !PPActionParser methodsFor: 'accessing' stamp: 'lr 4/30/2010 11:10'!
 block	"Answer the action block of the receiver."	^ block! !
 
@@ -886,16 +797,6 @@ setBlock: aBlock	block := aBlock! !
 
 !PPActionParser class methodsFor: 'instance creation' stamp: 'lr 5/2/2010 16:58'!
 on: aParser block: aBlock	^ (self on: aParser) setBlock: aBlock! !
-
-!PPBoundActionParser methodsFor: 'as yet unclassified' stamp: 'MM 10/30/2018 18:59'!
-parseOn: aStream
-	| element |
-	
-	^ (element := parser parseOn: aStream) isPetitFailure
-		ifFalse: [  |bound|
-			bound _ element select: [:el | el isKindOf: PPBoundParserResult ].
-			block valueWithArguments: (bound collect: [:b | b value])]
-		ifTrue: [ element ]! !
 
 !PPWrappingParser methodsFor: 'parsing' stamp: 'lr 5/12/2010 20:19'!
 parseOn: aStream	^ block value: aStream value: [ parser parseOn: aStream ]! !
@@ -962,9 +863,6 @@ max	"Answer the maximum number of repetitions."	^ max! !
 
 !PPRepeatingParser methodsFor: 'accessing' stamp: 'lr 4/30/2010 11:08'!
 min	"Answer the minimum number of repetitions."		^ min! !
-
-!PPRepeatingParser methodsFor: 'printing' stamp: 'lr 6/3/2010 14:00'!
-printOn: aStream	super printOn: aStream.	aStream nextPutAll: ' ['; print: min; nextPutAll: ', '; nextPutAll: (max = SmallInteger maxVal		ifTrue: [ '*' ] ifFalse: [ max printString ]); nextPut: $]! !
 
 !PPLimitedRepeatingParser methodsFor: 'accessing' stamp: 'lr 4/4/2011 18:46'!
 children	^ Array with: parser with: limit! !
@@ -1100,9 +998,6 @@ children	^ parsers! !
 
 !PPListParser methodsFor: 'copying' stamp: 'lr 9/17/2008 22:36'!
 copyWith: aParser	^ self species withAll: (parsers copyWith: aParser)! !
-
-!PPListParser methodsFor: 'copying' stamp: 'lr 5/22/2010 10:26'!
-postCopy	super postCopy.	parsers := parsers copy! !
 
 !PPListParser methodsFor: 'initialization' stamp: 'lr 4/29/2010 10:12'!
 initialize	super initialize.	self setParsers: #()! !
@@ -1401,9 +1296,6 @@ position: anObject
 
 	position _ anObject! !
 
-!PPFailure methodsFor: 'printing' stamp: 'lr 5/5/2010 14:01'!
-printOn: aStream	aStream nextPutAll: self message; nextPutAll: ' at '; print: position! !
-
 !PPFailure class methodsFor: 'instance creation' stamp: 'lr 5/5/2010 13:56'!
 message: aString at: anInteger	^ self basicNew initializeMessage: aString at: anInteger! !
 
@@ -1463,9 +1355,6 @@ copyFrom: aStartInteger to: aStopInteger	^ self class on: collection start: sta
 
 !PPToken methodsFor: 'initialization' stamp: 'lr 4/30/2010 12:13'!
 initializeOn: aSequenceableCollection start: aStartInteger stop: aStopInteger	collection := aSequenceableCollection.	start := aStartInteger.	stop := aStopInteger! !
-
-!PPToken methodsFor: 'printing' stamp: 'lr 6/16/2008 10:13'!
-printOn: aStream	super printOn: aStream.	aStream nextPut: $(; nextPutAll: self value; nextPut: $)! !
 
 !PPToken class methodsFor: 'initialization' stamp: 'pmon 6/1/2012 22:35'!
 initialize
