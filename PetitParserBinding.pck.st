@@ -1,4 +1,4 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3665] on 16 March 2019 at 2:11:12 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3665] on 16 March 2019 at 2:58:19 pm'!
 'Description A package that provides the possibility to bind a parser to a variable name (symbol).
 
 The binding can be used via #withBindingsDo: message (~=>).
@@ -8,7 +8,7 @@ Example:
 number _ #digit asParser plus flatten ==> [:x | x asNumber].
 
 sum _ number bind, ''+'' asParser trim, number bind ~=> [:x :y | x + y].'!
-!provides: 'PetitParserBinding' 1 2!
+!provides: 'PetitParserBinding' 1 3!
 !requires: 'PetitParser' 1 7 nil!
 SystemOrganization addCategory: #PetitParserBinding!
 
@@ -123,3 +123,19 @@ binding: aSymbol
 !PPBoundParserResult class methodsFor: 'as yet unclassified' stamp: 'MM 10/30/2018 18:57'!
 on: anObject
 	^ self new value: anObject; yourself! !
+
+!PPParser methodsFor: '*PetitParserBinding' stamp: 'MM 3/16/2019 14:57:37'!
+~=> aBlock
+	^ self withBindingsDo: aBlock! !
+
+!PPParser methodsFor: '*PetitParserBinding' stamp: 'MM 3/16/2019 14:56:56'!
+bind
+
+	^ PPBindParser on: self! !
+
+!PPParser methodsFor: '*PetitParserBinding' stamp: 'MM 3/16/2019 14:57:53'!
+withBindingsDo: aBlock
+
+	"Answer a new parser that performs aBlock on the bounded elements on success."
+
+	^ PPBoundActionParser on: self block: aBlock! !
