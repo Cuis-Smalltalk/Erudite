@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3368] on 27 January 2019 at 8:47:18 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3682] on 20 March 2019 at 2:18:43 pm'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 18!
+!provides: 'MorphicBook' 1 20!
 !requires: 'Dice' 1 0 nil!
 SystemOrganization addCategory: #MorphicBook!
 
@@ -188,7 +188,7 @@ step
 stepTime
 	^ 100! !
 
-!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 1/27/2019 08:46:23'!
+!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 3/20/2019 14:18:29'!
 morphicBook
 
 <book: 'Morphic Book'>
@@ -535,4 +535,86 @@ Morphic also differs from MVC in its liveness goal. In MVC, only one top view (i
 without drawing over each other. In contrast, Morphic''s centralization of damage reporting and incremental screen updating makes liveness easy.
 
 Morphic''s concreteness is also a departure from MVC. In MVC, feedback for moving or resizing a window is provided as a hollow rectangle, as opposed to a solid object. Again, this is more efficient--only a few screen pixels are updated as the feedback rectangle is dragged around, and no view display code must be run--the right choice for slower machines In fact, morphic itself
-supports outline-only window dragging and resizing as an option for slow machines.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); yourself); updateParents; yourself)! !
+supports outline-only window dragging and resizing as an option for slow machines.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); add: (EruditeBookSection basicNew title: 'Morphic in Cuis'; document: ((EruditeDocument contents: '!!!! Morphic in Cuis
+
+Here we explain how Morphic is implemented in Cuis') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Layout'; document: ((EruditeDocument contents: '!!!! Layout
+
+!!!!!! The basics
+
+Layout in Cuis is specified via {LayoutMorph::class}s. A LayoutMorph layouts its submorphs in either a row or a column. You use {newRow::selector} or {newColumn::selector} for that.
+
+For example, let''s create a row:
+
+[[[layout1 := LayoutMorph newRow]]]
+
+[[[layout1 morphExtent: 300@100; color: Color lightBlue]]]
+
+[[[layout1]]] embedIt
+
+Now we can add a submorph to the row, in this case a simple rectangle:
+
+[[[layout2 := layout1 copy]]]
+
+[[[layout2 addMorph: (RectangleLikeMorph new :: color: Color blue; yourself)]]]
+
+[[[layout2]]] embedIt
+
+[[[layout3 := layout2 copy]]]
+
+Row layout morphs align submorphs to the left by default:
+
+[[[layout3 addMorph: EllipseMorph new.
+layout3 addMorph: ImageMorph new]]]
+
+[[[layout3]]] embedIt
+
+We can change submorphs alignment via using {padding: ::selector}: . The padding can be be either a number between 0.0 and 1.0, or one of #top, #left, #center, #right, #bottom. For example, let''s center our submorphs:
+
+[[[layout4 := layout3 copy]]]
+
+[[[layout4 padding: #center]]]
+
+[[[layout4]]] embedIt
+
+As we have explained, you can also have columns. Let''s transform our row to a column:
+
+[[[layout5 := layout4 copy]]]
+
+[[[layout5 beColumn; morphHeight: 200; morphWidth: 150]]]
+
+[[[layout5]]] embedIt
+
+And align things to the bottom:
+
+[[[layout6 := layout5 copy]]]
+
+[[[layout6 padding: #bottom]]]
+
+[[[layout6]]] embedIt
+
+As you can see, our submorphs need some separation between them. That can be specified via {separation: ::selector}:
+
+[[[layout7 := layout6 copy]]]
+
+[[[layout7 separation: 10]]]
+
+[[[layout7]]] embedIt
+
+!!!!!! LayoutSpecs
+
+For more complex layouts there''s {LayoutSpec::class}. Each submorph can tell its containing LayoutMorph how it wants to be sized and placed within its layout via its attached layoutSpec.
+
+LayoutSpecs are the basis for the layout mechanism. Any Morph can be given a LayoutSpec, but in order to honor it, its owner must be a LayoutMorph.
+
+A LayoutSpec specifies how a morph wants to be layed out. It can specify either a fixed width or a fraction of some available owner width. Same goes for height. If a fraction is specified, a minimum extent is also possible.
+
+
+Alternatives:
+	- proportionalWidth notNil, fixedWidth notNil	->		Use fraction of available space, take fixedWidth as minimum desired width
+	- proportionalWidth isNil, fixedWidth isNil		->		Use current morph width
+	- proportionalWidth isNil, fixedWidth notNil		->		Use fixedWidth
+	- proportionalWidth notNil, fixedWidth isNil		->		NOT VALID
+
+Same goes for proportionalHeight and fixedHeight.
+
+The layoutSpec can be specified when adding a submorph with {addMorph:layoutSpec: ::selector}. But that''s for involved cases, there are helper methods for the common cases, like: {addMorph:proportionalWidth: ::selector} and {addMorphUseAll: ::selector}. For a complete list, look at //convenience methods// category in {LayoutMorph::class}.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); yourself); updateParents; yourself)! !
