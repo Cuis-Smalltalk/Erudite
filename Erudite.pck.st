@@ -1,11 +1,12 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3665] on 16 March 2019 at 12:41:40 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3685] on 21 March 2019 at 3:54:39 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 132!
-!requires: 'Graphics-Files-Additional' 1 22 nil!
+!provides: 'Erudite' 1 133!
 !requires: 'PetitParser' 1 5 nil!
+!requires: 'Graphics-Files-Additional' 1 22 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
+!requires: 'SqueakCompatibility' 1 29 nil!
 SystemOrganization addCategory: #'Erudite-Core'!
 SystemOrganization addCategory: #'Erudite-Morphic'!
 SystemOrganization addCategory: #'Erudite-Parser'!
@@ -1910,13 +1911,13 @@ buttonCodeAction
 
 	^ super buttonCodeAction ==> [:res | {#action->res first asSymbol. #button-> res third withBlanksTrimmed } as: Dictionary]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 12:43'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 3/21/2019 15:53:04'!
 code
 
-	^ super code ==> [:res | |code action|
-		code _ res second.
+	^ super code ==> [:res | |source action|
+		source _ res second.
 		action _ (res checkedAt: 4) ifNotNil: [:a | a second].
-		DocCode code: code action: action]! !
+		DocCode code: source action: action]! !
 
 !EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:18'!
 falseLinkOption
@@ -1957,18 +1958,18 @@ italic
 
 	^ super italic ==> [:res | EruditeStyledText text: res second style: #italic]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 18:17'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 3/21/2019 15:53:34'!
 link
-	^ super link ~=> [ :target :type :label :options | | link |
-		link _ DocLink
+	^ super link ~=> [ :target :type :label :options | | lnk |
+		lnk _ DocLink
 			target: target
 			type: type asSymbol
 			label: (label ifNotNil: [label second]).
 		options ifNotNil: [options do: [ :opt |
-			link
+			lnk
 				optionAt: opt key
 				put: opt value ]].
-		link ].! !
+		lnk ].! !
 
 !EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:24'!
 linkOptions
@@ -2175,14 +2176,14 @@ defaultStorageMethodReferenceFor: aBook
 		class: EruditeBook class
 		selector: (self selectorFromTitle: aBook title).! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 12/10/2018 21:27'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 3/21/2019 15:54:25'!
 load
-	| storageMethod book |
-	storageMethod _ self storageMethod.
-	book _ storageMethod compiledMethod
+	| stMethod book |
+	stMethod _ self storageMethod.
+	book _ stMethod compiledMethod
 		valueWithReceiver: EruditeBook class
 		arguments: #().
-	self become: book.! !
+	self become: book! !
 
 !EruditeBook methodsFor: 'storage' stamp: 'MM 12/4/2018 10:55'!
 selectorFromTitle: aString
@@ -7092,30 +7093,6 @@ selectionInterval
 !Browser methodsFor: '*Erudite' stamp: 'MM 12/13/2018 18:26'!
 text
 	^ ''! !
-
-!String methodsFor: '*Erudite' stamp: 'MM 12/15/2018 13:59:03'!
-subStrings: separators 
-	"Answer an array containing the substrings in the receiver separated 
-	by the elements of separators."
-	| char result sourceStream subString |
-	#Collectn.
-	"Changed 2000/04/08 For ANSI <readableString> protocol."
-	(separators isString or:[separators allSatisfy: [:element | element is: Character]]) ifFalse:
-		[^ self error: 'separators must be Characters.'].
-	sourceStream := ReadStream on: self.
-	result := OrderedCollection new.
-	subString := String new.
-	[sourceStream atEnd]
-		whileFalse: 
-			[char := sourceStream next.
-			(separators includes: char)
-				ifTrue: [subString notEmpty
-						ifTrue: 
-							[result add: subString copy.
-							subString := String new]]
-				ifFalse: [subString := subString , (String with: char)]].
-	subString notEmpty ifTrue: [result add: subString copy].
-	^ result asArray! !
 
 !HierarchicalListMorph methodsFor: '*Erudite' stamp: 'MM 12/13/2018 18:42'!
 expandRoot
