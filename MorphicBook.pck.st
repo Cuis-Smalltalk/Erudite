@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3683] on 20 March 2019 at 9:41:08 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3685] on 21 March 2019 at 3:59:21 pm'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 21!
+!provides: 'MorphicBook' 1 22!
 !requires: 'Dice' 1 0 nil!
 SystemOrganization addCategory: #MorphicBook!
 
@@ -188,7 +188,7 @@ step
 stepTime
 	^ 100! !
 
-!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 3/20/2019 21:40:10'!
+!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 3/21/2019 15:59:14'!
 morphicBook
 
 <book: 'Morphic Book'>
@@ -608,31 +608,7 @@ LayoutSpecs are the basis for the layout mechanism. Any Morph can be given a Lay
 
 A LayoutSpec specifies how a morph wants to be layed out. It can specify either a fixed width or a fraction of some available owner width. Same goes for height. If a fraction is specified, a minimum extent is also possible.
 
-
-Alternatives:
-	- proportionalWidth notNil, fixedWidth notNil	->		Use fraction of available space, take fixedWidth as minimum desired width
-	- proportionalWidth isNil, fixedWidth isNil		->		Use current morph width
-	- proportionalWidth isNil, fixedWidth notNil		->		Use fixedWidth
-	- proportionalWidth notNil, fixedWidth isNil		->		NOT VALID
-
-Same goes for proportionalHeight and fixedHeight.
-
 The layoutSpec can be specified when adding a submorph with {addMorph:layoutSpec: ::selector}. But that''s for involved cases, there are helper methods for the common cases, like: {addMorph:proportionalWidth: ::selector} and {addMorphUseAll: ::selector}. For a complete list, look at //convenience methods// category in {LayoutMorph::class}.
-
-**useAll**
-
-The //useAll// spec means that the submorph should use all space available:
-
-[[[l1 := LayoutMorph newRow.
-l1 morphExtent: 200@100.
-l1 addMorphUseAll: (EllipseMorph new)]]]
-
-[[[l1]]] embedIt
-
-When the morph size changes, the submorph with *useAll* spec changes accordingly: [[[ | w |
-w _ SystemWindow new.
-w layoutMorph addMorph: l1 copy.
-w openInWorld]]] doItWithButton: Try resizing this window.
 
 **proportionalWidth and proportionalHeight**
 
@@ -648,6 +624,21 @@ l2 addMorph: (RectangleLikeMorph new color: Color blue; yourself) proportionalWi
 When the morph size changes, the submorphs with change it size accordingly: [[[ |w|
 w _ SystemWindow new.
 w layoutMorph addMorph: l2 copy.
+w openInWorld]]] doItWithButton: Try resizing this window.
+
+**useAll**
+
+//useAll// is a special case of proportional sizes, where width and height are 1.0. It means that the submorph should use all space available:
+
+[[[l1 := LayoutMorph newRow.
+l1 morphExtent: 200@100.
+l1 addMorphUseAll: (EllipseMorph new)]]]
+
+[[[l1]]] embedIt
+
+When the morph size changes, the submorph with *useAll* spec changes accordingly: [[[ | w |
+w _ SystemWindow new.
+w layoutMorph addMorph: l1 copy.
 w openInWorld]]] doItWithButton: Try resizing this window.
 
 **fixed width and height**
