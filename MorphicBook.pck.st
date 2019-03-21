@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3682] on 20 March 2019 at 2:18:43 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3683] on 20 March 2019 at 9:41:08 pm'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 20!
+!provides: 'MorphicBook' 1 21!
 !requires: 'Dice' 1 0 nil!
 SystemOrganization addCategory: #MorphicBook!
 
@@ -188,7 +188,7 @@ step
 stepTime
 	^ 100! !
 
-!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 3/20/2019 14:18:29'!
+!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 3/20/2019 21:40:10'!
 morphicBook
 
 <book: 'Morphic Book'>
@@ -617,4 +617,62 @@ Alternatives:
 
 Same goes for proportionalHeight and fixedHeight.
 
-The layoutSpec can be specified when adding a submorph with {addMorph:layoutSpec: ::selector}. But that''s for involved cases, there are helper methods for the common cases, like: {addMorph:proportionalWidth: ::selector} and {addMorphUseAll: ::selector}. For a complete list, look at //convenience methods// category in {LayoutMorph::class}.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); yourself); updateParents; yourself)! !
+The layoutSpec can be specified when adding a submorph with {addMorph:layoutSpec: ::selector}. But that''s for involved cases, there are helper methods for the common cases, like: {addMorph:proportionalWidth: ::selector} and {addMorphUseAll: ::selector}. For a complete list, look at //convenience methods// category in {LayoutMorph::class}.
+
+**useAll**
+
+The //useAll// spec means that the submorph should use all space available:
+
+[[[l1 := LayoutMorph newRow.
+l1 morphExtent: 200@100.
+l1 addMorphUseAll: (EllipseMorph new)]]]
+
+[[[l1]]] embedIt
+
+When the morph size changes, the submorph with *useAll* spec changes accordingly: [[[ | w |
+w _ SystemWindow new.
+w layoutMorph addMorph: l1 copy.
+w openInWorld]]] doItWithButton: Try resizing this window.
+
+**proportionalWidth and proportionalHeight**
+
+To specify space with proportions, use {proportionalWidth::selector} and {proportionalHeight::selector}:
+
+[[[l2 := LayoutMorph newRow.
+l2 morphExtent: 200@100.
+l2 addMorph: (RectangleLikeMorph new color: Color red; yourself) proportionalWidth: 0.333.
+l2 addMorph: (RectangleLikeMorph new color: Color blue; yourself) proportionalWidth: 0.666]]]
+
+[[[l2]]] embedIt
+
+When the morph size changes, the submorphs with change it size accordingly: [[[ |w|
+w _ SystemWindow new.
+w layoutMorph addMorph: l2 copy.
+w openInWorld]]] doItWithButton: Try resizing this window.
+
+**fixed width and height**
+
+Submorphs can have a fixed width and height too:
+
+[[[l4 := LayoutMorph newRow.
+l4 morphExtent: 200@100.
+l4 addMorph: (RectangleLikeMorph new color: Color red; yourself) fixedWidth: 50.
+l4 addMorphUseAll: (RectangleLikeMorph new color: Color blue; yourself)]]]
+
+[[[l4]]] embedIt
+
+In this case, when the parent morph size changes, the fixed submorphs keep its size: [[[ |w|
+w _ SystemWindow new.
+w layoutMorph addMorph: l4 copy.
+w openInWorld]]] doItWithButton: Try resizing this window.
+
+**Adjusters**
+
+It is possible to add morphs with interactive adjusters in-between:
+
+[[[l3 := LayoutMorph newRow.
+l3 morphExtent: 200@100.
+l3 addMorph: (RectangleLikeMorph new color: Color red; yourself) proportionalWidth: 0.333.
+l3 addAdjusterAndMorph: (RectangleLikeMorph new color: Color blue; yourself) proportionalWidth: 0.666]]]
+
+[[[l3]]] embedIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); yourself); updateParents; yourself)! !
