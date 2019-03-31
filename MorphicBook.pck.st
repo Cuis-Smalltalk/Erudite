@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3665] on 21 March 2019 at 5:04:59 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3685] on 31 March 2019 at 6:29:46 pm'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 23!
+!provides: 'MorphicBook' 1 24!
 !requires: 'Erudite' 1 133 nil!
 !requires: 'Dice' 1 0 nil!
 SystemOrganization addCategory: #MorphicBook!
@@ -189,7 +189,7 @@ step
 stepTime
 	^ 100! !
 
-!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 3/21/2019 15:59:14'!
+!EruditeBook class methodsFor: '*MorphicBook' stamp: 'MM 3/31/2019 18:29:31'!
 morphicBook
 
 <book: 'Morphic Book'>
@@ -577,6 +577,12 @@ We can change submorphs alignment via using {padding: ::selector}: . The padding
 
 [[[layout4]]] embedIt
 
+Use these buttons to change the padding:
+
+[[[layout4 padding: #left; someSubmorphPositionOrExtentChanged]]] doItWithButton: padding: #left.
+[[[layout4 padding: #center; someSubmorphPositionOrExtentChanged]]] doItWithButton: padding: #center.
+[[[layout4 padding: #right; someSubmorphPositionOrExtentChanged]]] doItWithButton: padding: #right.
+
 As we have explained, you can also have columns. Let''s transform our row to a column:
 
 [[[layout5 := layout4 copy]]]
@@ -593,13 +599,25 @@ And align things to the bottom:
 
 [[[layout6]]] embedIt
 
+Use these buttons to change the padding:
+
+[[[layout6 padding: #top; someSubmorphPositionOrExtentChanged]]] doItWithButton: padding: #top.
+[[[layout6 padding: #center; someSubmorphPositionOrExtentChanged]]] doItWithButton: padding: #center.
+[[[layout6 padding: #bottom; someSubmorphPositionOrExtentChanged]]] doItWithButton: padding: #bottom.
+
 As you can see, our submorphs need some separation between them. That can be specified via {separation: ::selector}:
 
 [[[layout7 := layout6 copy]]]
 
-[[[layout7 separation: 10]]]
+[[[layout7 padding: #center; separation: 10]]]
 
 [[[layout7]]] embedIt
+
+Use the buttons to change the separation:
+
+[[[layout7 separation: 0; someSubmorphPositionOrExtentChanged]]] doItWithButton: #separation: 0.
+[[[layout7 separation: 5; someSubmorphPositionOrExtentChanged]]] doItWithButton: #separation: 5.
+[[[layout7 separation: 15; someSubmorphPositionOrExtentChanged]]] doItWithButton: #separation: 15.
 
 !!!!!! LayoutSpecs
 
