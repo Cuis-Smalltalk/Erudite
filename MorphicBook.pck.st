@@ -205,22 +205,22 @@ The contents of this book were mostly copied and sometimes adapted from:
 * "Pharo by Example" book, chapter 13.
 * "An Introduction to Morphic: The Squeak User Interface Framework" by John Maloney.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'The history of Morphic'; document: ((EruditeDocument contents: '!!!! The history of Morphic
 
-Morphic was developed by John Maloney and Randy Smith for the Self programming language, starting around 1993. Maloney later wrote a new version of Morphic for Squeak, but the basic ideas behind the Self version are still alive and well in Pharo Morphic: directness and liveness. Directness means that the shapes on the screen are objects that can be examined or changed directly, that is, by clicking on them using a mouse. Liveness means that the user interface is always able to respond to user actions: information on the screen is continuously updated as the world that it describes changes. A simple example of this is that you can detach a menu item and keep it as a button.
+Morphic was developed by John Maloney and Randy Smith for the Self programming language, starting around 1993. Maloney later wrote a new version of Morphic for Squeak, but the basic ideas behind the Self version are still alive and well in Cuis Morphic: directness and liveness. Directness means that the shapes on the screen are objects that can be examined or changed directly, that is, by clicking on them using a mouse. Liveness means that the user interface is always able to respond to user actions: information on the screen is continuously updated as the world that it describes changes. A simple example of this is that you can detach a menu item and keep it as a button.
 Bring up the World Menu and meta-click once on it to bring up its morphic halo, then meta-click again on a menu item you want to detach, to bring up that item''s halo. (Recall that you should set halosEnabled in the Preferences browser.) Now drag that item elsewhere on the screen by grabbing the black handle (see Figure 13.1), as shown in Figure 13.2.
 
-All of the objects that you see on the screen when you run Pharo are Morphs, that is, they are instances of subclasses of class Morph . Morph itself is a large class with many methods; this makes it possible for subclasses to implement interesting behaviour with little code. You can create a morph to represent any object, although how good a representation you get depends on the object!!
+All of the objects that you see on the screen when you run Cuis are Morphs, that is, they are instances of subclasses of class Morph . Morph itself is a large class with many methods; this makes it possible for subclasses to implement interesting behaviour with little code. You can create a morph to represent any object, although how good a representation you get depends on the object!!
 
 To create a morph to represent a string object, execute the following code:
 
 [[[(StringMorph contents:''Morph'') openInHand]]] doIt
 
-This creates a Morph to represent the string ''Morph'' , and then opens it (that is, displays it) in the world, which is the name that Pharo gives to the screen. You should obtain a graphical element (a Morph ), which you can manipulate by meta-clicking.
+This creates a Morph to represent the string ''Morph'' , and then opens it (that is, displays it) in the world, which is the name that Cuis gives to the screen. You should obtain a graphical element (a Morph ), which you can manipulate by meta-clicking.
 
 Of course, it is possible to define morphs that are more interesting graphical representations than the one that you have just seen. The method asMorph has a default implementation in class Object class that just creates a String-Morph . So, for example, Color tan asMorph returns a StringMorph labeled with the result of Color tan printString . Let''s change this so that we get a coloured rectangle instead.
 
 [[[RectangleLikeMorph new color: Color blue; openInWorld]]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Manipulating morphs'; document: ((EruditeDocument contents: '!!!! Manipulating morphs
 
-Morphs are objects, so we can manipulate them like any other object in Pharo: by sending messages, we can change their properties, create new subclasses of Morph, and so on.
+Morphs are objects, so we can manipulate them like any other object in Cuis: by sending messages, we can change their properties, create new subclasses of Morph, and so on.
 Every morph, even if it is not currently open on the screen, has a position and a size. For convenience, all morphs are considered to occupy a rectangular region of the screen; if they are irregularly shaped, their position and size are those of the smallest rectangular box that surrounds them, which is known as the morph''s bounding box, or just its bounds. The position method returns a Point that describes the location of the morph''s upper left corner (or the upper left corner of its bounding box). The origin of the coordinate system is the screen''s upper left corner, with y coordinates increasing down the screen and x coordinates increasing to the right. The extent method also returns a point, but this point specifies the width and height of the morph rather than a location.
 
 [[[joe := RectangleLikeMorph new color: Color blue.
@@ -408,7 +408,7 @@ These methods define collections of the coordinates of dots for each face. The c
 
 {DiceMorph>>drawOn: ::method}[embed]
 
-The second part of this method uses the reflective capacities of Pharo. Drawing the dots of a face is a simple matter of iterating over the collection given by the faceX method for that face, sending the drawDotOn:at: message for each coordinate. To call the correct faceX method, we use the perform: method which sends a message built from a string, (''face'', dieValue asString) asSymbol . You will encounter this use of perform: quite regularly.
+The second part of this method uses the reflective capacities of Cuis. Drawing the dots of a face is a simple matter of iterating over the collection given by the faceX method for that face, sending the drawDotOn:at: message for each coordinate. To call the correct faceX method, we use the perform: method which sends a message built from a string, (''face'', dieValue asString) asSymbol . You will encounter this use of perform: quite regularly.
 
 {DiceMorph>>drawDotOn:at: ::method}[embed]
 
