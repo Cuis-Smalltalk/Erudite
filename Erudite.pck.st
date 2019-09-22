@@ -1,12 +1,12 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3685] on 21 March 2019 at 3:54:39 pm'!
+'From Cuis 5.0 [latest update: #3883] on 20 September 2019 at 3:20:48 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
 !provides: 'Erudite' 1 133!
-!requires: 'PetitParser' 1 5 nil!
-!requires: 'Graphics-Files-Additional' 1 22 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
+!requires: 'PetitParser' 1 5 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
+!requires: 'Graphics-Files-Additional' 1 22 nil!
 SystemOrganization addCategory: #'Erudite-Core'!
 SystemOrganization addCategory: #'Erudite-Morphic'!
 SystemOrganization addCategory: #'Erudite-Parser'!
@@ -1111,12 +1111,12 @@ contentsChanged
 correctFrom: aSmallInteger to: aSmallInteger2 with: aString 
 	! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 22:46'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'tsl 9/20/2019 15:15:11'!
 drawLabelOn: aCanvas
 
 	| e x0 y0 f w availableW l |
-	e _ self boxExtent.
-	x0 _  e x * 4 + 14.
+	e _ self titleBarButtonsExtent.
+	x0 _  e x * 4 + 24.
 	y0 _ 2.
 	f _ Preferences windowTitleFont.
 	availableW _ extent x - x0.
