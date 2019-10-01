@@ -1,10 +1,10 @@
-'From Cuis 5.0 [latest update: #3883] on 20 September 2019 at 3:20:48 pm'!
+'From Cuis 5.0 [latest update: #3866] on 1 October 2019 at 5:24:33 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 133!
+!provides: 'Erudite' 1 134!
 !requires: 'PetitParserBinding' 1 0 nil!
-!requires: 'PetitParser' 1 5 nil!
+!requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
 SystemOrganization addCategory: #'Erudite-Core'!
