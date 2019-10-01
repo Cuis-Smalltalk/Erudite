@@ -9,7 +9,7 @@ number _ #digit asParser plus flatten ==> [:x | x asNumber].
 
 sum _ number bind, ''+'' asParser trim, number bind ~=> [:x :y | x + y].'!
 !provides: 'PetitParserBinding' 1 3!
-!requires: 'PetitParser' 1 7 nil!
+!requires: 'PetitParser' 1 2 nil!
 SystemOrganization addCategory: #PetitParserBinding!
 
 
