@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4074] on 25 March 2020 at 6:49:11 pm'!
+'From Cuis 5.0 [latest update: #4212] on 8 June 2020 at 11:58:00 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 136!
+!provides: 'Erudite' 1 137!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
@@ -1016,7 +1016,7 @@ bookIsUnsaved
 
 	^ sourcesChanged! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/20/2018 23:47:16'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'jmv 6/8/2020 10:53:58'!
 buildMorphicWindow
 	| leftColumn previousButton nextButton navRow |
 	layoutMorph beRow.
@@ -1049,7 +1049,7 @@ buildMorphicWindow
 	"proportionalWidth: 0.5"
 	navRow addMorph: nextButton.
 	"proportionalWidth: 0.5"
-	navRow padding: #center.
+	navRow axisEdgeWeight: #center.
 	leftColumn
 		addMorph: navRow
 		fixedHeight: 30.
