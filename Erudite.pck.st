@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4212] on 8 June 2020 at 11:58:00 am'!
+'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:46:01 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 137!
+!provides: 'Erudite' 1 138!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
@@ -6788,7 +6788,7 @@ visitCode: aDocCode
 		[#printItWithButton] -> [self renderCodePrintItWithButton: aDocCode]
 	}.! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 16:30'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'jmv 6/11/2020 16:33:17'!
 visitHeading: aEruditeHeading
 
 	|pointSizes|
@@ -6798,7 +6798,7 @@ visitHeading: aEruditeHeading
 	stream nextPut: (Text string: aEruditeHeading heading attributes: 
 							{TextColor blue.
 							TextEmphasis bold.
-							TextFontFamilyAndSize familyName: 'DejaVu' pointSize: (pointSizes at: aEruditeHeading level)})! !
+							TextFontFamilyAndSize familyName: FontFamily defaultFamilyName pointSize: (pointSizes at: aEruditeHeading level)})! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 22:57:31'!
 visitLink: aDocLink
