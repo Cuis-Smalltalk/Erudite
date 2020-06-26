@@ -3,7 +3,7 @@
 !provides: 'PetitParserTutorial' 1 13!
 !requires: 'PetitTutorial' 1 0 nil!
 !requires: 'Erudite' 1 73 nil!
-!requires: 'PetitParser' 1 6 nil!
+!requires: 'PetitParser' 1 3 nil!
 
 
 
