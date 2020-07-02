@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:46:01 am'!
+'From Cuis 5.0 [latest update: #4241] on 2 July 2020 at 4:57:21 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 138!
+!provides: 'Erudite' 1 139!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
@@ -6401,7 +6401,7 @@ renderLink: aDocLink on: aStream
 									ifAbsent: [self error: 'Class not found: ', className asString].
 						self browse: class selector: nil]))! !
 
-!ImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 12:16:01'!
+!ImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 7/2/2020 16:56:53'!
 render: aDocLink in: aDocument on: aStream
 
 	|filePath form imageMorph |
@@ -6410,7 +6410,7 @@ render: aDocLink in: aDocument on: aStream
 	form _ aDocument imageAt: filePath ifAbsent: [
 				[aDocument addImageFromPath: filePath] 
 					on: Error
-					do: [^aStream nextPut: 'Image not found in ', filePath]].
+					do: [:e | ^aStream nextPut: e printString]].
 	
 	imageMorph _ ImageMorph new
 						image: form.
