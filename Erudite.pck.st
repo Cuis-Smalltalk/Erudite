@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4241] on 2 July 2020 at 4:57:21 pm'!
+'From Cuis 5.0 [latest update: #4241] on 18 July 2020 at 6:51:17 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 139!
+!provides: 'Erudite' 1 140!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
@@ -2193,6 +2193,18 @@ style: aString
 	
 	^ styler ranges! !
 
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 18:28:28'!
+asMethodName: aString
+	^ aString asCamelCase uncapitalized select: [:char | char isAlphaNumeric ]! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:52:09'!
+defaultNameForClass
+	^ title asCamelCase capitalized asSymbol! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:38:49'!
+defaultStorageCategory
+	^ 'EruditeBooks'! !
+
 !EruditeBook methodsFor: 'storage' stamp: 'MM 12/10/2018 21:27'!
 defaultStorageMethodReferenceFor: aBook
 	^ MethodReference
@@ -2227,7 +2239,45 @@ store
 	^ self storeOnMethod: self storageMethod
 	! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 12/10/2018 18:51'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:35:59'!
+storeAsClass
+	^ self storeAsClassNamed: self defaultNameForClass! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:38:37'!
+storeAsClassNamed: className
+	^ self storeAsClassNamed: className category: self defaultStorageCategory
+	! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 18:47:04'!
+storeAsClassNamed: className category: aCategory
+
+	|bookClass initialize|
+	
+	bookClass _ EruditeBook subclass: className
+		instanceVariableNames: ''
+		classVariableNames: ''
+		poolDictionaries: ''
+		category: aCategory.
+		
+	initialize _ String streamContents: [:s |
+		s nextPutAll: 'initialize'; newLine;
+		   nextPutAll: '    title _ ';
+		   nextPutAll: title printString; nextPutAll: '.'; newLine.
+		
+		s nextPutAll: '    sections _ OrderedCollection new '; newLine.
+		sections do: [:section |
+			s nextPutAll: '        add: self '; nextPutAll: section title asCamelCase; nextPutAll: ';'; newLine.
+		].
+		s nextPutAll: '    yourself'.].
+	
+	bookClass compile: initialize.
+	
+	sections do: [:sect |
+		self storeSection: sect on: bookClass].
+		
+	^ bookClass! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:59:29'!
 storeOnMethod: aMethodReference
 
 	|source|
@@ -2240,7 +2290,36 @@ storeOnMethod: aMethodReference
 		   nextPutAll: '^';
 		   store: self].
 	
-	aMethodReference actualClass compile: source notifying: nil.! !
+	aMethodReference actualClass compile: source.! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:58:37'!
+storeSection: aBookSection on: aClass
+	^ self storeSection: aBookSection on: aClass prefix: ''! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 18:49:52'!
+storeSection: aBookSection on: aClass prefix: prefix
+	|source subsectionPrefix|
+	
+	subsectionPrefix _ prefix , ((self asMethodName: aBookSection title) capitalized).
+	
+	source _ String streamContents: [:s |
+		s nextPutAll: subsectionPrefix; newLine.		
+		s
+		nextPutAll: '^('; 
+	 	nextPutAll: aBookSection class name;
+		nextPutAll: ' basicNew';
+		nextPutAll: ' title: '; store: aBookSection title;
+		nextPutAll: '; document: '; store: aBookSection document;
+		nextPutAll: '; subsections: (OrderedCollection new'.
+		aBookSection subsections do: [:subSection |
+			s nextPutAll: '        add: self '; nextPutAll: subsectionPrefix; 
+		        nextPutAll: (self asMethodName: subSection title) capitalized; nextPutAll: ';'	; newLine].
+		s nextPutAll: ' yourself)';
+		  nextPutAll: '; yourself)'].
+	
+	aClass compile: source.
+	aBookSection subsections do: [:ss |
+		self storeSection: ss on: aClass prefix: (prefix, (self asMethodName: aBookSection title) capitalized)].! !
 
 !EruditeBook methodsFor: 'accessing' stamp: 'MM 12/4/2018 17:59'!
 addSection: aBookSection
@@ -2502,6 +2581,14 @@ This is the suggested procedure for developing external packages. Usually do thi
 * Fileout changes that are not part of any package. These are automatically captured in numbered changesets, separated from changes to packages.
 
 * Exit the image. Usually without saving.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); updateParents; yourself)! !
+
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 7/18/2020 18:05:57'!
+edit
+	^ self new edit! !
+
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 7/18/2020 18:05:49'!
+open
+	^ self new open! !
 
 !EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:31'!
 titled: aString
