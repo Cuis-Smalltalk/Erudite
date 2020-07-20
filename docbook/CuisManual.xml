@@ -1,0 +1,227 @@
+<?xml  version="1.0" encoding="utf-8" ?> <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V5.0//EN"
+                   "http://www.oasis-open.org/docbook/xml/5.0/docbook.dtd">
+<book id="Cuis Manual" lang="en">
+<title>Cuis Manual</title>
+<chapter>
+<title>Introduction</title>
+<para>
+<title>Introduction</title></para>
+<para></para>
+<para>This is a manual about Cuis Smalltalk.</para>
+<para>NOTE: Most of its content was taken from Cuis documentation at: 
+<ulink url="https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/tree/master/Documentation">https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/tree/master/Documentation</ulink></para></chapter>
+<chapter>
+<title>Cuis Smalltalk</title>
+<para>
+<title>Cuis Smalltalk</title></para>
+<para></para>
+<para></para>
+<para>
+<link linkend="http://www.cuis-smalltalk.org">Cuis</link> is a free 
+<link linkend="https://en.wikipedia.org/wiki/Smalltalk">Smalltalk-80</link> environment originally derived from 
+<link linkend="http://www.squeak.org">Squeak</link> with a specific set of goals: being simple and powerful. It is also portable to any platform, fast and efficient. This means it is a great tool for running on any hardware, ranging from RasPis and the like, and phones, up to cloud servers, and everything in between, including regular laptops and PCs.</para>
+<para>Cuis is</para>
+<para>* 
+<emphasis>Small</emphasis></para>
+<para>* 
+<emphasis>Clean</emphasis></para>
+<para>* 
+<emphasis>Appropriable</emphasis></para>
+<para></para>
+<para>Like Squeak, Cuis is also:</para>
+<para>* 
+<emphasis>Open Source</emphasis></para>
+<para>* 
+<emphasis>Self contained</emphasis></para>
+<para>* 
+<emphasis>Multiplatform</emphasis></para>
+<para></para>
+<para>Like other Smalltalk-80 environments (including Squeak, Pharo and others), Cuis is also:</para>
+<para>* 
+<emphasis>A complete development environment written in itself</emphasis></para>
+<para>* 
+<emphasis>A pure, dynamic Object Oriented language</emphasis></para>
+<para></para>
+<para>Cuis shares the 
+<link linkend="http://www.opensmalltalk.org">OpenSmalltalk Virtual Machine</link> with Squeak, Pharo and Newspeak. What sets Cuis apart from the other members of the Squeak family is the focus on Smalltalk-80 and an active attitude towards system complexity:</para>
+<para>Unbound complexity growth, together with development strategies focused only in the short term, are the worst long term enemies of all software systems. As systems grow older, they usually become more complex. New features are added as layers on top of whatever is below, sometimes without really understanding it, and almost always without modifying it. Complexity and size grow without control. Evolution slows down. Understanding the system becomes harder every day. Bugs are harder to fix. Codebases become huge for no clear reason. At some point, the system can't evolve anymore and becomes &quot;legacy code&quot;.</para>
+<para>Complexity puts a limit to the level of understanding of the system a person might reach, and therefore limits the things that can be done with it. Dan Ingalls says all this in 
+<link linkend="http://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html">&quot;Design Principles Behind Smalltalk&quot;</link>. Even if you have already done so, please go and read it again!</para>
+<para>This presentation by Rich Hickey, 
+<link linkend="http://www.infoq.com/presentations/Simple-Made-Easy">&quot;Simple made Easy&quot;</link> is also an excellent reflection on these values.</para>
+<para>We follow a set of ideas that started with Jean Piaget's 
+<link linkend="https://en.wikipedia.org/wiki/Constructivism_(philosophy_of_education">Constructivism</link>, and were further developed in Seymour Papert's 
+<link linkend="https://en.wikipedia.org/wiki/Experiential_learning">Mathland</link>. These lead to Alan Kay's Learning Research Group's 
+<link linkend="http://www.vpri.org/pdf/hc_pers_comp_for_children.pdf">Personal Computer for Children of All Ages</link>, 
+<link linkend="http://www.vpri.org/pdf/m1977001_dynamedia.pdf">Personal Dynamic Media</link>, i.e. the 
+<link linkend="http://www.vpri.org/pdf/hc_what_Is_a_dynabook.pdf">Dynabook</link> and to 
+<link linkend="https://en.wikipedia.org/wiki/Smalltalk">Smalltalk-80</link>. To us, a Smalltalk system is a Dynabook. A place to experiment and learn, and a medium to express and register the knlowledge we acquire. We understand software development as the activity of learning and documenting knowledge, for us and others to use, and also to be run on a computer. The fact that the computer run is useful, is a consequence of the knowldege being sound and relevant. (Just making it work is 
+<emphasis>not</emphasis> the important part!)</para>
+<para>Cuis Smalltalk is our attempt at this challenge. Furthermore, we believe we are doing something else that no other Smalltalk, commercial or open source, does. We attempt to give the true Smalltalk-80 experience, and keep Smalltalk-80 not as legacy software historic significance, but as a live, evolving system. We feel we are the keepers of the Smalltalk-80 heritage, and enablers of the Dynabook experience.</para>
+<para>Cuis is continuously evolving towards simplicity. Each release is better (i.e. simpler) than the previous one. At the same time, features are enhanced, and any reported bugs fixed. We also adopt recent enhancements from Squeak and share our work with the wider Squeak and Smalltalk community.</para>
+<section>
+<title>About the name Cuis</title>
+<para>
+<title>About the name Cuis</title></para>
+<para></para>
+<para>Cuis is the common name of a 
+<link linkend="https://en.wikipedia.org/wiki/Southern_mountain_cavy">small animal</link> that lives in Argentina's countryside. Cuis Smalltalk was originally forked from Squeak Smalltalk and many of us are also active in the Squeak community. So, picking the onomatopoeia of the voice of a mouse for the name makes sense. As the project was started in Buenos Aires, 'Cuis' (essentially 'Squeak' in Rioplatense Spanish) was the obvious choice.</para></section>
+<section>
+<title>Learning about Cuis Smalltalk</title>
+<para>
+<title>Learning about Cuis Smalltalk</title></para>
+<para></para>
+<para>If you are learning Smalltalk, the Cuis community can help you. Check the 
+<link linkend="https://github.com/Cuis-Smalltalk-Learning/Learning-Cuis">&quot;Learning Cuis Smalltalk&quot;</link> repository. It includes several great tutorials. Also, the TerseGuide.pck.st package (in the /Packages folder in this repo) is useful both as a guide and a reference.</para>
+<para>Additionally, there are many tutorials and references for Smalltalk in the web. They apply quite well to Cuis, especially those written originally for Smalltalk-80 or Squeak. These books 
+<link linkend="http://stephane.ducasse.free.fr/FreeBooks/BlueBook/Bluebook.pdf">&quot;Smalltalk-80 the language and its implementation&quot;</link> and 
+<link linkend="http://stephane.ducasse.free.fr/FreeBooks/InsideST/InsideSmalltalk.pdf">&quot;Inside Smalltalk volume I&quot;</link> are great introductory texts, and they are also the reference for the language and basic class library. Both are freely available.</para>
+<para>The user interface enables you to access most of the code and conduct Smalltalk experiments on your own. You can review its features at 
+<link linkend="https://github.com/Cuis-Smalltalk-Learning/Learning-Cuis/blob/master/Quick-UI-Tour.md">&quot;Quick Tour of the UI&quot;</link>. </para></section>
+<section>
+<title>Contributing to Cuis</title>
+<para>
+<title>Contributing to Cuis</title></para>
+<para></para>
+<para>Cuis is maintained on 
+<ulink url="https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev">https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev</ulink>. The main meeting point for Cuis users and developers is the mail list 
+<ulink url="http://cuis-smalltalk.org/mailman/listinfo/cuis-dev_cuis-smalltalk">http://cuis-smalltalk.org/mailman/listinfo/cuis-dev_cuis-smalltalk</ulink>.org . You can broswse the archives for a glimpse of our discussions.</para>
+<para>If you want to contribute code to the project, please read 
+<ulink url="Managing your code in Cuis">Managing your code in Cuis</ulink>, about developing packages for Cuis, and 
+<ulink url="Cuis and Github">Cuis and Github</ulink>. While Cuis should work equally well with any file-based DVCS, we encourage the use of Git and GitHub.</para>
+<para>In any case, we also accept contributions as ChangeSet files in email. Any contribution must be under the MIT license.</para>
+<para>To contribute code, please use an image with all included packages already loaded, using updated versions, especially, of any affected packages. This will ensure we don't break them while we evolve Cuis.Here is a Smalltalk script to load all packages currently included:</para>
+<para></para>
+<para>
+<programlisting>Feature require: 'Core-Packages'</programlisting></para></section>
+<section>
+<title>License</title>
+<para>
+<title>Cuis License</title></para>
+<para></para>
+<para>Cuis is distributed subject to the MIT License. See the LICENSE file. Any contribution submitted for incorporation into or for distribution with Cuis shall be presumed subject to the same license.</para></section></chapter>
+<chapter>
+<title>Managing your code in Cuis</title>
+<para>
+<title>Managing your code in Cuis</title></para>
+<para></para>
+<para>Cuis includes tools and procedures for managing Smalltalk code. Code that is not part of the Cuis Core image itself, like applications, frameworks and libraries, should be stored in 
+<link linkend="CodePackage">Packages</link>. New code that are meant as patches, fixes or additions; that could eventually become part of Cuis itself, is not part of any 
+<emphasis>Package</emphasis>, and is therefore automatically stored in 
+<link linkend="ChangeSet">ChangeSets</link>.</para>
+<section>
+<title>Packages</title>
+<para>
+<title>Packages</title></para>
+<para></para>
+<para>Let's start with 
+<emphasis>Packages</emphasis> . The Package implementation in Cuis is based on PackageInfo, the standard way to specify packages in Squeak and its derivatives, and used, for example, by Monticello. It uses Package names to specify prefixes for Class and Method categories. Classes and Methods whose categories match a Package's prefixes belong in that Package. More details about how PackageInfo decides what code belongs in a package are available at 
+<ulink url="http://wiki.squeak.org/squeak/3329">http://wiki.squeak.org/squeak/3329</ulink> .</para>
+<para>To install packages 
+<emphasis>(.pck.st files)</emphasis> in Cuis, use the 
+<programlisting>FileListWindow openFileList</programlisting>, navigate to the appropriate directory (on disk, or in a GitHub repository, etc), select the package file and click on 
+<emphasis>[Install Package]</emphasis>.</para>
+<para>Cuis includes a tool to manage installed 
+<emphasis>Packages</emphasis>. It is at 
+<programlisting>CodePackageListWindow openPackageList</programlisting>. To create a new package (instead of installing an existing one from a file), click on 
+<emphasis>[Create Package]</emphasis> This creates a new package, and associates with it all the existing code in the image that matches the package name.</para>
+<para>The operations available on installed or newly created packages are:</para>
+<para></para>
+<para>
+<emphasis>[Save]</emphasis> Saves a package on the file system. Overwrites any existing version. It is good to save the package from time to time, to reduce the risk of losing code.</para>
+<para></para>
+<para>
+<emphasis>[Delete]</emphasis> Removes the Package instance from the image. Does not remove any code. This means, effectively, to merge back the code into Cuis.</para>
+<para></para>
+<para>
+<emphasis>[Browse unsaved Changes]</emphasis> This opens a ChangeSorter on the ChangeSet that captures all the changes done to the Package since it was last saved. Therefore it shows the work done on the package that would be lost if the package is not saved.</para>
+<para></para>
+<para>
+<emphasis>[Browse package code]</emphasis> This opens a Class Browser that only shows the code that belongs in the package. This is useful for working on a package, or studying it.</para>
+<para></para>
+<para>
+<emphasis>[Add requirement]</emphasis> This opens a select list of loaded packages.  Each package provides a 
+<emphasis>Feature</emphasis>.  You can CANCEL, require the current Cuis base version (at a minimum) or require any of the packages on the list.  Required packages will be loaded before the selected package (
+<screen>Feature require: #'your-package'.</screen>).  When a package is selected, the lower browser pane shows its requirents, which may be deleted.  Don't forget to 
+<emphasis>Save</emphasis> your package after adding or deleting  requirements!</para>
+<para>The tool shows, for each Package, the name, whether it is dirty (has unsaved changes) and the file it was installed from / saved to.</para>
+<para>Handling Packages like this, Cuis behaves as a sort of document editor (like, for example a regular text editor) whose documents are 
+<emphasis>Package</emphasis> files 
+<emphasis>(.pck.st)</emphasis>. Cuis doesn't handle Package versions, ancestries, etc. If versioning of Packages is desired, the best is to use a versioning file repository, such as Git or Mercurial. The recommendation is to use a GitHub repository with a name beginning with 'Cuis-Smalltalk-', so it will be easy for anybody to find it. Cuis 
+<emphasis>Package</emphasis> files are uncompressed, use Lf (ASCII 10) as newLine, and are encoded in ISO 8859-15. This means they are Git friendly, and Git/GitHub can diff and merge them, and browse them with syntax highlighting.</para>
+<para>This is not unlike using Git or GitHub with a file-based development environment such as Eclipse or a text editor. Like Cuis, these tools don't do version handling themselves, they just load and save files; and let Git do its magic.</para></section>
+<section>
+<title>Changes to the Cuis base image</title>
+<para>
+<title>Changes to the Cuis base image</title></para>
+<para></para>
+<para>The way 
+<emphasis>ChangeSets</emphasis> are created and managed in Cuis is different from Squeak. This was done to make ChangeSets a good way to manage changes to the base Cuis Core image, while keeping code in Packages out of the way, so they don't get mixed together.</para>
+<para>What is not in a Package belongs (at least temporarily) to the Cuis Core image. Such code is automatically captured in a 
+<emphasis>ChangeSet</emphasis>. The ChangeSet for Core changes is created automatically and named like 
+<emphasis>&quot;1243-CuisCore-JuanVuletich-2012Apr03-22h50m&quot;</emphasis>. The number at the beginning is the next number for the Cuis update stream, and is provided only as a suggestion. The &quot;CuisCore&quot; part is to reveal that the code belongs in the base image and not in some package. Then we have author name and date / time of creation. These 
+<emphasis>ChangeSets</emphasis> are created automatically. There is no longer a way to manually create them, or make them &quot;current&quot; or &quot;active&quot;. It is best to rename them, replacing 
+<emphasis>'CuisCore'</emphasis> with some meaningful name. These 
+<emphasis>ChangeSets</emphasis> will not capture any code that belongs in a Package.</para>
+<para>Opening a 
+<programlisting>ChangeSorterWindow openChangeSorter</programlisting> will show the CuisCore change set. This is useful, for example, to check that no code that was intended for a Package ends here by mistake (because of the wrong class or method category). But it is also useful when doing changes to the base system. Now, we can do changes both to the base system and to a number of packages, all in the same session, without having to be careful about selecting the proper change set before saving a method: The code is automatically added to the proper 
+<emphasis>Package</emphasis> or 
+<emphasis>ChangeSet</emphasis>, simply following the class or method category. Gone are the days of messed up change sets and lost code!</para>
+<para>When the changes to the base system are complete, it is a good time to review the CuisCore change set and, maybe remove from it changes that we don't want to keep (for example, experiments, halts, etc). Then, just do right click / File out and remove. This saves the 
+<emphasis>ChangeSet</emphasis> on disk. It also removes it from the 
+<emphasis>ChangeSorter</emphasis> (but it doesn't remove any code). This is good, because the next changes done will end in a new CuisCore change set, and there's no risk of having undesired changes in the old one. As changes to the base image progress, and several CuisCore 
+<emphasis>ChangeSets</emphasis> are saved to disk, these numbered files are created in sequence. They will be ready to be loaded back in proper order in a fresh Cuis image, or to be sent to Cuis maintainers for integration in the update stream and in next releases of Cuis.</para></section>
+<section>
+<title>Loading ChangeSet files into Cuis</title>
+<para>
+<title>Loading ChangeSet files into Cuis</title></para>
+<para></para>
+<para>There are two ways to load 
+<emphasis>ChangeSet</emphasis> files (.cs): 
+<emphasis>[FileIn]</emphasis> and 
+<emphasis>[Install]</emphasis>.</para>
+<para></para>
+<para>
+<emphasis>[FileIn]</emphasis> loads the code without creating a new 
+<emphasis>ChangeSet</emphasis> object. This means that changes that belong in the base image (and not in a package) will be added to the current ChangeSet for Cuis core changes, as if they were done by the user. This is appropriate when we are combining code from more than one source into a single ChangeSet. Any change that belongs in an installed package will be added to it, and the package will appear as dirty.</para>
+<para></para>
+<para>
+<emphasis>[Install]</emphasis> loads the code into a separate 
+<emphasis>ChangeSet</emphasis> object (viewable in the 
+<programlisting>ChangeSorterWindow openChangeSorter</programlisting> This is appropriate for loading Cuis updates, or other code that we are not authoring, as it doesn't add new items (class or method definitions) to the current ChangeSet for our changes to Cuis. Usually any ChangeSets should be installed before doing changes to the image. The reason is that an installed ChangeSet could overwrite changes done by you, or packages you have installed. If this is the case, the affected packages would appear as dirty, and your change set would include any installed changes (that don't belong in a package). Be careful when saving packages or change sets if this was the case!</para></section></chapter>
+<chapter>
+<title>Additional Packages for Cuis</title>
+<para>
+<title>Additional Packages for Cuis</title></para>
+<para></para>
+<para>The Cuis base image includes only kernel functionailty, very basic libraries, and development tools. Optional functionality, that can be loaded as needed, is stored in separate code Packages. The Cuis community developes and maintains several dozens of such Packages.</para>
+<para>Some of them are included in the main Cuis GitHub repository, at https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev in the 'Packages' folder. Loading 'Core-Packages.pck.st' loads them all:</para>
+<para></para>
+<para>
+<programlisting>Feature require: 'Core-Packages'</programlisting></para></chapter>
+<chapter>
+<title>Cuis and Github</title>
+<para>
+<title>Using Git and GitHub to host and manage Cuis code</title></para>
+<para></para>
+<para>Cuis includes tools and procedures for managing Smalltalk code. Central to this is the management of Packages and Package Files (.pck). But Cuis doesn't do version control. Instead, we suggest using external VCS tools.  In particular, we're using 
+<link linkend="http://www.github.com">GitHub</link>, and the first project we're hosting there is 
+<link linkend="https://github.com/bpieber/Cuis-StyledTextEditor">StyledTextEditor</link>.</para>
+<para>The guiding principle is to 
+<emphasis>not duplicate concepts and behavior</emphasis>. As we're using an external tool (Git) for version control, then we use it as it meant to be used. Most people use Git for version control and a file based IDE such as Eclipse for development. Such IDEs don't do version control themselves. It is done by Git. Do the same: do not include package version control in Cuis. This is a departure from the Monticello /Git integration (smallsource and MonticelloFileTree) by Otto Behrens, Dale Henrichs, etc.</para>
+<para>We use GitHub to host, version, diff and merge external packages (.pck files), i.e. code that is maintained independently and outside Cuis.</para>
+<para>Package files need to be simple text files. Cuis encoding for latin alphabet (ISO 8859-15) is handled without problems by GitHub. Cuis uses the LF (ascii code 10) newline convention, as preferred in GitHub. This allows Git/GitHub to diff versions, and merge branches.</para>
+<para>Each GitHub repository has one set of users and permissions. Each GitHub repository has one state (Git commits repositories, not individual files). Branch and merges are done on the whole repository and not on individual files. Therefore, we need a separate GitHub repository for each project, i.e., for each package or set of closely related packages that are always loaded and maintained together as a whole.</para>
+<para></para>
+<para>
+<title>Development process for External Packages</title></para>
+<para></para>
+<para>This is the suggested procedure for developing external packages. Usually do this every day.</para>
+<para>* Start with a standard (i.e. fresh) Cuis image. Never save the image.</para>
+<para>* Set up Git repositories for external packages (if not already done)</para>
+<para>* Install packages from Git repositories.</para>
+<para>* Develop. Modify and/or create packages.</para>
+<para>* Save own packages (to Git repositories).</para>
+<para>* Git add / commit / push as appropriate.</para>
+<para>* Fileout changes that are not part of any package. These are automatically captured in numbered changesets, separated from changes to packages.</para>
+<para>* Exit the image. Usually without saving.</para></chapter></book>

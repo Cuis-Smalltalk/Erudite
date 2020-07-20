@@ -1,0 +1,660 @@
+<?xml  version="1.0" ?> <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V5.0//EN"
+                   "http://www.oasis-open.org/docbook/xml/5.0/docbook.dtd">
+<book id="Erudite Manual" lang="en">
+<title>Erudite Manual</title>
+<chapter>
+<title>Introduction</title>
+<para>
+<title>Erudite Manual</title></para>
+<para></para>
+<para>by 
+<emphasis>Mariano Montone</emphasis> 
+<emphasis>(marianomontone@gmail.com)</emphasis></para>
+<para></para>
+<para>This is a manual and reference of Erudite Documentation System.</para>
+<para>Erudite 
+<link linkend="EruditeDocument">documents</link> are edited using a wiki-like markup with capabilities for linking and embedding Smalltalk code. </para>
+<para>Main documentation is realized via 
+<link linkend="EruditeBook">books</link>, a collection of documents organized in 
+<link linkend="EruditeBookSection">sections</link>.</para>
+<para>Books are read and edited via the 
+<link linkend="EruditeBookReaderMorph">reader</link> and 
+<link linkend="EruditeBookEditorMorph">editor</link> morphic applications.</para></chapter>
+<chapter>
+<title>Book reader and editor</title>
+<para>
+<title>Book reader and editor</title></para>
+<para></para>
+<para>To read a book, send 
+<ulink url="open">open</ulink> to a 
+<ulink url="Book">Book</ulink>:</para>
+<para></para>
+<para>
+<programlisting>EruditeBook eruditeManual open</programlisting></para>
+<para></para>
+<para>The 
+<link linkend="EruditeBookReaderMorph">book reader</link> has editing capabilities, but the 
+<link linkend="EruditeBookEditorMorph">editor</link> provides live preview and instant updates for editing.</para>
+<para>To edit a book, send 
+<ulink url="edit ">edit </ulink> to a Book:</para>
+<para></para>
+<para>
+<programlisting>EruditeBook eruditeManual edit</programlisting></para>
+<para></para>
+<para>Books are stored as methods in the class side of 
+<ulink url="EruditeBook">EruditeBook</ulink> class and are marked with a pragma 
+<programlisting>&lt;book: 'title'&gt;</programlisting>. To 
+<emphasis>remove</emphasis> a book, just delete the method. To specify the 
+<emphasis>package</emphasis> the book belongs to, just recategorize the method (
+<emphasis>*PackageName</emphasis>).</para>
+<para></para>
+<para>
+<title>The book editor</title></para>
+<para></para>
+<para>Most of the actions are invoked from the context menu of the book 
+<emphasis>explorer</emphasis> on the left of the editor: </para>
+<para></para>
+<para>
+<ulink url="/home/marian/src/erudite-menu.png ">/home/marian/src/erudite-menu.png </ulink></para>
+<para></para>
+<para></para>
+<para>
+<title>Creating a book</title></para>
+<para></para>
+<para>A new book can be created from the WorldMenu 
+<emphasis>Erudite...-&gt;New...</emphasis> menu. Then enter a title and you are ready to go. Always remember to save your book before quiting the editing application. Books are saved as methods on the class side of 
+<ulink url="EruditeBook">EruditeBook</ulink>.</para>
+<para></para>
+<para>
+<title>Editing a book</title></para>
+<para></para>
+<para>Book editing can be invoked via the 
+<ulink url="edit">edit</ulink> message on the book, or the WorldMenu 
+<emphasis>Erudite...-&gt;Edit...</emphasis> menu.</para>
+<para>First of all, a book 
+<emphasis>section</emphasis> needs to be selected or created. Use the editor menu, 
+<emphasis>add section</emphasis>. Then you can start editing the section content on the text panel on the right. Markup syntax is described in 
+<ulink url="Syntax reference ">Syntax reference </ulink>.  </para>
+<para>When you are done, save the book, from the explorer menu 
+<emphasis>save</emphasis>.</para>
+<para></para>
+<para>
+<emphasis>List of menu actions</emphasis></para>
+<para></para>
+<para></para>
+<para>
+<emphasis>add section</emphasis>. Create a new section. If you want to create a section toplevel, then unselect all sections on the left panel before invoking this action. Otherwise, select the section you want the new section to be child of.</para>
+<para>
+<emphasis>rename section</emphasis>. Rename the selected section.</para>
+<para>
+<emphasis>remove section</emphasis>. Remove the selected section.</para>
+<para>
+<emphasis>move up</emphasis>. Move the selected section up (before its left sibling).</para>
+<para>
+<emphasis>move down</emphasis>. Move the selected section down (after its right sibling).</para>
+<para></para>
+<para>
+<emphasis>open</emphasis>. Open an 
+<emphasis>existing book</emphasis> with the book reader.</para>
+<para>
+<emphasis>save</emphasis>. Store the book being edited on a method on the class side of 
+<ulink url="EruditeBook">EruditeBook</ulink>.</para>
+<para>
+<emphasis>edit</emphasis>. Open the 
+<emphasis>current book</emphasis> for editing with the book editor.</para>
+<para>
+<emphasis>save as..</emphasis>. Save the current book as a new book with a different title.</para>
+<para>
+<emphasis>refresh</emphasis>. Invalidates rendering caches of the book reader/editor. Book documents are rerendered after that.</para>
+<para>
+<emphasis>reload</emphasis>. Forgets the current changes and load the book from the storage.</para>
+<para>
+<emphasis>reset variables</emphasis>. The book reader and editor manages Smalltalk variables the same as a Smalltalk Workspace does (see 
+<ulink url="#Syntax test ">#Syntax test </ulink> for examples). This sets already assigned variables to nil.</para>
+<para></para>
+<para>
+<emphasis>explore book</emphasis>. Open the current book with a Smalltalk explorer.</para>
+<para>
+<emphasis>toggle view sources</emphasis>. Makes the text editing panel visible/invisible.</para>
+<para>
+<emphasis>toggle live editing</emphasis>. By default, in the book editor, the markup renderer panel on the left is updated whenever you edit the markup sources on the right panel. The problem with this is that this can be expensive as the content grows and too much parsing and rendering is being done for each change. Toggling live editing off, prevents the left panel from being updated on each change, and update only when markup changes are accepted (alt-S). 
+<emphasis>Tip:</emphasis> toggle live editing off for big documents.</para></chapter>
+<chapter>
+<title>Syntax reference</title>
+<para>
+<title>Syntax reference</title></para>
+<para></para>
+<para></para>
+<para>
+<title>Headings</title></para>
+<para></para>
+<para>Headings start with two or more exclamation marks:</para>
+<para></para>
+<para>
+<screen>!! heading&#10;!!! subheading&#10;!!!! subsubheading</screen></para>
+<para></para>
+<para></para>
+<para>
+<title>Text emphasis</title></para>
+<para></para>
+<para></para>
+<para>
+<title>Bold</title></para>
+<para></para>
+<para>Text between double *: 
+<screen> **bold text** </screen></para>
+<para></para>
+<para></para>
+<para>
+<title>Italics</title></para>
+<para></para>
+<para>Text between double slashes: 
+<screen>//italics//</screen></para>
+<para></para>
+<para></para>
+<para>
+<title>Unformatted text</title></para>
+<para></para>
+<para>To prevent text formatting, enclose the text in triple back quotes.</para>
+<para></para>
+<para>
+<title>Links</title></para>
+<para></para>
+<para>Links have the following syntax:</para>
+<para></para>
+<para>
+<screen>{target::linkType|label}[options]</screen></para>
+<para></para>
+<para>The parser and renderers (formatters) are designed to handle different types of links. The system is extensible. Links for handling Smalltalk code and references are provided in the basic package:</para>
+<para></para>
+<para>
+<title>Section links</title></para>
+<para></para>
+<para>Links to sections in the same book:</para>
+<para></para>
+<para>
+<emphasis>Syntax:</emphasis> 
+<screen>{sectionName::section|optional label}</screen></para>
+<para></para>
+<para>Example: 
+<screen>{Introduction::section}</screen> ==&gt; 
+<ulink url="Introduction">Introduction</ulink></para>
+<para></para>
+<para>Links to sections in another book:</para>
+<para></para>
+<para>
+<emphasis>Syntax:</emphasis> 
+<screen>{bookName#sectionName::section|optional label}</screen></para>
+<para></para>
+<para>Example: 
+<screen>{EruditeManual#Syntax test::section}</screen> ==&gt; 
+<ulink url="Erudite Manual#Syntax test">Erudite Manual#Syntax test</ulink></para>
+<para></para>
+<para></para>
+<para>
+<title>Selectors links</title></para>
+<para></para>
+<para></para>
+<para>
+<emphasis>Syntax:</emphasis> 
+<screen>{selectorName::selector}</screen></para>
+<para></para>
+<para>Example: 
+<screen>{at:put: ::selector}</screen> =&gt; 
+<ulink url="at:put: ">at:put: </ulink></para>
+<para></para>
+<para></para>
+<para>
+<title>Class links</title></para>
+<para></para>
+<para></para>
+<para>
+<emphasis>Syntax:</emphasis> 
+<screen>{className::class|optional label}[options]</screen></para>
+<para></para>
+<para>Example: 
+<screen>{EruditeBook::class}</screen> =&gt; 
+<ulink url="EruditeBook">EruditeBook</ulink></para>
+<para></para>
+<para></para>
+<para>
+<emphasis>Options:</emphasis></para>
+<para>   - 
+<emphasis>embed</emphasis>: embed the class source code.</para>
+<para>Example: </para>
+<para>
+<screen>{EruditeBook::class}[embed]</screen> =&gt; </para>
+<para>
+<ulink url="EruditeBook">EruditeBook</ulink></para>
+<para></para>
+<para></para>
+<para>
+<title>Methods links</title></para>
+<para></para>
+<para></para>
+<para>
+<emphasis>Syntax:</emphasis> 
+<screen>{Class&gt;&gt;selector ::method|optional label}[options]</screen></para>
+<para></para>
+<para>Example: 
+<screen>{EruditeBook&gt;&gt;initialize: ::method}</screen> =&gt; 
+<ulink url="EruditeBook&gt;&gt;initialize: ">EruditeBook&gt;&gt;initialize: </ulink></para>
+<para></para>
+<para></para>
+<para>
+<emphasis>Options:</emphasis></para>
+<para>   - 
+<emphasis>embed</emphasis>: embed the method source code.</para>
+<para>Example:</para>
+<para>
+<screen>{EruditeBook&gt;&gt;initialize: ::method}[embed]</screen></para>
+<para>=&gt;</para>
+<para>
+<ulink url="EruditeBook&gt;&gt;initialize: ">EruditeBook&gt;&gt;initialize: </ulink></para>
+<para></para>
+<para></para>
+<para>
+<title>HTTP URLs</title></para>
+<para></para>
+<para></para>
+<para>
+<emphasis>Syntax:</emphasis> 
+<screen>{HTTP url address ::url|optional label}</screen></para>
+<para></para>
+<para></para>
+<para>
+<emphasis>Example:</emphasis> 
+<screen>{http://cuis-smalltalk.org::url|Cuis Smalltalk}</screen> =&gt; 
+<link linkend="http://cuis-smalltalk.org">Cuis Smalltalk</link></para>
+<para></para>
+<para></para>
+<para>
+<title>Images</title></para>
+<para></para>
+<para>Images from files can be inserted via links:</para>
+<para></para>
+<para>
+<screen>{filePath ::image}</screen></para>
+<para></para>
+<para>Images are serialized to the Erudite Document; there's no need to ship the images separately with the books.</para>
+<para>Example: </para>
+<para></para>
+<para>
+<ulink url="/home/marian/Escritorio/smalltalk-logo.png">/home/marian/Escritorio/smalltalk-logo.png</ulink></para>
+<para></para>
+<para></para>
+<para>
+<title>Code</title></para>
+<para></para>
+<para>Code is enclosed between triple brackets, like: 
+<screen>[[[code]]]</screen>. Only Smalltalk code is supported at the moment.</para>
+<para></para>
+<para>
+<emphasis>Syntax</emphasis>: 
+<screen>[[[code]]] action</screen>. Where action is optional.</para>
+<para></para>
+<para>
+<emphasis>Actions:</emphasis></para>
+<para>  - 
+<emphasis>doIt</emphasis> : Renders a link besides the code with which to evaluate the code.  - 
+<emphasis>exploreIt</emphasis> : Renders a link besides the code with which to explore the result of code evaluation.  - 
+<emphasis>inspectIt</emphasis> : Renders a link besides the code with which to inspect the result of code evaluation.  - 
+<emphasis>printIt</emphasis> : Renders a link besides the code with which to print the result of code evaluation to the Transcript.  - 
+<emphasis>printItHere</emphasis> : Renders the result of code evaluation in place.  - 
+<emphasis>embedIt</emphasis> : The code is not shown. The result is printed to the document in place.  - 
+<emphasis>doItWithButton</emphasis> : Does not render the code. Instead, it makes a link with 
+<emphasis>label</emphasis> that evaluates the code. Syntax: 
+<screen>[[[code]]] doItWithButton: label.</screen> 
+<emphasis>IMPORTANT: label ends in a period</emphasis>.  - 
+<emphasis>exploreItWithButton</emphasis> : Same as above, but explore.  - 
+<emphasis>inspectItWithButton</emphasis> : Same as above, but inspect.</para>
+<para></para>
+<para>
+<emphasis>Examples:</emphasis></para>
+<para></para>
+<para>Plain Smalltalk code: 
+<programlisting>Dictionary new at: #foo put: 'bar'</programlisting>.</para>
+<para>
+<programlisting>Dictionary new at: #foo put: 'bar'; yourself</programlisting>.</para>
+<para>
+<programlisting>Dictionary new at: #foo put: 'bar'; yourself</programlisting></para>
+<para></para>
+<para>
+<programlisting>2 + 4 * 5</programlisting></para>
+<para></para>
+<para>
+<programlisting>ImageMorph new</programlisting></para>
+<para></para>
+<para></para></chapter>
+<chapter>
+<title>Literate Programming</title>
+<para>
+<title>Literate Programming</title></para>
+<para></para>
+<para></para>
+<para>
+<title>Concept</title></para>
+<para></para>
+<para>Literate programming is a style of programming invented by Donald Knuth, where the main idea is that a program's source code is made primarily to be read and understood by other people, and secondarily to be executed by the computer.</para>
+<para>This frees the programmer from the structure of a program imposed by the computer and means that the programmer can develop programs in the order of the flow of their thoughts.</para>
+<para>A Literate program consists of explanation of the code in a natural language such as English, interspersed with snippets of code to be executed. This means that Literate programs are very easy to understand and share, as all the code is well explained.</para>
+<para></para>
+<para>
+<emphasis>Donald Knuth. &quot;Literate Programming (1984)&quot; in Literate Programming. CSLI, 1992, pg. 99.:</emphasis></para>
+<para></para>
+<para></para>
+<para>
+<emphasis>&quot;I believe that the time is ripe for significantly better documentation of programs, and that we can best achieve this by considering programs to be works of literature. Hence, my title: &quot;Literate Programming.&quot;</emphasis></para>
+<para></para>
+<para></para>
+<para>
+<emphasis>Let us change our traditional attitude to the construction of programs: Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.</emphasis></para>
+<para></para>
+<para></para>
+<para>
+<emphasis>The practitioner of literate programming can be regarded as an essayist, whose main concern is with exposition and excellence of style. Such an author, with thesaurus in hand, chooses the names of variables carefully and explains what each variable means. He or she strives for a program that is comprehensible because its concepts have been introduced in an order that is best for human understanding, using a mixture of formal and informal methods that reinforce each other.&quot;</emphasis></para>
+<para></para>
+<para></para>
+<para>
+<title>Advantages</title></para>
+<para></para>
+<para>According to Knuth, literate programming provides higher-quality programs, since it forces programmers to explicitly state the thoughts behind the program, making poorly thought-out design decisions more obvious. Knuth also claims that literate programming provides a first-rate documentation system, which is not an add-on, but is grown naturally in the process of exposition of one's thoughts during a program's creation. The resulting documentation allows the author to restart his own thought processes at any later time, and allows other programmers to understand the construction of the program more easily. This differs from traditional documentation, in which a programmer is presented with source code that follows a compiler-imposed order, and must decipher the thought process behind the program from the code and its associated comments. The meta-language capabilities of literate programming are also claimed to facilitate thinking, giving a higher &quot;bird's eye view&quot; of the code and increasing the number of concepts the mind can successfully retain and process. Applicability of the concept to programming on a large scale, that of commercial-grade programs, is proven by an edition of TeX code as a literate program.</para>
+<para></para>
+<para>
+<title>Contrast with documentation generation</title></para>
+<para></para>
+<para>Literate programming is very often misunderstood to refer only to formatted documentation produced from a common file with both source code and comments -which is properly called documentation generation-; or to voluminous commentaries included with code. This is backwards: well-documented code or documentation extracted from code follows the structure of the code, with documentation embedded in the code; in literate programming code is embedded in documentation, with the code following the structure of the documentation.</para>
+<para>This misconception has led to claims that comment-extraction tools, such as the Perl Plain Old Documentation or Java Javadoc systems, are &quot;literate programming tools&quot;. However, because these tools do not implement the &quot;web of abstract concepts&quot; hiding behind the system of natural-language macros, or provide an ability to change the order of the source code from a machine-imposed sequence to one convenient to the human mind, they cannot properly be called literate programming tools in the sense intended by Knuth.</para>
+<para></para>
+<para>
+<title>Literate Programming with Erudite</title></para>
+<para></para>
+<para>Literate Programming can be realized by the creation of Erudite 
+<link linkend="EruditeBook">books</link>. In particular, via code embedding in its different forms. Contrary to other LP systems, there's no need for a tangling and weaving phase; the document source is kept separately from the source code, Smalltalk code is referenced and embedded from the documentation. That means that in spite of documentation and code being separate, the referenced code is always up to date. Finally, the possibility of evaluating Smalltalk code from the documentation makes Erudite very unique compared to the other LP systems.</para></chapter>
+<chapter>
+<title>Syntax test</title>
+<para>
+<title>Syntax test</title></para>
+<para></para>
+<para></para>
+<para>
+<title>Headings</title></para>
+<para></para>
+<para></para>
+<para>
+<title>heading1</title></para>
+<para></para>
+<para>
+<title>heading2</title></para>
+<para></para>
+<para>
+<title>heading3</title></para>
+<para></para>
+<para>
+<title>heading4</title></para>
+<para></para>
+<para></para>
+<para>
+<title>Emphasis</title></para>
+<para></para>
+<para></para>
+<para>
+<emphasis>bold</emphasis></para>
+<para></para>
+<para>
+<emphasis>italics</emphasis></para>
+<para></para>
+<para></para>
+<para>
+<title>Unformatted</title></para>
+<para></para>
+<para></para>
+<para>
+<screen>unformatted **unformatted** //unformatted//</screen></para>
+<para></para>
+<para></para>
+<para>
+<title>Code blocks</title></para>
+<para></para>
+<para></para>
+<para>
+<programlisting>Smalltalk at: #Object</programlisting></para>
+<para></para>
+<para>
+<programlisting>Smalltalk inspect</programlisting></para>
+<para></para>
+<para>
+<programlisting>Smalltalk</programlisting></para>
+<para></para>
+<para>
+<programlisting>Smalltalk</programlisting></para>
+<para></para>
+<para>
+<programlisting>Smalltalk</programlisting></para>
+<para></para>
+<para>
+<programlisting>2 * 3 + 5 / 34</programlisting></para>
+<para></para>
+<para>
+<programlisting>ImageMorph new</programlisting></para>
+<para></para>
+<para>
+<programlisting>ImageMorph new</programlisting></para>
+<para></para>
+<para></para>
+<para>
+<programlisting>z _ true</programlisting></para>
+<para></para>
+<para>
+<programlisting>z</programlisting></para>
+<para></para>
+<para></para>
+<para>
+<programlisting>x := 22</programlisting></para>
+<para></para>
+<para>
+<programlisting>x</programlisting></para>
+<para></para>
+<para></para>
+<para>
+<title>Links</title></para>
+<para></para>
+<para></para>
+<para>
+<ulink url="Literate Programming ">Literate Programming </ulink>.Read the 
+<link linkend="Introduction">introduction</link>.</para>
+<para>
+<ulink url="Erudite Manual#Syntax test">Erudite Manual#Syntax test</ulink></para>
+<para></para>
+<para></para>
+<para>
+<ulink url="Object">Object</ulink></para>
+<para></para>
+<para>
+<link linkend="Object">labelled class</link></para>
+<para></para>
+<para>
+<ulink url="Object">Object</ulink></para>
+<para></para>
+<para></para>
+<para>
+<ulink url="Dictionary&gt;&gt;at: ">Dictionary&gt;&gt;at: </ulink></para>
+<para></para>
+<para>
+<link linkend="Dictionary&gt;&gt;at: ">labelled method</link></para>
+<para></para>
+<para>
+<ulink url="Dictionary&gt;&gt;at: ">Dictionary&gt;&gt;at: </ulink></para>
+<para></para>
+<para></para>
+<para>
+<ulink url="print">print</ulink></para>
+<para></para>
+<para>
+<ulink url="print">print</ulink></para>
+<para></para>
+<para>
+<ulink url="print">print</ulink></para>
+<para></para>
+<para>
+<ulink url="at:put: ">at:put: </ulink></para>
+<para></para>
+<para></para>
+<para>
+<ulink url="http://www.cuis-smalltalk.org">http://www.cuis-smalltalk.org</ulink></para>
+<para></para>
+<para>
+<link linkend="http://www.cuis-smalltalk.org">Cuis Smalltalk</link></para>
+<para></para>
+<para></para>
+<para>
+<title>Images</title></para>
+<para></para>
+<para></para>
+<para>
+<ulink url="/home/marian/Escritorio/smalltalk-logo.png ">/home/marian/Escritorio/smalltalk-logo.png </ulink></para></chapter>
+<chapter>
+<title>Implementation</title>
+<para>
+<title>Implementation</title></para>
+<para></para>
+<para>This section describes how Erudite is implemented. It is a simple example of how literate-programming can be realized with Erudite.</para>
+<para></para>
+<para>
+<title>Model</title></para>
+<para></para>
+<para>The model in Erudite consists of 
+<ulink url="EruditeDocument">EruditeDocument</ulink> and 
+<ulink url="EruditeBook">EruditeBook</ulink> classes.</para>
+<para>Erudite documents are piece of text meant to be formatted. Their content is Erudite source code.</para>
+<para>Erudite books are formed of 
+<link linkend="EruditeBookSection">sections</link>. Each section has a document and other subsections as children. Each subsection also has a document and other subsubsections as children, and so on, and so on.</para>
+<para></para>
+<para>
+<title>Parser</title></para>
+<para></para>
+<para>The Erudite source code parser is implemented as a PEG parser using 
+<link linkend="PetitParser tutorial#Introduction">PetitParser</link>. 
+<ulink url="EruditeMarkupGrammar">EruditeMarkupGrammar</ulink> describes the grammar abstractly and 
+<ulink url="EruditeMarkupParser">EruditeMarkupParser</ulink> is the actual parser (returns parse nodes). You can test the parser invoking the 
+<ulink url="parse: ">parse: </ulink> message on it:</para>
+<para></para>
+<para>
+<programlisting>EruditeMarkupParser parse: '!!! A heading'</programlisting></para>
+<para></para>
+<para>You can also test particular grammar rules:</para>
+<para></para>
+<para>
+<programlisting>EruditeMarkupParser new heading2 parse: '!!! A heading'</programlisting></para>
+<para></para>
+<para></para>
+<para>
+<title>Smalltalk parser</title></para>
+<para></para>
+<para>The 
+<link linkend="SmalltalkEruditeParser">Smalltalk parser</link> parses Smalltalk comments into Erudite documents. This parser tries to interpret the different type of references in Smalltalk comments, like classes methods and selectors. This parser is used by the Erudite tools extensions.</para>
+<para></para>
+<para>
+<title>Formatter</title></para>
+<para></para>
+<para>There are two formatters implemented at the moment. A Morphic formatter, used by the Morphic book reader and editor. And a Latex formatter with which you can generate PDF documents.</para>
+<para></para>
+<para>
+<title>Morphic formatter</title></para>
+<para></para>
+<para>The Morphic formatter is implemented in 
+<ulink url="MorphicEruditeDocRenderer">MorphicEruditeDocRenderer</ulink>. It is implemented as a visitor that outputs attributed Morphic 
+<ulink url="Text">Text</ulink> on each visit to a parse node.</para>
+<para>Here is an example of how it is used:</para>
+<para></para>
+<para>
+<programlisting>|erudite|&#10;erudite _ SmalltalkEruditeParser parse: 'This is an Object. Look at Object&gt;&gt;at:&#10;Events are triggered via #triggerEvent:'.&#10;&#10;(MorphicEruditeDocRenderer on: erudite) render edit</programlisting></para>
+<para></para>
+<para></para>
+<para>
+<title>Latex formatter</title></para>
+<para></para>
+<para>The Latex formatter is implemented in 
+<ulink url="LatexEruditeDocRenderer">LatexEruditeDocRenderer</ulink>.</para>
+<para>For example, this is how to generate a Latex/PDF for Erudite manual. First generate the 
+<screen>.tex</screen> file:</para>
+<para></para>
+<para>
+<programlisting> (LatexEruditeDocRenderer on: EruditeBook eruditeManual)&#10;&#9;texFilePath: '/tmp/EruditeManual.tex';&#10;&#9;render</programlisting></para>
+<para></para>
+<para>Then process it with 
+<screen>pdflatex</screen> command:</para>
+<para></para>
+<para>
+<screen>pdflatex -shell-escape /tmp/EruditeManual.tex</screen></para>
+<para></para>
+<para></para>
+<para>
+<title>Links renderers</title></para>
+<para></para>
+<para>Erudite document links are parsed in a generic way. Their syntax is like this: 
+<screen>{target::linkClass|optionalLabel}</screen>. That linkClass is then used to match a valid renderer. Links renderers are subclasses of 
+<ulink url="DocLinkRenderer">DocLinkRenderer</ulink> and are matched looking for the class named &lt;linkClass&gt;DocLinkRenderer (DocLinkRenderer classes with linkClass as prefix), and invoked via 
+<link linkend="render:in:on: ">render: aDocLink in: aDocument on: aStream</link> message.</para>
+<para></para>
+<para>
+<title>Book storage</title></para>
+<para></para>
+<para>Books are stored as serialized Smalltalk objects inside methods at the class side of 
+<ulink url="EruditeBook">EruditeBook</ulink>:</para>
+<para></para>
+<para>
+<ulink url="EruditeBook&gt;&gt;store">EruditeBook&gt;&gt;store</ulink></para>
+<para></para>
+<para></para>
+<para>
+<ulink url="EruditeBook&gt;&gt;storeOnMethod: ">EruditeBook&gt;&gt;storeOnMethod: </ulink></para>
+<para></para>
+<para>As you can see, it is done via the 
+<ulink url="storeOn: ">storeOn: </ulink> method (it is indirectly call from 
+<ulink url="WriteStream&gt;&gt;store: ">WriteStream&gt;&gt;store: </ulink> method).</para>
+<para>Invoking the serialized methods returns the book:</para>
+<para></para>
+<para>
+<programlisting>EruditeBook cuisManual</programlisting></para>
+<para></para>
+<para>Methods with Books are tagged with a 
+<emphasis>book</emphasis> pragma, that is used later for listing available books:</para>
+<para></para>
+<para>
+<ulink url="EruditeBook class&gt;&gt;booksList">EruditeBook class&gt;&gt;booksList</ulink></para></chapter>
+<chapter>
+<title>Extensions</title>
+<para>
+<title>Extensions</title></para>
+<para></para>
+<para>Extensions to Smalltalk tools are shipped separately.</para>
+<para>To install: 
+<programlisting>Feature require: 'EruditeToolsExtensions'</programlisting></para>
+<para></para>
+<para></para>
+<para>
+<title>List of extensions</title></para>
+<para></para>
+<para></para>
+<para>
+<emphasis>Markup and formatting in class comments</emphasis></para>
+<para></para>
+<para>This is implemented.</para>
+<para></para>
+<para>
+<emphasis>Markup and formatting of code comments</emphasis></para>
+<para></para>
+<para>TODO. Not implemented yet. </para></chapter>
+<chapter>
+<title>Extras</title>
+<para>
+<title>Extras</title></para>
+<para></para>
+<para>A PetitParser tutorial is included in the Erudite distribution.</para>
+<para>To install: 
+<programlisting>Feature require: 'PetitParserTutorial'</programlisting></para>
+<para></para>
+<para>Also, a book on Morphic, the Cuis UI system:</para>
+<para>To install: 
+<programlisting>Feature require: 'MorphicBook'</programlisting></para></chapter></book>
