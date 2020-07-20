@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4241] on 19 July 2020 at 10:41:44 pm'!
+'From Cuis 5.0 [latest update: #4241] on 20 July 2020 at 11:36:31 am'!
 'Description DocBook import/export for Erudite.'!
-!provides: 'EruditeDocBook' 1 4!
+!provides: 'EruditeDocBook' 1 5!
 !requires: 'Erudite' 1 139 nil!
 !requires: 'YAXO' 1 16 nil!
 SystemOrganization addCategory: #EruditeDocBook!
@@ -96,14 +96,14 @@ initialize: aBook
 	language _ 'en'.
 	level _ 0! !
 
-!EruditeDocBookRenderer methodsFor: 'as yet unclassified' stamp: 'MM 7/19/2020 10:37:43'!
+!EruditeDocBookRenderer methodsFor: 'as yet unclassified' stamp: 'MM 7/20/2020 11:35:20'!
 render
 
 	self renderWithTemplate: [
 		book sections do: [:aBookSection | 
 			self renderSection: aBookSection]].
 	
-	docBookFilePath ifNotNil: [:f | f fileContents: stream contents].
+	docBookFilePath ifNotNil: [:f | f fileContents: stream contents asUtf8 ].
 	
 	^stream contents! !
 
@@ -173,7 +173,7 @@ renderCodeEmbedIt: aDocCode
 	
 	stream nextPut: (Text streamContents: [:s | result printOn: s])! !
 
-!EruditeDocBookRenderer methodsFor: 'as yet unclassified' stamp: 'MM 7/18/2020 20:46:08'!
+!EruditeDocBookRenderer methodsFor: 'as yet unclassified' stamp: 'MM 7/20/2020 11:16:34'!
 renderCodeExploreIt: aDocCode
 
 	|text button evalString textModel |
@@ -189,8 +189,8 @@ renderCodeExploreIt: aDocCode
 	stream nextPut: ' '.
 	
 	button _ Text string: '[exploreIt]' 
-		attributes: {TextEmphasis underlined. 
-					BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) explore]}.
+				  attributes: {TextEmphasis underlined. 
+							BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) explore]}.
 	stream nextPut: button.! !
 
 !EruditeDocBookRenderer methodsFor: 'as yet unclassified' stamp: 'MM 7/18/2020 20:46:08'!
@@ -342,13 +342,15 @@ renderSubsubsection: aBookSection
 	
 	! !
 
-!EruditeDocBookRenderer methodsFor: 'as yet unclassified' stamp: 'MM 7/19/2020 22:41:32'!
+!EruditeDocBookRenderer methodsFor: 'as yet unclassified' stamp: 'MM 7/20/2020 11:34:17'!
 renderWithTemplate: aBlock
-	xml xmlDeclaration: '1.0'.
+	xml xmlDeclaration: '1.0' encoding: 'utf-8'.
 	stream nextPutAll: ' <!!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V5.0//EN"
                    "http://www.oasis-open.org/docbook/xml/5.0/docbook.dtd">'. 
 	self withElement: 'book' andAttributes: {'id' -> book title. 'lang' -> language} 
-		do: aBlock! !
+		do: [ self withElement: 'title' do: [
+				self pcData: book title].
+			aBlock value]! !
 
 !EruditeDocBookRenderer methodsFor: 'as yet unclassified' stamp: 'MM 7/18/2020 20:46:08'!
 visitActionLink: aDocLink
