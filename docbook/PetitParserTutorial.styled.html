@@ -1,0 +1,487 @@
+<span style="color: red">&lt;book&gt;
+<span style="color: red">&lt;title&gt;PetitParser tutorial&lt;/title&gt;</span>
+<span style="color: red">&lt;chapter&gt;
+<span style="color: red">&lt;title&gt;Introduction&lt;/title&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;title&gt;PetitParser: Building modular parsers&lt;/title&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;with the participation of:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;Jan Kurs&lt;/emphasis&gt;</span> 
+<span style="color: red">&lt;emphasis&gt;(kurs@iam.unibe.ch)&lt;/emphasis&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;Guillaume Larcheveque&lt;/emphasis&gt;</span> 
+<span style="color: red">&lt;emphasis&gt;(guillaume.larcheveque@gmail.com)&lt;/emphasis&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;Lukas Renggli&lt;/emphasis&gt;</span> 
+<span style="color: red">&lt;emphasis&gt;(renggli@gmail.com)&lt;/emphasis&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;Building parsers to analyze and transform data is a common task in software development. In this chapter we present a powerful parser framework called PetitParser. PetitParser combines many ideas from various parsing technologies to model grammars and parsers as objects that can be reconfigured dynamically. PetitParser was written by Lukas Renggli as part of his work on the Helvetia system 1 but it can be used as a standalone library.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>&lt;/chapter&gt;</span>
+<span style="color: red">&lt;chapter&gt;
+<span style="color: red">&lt;title&gt;Writing parsers with PetitParser&lt;/title&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;title&gt;Writing parsers with PetitParser&lt;/title&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;PetitParser is a parsing framework different from many other popular parser generators. PetitParser makes it easy to define parsers with Smalltalk code and to dynamically reuse, compose, transform and extend grammars. We can reflect on the resulting grammars and modify them on-the-fly. As such PetitParser fits better the dynamic nature of Smalltalk.Furthermore, PetitParser is not based on tables such as SmaCC and ANTLR. Instead it uses a combination of four alternative parser methodologies: scannerless parsers, parser combinators, parsing expression grammars and packrat parsers. As such PetitParser is more powerful in what it can parse. &lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;Let's have a quick look at these four parser methodologies:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;Scannerless Parsers&lt;/emphasis&gt;</span> combine what is usually done by two independent tools (scanner and parser) into one. This makes writing a grammar much simpler and avoids common problems when grammars are composed.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;Parser Combinators&lt;/emphasis&gt;</span> are building blocks for parsers modeled as a graph of composable objects; they are modular and maintainable, and can be changed, recomposed, transformed and reflected upon.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;Parsing Expression Grammars&lt;/emphasis&gt;</span> (PEGs) provide the notion of ordered choices. Unlike parser combinators, the ordered choice of PEGs always follows the first matching alternative and ignores other alternatives. Valid input always results in exactly one parse-tree, the result of a parse is never ambiguous.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;Packrat Parsers&lt;/emphasis&gt;</span> give linear parse-time guarantees and avoid common problems with left-recursion in PEGs.&lt;/para&gt;</span>
+<span style="color: red">&lt;section&gt;
+<span style="color: red">&lt;title&gt;Writing a simple grammar&lt;/title&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;title&gt;Writing a simple grammar&lt;/title&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;Writing grammars with PetitParser is as simple as writing Smalltalk code. For example, to define a grammar that parses identifiers starting with a letter followed by zero or more letters or digits is defined and used as follows:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier := #letter asParser , #word asParser star.
+identifier parse: 'a987jlkj'
+&lt;/programlisting&gt;</span>&lt;/para&gt;</span>&lt;/section&gt;</span>
+<span style="color: red">&lt;section&gt;
+<span style="color: red">&lt;title&gt;Parsing some input&lt;/title&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;title&gt;Parsing some input&lt;/title&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;To actually parse a string (or stream) we use the method 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;parse: &lt;/ulink&gt;</span> as follows:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier parse: 'yeah'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier parse: 'f123'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;While it seems odd to get these nested arrays with characters as a return value, this is the default decomposition of the input into a parse tree. We'll see in a while how that can be customized. If we try to parse something invalid we get an instance of 
+<span style="color: red">&lt;ulink&gt;PPFailure&lt;/ulink&gt;</span> as an answer:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier parse: '123'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;This parsing results in a failure because the first character ( 1 ) is not a letter. Instances of PPFailure are the only objects in the system that answer with true when you send the message 
+<span style="color: red">&lt;ulink&gt;isPetitFailure&lt;/ulink&gt;</span>. Alternatively you can also use 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;parse:onError: &lt;/ulink&gt;</span> to throw an exception in case of an error:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier
+   parse: '123'
+   onError: [ :msg :pos | self error: msg ] &lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;If you are only interested if a given string (or stream) matches or not you can use the following constructs:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier matches: 'foo'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier matches: '123'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier matches: 'foo()'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;The last result can be surprising: indeed, a parenthesis is neither a digit nor a letter as was specified by the 
+<span style="color: red">&lt;programlisting&gt;#word asParser&lt;/programlisting&gt;</span> expression. In fact, the identifier parser matches 
+<span style="color: red">&lt;programlisting&gt;'foo'&lt;/programlisting&gt;</span> and this is enough for the 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;matches: &lt;/ulink&gt;</span> call to return true . The result would be similar with the use of parse: which would return 
+<span style="color: red">&lt;programlisting&gt;#($f #($o $o))&lt;/programlisting&gt;</span> .If you want to be sure that the complete input is matched, use the message 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;end &lt;/ulink&gt;</span> as follows:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier end matches:'foo'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;The 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;end &lt;/ulink&gt;</span> message creates a new parser that matches the end ofinput. To be able to compose parsers easily, it is important that parsers do not match the end of input by default. Because of this, you might be interested to find all the places that a parser can match using the message 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;matchesSkipIn: &lt;/ulink&gt;</span> and 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;matchesIn: &lt;/ulink&gt;</span>.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier matchesSkipIn: 'foo 123 bar12'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier matchesIn: 'foo 123 bar12'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;The 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;matchesSkipIn: &lt;/ulink&gt;</span> method returns a collection of arrays containing what has been matched. This function avoids parsing the same character twice. The method 
+<span style="color: red">&lt;ulink&gt;PPParser»matchesIn: &lt;/ulink&gt;</span> does a similar job but returns a collection with all possible sub-parsed elements: e.g., evaluating 
+<span style="color: red">&lt;programlisting&gt;identifier matchesIn: 'foo 123 bar12'&lt;/programlisting&gt;</span> returns a collection of 6 elements.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;Similarly, to find all the matching ranges (index of first character andindex of last character) in the given input one can use either 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;matchingSkipRangesIn: &lt;/ulink&gt;</span> or 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;matchingRangesIn: &lt;/ulink&gt;</span> as shown by the script below:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier matchingSkipRangesIn: 'foo 123 bar12'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier matchingRangesIn: 'foo 123 bar12'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>&lt;/section&gt;</span>
+<span style="color: red">&lt;section&gt;
+<span style="color: red">&lt;title&gt;Different kinds of parsers&lt;/title&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;title&gt;Different kinds of parsers&lt;/title&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;PetitParser provide a large set of ready-made parser that you can compose to consume and transform arbitrarily complex languages. The terminal parsers are the most simple ones. We've already seen a few of those, some more are defined in the protocol Table 1.1.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;The class side of 
+<span style="color: red">&lt;ulink&gt;PPPredicateObjectParser&lt;/ulink&gt;</span> provides a lot of other factory methods that can be used to build more complex terminal parsers. To use them, send the message 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;asParser &lt;/ulink&gt;</span> to a symbol containing the name of the factory method (such as 
+<span style="color: red">&lt;programlisting&gt;#punctuation asParser&lt;/programlisting&gt;</span> ).&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;The next set of parsers are used to combine other parsers together and isdefined in the protocol:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;Terminal Parsers&lt;/emphasis&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;$a asParser&lt;/programlisting&gt;</span>. Parses the character $a.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;'abc' asParser&lt;/programlisting&gt;</span>. Parses the string 'abc'.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;#any asParser&lt;/programlisting&gt;</span>. Parses any character.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;#digit asParser&lt;/programlisting&gt;</span>. Parses one digit (0..9).&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;#letter asParser&lt;/programlisting&gt;</span>. Parses one letter (a..z and A..Z).&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;#word asParser&lt;/programlisting&gt;</span>. Parses a digit or letter.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;#blank asParser&lt;/programlisting&gt;</span>. Parses a space or a tabulation.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;#newline asParser&lt;/programlisting&gt;</span>. Parses the carriage return or line feed characters.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;#space asParser&lt;/programlisting&gt;</span>. Parses any white space character including new line.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;#tab asParser&lt;/programlisting&gt;</span>. Parses a tab character.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;#lowercase asParser&lt;/programlisting&gt;</span>. Parses a lowercase character.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;#uppercase asParser&lt;/programlisting&gt;</span>. Parses an uppercase character.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;nil asParser&lt;/programlisting&gt;</span>. Parses nothing.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;Parser Combinators&lt;/emphasis&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p1 , p2&lt;/emphasis&gt;</span>. Parses p1 followed by p2 (sequence).&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p1 / p2&lt;/emphasis&gt;</span>. Parses p1, if that doesn't work parses p2.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p star&lt;/emphasis&gt;</span>. Parses zero or more p.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p plus&lt;/emphasis&gt;</span>. Parses one or more p.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p optional&lt;/emphasis&gt;</span>. Parses p if possible.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p and&lt;/emphasis&gt;</span>. Parses p but does not consume its input.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p negate&lt;/emphasis&gt;</span>. Parses p and succeeds when p fails.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p not&lt;/emphasis&gt;</span>. Parses p and succeeds when p fails, but does not consume its input.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p end&lt;/emphasis&gt;</span>. Parses p and succeeds only at the end of the input.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p times: n&lt;/emphasis&gt;</span>. Parses p exactly n times.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p min: n max: m&lt;/emphasis&gt;</span>. Parses p at least n times up to m times&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p starLazy: q&lt;/emphasis&gt;</span>. Like  star  but  stop  consumming  when  q  suc-ceeds&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;As a simple example of parser combination, the following definition of the&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;identifier2 parser&lt;/emphasis&gt;</span> is equivalent to our previous definition of 
+<span style="color: red">&lt;emphasis&gt;identifier&lt;/emphasis&gt;</span>:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;identifier2 := #letter asParser , (#letter asParser / #digit asParser) star&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;title&gt;Parser action&lt;/title&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;To define an action or transformation on a parser we can use one of the mes-sages 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;==&gt; &lt;/ulink&gt;</span>, 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;flatten &lt;/ulink&gt;</span>, 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;token &lt;/ulink&gt;</span> and 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;trim &lt;/ulink&gt;</span> defined in the protocol:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;Action parsers&lt;/emphasis&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p flatten&lt;/emphasis&gt;</span>. Creates a string from the result of p.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p token&lt;/emphasis&gt;</span>. Similar to flatten but returns a 
+<span style="color: red">&lt;ulink&gt;PPToken&lt;/ulink&gt;</span> with details.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p trim&lt;/emphasis&gt;</span>. Trims white spaces before and after p.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p trim: trimParser&lt;/emphasis&gt;</span>. Trims whatever trimParser can parse (e.g., comments).&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;emphasis&gt;p ==&gt; aBlock&lt;/emphasis&gt;</span>. Performs the transformation given in aBlock.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;To return a string of the parsed identifier instead of getting an array of matched elements, configure the parser by sending it the message 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;flatten &lt;/ulink&gt;</span>.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;|identifier|
+identifier := (#letter asParser , (#letter asParser / #digit asParser) star).
+identifier parse: ' ajka0 '&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;|identifier|
+identifier := (#letter asParser , (#letter asParser / #digit asParser) star).
+identifier parse: 'ajka0'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;Sending the message trim is equivalent to calling 
+<span style="color: red">&lt;ulink&gt;PPParser&gt;&gt;trim: &lt;/ulink&gt;</span> with 
+<span style="color: red">&lt;programlisting&gt;#space asParser&lt;/programlisting&gt;</span> as a parameter. That means 
+<span style="color: red">&lt;emphasis&gt;trim:&lt;/emphasis&gt;</span> can be useful to ignore other data from the input, source code comments for example:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;| identifier comment ignorable line |
+identifier := (#letter asParser , #word asParser star) flatten.
+comment := '//' asParser, #newline asParser negate star.
+ignorable := comment / #space asParser.
+line := identifier trim: ignorable.
+line parse: '// This is a comment
+oneIdentifier // another comment'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;The message PPParser»==&gt; lets you specify a block to be executed when the parser matches an input. The next section presents several examples. Here is a simple way to get a number from its string representation.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;number := #digit asParser plus flatten&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;number parse: '123'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;The table 1.3 shows the basic elements to build parsers. There are a few more well documented and tested factory methods in the operators protocols of PPParser . If you want to know more about these factory methods, browse these protocols. An interesting one is separatedBy: which answers a new parser that parses the input one or more times, with separations specified by another parser.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>&lt;/section&gt;</span>
+<span style="color: red">&lt;section&gt;
+<span style="color: red">&lt;title&gt;Writing a more complicated grammar&lt;/title&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;title&gt;Writing a more complicated grammar&lt;/title&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;We now write a more complicated grammar for evaluating simple arithmetic expressions. With the grammar for a number (actually an integer) defined above, the next step is to define the productions for addition and multiplication in order of precedence. Note that we instantiate the productions as PPDelegateParser upfront, because they recursively refer to each other. The method #setParser: then resolves this recursion. The following script defines three parsers for the addition, multiplication and parenthesis (see Figure 1.4 for the related syntax diagram):&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;
+number := #digit asParser plus flatten ==&gt; [:node | node asNumber].
+term := PPDelegateParser new.
+prod := PPDelegateParser new.
+prim := PPDelegateParser new.
+term setParser: (prod , $+ asParser trim , term ==&gt; [ :nodes | nodes first  + nodes last  ])
+/ prod.
+prod setParser: (prim , $* asParser trim , prod ==&gt; [ :nodes | nodes first  * nodes last  ])
+/ prim.
+prim setParser: ($( asParser trim , term , $) asParser trim ==&gt; [ :nodes | nodes second ])
+/ number.&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;The term parser is defined as being either (1) a prod followed by '+', followed by another term or (2) a prod. In case (1), an action block asks the parser to compute the arithmetic addition of the value of the first node (a prod) and the last node (a term). The prod parser is similar to the term parser. The prim parser is interesting in that it accepts left and right parenthesis before and after a term and has an action block that simply ignores them.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;To understand the precedence of productions, see Figure 1.5. The root of the tree in this figure ( term ), is the production that is tried first. A term is either a + or a prod . The term production comes first because + as the lowest priority in mathematics.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;To make sure that our parser consumes all input we wrap it with the end parser into the start production:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;start := term end&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;That's it, we can now test our parser:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;start parse: '1 + 2 * 3'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;start parse: '(1 + 2) * 3'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>&lt;/section&gt;</span>&lt;/chapter&gt;</span>
+<span style="color: red">&lt;chapter&gt;
+<span style="color: red">&lt;title&gt;Composite grammars with PetitParser&lt;/title&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;title&gt;Composite grammars with PetitParser&lt;/title&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;In the previous section we saw the basic principles of PetitParser and gave some introductory examples. In this section we are going to present a way to define more complicated grammars. We continue where we left off with the arithmetic expression rammar.Writing parsers as a script as we did previously can be  cumbersome, especially when grammar productions are mutually recursive and refer to each other in complicated ways. Furthermore a grammar specified in a single script makes it unnecessary hard to reuse specific parts of that grammar.Luckily there is 
+<span style="color: red">&lt;ulink&gt;PPCompositeParser&lt;/ulink&gt;</span> to the rescue.&lt;/para&gt;</span>
+<span style="color: red">&lt;section&gt;
+<span style="color: red">&lt;title&gt;Defining the grammar&lt;/title&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;title&gt;Defining the grammar&lt;/title&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;As an example let's create a composite parser using the same expression grammar we built in the last section but this time we define it inside a class subclass of 
+<span style="color: red">&lt;ulink&gt;PPCompositeParser &lt;/ulink&gt;</span>.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionGrammar&lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;Again we start with the grammar for an integer number. Define themethod number as follows:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionGrammar&gt;&gt;number &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;Every production in ExpressionGrammar is specified as a method that returns its parser. Similarly, we define the productions term , prod , mul , and prim . Productions refer to each other by reading the respective instance variable of the same name and PetitParser takes care of initializing these instance variables for you automatically. We let Smalltalk automatically add the necessary instance variables as we refer to them for the first time. We obtain the following class definition:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionGrammar&lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;Define more expression grammar parsers, this time with no associated action:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionGrammar&gt;&gt;term &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionGrammar&gt;&gt;add &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionGrammar&gt;&gt;prod &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionGrammar&gt;&gt;mul &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionGrammar&gt;&gt;prim &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionGrammar&gt;&gt;parens &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;Contrary to our previous implementation we do not define the production actions yet (what we previously did by using PPParser»==&gt; ); and we factor out the parts for addition ( add ), multiplication ( mul ), and parenthesis ( parens ) into separate productions. This will give us better reusability later on. For example, a subclass may override such methods to produce slightly different production output. Usually, production methods are categorized in a protocol named grammar (which can be refined into more specific protocol names when necessary such as grammar - literals ).&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;Last but not least we define the starting point of the expression grammar. This is done by overriding 
+<span style="color: red">&lt;ulink&gt;PPCompositeParser&gt;&gt;start &lt;/ulink&gt;</span> in the ExpressionGrammar class:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionGrammar&gt;&gt;start &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;Instantiating the ExpressionGrammar gives us an expression parser that returns a default abstract-syntax tree:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;parser := ExpressionGrammar new.&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;parser parse: '1 + 2 * 3'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;parser parse: '(1 + 2) * 3'&lt;/programlisting&gt;</span>&lt;/para&gt;</span>&lt;/section&gt;</span>
+<span style="color: red">&lt;section&gt;
+<span style="color: red">&lt;title&gt;Writing dependent grammars&lt;/title&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;title&gt;Writing dependent grammars&lt;/title&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;You can easily reuse parsers defined by other grammars. For example, imag-ine you want to create a new grammar that reuses the definition of number inthe ExpressionGrammar we have just defined. For this, you have to declare adependency to ExpressionGrammar:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;PPCompositeParser subclass: #MyNewGrammar
+instanceVariableNames: 'number'
+classVariableNames: ''
+poolDictionaries: ''
+category: 'PetitTutorial'
+
+MyNewGrammar class&gt;&gt;dependencies
+"Answer a collection of PPCompositeParser classes that this parser directly
+dependends on."
+^ {ExpressionGrammar}
+
+MyNewGrammar&gt;&gt;number
+"Answer the same parser as ExpressionGrammar&gt;&gt;number."
+^ (self dependencyAt: ExpressionGrammar) number&lt;/programlisting&gt;</span>&lt;/para&gt;</span>&lt;/section&gt;</span>
+<span style="color: red">&lt;section&gt;
+<span style="color: red">&lt;title&gt;Defining an evaluator&lt;/title&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;title&gt;Defining an evaluator&lt;/title&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;Now that we have defined a grammar we can reuse this definition to imple-ment an evaluator. To do this we create a subclass of 
+<span style="color: red">&lt;ulink&gt;ExpressionGrammar&lt;/ulink&gt;</span> called&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionEvaluator&lt;/ulink&gt;</span>:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionEvaluator&lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;We then redefine the implementation of add , mul and parens with our eval-uation semantics. This is accomplished by calling the super implementationand adapting the returned parser as shown in the following methods:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionEvaluator&gt;&gt;add &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionEvaluator&gt;&gt;mul &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionEvaluator&gt;&gt;parens &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;The evaluator is now ready to be tested:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;parser := ExpressionEvaluator new.&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;parser parse: '1 + 2 * 3'.&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;parser parse: '(1 + 2) * 3'.&lt;/programlisting&gt;</span>&lt;/para&gt;</span>&lt;/section&gt;</span>
+<span style="color: red">&lt;section&gt;
+<span style="color: red">&lt;title&gt;Defining a Pretty-Printer&lt;/title&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;title&gt;Defining a Pretty-Printer&lt;/title&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;We can reuse the grammar for example to define a simple pretty printer. Thisis as easy as subclassing ExpressionGrammar again!&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionPrinter&lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionPrinter&gt;&gt;add &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionPrinter&gt;&gt;mul &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;ulink&gt;ExpressionPrinter&gt;&gt;parens &lt;/ulink&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;This pretty printer can be tried out as shown by the following expressions:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;parser := ExpressionPrinter new.&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;parser parse: '1+2 *3'.&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;parser parse: '(1+ 2   )* 3'.&lt;/programlisting&gt;</span>&lt;/para&gt;</span>&lt;/section&gt;</span>
+<span style="color: red">&lt;section&gt;
+<span style="color: red">&lt;title&gt;Easy expressions with PPExpressionParser&lt;/title&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;title&gt;Easy expressions with PPExpressionParser&lt;/title&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;PetitParser proposes a powerful tool to create expressions; PPExpressionParseris a parser to conveniently define an expression grammar with prefix, postfix, and left- and right-associative infix operators. The operator-groups are defined in descending precedence.&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;The ExpressionGrammar we previously defined can be implemented infew lines:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;
+| expression parens number |
+expression := PPExpressionParser new.
+parens := $( asParser token trim , expression , $) asParser token trim
+==&gt; [ :nodes | nodes second ].
+number := #digit asParser plus flatten trim ==&gt; [ :str | str asNumber ].
+expression term: parens / number.
+expression
+	group: [ :g |
+		g left: $* asParser token trim do: [ :a :op :b | a * b ].
+		g left: $/ asParser token trim do: [ :a :op :b | a / b ] ];
+	group: [ :g |
+		g left: $+ asParser token trim do: [ :a :op :b | a + b ].
+		g left: $ - asParser token trim do: [ :a :op :b | a - b ] ]. 
+&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;Now our parser is also able to manage subtraction and division:&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;
+<span style="color: red">&lt;programlisting&gt;expression parse: '1 - 2/3'.&lt;/programlisting&gt;</span>&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;How do you decide when to create a subclass of PPCompositeParser orinstantiate PPExpressionParser ? On the one hand, you should instantiate aPPExpressionParser if you want to do a small parser for a small task. On theother hand, if you have a grammar that's composed of many parsers, youshould subclass PPCompositeParser .&lt;/para&gt;</span>
+<span style="color: red">&lt;para&gt;&lt;/para&gt;</span>&lt;/section&gt;</span>&lt;/chapter&gt;</span>&lt;/book&gt;</span>

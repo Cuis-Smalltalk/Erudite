@@ -1,131 +1,525 @@
-<h1>Introduction</h1>
-<p>with the participation of:</p>
-<p><em>Jan Kurs</em> <em>(kurs@iam.unibe.ch)</em></p>
-<p><em>Guillaume Larcheveque</em> <em>(guillaume.larcheveque@gmail.com)</em></p>
-<p><em>Lukas Renggli</em> <em>(renggli@gmail.com)</em></p>
-<p>Building parsers to analyze and transform data is a common task in software development. In this chapter we present a powerful parser framework called PetitParser. PetitParser combines many ideas from various parsing technologies to model grammars and parsers as objects that can be reconfigured dynamically. PetitParser was written by Lukas Renggli as part of his work on the Helvetia system 1 but it can be used as a standalone library.</p>
-<h1>Writing parsers with PetitParser</h1>
-<p>PetitParser is a parsing framework different from many other popular parser generators. PetitParser makes it easy to define parsers with Smalltalk code and to dynamically reuse, compose, transform and extend grammars. We can reflect on the resulting grammars and modify them on-the-fly. As such PetitParser fits better the dynamic nature of Smalltalk.Furthermore, PetitParser is not based on tables such as SmaCC and ANTLR. Instead it uses a combination of four alternative parser methodologies: scannerless parsers, parser combinators, parsing expression grammars and packrat parsers. As such PetitParser is more powerful in what it can parse.</p>
-<p>Let's have a quick look at these four parser methodologies:</p>
-<p><em>Scannerless Parsers</em> combine what is usually done by two independent tools (scanner and parser) into one. This makes writing a grammar much simpler and avoids common problems when grammars are composed.</p>
-<p><em>Parser Combinators</em> are building blocks for parsers modeled as a graph of composable objects; they are modular and maintainable, and can be changed, recomposed, transformed and reflected upon.</p>
-<p><em>Parsing Expression Grammars</em> (PEGs) provide the notion of ordered choices. Unlike parser combinators, the ordered choice of PEGs always follows the first matching alternative and ignores other alternatives. Valid input always results in exactly one parse-tree, the result of a parse is never ambiguous.</p>
-<p><em>Packrat Parsers</em> give linear parse-time guarantees and avoid common problems with left-recursion in PEGs.</p>
-<h2>Writing a simple grammar</h2>
-<p>Writing grammars with PetitParser is as simple as writing Smalltalk code. For example, to define a grammar that parses identifiers starting with a letter followed by zero or more letters or digits is defined and used as follows:</p>
-<pre><code>identifier := #letter asParser , #word asParser star.
-identifier parse: &#39;a987jlkj&#39;</code></pre>
-<h2>Parsing some input</h2>
-<p>To actually parse a string (or stream) we use the method <a href="PPParser&gt;&gt;parse: ">PPParser&gt;&gt;parse:</a> as follows:</p>
-<pre><code>identifier parse: &#39;yeah&#39;</code></pre>
-<pre><code>identifier parse: &#39;f123&#39;</code></pre>
-<p>While it seems odd to get these nested arrays with characters as a return value, this is the default decomposition of the input into a parse tree. We'll see in a while how that can be customized. If we try to parse something invalid we get an instance of <a href="PPFailure">PPFailure</a> as an answer:</p>
-<pre><code>identifier parse: &#39;123&#39;</code></pre>
-<p>This parsing results in a failure because the first character ( 1 ) is not a letter. Instances of PPFailure are the only objects in the system that answer with true when you send the message <a href="isPetitFailure">isPetitFailure</a>. Alternatively you can also use <a href="PPParser&gt;&gt;parse:onError: ">PPParser&gt;&gt;parse:onError:</a> to throw an exception in case of an error:</p>
-<pre><code>identifier
-   parse: &#39;123&#39;
-   onError: [ :msg :pos | self error: msg ] </code></pre>
-<p>If you are only interested if a given string (or stream) matches or not you can use the following constructs:</p>
-<pre><code>identifier matches: &#39;foo&#39;</code></pre>
-<pre><code>identifier matches: &#39;123&#39;</code></pre>
-<pre><code>identifier matches: &#39;foo()&#39;</code></pre>
-<p>The last result can be surprising: indeed, a parenthesis is neither a digit nor a letter as was specified by the</p>
-<pre><code>#word asParser</code></pre>
-<p>expression. In fact, the identifier parser matches</p>
-<pre><code>&#39;foo&#39;</code></pre>
-<p>and this is enough for the <a href="PPParser&gt;&gt;matches: ">PPParser&gt;&gt;matches:</a> call to return true . The result would be similar with the use of parse: which would return</p>
-<pre><code>#($f #($o $o))</code></pre>
-<p>.If you want to be sure that the complete input is matched, use the message <a href="PPParser&gt;&gt;end ">PPParser&gt;&gt;end</a> as follows:</p>
-<pre><code>identifier end matches:&#39;foo&#39;</code></pre>
-<p>The <a href="PPParser&gt;&gt;end ">PPParser&gt;&gt;end</a> message creates a new parser that matches the end ofinput. To be able to compose parsers easily, it is important that parsers do not match the end of input by default. Because of this, you might be interested to find all the places that a parser can match using the message <a href="PPParser&gt;&gt;matchesSkipIn: ">PPParser&gt;&gt;matchesSkipIn:</a> and <a href="PPParser&gt;&gt;matchesIn: ">PPParser&gt;&gt;matchesIn:</a>.</p>
-<pre><code>identifier matchesSkipIn: &#39;foo 123 bar12&#39;</code></pre>
-<pre><code>identifier matchesIn: &#39;foo 123 bar12&#39;</code></pre>
-<p>The <a href="PPParser&gt;&gt;matchesSkipIn: ">PPParser&gt;&gt;matchesSkipIn:</a> method returns a collection of arrays containing what has been matched. This function avoids parsing the same character twice. The method <a href="PPParser»matchesIn: ">PPParser»matchesIn:</a> does a similar job but returns a collection with all possible sub-parsed elements: e.g., evaluating</p>
-<pre><code>identifier matchesIn: &#39;foo 123 bar12&#39;</code></pre>
-<p>returns a collection of 6 elements.</p>
-<p>Similarly, to find all the matching ranges (index of first character andindex of last character) in the given input one can use either <a href="PPParser&gt;&gt;matchingSkipRangesIn: ">PPParser&gt;&gt;matchingSkipRangesIn:</a> or <a href="PPParser&gt;&gt;matchingRangesIn: ">PPParser&gt;&gt;matchingRangesIn:</a> as shown by the script below:</p>
-<pre><code>identifier matchingSkipRangesIn: &#39;foo 123 bar12&#39;</code></pre>
-<pre><code>identifier matchingRangesIn: &#39;foo 123 bar12&#39;</code></pre>
-<h2>Different kinds of parsers</h2>
-<p>PetitParser provide a large set of ready-made parser that you can compose to consume and transform arbitrarily complex languages. The terminal parsers are the most simple ones. We've already seen a few of those, some more are defined in the protocol Table 1.1.</p>
-<p>The class side of <a href="PPPredicateObjectParser">PPPredicateObjectParser</a> provides a lot of other factory methods that can be used to build more complex terminal parsers. To use them, send the message <a href="PPParser&gt;&gt;asParser ">PPParser&gt;&gt;asParser</a> to a symbol containing the name of the factory method (such as</p>
-<pre><code>#punctuation asParser</code></pre>
-<p>).</p>
-<p>The next set of parsers are used to combine other parsers together and isdefined in the protocol:</p>
-<p><em>Terminal Parsers</em></p>
-<pre><code>$a asParser</code></pre>
-<p>. Parses the character $a.</p>
-<pre><code>&#39;abc&#39; asParser</code></pre>
-<p>. Parses the string 'abc'.</p>
-<pre><code>#any asParser</code></pre>
-<p>. Parses any character.</p>
-<pre><code>#digit asParser</code></pre>
-<p>. Parses one digit (0..9).</p>
-<pre><code>#letter asParser</code></pre>
-<p>. Parses one letter (a..z and A..Z).</p>
-<pre><code>#word asParser</code></pre>
-<p>. Parses a digit or letter.</p>
-<pre><code>#blank asParser</code></pre>
-<p>. Parses a space or a tabulation.</p>
-<pre><code>#newline asParser</code></pre>
-<p>. Parses the carriage return or line feed characters.</p>
-<pre><code>#space asParser</code></pre>
-<p>. Parses any white space character including new line.</p>
-<pre><code>#tab asParser</code></pre>
-<p>. Parses a tab character.</p>
-<pre><code>#lowercase asParser</code></pre>
-<p>. Parses a lowercase character.</p>
-<pre><code>#uppercase asParser</code></pre>
-<p>. Parses an uppercase character.</p>
-<pre><code>nil asParser</code></pre>
-<p>. Parses nothing.</p>
-<p><em>Parser Combinators</em></p>
-<p><em>p1 , p2</em>. Parses p1 followed by p2 (sequence).</p>
-<p><em>p1 / p2</em>. Parses p1, if that doesn't work parses p2.</p>
-<p><em>p star</em>. Parses zero or more p.</p>
-<p><em>p plus</em>. Parses one or more p.</p>
-<p><em>p optional</em>. Parses p if possible.</p>
-<p><em>p and</em>. Parses p but does not consume its input.</p>
-<p><em>p negate</em>. Parses p and succeeds when p fails.</p>
-<p><em>p not</em>. Parses p and succeeds when p fails, but does not consume its input.</p>
-<p><em>p end</em>. Parses p and succeeds only at the end of the input.</p>
-<p><em>p times: n</em>. Parses p exactly n times.</p>
-<p><em>p min: n max: m</em>. Parses p at least n times up to m times</p>
-<p><em>p starLazy: q</em>. Like star but stop consumming when q suc-ceeds</p>
-<p>As a simple example of parser combination, the following definition of the</p>
-<p><em>identifier2 parser</em> is equivalent to our previous definition of <em>identifier</em>:</p>
-<pre><code>identifier2 := #letter asParser , (#letter asParser / #digit asParser) star</code></pre>
-<p>To define an action or transformation on a parser we can use one of the mes-sages <a href="PPParser&gt;&gt;==&gt; ">PPParser&gt;&gt;==&gt;</a>, <a href="PPParser&gt;&gt;flatten ">PPParser&gt;&gt;flatten</a>, <a href="PPParser&gt;&gt;token ">PPParser&gt;&gt;token</a> and <a href="PPParser&gt;&gt;trim ">PPParser&gt;&gt;trim</a> defined in the protocol:</p>
-<p><em>Action parsers</em></p>
-<p><em>p flatten</em>. Creates a string from the result of p.</p>
-<p><em>p token</em>. Similar to flatten but returns a <a href="PPToken">PPToken</a> with details.</p>
-<p><em>p trim</em>. Trims white spaces before and after p.</p>
-<p><em>p trim: trimParser</em>. Trims whatever trimParser can parse (e.g., comments).</p>
-<p><em>p ==&gt; aBlock</em>. Performs the transformation given in aBlock.</p>
-<p>To return a string of the parsed identifier instead of getting an array of matched elements, configure the parser by sending it the message <a href="PPParser&gt;&gt;flatten ">PPParser&gt;&gt;flatten</a>.</p>
-<pre><code>|identifier|
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created on July 20, 2020 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>Untitled Document</title>
+
+<meta name="description" content="Untitled Document">
+<meta name="keywords" content="Untitled Document">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Top"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="PetitParser-tutorial"></a>
+<h1 class="settitle">PetitParser tutorial</h1>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#Introduction">1. Introduction</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Writing-parsers-with-PetitParser">2. Writing parsers with PetitParser</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Composite-grammars-with-PetitParser">3. Composite grammars with PetitParser</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr size="1">
+<a name="Introduction"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Top" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Writing-parsers-with-PetitParser" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Top" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="#Writing-parsers-with-PetitParser" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Introduction-1"></a>
+<h1 class="chapter">1. Introduction</h1>
+<p><a name="g_t_0023introduction"></a>
+with the participation of:
+</p>
+<p><em>Jan Kurs</em> <em>(kurs@iam.unibe.ch)</em>
+</p>
+<p><em>Guillaume Larcheveque</em> <em>(guillaume.larcheveque@gmail.com)</em>
+</p>
+<p><em>Lukas Renggli</em> <em>(renggli@gmail.com)</em>
+</p>
+<p>Building parsers to analyze and transform data is a common task in
+software development. In this chapter we present a powerful parser
+framework called PetitParser. PetitParser combines many ideas from
+various parsing technologies to model grammars and parsers as objects
+that can be reconfigured dynamically. PetitParser was written by Lukas
+Renggli as part of his work on the Helvetia system 1 but it can be used
+as a standalone library.
+</p>
+<hr size="6">
+<a name="Writing-parsers-with-PetitParser"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Introduction" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Writing-a-simple-grammar" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Introduction" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Writing-parsers-with-PetitParser-1"></a>
+<h1 class="chapter">2. Writing parsers with PetitParser</h1>
+<p><a name="g_t_0023writing_002dparsers_002dwith_002dpetitparser"></a>
+PetitParser is a parsing framework different from many other popular
+parser generators. PetitParser makes it easy to define parsers with
+Smalltalk code and to dynamically reuse, compose, transform and extend
+grammars. We can reflect on the resulting grammars and modify them
+on-the-fly. As such PetitParser fits better the dynamic nature of
+Smalltalk.Furthermore, PetitParser is not based on tables such as SmaCC
+and ANTLR. Instead it uses a combination of four alternative parser
+methodologies: scannerless parsers, parser combinators, parsing
+expression grammars and packrat parsers. As such PetitParser is more
+powerful in what it can parse.
+</p>
+<p>Let&rsquo;s have a quick look at these four parser methodologies:
+</p>
+<p><em>Scannerless Parsers</em> combine what is usually done by two
+independent tools (scanner and parser) into one. This makes writing a
+grammar much simpler and avoids common problems when grammars are
+composed.
+</p>
+<p><em>Parser Combinators</em> are building blocks for parsers modeled as a
+graph of composable objects; they are modular and maintainable, and can
+be changed, recomposed, transformed and reflected upon.
+</p>
+<p><em>Parsing Expression Grammars</em> (PEGs) provide the notion of ordered
+choices. Unlike parser combinators, the ordered choice of PEGs always
+follows the first matching alternative and ignores other alternatives.
+Valid input always results in exactly one parse-tree, the result of a
+parse is never ambiguous.
+</p>
+<p><em>Packrat Parsers</em> give linear parse-time guarantees and avoid
+common problems with left-recursion in PEGs.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#Writing-a-simple-grammar">2.1 Writing a simple grammar</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Parsing-some-input">2.2 Parsing some input</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Different-kinds-of-parsers">2.3 Different kinds of parsers</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Writing-a-more-complicated-grammar">2.4 Writing a more complicated grammar</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr size="6">
+<a name="Writing-a-simple-grammar"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Writing-parsers-with-PetitParser" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Parsing-some-input" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Writing-parsers-with-PetitParser" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Writing-parsers-with-PetitParser" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Writing-a-simple-grammar-1"></a>
+<h2 class="section">2.1 Writing a simple grammar</h2>
+<p><a name="g_t_0023writing_002da_002dsimple_002dgrammar"></a>
+Writing grammars with PetitParser is as simple as writing Smalltalk
+code. For example, to define a grammar that parses identifiers starting
+with a letter followed by zero or more letters or digits is defined and
+used as follows:
+</p>
+<pre class="verbatim">identifier := #letter asParser , #word asParser star.
+identifier parse: 'a987jlkj'
+</pre>
+<hr size="6">
+<a name="Parsing-some-input"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Writing-a-simple-grammar" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Different-kinds-of-parsers" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Writing-parsers-with-PetitParser" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Writing-parsers-with-PetitParser" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Parsing-some-input-1"></a>
+<h2 class="section">2.2 Parsing some input</h2>
+<p><a name="g_t_0023parsing_002dsome_002dinput"></a>
+To actually parse a string (or stream) we use the method
+<a href="PPParser&gt;&gt;parse:">PPParser&gt;&gt;parse:</a> as follows:
+</p>
+<pre class="verbatim">identifier parse: 'yeah'
+</pre>
+<pre class="verbatim">identifier parse: 'f123'
+</pre>
+<p>While it seems odd to get these nested arrays with characters as a
+return value, this is the default decomposition of the input into a
+parse tree. We&rsquo;ll see in a while how that can be customized. If we try
+to parse something invalid we get an instance of <a href="PPFailure">PPFailure</a> as an
+answer:
+</p>
+<pre class="verbatim">identifier parse: '123'
+</pre>
+<p>This parsing results in a failure because the first character ( 1 ) is
+not a letter. Instances of PPFailure are the only objects in the system
+that answer with true when you send the message <a href="isPetitFailure">isPetitFailure</a>.
+Alternatively you can also use
+<a href="PPParser&gt;&gt;parse:onError:">PPParser&gt;&gt;parse:onError:</a> to throw an
+exception in case of an error:
+</p>
+<pre class="verbatim">identifier
+   parse: '123'
+   onError: [ :msg :pos | self error: msg ] 
+</pre>
+<p>If you are only interested if a given string (or stream) matches or not
+you can use the following constructs:
+</p>
+<pre class="verbatim">identifier matches: 'foo'
+</pre>
+<pre class="verbatim">identifier matches: '123'
+</pre>
+<pre class="verbatim">identifier matches: 'foo()'
+</pre>
+<p>The last result can be surprising: indeed, a parenthesis is neither a
+digit nor a letter as was specified by the
+</p>
+<pre class="verbatim">#word asParser
+</pre>
+<p>expression. In fact, the identifier parser matches
+</p>
+<pre class="verbatim">'foo'
+</pre>
+<p>and this is enough for the <a href="PPParser&gt;&gt;matches:">PPParser&gt;&gt;matches:</a>
+call to return true . The result would be similar with the use of parse:
+which would return
+</p>
+<pre class="verbatim">#($f #($o $o))
+</pre>
+<p>.If you want to be sure that the complete input is matched, use the
+message <a href="PPParser&gt;&gt;end">PPParser&gt;&gt;end</a> as follows:
+</p>
+<pre class="verbatim">identifier end matches:'foo'
+</pre>
+<p>The <a href="PPParser&gt;&gt;end">PPParser&gt;&gt;end</a> message creates a new parser
+that matches the end ofinput. To be able to compose parsers easily, it
+is important that parsers do not match the end of input by default.
+Because of this, you might be interested to find all the places that a
+parser can match using the message
+<a href="PPParser&gt;&gt;matchesSkipIn:">PPParser&gt;&gt;matchesSkipIn:</a> and
+<a href="PPParser&gt;&gt;matchesIn:">PPParser&gt;&gt;matchesIn:</a>.
+</p>
+<pre class="verbatim">identifier matchesSkipIn: 'foo 123 bar12'
+</pre>
+<pre class="verbatim">identifier matchesIn: 'foo 123 bar12'
+</pre>
+<p>The <a href="PPParser&gt;&gt;matchesSkipIn:">PPParser&gt;&gt;matchesSkipIn:</a> method
+returns a collection of arrays containing what has been matched. This
+function avoids parsing the same character twice. The method
+<a href="PPParser»matchesIn:">PPParser»matchesIn:</a> does a similar job but
+returns a collection with all possible sub-parsed elements: e.g.,
+evaluating
+</p>
+<pre class="verbatim">identifier matchesIn: 'foo 123 bar12'
+</pre>
+<p>returns a collection of 6 elements.
+</p>
+<p>Similarly, to find all the matching ranges (index of first character
+andindex of last character) in the given input one can use either
+<a href="PPParser&gt;&gt;matchingSkipRangesIn:">PPParser&gt;&gt;matchingSkipRangesIn:</a>
+or <a href="PPParser&gt;&gt;matchingRangesIn:">PPParser&gt;&gt;matchingRangesIn:</a> as
+shown by the script below:
+</p>
+<pre class="verbatim">identifier matchingSkipRangesIn: 'foo 123 bar12'
+</pre>
+<pre class="verbatim">identifier matchingRangesIn: 'foo 123 bar12'
+</pre>
+<hr size="6">
+<a name="Different-kinds-of-parsers"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Parsing-some-input" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Writing-a-more-complicated-grammar" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Writing-parsers-with-PetitParser" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Writing-parsers-with-PetitParser" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Different-kinds-of-parsers-1"></a>
+<h2 class="section">2.3 Different kinds of parsers</h2>
+<p><a name="g_t_0023different_002dkinds_002dof_002dparsers"></a>
+PetitParser provide a large set of ready-made parser that you can
+compose to consume and transform arbitrarily complex languages. The
+terminal parsers are the most simple ones. We&rsquo;ve already seen a few of
+those, some more are defined in the protocol Table 1.1.
+</p>
+<p>The class side of <a href="PPPredicateObjectParser">PPPredicateObjectParser</a> provides a lot of other
+factory methods that can be used to build more complex terminal parsers.
+To use them, send the message
+<a href="PPParser&gt;&gt;asParser">PPParser&gt;&gt;asParser</a> to a symbol containing the
+name of the factory method (such as
+</p>
+<pre class="verbatim">#punctuation asParser
+</pre>
+<p>).
+</p>
+<p>The next set of parsers are used to combine other parsers together and
+isdefined in the protocol:
+</p>
+<p><em>Terminal Parsers</em>
+</p>
+<pre class="verbatim">$a asParser
+</pre>
+<p>. Parses the character $a.
+</p>
+<pre class="verbatim">'abc' asParser
+</pre>
+<p>. Parses the string &rsquo;abc&rsquo;.
+</p>
+<pre class="verbatim">#any asParser
+</pre>
+<p>. Parses any character.
+</p>
+<pre class="verbatim">#digit asParser
+</pre>
+<p>. Parses one digit (0..9).
+</p>
+<pre class="verbatim">#letter asParser
+</pre>
+<p>. Parses one letter (a..z and A..Z).
+</p>
+<pre class="verbatim">#word asParser
+</pre>
+<p>. Parses a digit or letter.
+</p>
+<pre class="verbatim">#blank asParser
+</pre>
+<p>. Parses a space or a tabulation.
+</p>
+<pre class="verbatim">#newline asParser
+</pre>
+<p>. Parses the carriage return or line feed characters.
+</p>
+<pre class="verbatim">#space asParser
+</pre>
+<p>. Parses any white space character including new line.
+</p>
+<pre class="verbatim">#tab asParser
+</pre>
+<p>. Parses a tab character.
+</p>
+<pre class="verbatim">#lowercase asParser
+</pre>
+<p>. Parses a lowercase character.
+</p>
+<pre class="verbatim">#uppercase asParser
+</pre>
+<p>. Parses an uppercase character.
+</p>
+<pre class="verbatim">nil asParser
+</pre>
+<p>. Parses nothing.
+</p>
+<p><em>Parser Combinators</em>
+</p>
+<p><em>p1 , p2</em>. Parses p1 followed by p2 (sequence).
+</p>
+<p><em>p1 / p2</em>. Parses p1, if that doesn&rsquo;t work parses p2.
+</p>
+<p><em>p star</em>. Parses zero or more p.
+</p>
+<p><em>p plus</em>. Parses one or more p.
+</p>
+<p><em>p optional</em>. Parses p if possible.
+</p>
+<p><em>p and</em>. Parses p but does not consume its input.
+</p>
+<p><em>p negate</em>. Parses p and succeeds when p fails.
+</p>
+<p><em>p not</em>. Parses p and succeeds when p fails, but does not consume
+its input.
+</p>
+<p><em>p end</em>. Parses p and succeeds only at the end of the input.
+</p>
+<p><em>p times: n</em>. Parses p exactly n times.
+</p>
+<p><em>p min: n max: m</em>. Parses p at least n times up to m times
+</p>
+<p><em>p starLazy: q</em>. Like star but stop consumming when q suc-ceeds
+</p>
+<p>As a simple example of parser combination, the following definition of
+the
+</p>
+<p><em>identifier2 parser</em> is equivalent to our previous definition of
+<em>identifier</em>:
+</p>
+<pre class="verbatim">identifier2 := #letter asParser , (#letter asParser / #digit asParser) star
+</pre>
+<p>To define an action or transformation on a parser we can use one of the
+mes-sages <a href="PPParser&gt;&gt;==&gt;">PPParser&gt;&gt;==&gt;</a>,
+<a href="PPParser&gt;&gt;flatten">PPParser&gt;&gt;flatten</a>,
+<a href="PPParser&gt;&gt;token">PPParser&gt;&gt;token</a> and
+<a href="PPParser&gt;&gt;trim">PPParser&gt;&gt;trim</a> defined in the protocol:
+</p>
+<p><em>Action parsers</em>
+</p>
+<p><em>p flatten</em>. Creates a string from the result of p.
+</p>
+<p><em>p token</em>. Similar to flatten but returns a <a href="PPToken">PPToken</a> with
+details.
+</p>
+<p><em>p trim</em>. Trims white spaces before and after p.
+</p>
+<p><em>p trim: trimParser</em>. Trims whatever trimParser can parse (e.g.,
+comments).
+</p>
+<p><em>p ==&gt; aBlock</em>. Performs the transformation given in aBlock.
+</p>
+<p>To return a string of the parsed identifier instead of getting an array
+of matched elements, configure the parser by sending it the message
+<a href="PPParser&gt;&gt;flatten">PPParser&gt;&gt;flatten</a>.
+</p>
+<pre class="verbatim">|identifier|
 identifier := (#letter asParser , (#letter asParser / #digit asParser) star).
-identifier parse: &#39; ajka0 &#39;</code></pre>
-<pre><code>|identifier|
+identifier parse: ' ajka0 '
+</pre>
+<pre class="verbatim">|identifier|
 identifier := (#letter asParser , (#letter asParser / #digit asParser) star).
-identifier parse: &#39;ajka0&#39;</code></pre>
-<p>Sending the message trim is equivalent to calling <a href="PPParser&gt;&gt;trim: ">PPParser&gt;&gt;trim:</a> with</p>
-<pre><code>#space asParser</code></pre>
-<p>as a parameter. That means <em>trim:</em> can be useful to ignore other data from the input, source code comments for example:</p>
-<pre><code>| identifier comment ignorable line |
+identifier parse: 'ajka0'
+</pre>
+<p>Sending the message trim is equivalent to calling
+<a href="PPParser&gt;&gt;trim:">PPParser&gt;&gt;trim:</a> with
+</p>
+<pre class="verbatim">#space asParser
+</pre>
+<p>as a parameter. That means <em>trim:</em> can be useful to ignore other
+data from the input, source code comments for example:
+</p>
+<pre class="verbatim">| identifier comment ignorable line |
 identifier := (#letter asParser , #word asParser star) flatten.
-comment := &#39;//&#39; asParser, #newline asParser negate star.
+comment := '//' asParser, #newline asParser negate star.
 ignorable := comment / #space asParser.
 line := identifier trim: ignorable.
-line parse: &#39;// This is a comment
-oneIdentifier // another comment&#39;</code></pre>
-<p>The message PPParser»==&gt; lets you specify a block to be executed when the parser matches an input. The next section presents several examples. Here is a simple way to get a number from its string representation.</p>
-<pre><code>number := #digit asParser plus flatten</code></pre>
-<pre><code>number parse: &#39;123&#39;</code></pre>
-<p>The table 1.3 shows the basic elements to build parsers. There are a few more well documented and tested factory methods in the operators protocols of PPParser . If you want to know more about these factory methods, browse these protocols. An interesting one is separatedBy: which answers a new parser that parses the input one or more times, with separations specified by another parser.</p>
-<h2>Writing a more complicated grammar</h2>
-<p>We now write a more complicated grammar for evaluating simple arithmetic expressions. With the grammar for a number (actually an integer) defined above, the next step is to define the productions for addition and multiplication in order of precedence. Note that we instantiate the productions as PPDelegateParser upfront, because they recursively refer to each other. The method #setParser: then resolves this recursion. The following script defines three parsers for the addition, multiplication and parenthesis (see Figure 1.4 for the related syntax diagram):</p>
-<pre><code>number := #digit asParser plus flatten ==&gt; [:node | node asNumber].
+line parse: '// This is a comment
+oneIdentifier // another comment'
+</pre>
+<p>The message PPParser»==&gt; lets you specify a block to be executed when
+the parser matches an input. The next section presents several examples.
+Here is a simple way to get a number from its string representation.
+</p>
+<pre class="verbatim">number := #digit asParser plus flatten
+</pre>
+<pre class="verbatim">number parse: '123'
+</pre>
+<p>The table 1.3 shows the basic elements to build parsers. There are a few
+more well documented and tested factory methods in the operators
+protocols of PPParser . If you want to know more about these factory
+methods, browse these protocols. An interesting one is separatedBy:
+which answers a new parser that parses the input one or more times, with
+separations specified by another parser.
+</p>
+<hr size="6">
+<a name="Writing-a-more-complicated-grammar"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Different-kinds-of-parsers" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Writing-parsers-with-PetitParser" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Writing-parsers-with-PetitParser" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Writing-a-more-complicated-grammar-1"></a>
+<h2 class="section">2.4 Writing a more complicated grammar</h2>
+<p><a name="g_t_0023writing_002da_002dmore_002dcomplicated_002dgrammar"></a>
+We now write a more complicated grammar for evaluating simple arithmetic
+expressions. With the grammar for a number (actually an integer) defined
+above, the next step is to define the productions for addition and
+multiplication in order of precedence. Note that we instantiate the
+productions as PPDelegateParser upfront, because they recursively refer
+to each other. The method #setParser: then resolves this recursion. The
+following script defines three parsers for the addition, multiplication
+and parenthesis (see Figure 1.4 for the related syntax diagram):
+</p>
+<pre class="verbatim">number := #digit asParser plus flatten ==&gt; [:node | node asNumber].
 term := PPDelegateParser new.
 prod := PPDelegateParser new.
 prim := PPDelegateParser new.
@@ -134,44 +528,190 @@ term setParser: (prod , $+ asParser trim , term ==&gt; [ :nodes | nodes first  +
 prod setParser: (prim , $* asParser trim , prod ==&gt; [ :nodes | nodes first  * nodes last  ])
 / prim.
 prim setParser: ($( asParser trim , term , $) asParser trim ==&gt; [ :nodes | nodes second ])
-/ number.</code></pre>
-<p>The term parser is defined as being either (1) a prod followed by '+', followed by another term or (2) a prod. In case (1), an action block asks the parser to compute the arithmetic addition of the value of the first node (a prod) and the last node (a term). The prod parser is similar to the term parser. The prim parser is interesting in that it accepts left and right parenthesis before and after a term and has an action block that simply ignores them.</p>
-<p>To understand the precedence of productions, see Figure 1.5. The root of the tree in this figure ( term ), is the production that is tried first. A term is either a + or a prod . The term production comes first because + as the lowest priority in mathematics.</p>
-<p>To make sure that our parser consumes all input we wrap it with the end parser into the start production:</p>
-<pre><code>start := term end</code></pre>
-<p>That's it, we can now test our parser:</p>
-<pre><code>start parse: &#39;1 + 2 * 3&#39;</code></pre>
-<pre><code>start parse: &#39;(1 + 2) * 3&#39;</code></pre>
-<h1>Composite grammars with PetitParser</h1>
-<p>In the previous section we saw the basic principles of PetitParser and gave some introductory examples. In this section we are going to present a way to define more complicated grammars. We continue where we left off with the arithmetic expression rammar.Writing parsers as a script as we did previously can be cumbersome, especially when grammar productions are mutually recursive and refer to each other in complicated ways. Furthermore a grammar specified in a single script makes it unnecessary hard to reuse specific parts of that grammar.Luckily there is <a href="PPCompositeParser">PPCompositeParser</a> to the rescue.</p>
-<h2>Defining the grammar</h2>
-<p>As an example let's create a composite parser using the same expression grammar we built in the last section but this time we define it inside a class subclass of <a href="PPCompositeParser ">PPCompositeParser</a>.</p>
-<p><a href="ExpressionGrammar">ExpressionGrammar</a></p>
-<p>Again we start with the grammar for an integer number. Define themethod number as follows:</p>
-<p><a href="ExpressionGrammar&gt;&gt;number ">ExpressionGrammar&gt;&gt;number</a></p>
-<p>Every production in ExpressionGrammar is specified as a method that returns its parser. Similarly, we define the productions term , prod , mul , and prim . Productions refer to each other by reading the respective instance variable of the same name and PetitParser takes care of initializing these instance variables for you automatically. We let Smalltalk automatically add the necessary instance variables as we refer to them for the first time. We obtain the following class definition:</p>
-<p><a href="ExpressionGrammar">ExpressionGrammar</a></p>
-<p>Define more expression grammar parsers, this time with no associated action:</p>
-<p><a href="ExpressionGrammar&gt;&gt;term ">ExpressionGrammar&gt;&gt;term</a></p>
-<p><a href="ExpressionGrammar&gt;&gt;add ">ExpressionGrammar&gt;&gt;add</a></p>
-<p><a href="ExpressionGrammar&gt;&gt;prod ">ExpressionGrammar&gt;&gt;prod</a></p>
-<p><a href="ExpressionGrammar&gt;&gt;mul ">ExpressionGrammar&gt;&gt;mul</a></p>
-<p><a href="ExpressionGrammar&gt;&gt;prim ">ExpressionGrammar&gt;&gt;prim</a></p>
-<p><a href="ExpressionGrammar&gt;&gt;parens ">ExpressionGrammar&gt;&gt;parens</a></p>
-<p>Contrary to our previous implementation we do not define the production actions yet (what we previously did by using PPParser»==&gt; ); and we factor out the parts for addition ( add ), multiplication ( mul ), and parenthesis ( parens ) into separate productions. This will give us better reusability later on. For example, a subclass may override such methods to produce slightly different production output. Usually, production methods are categorized in a protocol named grammar (which can be refined into more specific protocol names when necessary such as grammar - literals ).</p>
-<p>Last but not least we define the starting point of the expression grammar. This is done by overriding <a href="PPCompositeParser&gt;&gt;start ">PPCompositeParser&gt;&gt;start</a> in the ExpressionGrammar class:</p>
-<p><a href="ExpressionGrammar&gt;&gt;start ">ExpressionGrammar&gt;&gt;start</a></p>
-<p>Instantiating the ExpressionGrammar gives us an expression parser that returns a default abstract-syntax tree:</p>
-<pre><code>parser := ExpressionGrammar new.</code></pre>
-<pre><code>parser parse: &#39;1 + 2 * 3&#39;</code></pre>
-<pre><code>parser parse: &#39;(1 + 2) * 3&#39;</code></pre>
-<h2>Writing dependent grammars</h2>
-<p>You can easily reuse parsers defined by other grammars. For example, imag-ine you want to create a new grammar that reuses the definition of number inthe ExpressionGrammar we have just defined. For this, you have to declare adependency to ExpressionGrammar:</p>
-<pre><code>PPCompositeParser subclass: #MyNewGrammar
-instanceVariableNames: &#39;number&#39;
-classVariableNames: &#39;&#39;
-poolDictionaries: &#39;&#39;
-category: &#39;PetitTutorial&#39;
+/ number.
+</pre>
+<p>The term parser is defined as being either (1) a prod followed by &rsquo;+&rsquo;,
+followed by another term or (2) a prod. In case (1), an action block
+asks the parser to compute the arithmetic addition of the value of the
+first node (a prod) and the last node (a term). The prod parser is
+similar to the term parser. The prim parser is interesting in that it
+accepts left and right parenthesis before and after a term and has an
+action block that simply ignores them.
+</p>
+<p>To understand the precedence of productions, see Figure 1.5. The root of
+the tree in this figure ( term ), is the production that is tried first.
+A term is either a + or a prod . The term production comes first because
++ as the lowest priority in mathematics.
+</p>
+<p>To make sure that our parser consumes all input we wrap it with the end
+parser into the start production:
+</p>
+<pre class="verbatim">start := term end
+</pre>
+<p>That&rsquo;s it, we can now test our parser:
+</p>
+<pre class="verbatim">start parse: '1 + 2 * 3'
+</pre>
+<pre class="verbatim">start parse: '(1 + 2) * 3'
+</pre>
+<hr size="6">
+<a name="Composite-grammars-with-PetitParser"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Writing-a-more-complicated-grammar" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Defining-the-grammar" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Writing-parsers-with-PetitParser" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Composite-grammars-with-PetitParser-1"></a>
+<h1 class="chapter">3. Composite grammars with PetitParser</h1>
+<p><a name="g_t_0023composite_002dgrammars_002dwith_002dpetitparser"></a>
+In the previous section we saw the basic principles of PetitParser and
+gave some introductory examples. In this section we are going to present
+a way to define more complicated grammars. We continue where we left off
+with the arithmetic expression rammar.Writing parsers as a script as we
+did previously can be cumbersome, especially when grammar productions
+are mutually recursive and refer to each other in complicated ways.
+Furthermore a grammar specified in a single script makes it unnecessary
+hard to reuse specific parts of that grammar.Luckily there is
+<a href="PPCompositeParser">PPCompositeParser</a> to the rescue.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#Defining-the-grammar">3.1 Defining the grammar</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Writing-dependent-grammars">3.2 Writing dependent grammars</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Defining-an-evaluator">3.3 Defining an evaluator</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Defining-a-Pretty_002dPrinter">3.4 Defining a Pretty-Printer</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Easy-expressions-with-PPExpressionParser">3.5 Easy expressions with PPExpressionParser</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr size="6">
+<a name="Defining-the-grammar"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Writing-dependent-grammars" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Defining-the-grammar-1"></a>
+<h2 class="section">3.1 Defining the grammar</h2>
+<p><a name="g_t_0023defining_002dthe_002dgrammar"></a>
+As an example let&rsquo;s create a composite parser using the same expression
+grammar we built in the last section but this time we define it inside a
+class subclass of <a href="PPCompositeParser">PPCompositeParser</a>.
+</p>
+<p><a href="ExpressionGrammar">ExpressionGrammar</a>
+</p>
+<p>Again we start with the grammar for an integer number. Define themethod
+number as follows:
+</p>
+<p><a href="ExpressionGrammar&gt;&gt;number">ExpressionGrammar&gt;&gt;number</a>
+</p>
+<p>Every production in ExpressionGrammar is specified as a method that
+returns its parser. Similarly, we define the productions term , prod ,
+mul , and prim . Productions refer to each other by reading the
+respective instance variable of the same name and PetitParser takes care
+of initializing these instance variables for you automatically. We let
+Smalltalk automatically add the necessary instance variables as we refer
+to them for the first time. We obtain the following class definition:
+</p>
+<p><a href="ExpressionGrammar">ExpressionGrammar</a>
+</p>
+<p>Define more expression grammar parsers, this time with no associated
+action:
+</p>
+<p><a href="ExpressionGrammar&gt;&gt;term">ExpressionGrammar&gt;&gt;term</a>
+</p>
+<p><a href="ExpressionGrammar&gt;&gt;add">ExpressionGrammar&gt;&gt;add</a>
+</p>
+<p><a href="ExpressionGrammar&gt;&gt;prod">ExpressionGrammar&gt;&gt;prod</a>
+</p>
+<p><a href="ExpressionGrammar&gt;&gt;mul">ExpressionGrammar&gt;&gt;mul</a>
+</p>
+<p><a href="ExpressionGrammar&gt;&gt;prim">ExpressionGrammar&gt;&gt;prim</a>
+</p>
+<p><a href="ExpressionGrammar&gt;&gt;parens">ExpressionGrammar&gt;&gt;parens</a>
+</p>
+<p>Contrary to our previous implementation we do not define the production
+actions yet (what we previously did by using PPParser»==&gt; ); and we
+factor out the parts for addition ( add ), multiplication ( mul ), and
+parenthesis ( parens ) into separate productions. This will give us
+better reusability later on. For example, a subclass may override such
+methods to produce slightly different production output. Usually,
+production methods are categorized in a protocol named grammar (which
+can be refined into more specific protocol names when necessary such as
+grammar - literals ).
+</p>
+<p>Last but not least we define the starting point of the expression
+grammar. This is done by overriding
+<a href="PPCompositeParser&gt;&gt;start">PPCompositeParser&gt;&gt;start</a> in the
+ExpressionGrammar class:
+</p>
+<p><a href="ExpressionGrammar&gt;&gt;start">ExpressionGrammar&gt;&gt;start</a>
+</p>
+<p>Instantiating the ExpressionGrammar gives us an expression parser that
+returns a default abstract-syntax tree:
+</p>
+<pre class="verbatim">parser := ExpressionGrammar new.
+</pre>
+<pre class="verbatim">parser parse: '1 + 2 * 3'
+</pre>
+<pre class="verbatim">parser parse: '(1 + 2) * 3'
+</pre>
+<hr size="6">
+<a name="Writing-dependent-grammars"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Defining-the-grammar" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Defining-an-evaluator" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Writing-dependent-grammars-1"></a>
+<h2 class="section">3.2 Writing dependent grammars</h2>
+<p><a name="g_t_0023writing_002ddependent_002dgrammars"></a>
+You can easily reuse parsers defined by other grammars. For example,
+imag-ine you want to create a new grammar that reuses the definition of
+number inthe ExpressionGrammar we have just defined. For this, you have
+to declare adependency to ExpressionGrammar:
+</p>
+<pre class="verbatim">PPCompositeParser subclass: #MyNewGrammar
+instanceVariableNames: 'number'
+classVariableNames: ''
+poolDictionaries: ''
+category: 'PetitTutorial'
 
 MyNewGrammar class&gt;&gt;dependencies
 &quot;Answer a collection of PPCompositeParser classes that this parser directly
@@ -180,33 +720,127 @@ dependends on.&quot;
 
 MyNewGrammar&gt;&gt;number
 &quot;Answer the same parser as ExpressionGrammar&gt;&gt;number.&quot;
-^ (self dependencyAt: ExpressionGrammar) number</code></pre>
-<h2>Defining an evaluator</h2>
-<p>Now that we have defined a grammar we can reuse this definition to imple-ment an evaluator. To do this we create a subclass of <a href="ExpressionGrammar">ExpressionGrammar</a> called</p>
-<p><a href="ExpressionEvaluator">ExpressionEvaluator</a>:</p>
-<p><a href="ExpressionEvaluator">ExpressionEvaluator</a></p>
-<p>We then redefine the implementation of add , mul and parens with our eval-uation semantics. This is accomplished by calling the super implementationand adapting the returned parser as shown in the following methods:</p>
-<p><a href="ExpressionEvaluator&gt;&gt;add ">ExpressionEvaluator&gt;&gt;add</a></p>
-<p><a href="ExpressionEvaluator&gt;&gt;mul ">ExpressionEvaluator&gt;&gt;mul</a></p>
-<p><a href="ExpressionEvaluator&gt;&gt;parens ">ExpressionEvaluator&gt;&gt;parens</a></p>
-<p>The evaluator is now ready to be tested:</p>
-<pre><code>parser := ExpressionEvaluator new.</code></pre>
-<pre><code>parser parse: &#39;1 + 2 * 3&#39;.</code></pre>
-<pre><code>parser parse: &#39;(1 + 2) * 3&#39;.</code></pre>
-<h2>Defining a Pretty-Printer</h2>
-<p>We can reuse the grammar for example to define a simple pretty printer. Thisis as easy as subclassing ExpressionGrammar again!</p>
-<p><a href="ExpressionPrinter">ExpressionPrinter</a></p>
-<p><a href="ExpressionPrinter&gt;&gt;add ">ExpressionPrinter&gt;&gt;add</a></p>
-<p><a href="ExpressionPrinter&gt;&gt;mul ">ExpressionPrinter&gt;&gt;mul</a></p>
-<p><a href="ExpressionPrinter&gt;&gt;parens ">ExpressionPrinter&gt;&gt;parens</a></p>
-<p>This pretty printer can be tried out as shown by the following expressions:</p>
-<pre><code>parser := ExpressionPrinter new.</code></pre>
-<pre><code>parser parse: &#39;1+2 *3&#39;.</code></pre>
-<pre><code>parser parse: &#39;(1+ 2   )* 3&#39;.</code></pre>
-<h2>Easy expressions with PPExpressionParser</h2>
-<p>PetitParser proposes a powerful tool to create expressions; PPExpressionParseris a parser to conveniently define an expression grammar with prefix, postfix, and left- and right-associative infix operators. The operator-groups are defined in descending precedence.</p>
-<p>The ExpressionGrammar we previously defined can be implemented infew lines:</p>
-<pre><code>| expression parens number |
+^ (self dependencyAt: ExpressionGrammar) number
+</pre>
+<hr size="6">
+<a name="Defining-an-evaluator"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Writing-dependent-grammars" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Defining-a-Pretty_002dPrinter" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Defining-an-evaluator-1"></a>
+<h2 class="section">3.3 Defining an evaluator</h2>
+<p><a name="g_t_0023defining_002dan_002devaluator"></a>
+Now that we have defined a grammar we can reuse this definition to
+imple-ment an evaluator. To do this we create a subclass of
+<a href="ExpressionGrammar">ExpressionGrammar</a> called
+</p>
+<p><a href="ExpressionEvaluator">ExpressionEvaluator</a>:
+</p>
+<p><a href="ExpressionEvaluator">ExpressionEvaluator</a>
+</p>
+<p>We then redefine the implementation of add , mul and parens with our
+eval-uation semantics. This is accomplished by calling the super
+implementationand adapting the returned parser as shown in the following
+methods:
+</p>
+<p><a href="ExpressionEvaluator&gt;&gt;add">ExpressionEvaluator&gt;&gt;add</a>
+</p>
+<p><a href="ExpressionEvaluator&gt;&gt;mul">ExpressionEvaluator&gt;&gt;mul</a>
+</p>
+<p><a href="ExpressionEvaluator&gt;&gt;parens">ExpressionEvaluator&gt;&gt;parens</a>
+</p>
+<p>The evaluator is now ready to be tested:
+</p>
+<pre class="verbatim">parser := ExpressionEvaluator new.
+</pre>
+<pre class="verbatim">parser parse: '1 + 2 * 3'.
+</pre>
+<pre class="verbatim">parser parse: '(1 + 2) * 3'.
+</pre>
+<hr size="6">
+<a name="Defining-a-Pretty_002dPrinter"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Defining-an-evaluator" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Easy-expressions-with-PPExpressionParser" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Defining-a-Pretty_002dPrinter-1"></a>
+<h2 class="section">3.4 Defining a Pretty-Printer</h2>
+<p><a name="g_t_0023defining_002da_002dpretty_002dprinter"></a>
+We can reuse the grammar for example to define a simple pretty printer.
+Thisis as easy as subclassing ExpressionGrammar again!
+</p>
+<p><a href="ExpressionPrinter">ExpressionPrinter</a>
+</p>
+<p><a href="ExpressionPrinter&gt;&gt;add">ExpressionPrinter&gt;&gt;add</a>
+</p>
+<p><a href="ExpressionPrinter&gt;&gt;mul">ExpressionPrinter&gt;&gt;mul</a>
+</p>
+<p><a href="ExpressionPrinter&gt;&gt;parens">ExpressionPrinter&gt;&gt;parens</a>
+</p>
+<p>This pretty printer can be tried out as shown by the following
+expressions:
+</p>
+<pre class="verbatim">parser := ExpressionPrinter new.
+</pre>
+<pre class="verbatim">parser parse: '1+2 *3'.
+</pre>
+<pre class="verbatim">parser parse: '(1+ 2   )* 3'.
+</pre>
+<hr size="6">
+<a name="Easy-expressions-with-PPExpressionParser"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Defining-a-Pretty_002dPrinter" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[ &gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Composite-grammars-with-PetitParser" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Easy-expressions-with-PPExpressionParser-1"></a>
+<h2 class="section">3.5 Easy expressions with PPExpressionParser</h2>
+<p><a name="g_t_0023easy_002dexpressions_002dwith_002dppexpressionparser"></a>
+PetitParser proposes a powerful tool to create expressions;
+PPExpressionParseris a parser to conveniently define an expression
+grammar with prefix, postfix, and left- and right-associative infix
+operators. The operator-groups are defined in descending precedence.
+</p>
+<p>The ExpressionGrammar we previously defined can be implemented infew
+lines:
+</p>
+<pre class="verbatim">| expression parens number |
 expression := PPExpressionParser new.
 parens := $( asParser token trim , expression , $) asParser token trim
 ==&gt; [ :nodes | nodes second ].
@@ -218,7 +852,133 @@ expression
 		g left: $/ asParser token trim do: [ :a :op :b | a / b ] ];
 	group: [ :g |
 		g left: $+ asParser token trim do: [ :a :op :b | a + b ].
-		g left: $ - asParser token trim do: [ :a :op :b | a - b ] ]. </code></pre>
-<p>Now our parser is also able to manage subtraction and division:</p>
-<pre><code>expression parse: &#39;1 - 2/3&#39;.</code></pre>
-<p>How do you decide when to create a subclass of PPCompositeParser orinstantiate PPExpressionParser ? On the one hand, you should instantiate aPPExpressionParser if you want to do a small parser for a small task. On theother hand, if you have a grammar that's composed of many parsers, youshould subclass PPCompositeParser .</p>
+		g left: $ - asParser token trim do: [ :a :op :b | a - b ] ]. 
+</pre>
+<p>Now our parser is also able to manage subtraction and division:
+</p>
+<pre class="verbatim">expression parse: '1 - 2/3'.
+</pre>
+<p>How do you decide when to create a subclass of PPCompositeParser
+orinstantiate PPExpressionParser ? On the one hand, you should
+instantiate aPPExpressionParser if you want to do a small parser for a
+small task. On theother hand, if you have a grammar that&rsquo;s composed of
+many parsers, youshould subclass PPCompositeParser .
+</p><hr size="6">
+<a name="SEC_About"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h1>About This Document</h1>
+<p>
+  This document was generated by <em>Mariano</em> on <em>July 20, 2020</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+</p>
+<p>
+  The buttons in the navigation panels have the following meaning:
+</p>
+<table border="1">
+  <tr>
+    <th> Button </th>
+    <th> Name </th>
+    <th> Go to </th>
+    <th> From 1.2.3 go to</th>
+  </tr>
+  <tr>
+    <td align="center"> [ &lt; ] </td>
+    <td align="center">Back</td>
+    <td>Previous section in reading order</td>
+    <td>1.2.2</td>
+  </tr>
+  <tr>
+    <td align="center"> [ &gt; ] </td>
+    <td align="center">Forward</td>
+    <td>Next section in reading order</td>
+    <td>1.2.4</td>
+  </tr>
+  <tr>
+    <td align="center"> [ &lt;&lt; ] </td>
+    <td align="center">FastBack</td>
+    <td>Beginning of this chapter or previous chapter</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td align="center"> [ Up ] </td>
+    <td align="center">Up</td>
+    <td>Up section</td>
+    <td>1.2</td>
+  </tr>
+  <tr>
+    <td align="center"> [ &gt;&gt; ] </td>
+    <td align="center">FastForward</td>
+    <td>Next chapter</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td align="center"> [Top] </td>
+    <td align="center">Top</td>
+    <td>Cover (top) of document</td>
+    <td> &nbsp; </td>
+  </tr>
+  <tr>
+    <td align="center"> [Contents] </td>
+    <td align="center">Contents</td>
+    <td>Table of contents</td>
+    <td> &nbsp; </td>
+  </tr>
+  <tr>
+    <td align="center"> [Index] </td>
+    <td align="center">Index</td>
+    <td>Index</td>
+    <td> &nbsp; </td>
+  </tr>
+  <tr>
+    <td align="center"> [ ? ] </td>
+    <td align="center">About</td>
+    <td>About (help)</td>
+    <td> &nbsp; </td>
+  </tr>
+</table>
+
+<p>
+  where the <strong> Example </strong> assumes that the current position is at <strong> Subsubsection One-Two-Three </strong> of a document of the following structure:
+</p>
+
+<ul>
+  <li> 1. Section One
+    <ul>
+      <li>1.1 Subsection One-One
+        <ul>
+          <li>...</li>
+        </ul>
+      </li>
+      <li>1.2 Subsection One-Two
+        <ul>
+          <li>1.2.1 Subsubsection One-Two-One</li>
+          <li>1.2.2 Subsubsection One-Two-Two</li>
+          <li>1.2.3 Subsubsection One-Two-Three &nbsp; &nbsp;
+            <strong>&lt;== Current Position </strong></li>
+          <li>1.2.4 Subsubsection One-Two-Four</li>
+        </ul>
+      </li>
+      <li>1.3 Subsection One-Three
+        <ul>
+          <li>...</li>
+        </ul>
+      </li>
+      <li>1.4 Subsection One-Four</li>
+    </ul>
+  </li>
+</ul>
+
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated by <em>Mariano</em> on <em>July 20, 2020</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

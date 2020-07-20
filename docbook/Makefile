@@ -14,4 +14,6 @@ CuisManual.pdf:
 PetitParserTutorial.styled.html:
 	xsltproc http://docbook.sourceforge.net/release/xsl/current/html/docbook.xsl PetitParserTutorial.xml > PetitParserTutorial.styled.html
 PetitParserTutorial.styled2.html:
-	xsltproc http://cdn.docbook.org/release/xsltng/current/xslt/docbook.xsl PetitParserTutorial.xml > PetitParserTutorial.styled2.html
+	xsltproc http://cdn.docbook.org/release/xsl/current/xhtml/docbook.xsl PetitParserTutorial.xml > PetitParserTutorial.styled2.html
+PetitParserTutorial.texinfo:
+	pandoc --from docbook --to texinfo PetitParserTutorial.xml -o PetitParserTutorial.texinfo
