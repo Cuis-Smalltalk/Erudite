@@ -1,6 +1,5 @@
-<?xml  version="1.0" encoding="utf-8" ?> <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V5.0//EN"
-                   "http://www.oasis-open.org/docbook/xml/5.0/docbook.dtd">
-<book id="Cuis Manual" lang="en">
+<?xml  version="1.0" encoding="utf-8" ?>
+<book id="Cuis Manual" lang="en" version="5.0" xmlns="http://docbook.org/ns/docbook">
 <title>Cuis Manual</title>
 <chapter>
 <title>Introduction</title>

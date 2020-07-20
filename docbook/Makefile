@@ -11,3 +11,7 @@ CuisManual.html:
 	pandoc --from docbook --to html CuisManual.xml -o CuisManual.html
 CuisManual.pdf:
 	pandoc --from docbook --to pdf CuisManual.xml -o CuisManual.pdf
+PetitParserTutorial.styled.html:
+	xsltproc http://docbook.sourceforge.net/release/xsl/current/html/docbook.xsl PetitParserTutorial.xml > PetitParserTutorial.styled.html
+PetitParserTutorial.styled2.html:
+	xsltproc http://cdn.docbook.org/release/xsltng/current/xslt/docbook.xsl PetitParserTutorial.xml > PetitParserTutorial.styled2.html

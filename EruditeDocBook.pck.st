@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4241] on 20 July 2020 at 11:36:31 am'!
+'From Cuis 5.0 [latest update: #4241] on 20 July 2020 at 12:08:10 pm'!
 'Description DocBook import/export for Erudite.'!
-!provides: 'EruditeDocBook' 1 5!
+!provides: 'EruditeDocBook' 1 6!
 !requires: 'Erudite' 1 139 nil!
 !requires: 'YAXO' 1 16 nil!
 SystemOrganization addCategory: #EruditeDocBook!
@@ -342,12 +342,10 @@ renderSubsubsection: aBookSection
 	
 	! !
 
-!EruditeDocBookRenderer methodsFor: 'as yet unclassified' stamp: 'MM 7/20/2020 11:34:17'!
+!EruditeDocBookRenderer methodsFor: 'as yet unclassified' stamp: 'MM 7/20/2020 12:07:20'!
 renderWithTemplate: aBlock
 	xml xmlDeclaration: '1.0' encoding: 'utf-8'.
-	stream nextPutAll: ' <!!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V5.0//EN"
-                   "http://www.oasis-open.org/docbook/xml/5.0/docbook.dtd">'. 
-	self withElement: 'book' andAttributes: {'id' -> book title. 'lang' -> language} 
+	self withElement: 'book' andAttributes: {'id' -> book title. 'lang' -> language. 'xmlns' -> 'http://docbook.org/ns/docbook'. 'version' -> '5.0'} 
 		do: [ self withElement: 'title' do: [
 				self pcData: book title].
 			aBlock value]! !
