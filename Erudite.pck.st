@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4241] on 21 July 2020 at 11:10:15 pm'!
+'From Cuis 5.0 [latest update: #4249] on 21 July 2020 at 11:27:36 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 141!
+!provides: 'Erudite' 1 143!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
@@ -2272,7 +2272,7 @@ storeAsClassNamed: className
 	^ self storeAsClassNamed: className category: (self defaultStorageCategory: className asSymbol)
 	! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 18:47:04'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/21/2020 23:25:38'!
 storeAsClassNamed: className category: aCategory
 
 	|bookClass initialize|
@@ -2285,14 +2285,12 @@ storeAsClassNamed: className category: aCategory
 		
 	initialize _ String streamContents: [:s |
 		s nextPutAll: 'initialize'; newLine;
+		   nextPutAll: '    super initialize.'; newLine;
 		   nextPutAll: '    title _ ';
 		   nextPutAll: title printString; nextPutAll: '.'; newLine.
 		
-		s nextPutAll: '    sections _ OrderedCollection new '; newLine.
 		sections do: [:section |
-			s nextPutAll: '        add: self '; nextPutAll: section title asCamelCase; nextPutAll: ';'; newLine.
-		].
-		s nextPutAll: '    yourself'.].
+			s nextPutAll: '        self addSection: self '; nextPutAll: section title asCamelCase; nextPutAll: '.'; newLine]].
 	
 	bookClass compile: initialize.
 	
@@ -2451,11 +2449,15 @@ removeSection: aSection
 
 	sections remove: aSection! !
 
-!EruditeBook methodsFor: 'initialization' stamp: 'MM 12/17/2018 23:01:09'!
+!EruditeBook methodsFor: 'initialization' stamp: 'MM 7/21/2020 23:21:52'!
+initialize
+	sections _ OrderedCollection new! !
+
+!EruditeBook methodsFor: 'initialization' stamp: 'MM 7/21/2020 23:21:46'!
 initialize: aString
 
-	title _ aString.
-	sections _ OrderedCollection new! !
+	title _ aString
+	! !
 
 !EruditeBook methodsFor: 'initialization' stamp: 'MM 12/4/2018 20:11'!
 updateParents
@@ -2507,7 +2509,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:27'!
 AdditionalPackagesForCuis
 ^(EruditeBookSection basicNew title: 'Additional Packages for Cuis'; document: ((EruditeDocument contents: '!!!! Additional Packages for Cuis
 
@@ -2517,7 +2519,7 @@ Some of them are included in the main Cuis GitHub repository, at https://github.
 
 [[[Feature require: ''Core-Packages'']]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:27'!
 CuisAndGithub
 ^(EruditeBookSection basicNew title: 'Cuis and Github'; document: ((EruditeDocument contents: '!!!! Using Git and GitHub to host and manage Cuis code
 
@@ -2551,7 +2553,7 @@ This is the suggested procedure for developing external packages. Usually do thi
 
 * Exit the image. Usually without saving.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:27'!
 CuisSmalltalk
 ^(EruditeBookSection basicNew title: 'Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!! Cuis Smalltalk
 
@@ -2592,13 +2594,13 @@ Cuis is continuously evolving towards simplicity. Each release is better (i.e. s
         add: self CuisSmalltalkLicense;
  yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:27'!
 CuisSmalltalkAboutTheNameCuis
 ^(EruditeBookSection basicNew title: 'About the name Cuis'; document: ((EruditeDocument contents: '!!!!!! About the name Cuis
 
 Cuis is the common name of a {https://en.wikipedia.org/wiki/Southern_mountain_cavy::url|small animal} that lives in Argentina''s countryside. Cuis Smalltalk was originally forked from Squeak Smalltalk and many of us are also active in the Squeak community. So, picking the onomatopoeia of the voice of a mouse for the name makes sense. As the project was started in Buenos Aires, ''Cuis'' (essentially ''Squeak'' in Rioplatense Spanish) was the obvious choice.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:27'!
 CuisSmalltalkContributingToCuis
 ^(EruditeBookSection basicNew title: 'Contributing to Cuis'; document: ((EruditeDocument contents: '!!!!!! Contributing to Cuis
 
@@ -2613,7 +2615,7 @@ Here is a Smalltalk script to load all packages currently included:
 
 [[[Feature require: ''Core-Packages'']]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:27'!
 CuisSmalltalkLearningAboutCuisSmalltalk
 ^(EruditeBookSection basicNew title: 'Learning about Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!!!! Learning about Cuis Smalltalk
 
@@ -2623,13 +2625,13 @@ Additionally, there are many tutorials and references for Smalltalk in the web. 
 
 The user interface enables you to access most of the code and conduct Smalltalk experiments on your own. You can review its features at {https://github.com/Cuis-Smalltalk-Learning/Learning-Cuis/blob/master/Quick-UI-Tour.md::url|"Quick Tour of the UI"}. ') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:27'!
 CuisSmalltalkLicense
 ^(EruditeBookSection basicNew title: 'License'; document: ((EruditeDocument contents: '!!!!!! Cuis License
 
 Cuis is distributed subject to the MIT License. See the LICENSE file. Any contribution submitted for incorporation into or for distribution with Cuis shall be presumed subject to the same license.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:27'!
 Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Introduction
 
@@ -2637,7 +2639,7 @@ This is a manual about Cuis Smalltalk.
 
 NOTE: Most of its content was taken from Cuis documentation at: {https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/tree/master/Documentation::url}') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:27'!
 ManagingYourCodeInCuis
 ^(EruditeBookSection basicNew title: 'Managing your code in Cuis'; document: ((EruditeDocument contents: '!!!! Managing your code in Cuis
 
@@ -2646,7 +2648,7 @@ Cuis includes tools and procedures for managing Smalltalk code. Code that is not
         add: self ManagingYourCodeInCuisLoadingChangeSetFilesIntoCuis;
  yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:27'!
 ManagingYourCodeInCuisChangesToTheCuisBaseImage
 ^(EruditeBookSection basicNew title: 'Changes to the Cuis base image'; document: ((EruditeDocument contents: '!!!!!! Changes to the Cuis base image
 
@@ -2658,7 +2660,7 @@ Opening a [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: Change Sorte
 
 When the changes to the base system are complete, it is a good time to review the CuisCore change set and, maybe remove from it changes that we don''t want to keep (for example, experiments, halts, etc). Then, just do right click / File out and remove. This saves the //ChangeSet// on disk. It also removes it from the **ChangeSorter** (but it doesn''t remove any code). This is good, because the next changes done will end in a new CuisCore change set, and there''s no risk of having undesired changes in the old one. As changes to the base image progress, and several CuisCore //ChangeSets// are saved to disk, these numbered files are created in sequence. They will be ready to be loaded back in proper order in a fresh Cuis image, or to be sent to Cuis maintainers for integration in the update stream and in next releases of Cuis.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:27'!
 ManagingYourCodeInCuisLoadingChangeSetFilesIntoCuis
 ^(EruditeBookSection basicNew title: 'Loading ChangeSet files into Cuis'; document: ((EruditeDocument contents: '!!!!!! Loading ChangeSet files into Cuis
 
@@ -2668,7 +2670,7 @@ There are two ways to load //ChangeSet// files (.cs): **[FileIn]** and **[Instal
 
 **[Install]** loads the code into a separate //ChangeSet// object (viewable in the [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: ChangeSorter tool). This is appropriate for loading Cuis updates, or other code that we are not authoring, as it doesn''t add new items (class or method definitions) to the current ChangeSet for our changes to Cuis. Usually any ChangeSets should be installed before doing changes to the image. The reason is that an installed ChangeSet could overwrite changes done by you, or packages you have installed. If this is the case, the affected packages would appear as dirty, and your change set would include any installed changes (that don''t belong in a package). Be careful when saving packages or change sets if this was the case!!!!') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:27'!
 ManagingYourCodeInCuisPackages
 ^(EruditeBookSection basicNew title: 'Packages'; document: ((EruditeDocument contents: '!!!!!! Packages
 
@@ -2696,18 +2698,18 @@ Handling Packages like this, Cuis behaves as a sort of document editor (like, fo
 
 This is not unlike using Git or GitHub with a file-based development environment such as Eclipse or a text editor. Like Cuis, these tools don''t do version handling themselves, they just load and save files; and let Git do its magic.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:27'!
 initialize
+    super initialize.
     title _ 'Cuis Manual'.
-    sections _ OrderedCollection new 
-        add: self Introduction;
-        add: self CuisSmalltalk;
-        add: self ManagingYourCodeInCuis;
-        add: self AdditionalPackagesForCuis;
-        add: self CuisAndGithub;
-    yourself! !
+        self addSection: self Introduction.
+        self addSection: self CuisSmalltalk.
+        self addSection: self ManagingYourCodeInCuis.
+        self addSection: self AdditionalPackagesForCuis.
+        self addSection: self CuisAndGithub.
+! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:27:26'!
 BookReaderAndEditor
 ^(EruditeBookSection basicNew title: 'Book reader and editor'; document: ((EruditeDocument contents: '!!!! Book reader and editor
 
@@ -3653,7 +3655,7 @@ H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
 BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:27:26'!
 Extensions
 ^(EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
 
@@ -3671,7 +3673,7 @@ This is implemented.
 
 TODO. Not implemented yet. ') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:27:26'!
 Extras
 ^(EruditeBookSection basicNew title: 'Extras'; document: ((EruditeDocument contents: '!!!! Extras
 
@@ -3683,7 +3685,7 @@ Also, a book on Morphic, the Cuis UI system:
 
 To install: [[[Feature require: ''MorphicBook'']]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:27:26'!
 Implementation
 ^(EruditeBookSection basicNew title: 'Implementation'; document: ((EruditeDocument contents: '!!!! Implementation
 
@@ -3767,7 +3769,7 @@ Methods with Books are tagged with a //book// pragma, that is used later for lis
 
 {EruditeBook class>>booksList::method}[embed]') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:27:26'!
 Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Erudite Manual
 
@@ -3781,7 +3783,7 @@ Main documentation is realized via {EruditeBook::class|books}, a collection of d
 
 Books are read and edited via the {EruditeBookReaderMorph::class|reader} and {EruditeBookEditorMorph::class|editor} morphic applications.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:27:26'!
 LiterateProgramming
 ^(EruditeBookSection basicNew title: 'Literate Programming'; document: ((EruditeDocument contents: '!!!! Literate Programming
 
@@ -3815,7 +3817,7 @@ This misconception has led to claims that comment-extraction tools, such as the 
 
 Literate Programming can be realized by the creation of Erudite {EruditeBook::class|books}. In particular, via code embedding in its different forms. Contrary to other LP systems, there''s no need for a tangling and weaving phase; the document source is kept separately from the source code, Smalltalk code is referenced and embedded from the documentation. That means that in spite of documentation and code being separate, the referenced code is always up to date. Finally, the possibility of evaluating Smalltalk code from the documentation makes Erudite very unique compared to the other LP systems.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:27:26'!
 SyntaxReference
 ^(EruditeBookSection basicNew title: 'Syntax reference'; document: ((EruditeDocument contents: '!!!! Syntax reference
 
@@ -4400,7 +4402,7 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
 AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:27:26'!
 SyntaxTest
 ^(EruditeBookSection basicNew title: 'Syntax test'; document: ((EruditeDocument contents: '!!!! Syntax test
 
@@ -5814,19 +5816,19 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
 AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:27:26'!
 initialize
+    super initialize.
     title _ 'Erudite Manual'.
-    sections _ OrderedCollection new 
-        add: self Introduction;
-        add: self BookReaderAndEditor;
-        add: self SyntaxReference;
-        add: self LiterateProgramming;
-        add: self SyntaxTest;
-        add: self Implementation;
-        add: self Extensions;
-        add: self Extras;
-    yourself! !
+        self addSection: self Introduction.
+        self addSection: self BookReaderAndEditor.
+        self addSection: self SyntaxReference.
+        self addSection: self LiterateProgramming.
+        self addSection: self SyntaxTest.
+        self addSection: self Implementation.
+        self addSection: self Extensions.
+        self addSection: self Extras.
+! !
 
 !EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:52'!
 contents: aString
@@ -5943,11 +5945,12 @@ subsections
 
 	^ subsections! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:27'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 7/21/2020 23:18:51'!
 subsections: anObject
 	"Set the value of subsections"
 
-	subsections _ anObject! !
+	subsections _ anObject.
+	subsections do: [:ss | ss parent: self]! !
 
 !EruditeBookSection methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:27'!
 title

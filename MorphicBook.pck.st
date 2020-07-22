@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4241] on 21 July 2020 at 11:13:40 pm'!
+'From Cuis 5.0 [latest update: #4249] on 21 July 2020 at 11:26:58 pm'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 26!
+!provides: 'MorphicBook' 1 27!
 !requires: 'Erudite' 1 133 nil!
 !requires: 'Dice' 1 0 nil!
 SystemOrganization addCategory: #MorphicBook!
@@ -199,7 +199,7 @@ step
 stepTime
 	^ 100! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 ACompleteExample
 ^(EruditeBookSection basicNew title: 'A complete example'; document: ((EruditeDocument contents: '!!!! A complete example
 
@@ -267,7 +267,7 @@ Roll the dice: [[[dice startRolling]]] doIt
 
 Stop rolling: [[[dice stopRolling]]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 ComposingMorphs
 ^(EruditeBookSection basicNew title: 'Composing morphs'; document: ((EruditeDocument contents: '!!!! Composing morphs
 
@@ -281,7 +281,7 @@ joe addMorph: ellipse
 
 If you now try to grab the balloon with the mouse, you will find that you actually grab joe, and the two morphs move together: the balloon is embedded inside joe. It is possible to embed more morphs inside joe. In addition to doing this programmatically, you can also embed morphs by direct manipulation.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 CreatingAndDrawingYourOwnMorphs
 ^(EruditeBookSection basicNew title: 'Creating and drawing your own morphs'; document: ((EruditeDocument contents: '!!!! Creating and drawing your own morphs
 
@@ -334,7 +334,7 @@ meaningful names to the private methods.
 
 [[[CrossMorph3 new openInWorld]]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 DesignPrinciplesBehindMorphic
 ^(EruditeBookSection basicNew title: 'Design Principles Behind Morphic'; document: ((EruditeDocument contents: '!!!! Design Principles Behind Morphic
 
@@ -343,7 +343,7 @@ The design principles behind a system -why things are done one way and not some 
         add: self DesignPrinciplesBehindMorphicUniformity;
  yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 DesignPrinciplesBehindMorphicConcretenessAndDirectness
 ^(EruditeBookSection basicNew title: 'Concreteness and Directness'; document: ((EruditeDocument contents: '!!!!!! Concreteness and Directness
 
@@ -368,7 +368,7 @@ remove all the submorphs from a composite morph, the parent morph is still there
 understand and change the layout properties. We say that morphic reifies composite structure and automatic
 layout behavior.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 DesignPrinciplesBehindMorphicLiveness
 ^(EruditeBookSection basicNew title: 'Liveness'; document: ((EruditeDocument contents: '!!!!!! Liveness
 
@@ -397,7 +397,7 @@ The primary mechanism used to achieve liveness is the stepping mechanism. As we 
 
 Morphic avoids the global run/edit switch found in many other systems. Just as you don''t have to (and can''t!!) turn off the laws of physics before manipulating an object in the real world, you needn''t suspend stepping before manipulating a morph or even editing its code. Things just keep running. When you pop up a menu or halo on an animating morph, it goes right on animating. When you change the color of a morph using the color palette, its color updates continuously. If you''re quick enough, you can click or drop something on an animating morph as it moves across the screen. All these things support the principle of liveness.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 DesignPrinciplesBehindMorphicUniformity
 ^(EruditeBookSection basicNew title: 'Uniformity'; document: ((EruditeDocument contents: '!!!!!! Uniformity
 
@@ -407,7 +407,7 @@ Morphic strives to create a similar uniformity for objects on the screen, a kind
 
 Uniformity is achieved in morphic by striving to avoid special cases. Everything on the screen is a morph, all morphs inherit from M o r p h , any morph can have submorphs or be a submorph, and composite morphs behave like atomic morphs. In these and other design choices, morphic seeks to merge different things under a single general model and avoids making distinctions that would undermine uniformity.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 HowMorphicWorks
 ^(EruditeBookSection basicNew title: 'How Morphic works'; document: ((EruditeDocument contents: '!!!! How Morphic works
 
@@ -418,7 +418,7 @@ This section gives an overview of how morphic works in just enough detail to hel
         add: self HowMorphicWorksDisplayUpdating;
  yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 HowMorphicWorksDisplayUpdating
 ^(EruditeBookSection basicNew title: 'Display Updating'; document: ((EruditeDocument contents: '!!!!!! Display Updating
 
@@ -427,7 +427,7 @@ Morphic uses a double-buffered, incremental algorithm to keep the screen updated
 Morphic keeps a list, called the damage list of those portions of the screen that must be redrawn. Every morph has a bounds rectangle that encloses its entire visible representation. When a morph changes any aspect appearance (for example, its color), it sends itself the message {changed::selector}, which adds its bounds rectangle to the damage list. The display update phase of the morphic UI loop is responsible for bringing the screen up to date.
 For each rectangle in the damage list, it redraws (in back-to-front order) all the morphs intersecting the damage rectangle. This redrawing is done in an off-screen buffer which is then copied to the screen. Since individual morphs are drawn off screen, the user never sees the intermediate stages of the drawing process, and the final copy from the off-screen buffer to the screen is quite fast. The result is the smooth animation of objects that seem solid regardless of the sequence of individual drawing operations. When all the damage rectangles have been processed, morphic clears the damage list to prepare for the next cycle.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 HowMorphicWorksInputProcessing
 ^(EruditeBookSection basicNew title: 'Input Processing'; document: ((EruditeDocument contents: '!!!!!! Input Processing
 
@@ -439,7 +439,7 @@ Within a composite morph, its front-most submorph is given the first chance to h
 
 What about mouse move and mouse up events? Consider what happens when the user drags the handle of a scroll bar. When the mouse goes down on the scroll bar, the scroll bar starts tracking the mouse as it is dragged. It continues to track the mouse if the cursor moves outside of the scroll bar, and even if the cursor is dragged over a button or some other scroll bar. That is because morphic considers the entire sequence of mouse down, repeated mouse moves, and mouse up to be a single transaction. Whichever morph accepts the mouse down event is considered the mouse focus until the mouse goes up again. The mouse focus morph is guaranteed to get the entire mouse drag transaction: a mouse down event, at least one mouse move event, and a mouse up event. Thus, a morph can perform some initialization on mouse down and cleanup on mouse up, and be assured that the initialization and cleanup will always get done.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 HowMorphicWorksLayoutUpdating
 ^(EruditeBookSection basicNew title: 'Layout Updating'; document: ((EruditeDocument contents: '!!!!!! Layout Updating
 
@@ -447,13 +447,13 @@ Morphic maintains morph layout incrementally. When a morph is changed in a way t
 
 As with changed messages, morph clients usually need not send layoutChanged explicitly since the most common operations that affect the layout of a morph -such as adding and removing submorphs or changing the morph''s size- do this already. The alert reader might worry that updating the layout after adding a morph might slow things down when building a row or column with lots of submorphs. In fact, since the cost of updating the layout is proportional to the number of morphs already in the row or column, then adding N morphs one at a time and updating the layout after every morph would have a cost proportional to N 2 . This cost would mount up fast when building a complex morph like a ScorePlayerMorph . To avoid this problem, morphic defers all layout updates until the next display cycle. After all, the user can''t see any layout changes until the screen is next repainted. Thus, a program can perform any number of layout-changing operations on a given morph between display cycles and morphic will only update that morph''s layout once.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 HowMorphicWorksLiveness
 ^(EruditeBookSection basicNew title: 'Liveness'; document: ((EruditeDocument contents: '!!!!!! Liveness
 
 Liveness is handled by keeping a list of morphs that need to be stepped, along with their desired next step time. Every cycle, the step message is sent to any morphs that are due for stepping and their next step time is updated. Deleted morphs are pruned from the step list, both to avoid stepping morphs that are no longer on the screen, and to allow those morphs to be garbage collected.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 HowMorphicWorksTheUILoop
 ^(EruditeBookSection basicNew title: 'The UI loop'; document: ((EruditeDocument contents: '!!!!!! The UI Loop
 
@@ -469,7 +469,7 @@ do forever:
 
 Sometimes, none of these steps will have anything to do; there are no events to process, no morph that needs to be stepped, no layout updates, and no display updates. In such cases, morphic sleeps for a few milliseconds so that it doesn''t hog the CPU when it''s idle.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 InteractionAndAnimation
 ^(EruditeBookSection basicNew title: 'Interaction and animation'; document: ((EruditeDocument contents: '!!!! Interaction and animation
 
@@ -543,7 +543,7 @@ Make CrossMorph blink by defining these methods as follows:
 
 [[[CrossMorph6 new openInWorld; startStepping]]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Morphic
 
@@ -556,7 +556,7 @@ The contents of this book were mostly copied and sometimes adapted from:
 * "Pharo by Example" book, chapter 13.
 * "An Introduction to Morphic: The Squeak User Interface Framework" by John Maloney.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 ManipulatingMorphs
 ^(EruditeBookSection basicNew title: 'Manipulating morphs'; document: ((EruditeDocument contents: '!!!! Manipulating morphs
 
@@ -583,14 +583,14 @@ To make bill follow joe, you can repeatedly execute this code:
 If you move joe using the mouse and then execute this code, bill will move so
 that it is 100 pixels to the right of joe.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 MorphicInCuis
 ^(EruditeBookSection basicNew title: 'Morphic in Cuis'; document: ((EruditeDocument contents: '!!!! Morphic in Cuis
 
 Here we explain how Morphic is implemented in Cuis') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new        add: self MorphicInCuisLayout;
  yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 MorphicInCuisLayout
 ^(EruditeBookSection basicNew title: 'Layout'; document: ((EruditeDocument contents: '!!!! Layout
 
@@ -741,7 +741,7 @@ l3 addAdjusterAndMorph: (RectangleLikeMorph new color: Color blue; yourself) pro
 
 [[[l3]]] embedIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 TheHistoryOfMorphic
 ^(EruditeBookSection basicNew title: 'The history of Morphic'; document: ((EruditeDocument contents: '!!!! The history of Morphic
 
@@ -760,7 +760,7 @@ Of course, it is possible to define morphs that are more interesting graphical r
 
 [[[RectangleLikeMorph new color: Color blue; openInWorld]]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 ThePastAndFutureOfMorphic
 ^(EruditeBookSection basicNew title: 'The Past and Future of Morphic'; document: ((EruditeDocument contents: '!!!! The Past and Future of Morphic
 
@@ -768,7 +768,7 @@ The first version of morphic was developed by John Maloney and Randy Smith at Su
 or assignment. Randy''s previous work with the Alternate Reality Kit and his passion for concreteness and uniformity contributed strongly to morphic''s design. For Squeak, morphic was re-written from scratch in Smalltalk. While the details differ, the Squeak version retains the spirit and feel of the original morphic, and it is important to acknowledge the debt it owes to the Self project.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new        add: self ThePastAndFutureOfMorphicMorphicVersusTheMVCFramework;
  yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 ThePastAndFutureOfMorphicMorphicVersusTheMVCFramework
 ^(EruditeBookSection basicNew title: 'Morphic versus the MVC Framework'; document: ((EruditeDocument contents: '!!!!!! Morphic versus the Model-View-Controller Framework
 
@@ -784,19 +784,19 @@ without drawing over each other. In contrast, Morphic''s centralization of damag
 Morphic''s concreteness is also a departure from MVC. In MVC, feedback for moving or resizing a window is provided as a hollow rectangle, as opposed to a solid object. Again, this is more efficient--only a few screen pixels are updated as the feedback rectangle is dragged around, and no view display code must be run--the right choice for slower machines In fact, morphic itself
 supports outline-only window dragging and resizing as an option for slow machines.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:08:46'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:48'!
 initialize
+    super initialize.
     title _ 'Morphic Book'.
-    sections _ OrderedCollection new 
-        add: self Introduction;
-        add: self TheHistoryOfMorphic;
-        add: self ManipulatingMorphs;
-        add: self ComposingMorphs;
-        add: self CreatingAndDrawingYourOwnMorphs;
-        add: self InteractionAndAnimation;
-        add: self ACompleteExample;
-        add: self HowMorphicWorks;
-        add: self DesignPrinciplesBehindMorphic;
-        add: self ThePastAndFutureOfMorphic;
-        add: self MorphicInCuis;
-    yourself! !
+        self addSection: self Introduction.
+        self addSection: self TheHistoryOfMorphic.
+        self addSection: self ManipulatingMorphs.
+        self addSection: self ComposingMorphs.
+        self addSection: self CreatingAndDrawingYourOwnMorphs.
+        self addSection: self InteractionAndAnimation.
+        self addSection: self ACompleteExample.
+        self addSection: self HowMorphicWorks.
+        self addSection: self DesignPrinciplesBehindMorphic.
+        self addSection: self ThePastAndFutureOfMorphic.
+        self addSection: self MorphicInCuis.
+! !
