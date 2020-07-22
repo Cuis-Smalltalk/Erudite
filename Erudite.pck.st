@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4249] on 21 July 2020 at 11:27:36 pm'!
+'From Cuis 5.0 [latest update: #4241] on 22 July 2020 at 11:51:58 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 143!
+!provides: 'Erudite' 1 144!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
@@ -2234,14 +2234,17 @@ defaultStorageMethodReferenceFor: aBook
 		class: EruditeBook class
 		selector: (self selectorFromTitle: aBook title).! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 3/21/2019 15:54:25'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/22/2020 11:51:34'!
 load
 	| stMethod book |
-	stMethod _ self storageMethod.
-	book _ stMethod compiledMethod
-		valueWithReceiver: EruditeBook class
-		arguments: #().
-	self become: book! !
+	stMethod _ self storageMethod compiledMethod.
+	stMethod ifNotNil: [ "Stored in method"
+		book _ stMethod 
+			valueWithReceiver: EruditeBook class
+			arguments: #().
+		self become: book]
+		ifNil: ["assume stored as class"
+			self become: self class new]! !
 
 !EruditeBook methodsFor: 'storage' stamp: 'MM 12/4/2018 10:55'!
 selectorFromTitle: aString
