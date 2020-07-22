@@ -3,7 +3,7 @@
 !provides: 'PetitParserTutorial' 1 15!
 !requires: 'PetitTutorial' 1 0 nil!
 !requires: 'Erudite' 1 73 nil!
-!requires: 'PetitParser' 1 3 nil!
+!requires: 'PetitParser' 1 2 nil!
 SystemOrganization addCategory: #PetitParserTutorial!
 
 
@@ -109,7 +109,7 @@ Define more expression grammar parsers, this time with no associated action:
 
 {ExpressionGrammar>>parens ::method}[embed]
 
-Contrary to our previous implementation we do not define the production actions yet (what we previously did by using PPParser»==> ); and we factor out the parts for addition ( add ), multiplication ( mul ), and parenthesis ( parens ) into separate productions. This will give us better reusability later on. For example, a subclass may override such methods to produce slightly different production output. Usually, production methods are categorized in a protocol named grammar (which can be refined into more specific protocol names when necessary such as grammar - literals ).
+Contrary to our previous implementation we do not define the production actions yet (what we previously did by using PPParserÂ»==> ); and we factor out the parts for addition ( add ), multiplication ( mul ), and parenthesis ( parens ) into separate productions. This will give us better reusability later on. For example, a subclass may override such methods to produce slightly different production output. Usually, production methods are categorized in a protocol named grammar (which can be refined into more specific protocol names when necessary such as grammar - literals ).
 
 Last but not least we define the starting point of the expression grammar. This is done by overriding {PPCompositeParser>>start ::method} in the ExpressionGrammar class:
 
@@ -287,7 +287,7 @@ line := identifier trim: ignorable.
 line parse: ''// This is a comment
 oneIdentifier // another comment'']]] printItHere
 
-The message PPParser»==> lets you specify a block to be executed when the parser matches an input. The next section presents several examples. Here is a simple way to get a number from its string representation.
+The message PPParserÂ»==> lets you specify a block to be executed when the parser matches an input. The next section presents several examples. Here is a simple way to get a number from its string representation.
 
 [[[number := #digit asParser plus flatten]]] printItHere
 [[[number parse: ''123'']]] printItHere
@@ -331,7 +331,7 @@ input. To be able to compose parsers easily, it is important that parsers do not
 [[[identifier matchesSkipIn: ''foo 123 bar12'']]] printItHere
 [[[identifier matchesIn: ''foo 123 bar12'']]] printItHere
 
-The {PPParser>>matchesSkipIn: ::method} method returns a collection of arrays containing what has been matched. This function avoids parsing the same character twice. The method {PPParser»matchesIn: ::method} does a similar job but returns a collection with all possible sub-parsed elements: e.g., evaluating [[[identifier matchesIn: ''foo 123 bar12'']]] returns a collection of 6 elements.
+The {PPParser>>matchesSkipIn: ::method} method returns a collection of arrays containing what has been matched. This function avoids parsing the same character twice. The method {PPParserÂ»matchesIn: ::method} does a similar job but returns a collection with all possible sub-parsed elements: e.g., evaluating [[[identifier matchesIn: ''foo 123 bar12'']]] returns a collection of 6 elements.
 
 Similarly, to find all the matching ranges (index of first character and
 index of last character) in the given input one can use either {PPParser>>matchingSkipRangesIn: ::method} or {PPParser>>matchingRangesIn: ::method} as shown by the script below:
