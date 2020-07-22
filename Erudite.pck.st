@@ -1,12 +1,13 @@
-'From Cuis 5.0 [latest update: #4241] on 18 July 2020 at 6:51:17 pm'!
+'From Cuis 5.0 [latest update: #4241] on 21 July 2020 at 11:10:15 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 140!
+!provides: 'Erudite' 1 141!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
+SystemOrganization addCategory: #'Erudite-Books'!
 SystemOrganization addCategory: #'Erudite-Core'!
 SystemOrganization addCategory: #'Erudite-Latex'!
 SystemOrganization addCategory: #'Erudite-Morphic'!
@@ -276,12 +277,32 @@ SmalltalkEruditeStyler class
 
 !classDefinition: #EruditeBook category: #'Erudite-Core'!
 Object subclass: #EruditeBook
-	instanceVariableNames: 'title sections storageMethod'
+	instanceVariableNames: 'title sections storageMethod author'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
 !classDefinition: 'EruditeBook class' category: #'Erudite-Core'!
 EruditeBook class
+	instanceVariableNames: ''!
+
+!classDefinition: #CuisManual category: #'Erudite-Books'!
+EruditeBook subclass: #CuisManual
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Books'!
+!classDefinition: 'CuisManual class' category: #'Erudite-Books'!
+CuisManual class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeManual category: #'Erudite-Books'!
+EruditeBook subclass: #EruditeManual
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Books'!
+!classDefinition: 'EruditeManual class' category: #'Erudite-Books'!
+EruditeManual class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeBookSection category: #'Erudite-Core'!
@@ -1334,7 +1355,7 @@ saveBook
 	model store.
 	sourcesChanged _ false! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 12:34'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:04:04'!
 saveBookAs
 
 	| title |
@@ -1345,7 +1366,7 @@ saveBookAs
 		newBook _ model copy.
 		newBook title: title.
 		newBook store.
-		newBook load.
+		newBook edit.
 		model _ newBook.
 		currentSection _ nil.
 		self sectionsChanged ; contentsChanged ]! !
@@ -2201,9 +2222,11 @@ asMethodName: aString
 defaultNameForClass
 	^ title asCamelCase capitalized asSymbol! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:38:49'!
-defaultStorageCategory
-	^ 'EruditeBooks'! !
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/21/2020 23:03:10'!
+defaultStorageCategory: aClassName
+	^ Smalltalk at: aClassName asSymbol
+		ifPresent: [:cls |		cls category]
+		ifAbsent: ['EruditeBooks']! !
 
 !EruditeBook methodsFor: 'storage' stamp: 'MM 12/10/2018 21:27'!
 defaultStorageMethodReferenceFor: aBook
@@ -2233,19 +2256,20 @@ selectorFromTitle: aString
 			s nextPutAll: part capitalized]]
 	! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 12/7/2018 12:31'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/21/2020 22:40:40'!
 store
 
-	^ self storeOnMethod: self storageMethod
+	"^ self storeOnMethod: self storageMethod"
+	self storeAsClass.
 	! !
 
 !EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:35:59'!
 storeAsClass
 	^ self storeAsClassNamed: self defaultNameForClass! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:38:37'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/21/2020 22:38:59'!
 storeAsClassNamed: className
-	^ self storeAsClassNamed: className category: self defaultStorageCategory
+	^ self storeAsClassNamed: className category: (self defaultStorageCategory: className asSymbol)
 	! !
 
 !EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 18:47:04'!
@@ -2341,6 +2365,18 @@ addSection: aString document: aDocument
 			title: aString
 			document: aDocument).! !
 
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 7/20/2020 11:18:07'!
+author
+	"Answer the value of author"
+
+	^ author! !
+
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 7/20/2020 11:18:07'!
+author: anObject
+	"Set the value of author"
+
+	author _ anObject! !
+
 !EruditeBook methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:28'!
 sections
 	"Answer the value of sections"
@@ -2433,154 +2469,18 @@ bookNamed: aString ifNone: aBlock
 	
 	^ self booksList detect: [:aBook | aBook title = aString] ifNone: aBlock! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/8/2018 14:54'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 22:43:15'!
 booksList
+
+	^ self booksListInMethods, (EruditeBook subclasses collect: [:cls | cls new])! !
+
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 22:42:00'!
+booksListInMethods
 
 	|pragmas |
 	
 	pragmas _ Pragma allNamed: #book: in: self class.
 	^ pragmas collect: [:pragma | pragma method valueWithReceiver: self class arguments: #()].! !
-
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:36:36'!
-cuisManual
-
-<book: 'Cuis Manual'>
-
-^(EruditeBook basicNew title: 'Cuis Manual'; sections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Introduction
-
-This is a manual about Cuis Smalltalk.
-
-NOTE: Most of its content was taken from Cuis documentation at: {https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/tree/master/Documentation::url}') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!! Cuis Smalltalk
-
-{http://www.cuis-smalltalk.org::url|Cuis} is a free {https://en.wikipedia.org/wiki/Smalltalk::url|Smalltalk-80} environment originally derived from {http://www.squeak.org::url|Squeak} with a specific set of goals: being simple and powerful. It is also portable to any platform, fast and efficient. This means it is a great tool for running on any hardware, ranging from RasPis and the like, and phones, up to cloud servers, and everything in between, including regular laptops and PCs.
-
-Cuis is
-
-* **Small**
-* **Clean**
-* **Appropriable**
-
-Like Squeak, Cuis is also:
-
-* **Open Source**
-* **Self contained**
-* **Multiplatform**
-
-Like other Smalltalk-80 environments (including Squeak, Pharo and others), Cuis is also:
-
-* **A complete development environment written in itself**
-* **A pure, dynamic Object Oriented language**
-
-Cuis shares the {http://www.opensmalltalk.org::url|OpenSmalltalk Virtual Machine} with Squeak, Pharo and Newspeak. What sets Cuis apart from the other members of the Squeak family is the focus on Smalltalk-80 and an active attitude towards system complexity:
-
-Unbound complexity growth, together with development strategies focused only in the short term, are the worst long term enemies of all software systems. As systems grow older, they usually become more complex. New features are added as layers on top of whatever is below, sometimes without really understanding it, and almost always without modifying it. Complexity and size grow without control. Evolution slows down. Understanding the system becomes harder every day. Bugs are harder to fix. Codebases become huge for no clear reason. At some point, the system can''t evolve anymore and becomes "legacy code".
-
-Complexity puts a limit to the level of understanding of the system a person might reach, and therefore limits the things that can be done with it. Dan Ingalls says all this in {http://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html::url|"Design Principles Behind Smalltalk"}. Even if you have already done so, please go and read it again!!
-
-This presentation by Rich Hickey, {http://www.infoq.com/presentations/Simple-Made-Easy::url|"Simple made Easy"} is also an excellent reflection on these values.
-
-We follow a set of ideas that started with Jean Piaget''s {https://en.wikipedia.org/wiki/Constructivism_(philosophy_of_education::url|Constructivism}, and were further developed in Seymour Papert''s {https://en.wikipedia.org/wiki/Experiential_learning::url|Mathland}. These lead to Alan Kay''s Learning Research Group''s {http://www.vpri.org/pdf/hc_pers_comp_for_children.pdf::url|Personal Computer for Children of All Ages}, {http://www.vpri.org/pdf/m1977001_dynamedia.pdf::url|Personal Dynamic Media}, i.e. the {http://www.vpri.org/pdf/hc_what_Is_a_dynabook.pdf::url|Dynabook} and to {https://en.wikipedia.org/wiki/Smalltalk::url|Smalltalk-80}. To us, a Smalltalk system is a Dynabook. A place to experiment and learn, and a medium to express and register the knlowledge we acquire. We understand software development as the activity of learning and documenting knowledge, for us and others to use, and also to be run on a computer. The fact that the computer run is useful, is a consequence of the knowldege being sound and relevant. (Just making it work is **not** the important part!!)
-
-Cuis Smalltalk is our attempt at this challenge. Furthermore, we believe we are doing something else that no other Smalltalk, commercial or open source, does. We attempt to give the true Smalltalk-80 experience, and keep Smalltalk-80 not as legacy software historic significance, but as a live, evolving system. We feel we are the keepers of the Smalltalk-80 heritage, and enablers of the Dynabook experience.
-
-Cuis is continuously evolving towards simplicity. Each release is better (i.e. simpler) than the previous one. At the same time, features are enhanced, and any reported bugs fixed. We also adopt recent enhancements from Squeak and share our work with the wider Squeak and Smalltalk community.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'About the name Cuis'; document: ((EruditeDocument contents: '!!!!!! About the name Cuis
-
-Cuis is the common name of a {https://en.wikipedia.org/wiki/Southern_mountain_cavy::url|small animal} that lives in Argentina''s countryside. Cuis Smalltalk was originally forked from Squeak Smalltalk and many of us are also active in the Squeak community. So, picking the onomatopoeia of the voice of a mouse for the name makes sense. As the project was started in Buenos Aires, ''Cuis'' (essentially ''Squeak'' in Rioplatense Spanish) was the obvious choice.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Learning about Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!!!! Learning about Cuis Smalltalk
-
-If you are learning Smalltalk, the Cuis community can help you. Check the {https://github.com/Cuis-Smalltalk-Learning/Learning-Cuis::url|"Learning Cuis Smalltalk"} repository. It includes several great tutorials. Also, the TerseGuide.pck.st package (in the /Packages folder in this repo) is useful both as a guide and a reference.
-
-Additionally, there are many tutorials and references for Smalltalk in the web. They apply quite well to Cuis, especially those written originally for Smalltalk-80 or Squeak. These books {http://stephane.ducasse.free.fr/FreeBooks/BlueBook/Bluebook.pdf::url|"Smalltalk-80 the language and its implementation"} and {http://stephane.ducasse.free.fr/FreeBooks/InsideST/InsideSmalltalk.pdf::url|"Inside Smalltalk volume I"} are great introductory texts, and they are also the reference for the language and basic class library. Both are freely available.
-
-The user interface enables you to access most of the code and conduct Smalltalk experiments on your own. You can review its features at {https://github.com/Cuis-Smalltalk-Learning/Learning-Cuis/blob/master/Quick-UI-Tour.md::url|"Quick Tour of the UI"}. ') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Contributing to Cuis'; document: ((EruditeDocument contents: '!!!!!! Contributing to Cuis
-
-Cuis is maintained on {https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev::url}. The main meeting point for Cuis users and developers is the mail list {http://cuis-smalltalk.org/mailman/listinfo/cuis-dev_cuis-smalltalk::url}.org . You can broswse the archives for a glimpse of our discussions.
-
-If you want to contribute code to the project, please read {Managing your code in Cuis::section}, about developing packages for Cuis, and {Cuis and Github::section}. While Cuis should work equally well with any file-based DVCS, we encourage the use of Git and GitHub.
-
-In any case, we also accept contributions as ChangeSet files in email. Any contribution must be under the MIT license.
-
-To contribute code, please use an image with all included packages already loaded, using updated versions, especially, of any affected packages. This will ensure we don''t break them while we evolve Cuis.
-Here is a Smalltalk script to load all packages currently included:
-
-[[[Feature require: ''Core-Packages'']]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'License'; document: ((EruditeDocument contents: '!!!!!! Cuis License
-
-Cuis is distributed subject to the MIT License. See the LICENSE file. Any contribution submitted for incorporation into or for distribution with Cuis shall be presumed subject to the same license.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); add: (EruditeBookSection basicNew title: 'Managing your code in Cuis'; document: ((EruditeDocument contents: '!!!! Managing your code in Cuis
-
-Cuis includes tools and procedures for managing Smalltalk code. Code that is not part of the Cuis Core image itself, like applications, frameworks and libraries, should be stored in {CodePackage::class|Packages}. New code that are meant as patches, fixes or additions; that could eventually become part of Cuis itself, is not part of any //Package//, and is therefore automatically stored in {ChangeSet::class|ChangeSets}.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Packages'; document: ((EruditeDocument contents: '!!!!!! Packages
-
-Let''s start with //Packages// . The Package implementation in Cuis is based on PackageInfo, the standard way to specify packages in Squeak and its derivatives, and used, for example, by Monticello. It uses Package names to specify prefixes for Class and Method categories. Classes and Methods whose categories match a Package''s prefixes belong in that Package. More details about how PackageInfo decides what code belongs in a package are available at {http://wiki.squeak.org/squeak/3329::url} .
-
-To install packages //(.pck.st files)// in Cuis, use the [[[FileListWindow openFileList]]] doItWithButton: FileList., navigate to the appropriate directory (on disk, or in a GitHub repository, etc), select the package file and click on **[Install Package]**.
-
-Cuis includes a tool to manage installed //Packages//. It is at [[[CodePackageListWindow openPackageList]]] doItWithButton: World / Open / Installed Packages.. To create a new package (instead of installing an existing one from a file), click on **[Create Package]** This creates a new package, and associates with it all the existing code in the image that matches the package name.
-
-The operations available on installed or newly created packages are:
-
-**[Save]** Saves a package on the file system. Overwrites any existing version. It is good to save the package from time to time, to reduce the risk of losing code.
-
-**[Delete]** Removes the Package instance from the image. Does not remove any code. This means, effectively, to merge back the code into Cuis.
-
-**[Browse unsaved Changes]** This opens a ChangeSorter on the ChangeSet that captures all the changes done to the Package since it was last saved. Therefore it shows the work done on the package that would be lost if the package is not saved.
-
-**[Browse package code]** This opens a Class Browser that only shows the code that belongs in the package. This is useful for working on a package, or studying it.
-
-**[Add requirement]** This opens a select list of loaded packages.  Each package provides a //Feature//.  You can CANCEL, require the current Cuis base version (at a minimum) or require any of the packages on the list.  Required packages will be loaded before the selected package (```Feature require: #''your-package''.```).  When a package is selected, the lower browser pane shows its requirents, which may be deleted.  Don''t forget to //Save// your package after adding or deleting  requirements!!
-
-The tool shows, for each Package, the name, whether it is dirty (has unsaved changes) and the file it was installed from / saved to.
-
-Handling Packages like this, Cuis behaves as a sort of document editor (like, for example a regular text editor) whose documents are //Package// files //(.pck.st)//. Cuis doesn''t handle Package versions, ancestries, etc. If versioning of Packages is desired, the best is to use a versioning file repository, such as Git or Mercurial. The recommendation is to use a GitHub repository with a name beginning with ''Cuis-Smalltalk-'', so it will be easy for anybody to find it. Cuis //Package// files are uncompressed, use Lf (ASCII 10) as newLine, and are encoded in ISO 8859-15. This means they are Git friendly, and Git/GitHub can diff and merge them, and browse them with syntax highlighting.
-
-This is not unlike using Git or GitHub with a file-based development environment such as Eclipse or a text editor. Like Cuis, these tools don''t do version handling themselves, they just load and save files; and let Git do its magic.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Changes to the Cuis base image'; document: ((EruditeDocument contents: '!!!!!! Changes to the Cuis base image
-
-The way //ChangeSets// are created and managed in Cuis is different from Squeak. This was done to make ChangeSets a good way to manage changes to the base Cuis Core image, while keeping code in Packages out of the way, so they don''t get mixed together.
-
-What is not in a Package belongs (at least temporarily) to the Cuis Core image. Such code is automatically captured in a //ChangeSet//. The ChangeSet for Core changes is created automatically and named like //"1243-CuisCore-JuanVuletich-2012Apr03-22h50m"//. The number at the beginning is the next number for the Cuis update stream, and is provided only as a suggestion. The "CuisCore" part is to reveal that the code belongs in the base image and not in some package. Then we have author name and date / time of creation. These //ChangeSets// are created automatically. There is no longer a way to manually create them, or make them "current" or "active". It is best to rename them, replacing //''CuisCore''// with some meaningful name. These //ChangeSets// will not capture any code that belongs in a Package.
-
-Opening a [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: Change Sorter. will show the CuisCore change set. This is useful, for example, to check that no code that was intended for a Package ends here by mistake (because of the wrong class or method category). But it is also useful when doing changes to the base system. Now, we can do changes both to the base system and to a number of packages, all in the same session, without having to be careful about selecting the proper change set before saving a method: The code is automatically added to the proper //Package// or //ChangeSet//, simply following the class or method category. Gone are the days of messed up change sets and lost code!!
-
-When the changes to the base system are complete, it is a good time to review the CuisCore change set and, maybe remove from it changes that we don''t want to keep (for example, experiments, halts, etc). Then, just do right click / File out and remove. This saves the //ChangeSet// on disk. It also removes it from the **ChangeSorter** (but it doesn''t remove any code). This is good, because the next changes done will end in a new CuisCore change set, and there''s no risk of having undesired changes in the old one. As changes to the base image progress, and several CuisCore //ChangeSets// are saved to disk, these numbered files are created in sequence. They will be ready to be loaded back in proper order in a fresh Cuis image, or to be sent to Cuis maintainers for integration in the update stream and in next releases of Cuis.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Loading ChangeSet files into Cuis'; document: ((EruditeDocument contents: '!!!!!! Loading ChangeSet files into Cuis
-
-There are two ways to load //ChangeSet// files (.cs): **[FileIn]** and **[Install]**.
-
-**[FileIn]** loads the code without creating a new //ChangeSet// object. This means that changes that belong in the base image (and not in a package) will be added to the current ChangeSet for Cuis core changes, as if they were done by the user. This is appropriate when we are combining code from more than one source into a single ChangeSet. Any change that belongs in an installed package will be added to it, and the package will appear as dirty.
-
-**[Install]** loads the code into a separate //ChangeSet// object (viewable in the [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: ChangeSorter tool). This is appropriate for loading Cuis updates, or other code that we are not authoring, as it doesn''t add new items (class or method definitions) to the current ChangeSet for our changes to Cuis. Usually any ChangeSets should be installed before doing changes to the image. The reason is that an installed ChangeSet could overwrite changes done by you, or packages you have installed. If this is the case, the affected packages would appear as dirty, and your change set would include any installed changes (that don''t belong in a package). Be careful when saving packages or change sets if this was the case!!') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); yourself); add: (EruditeBookSection basicNew title: 'Additional Packages for Cuis'; document: ((EruditeDocument contents: '!!!! Additional Packages for Cuis
-
-The Cuis base image includes only kernel functionailty, very basic libraries, and development tools. Optional functionality, that can be loaded as needed, is stored in separate code Packages. The Cuis community developes and maintains several dozens of such Packages.
-
-Some of them are included in the main Cuis GitHub repository, at https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev in the ''Packages'' folder. Loading ''Core-Packages.pck.st'' loads them all:
-
-[[[Feature require: ''Core-Packages'']]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Cuis and Github'; document: ((EruditeDocument contents: '!!!! Using Git and GitHub to host and manage Cuis code
-
-Cuis includes tools and procedures for managing Smalltalk code. Central to this is the management of Packages and Package Files (.pck). But Cuis doesn''t do version control. Instead, we suggest using external VCS tools.  In particular, we''re using {http://www.github.com::url|GitHub}, and the first project we''re hosting there is {https://github.com/bpieber/Cuis-StyledTextEditor::url|StyledTextEditor}.
-
-The guiding principle is to **not duplicate concepts and behavior**. As we''re using an external tool (Git) for version control, then we use it as it meant to be used. Most people use Git for version control and a file based IDE such as Eclipse for development. Such IDEs don''t do version control themselves. It is done by Git. Do the same: do not include package version control in Cuis. This is a departure from the Monticello /Git integration (smallsource and MonticelloFileTree) by Otto Behrens, Dale Henrichs, etc.
-
-We use GitHub to host, version, diff and merge external packages (.pck files), i.e. code that is maintained independently and outside Cuis.
-
-Package files need to be simple text files. Cuis encoding for latin alphabet (ISO 8859-15) is handled without problems by GitHub. Cuis uses the LF (ascii code 10) newline convention, as preferred in GitHub. This allows Git/GitHub to diff versions, and merge branches.
-
-Each GitHub repository has one set of users and permissions. Each GitHub repository has one state (Git commits repositories, not individual files). Branch and merges are done on the whole repository and not on individual files. Therefore, we need a separate GitHub repository for each project, i.e., for each package or set of closely related packages that are always loaded and maintained together as a whole.
-
-!!!!!! Development process for External Packages
-
-This is the suggested procedure for developing external packages. Usually do this every day.
-
-* Start with a standard (i.e. fresh) Cuis image. Never save the image.
-
-* Set up Git repositories for external packages (if not already done)
-
-* Install packages from Git repositories.
-
-* Develop. Modify and/or create packages.
-
-* Save own packages (to Git repositories).
-
-* Git add / commit / push as appropriate.
-
-* Fileout changes that are not part of any package. These are automatically captured in numbered changesets, separated from changes to packages.
-
-* Exit the image. Usually without saving.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); updateParents; yourself)! !
 
 !EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 7/18/2020 18:05:57'!
 edit
@@ -2607,34 +2507,221 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!EruditeBook class methodsFor: 'storage' stamp: 'MM 1/27/2019 08:36:28'!
-eruditeManual
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+AdditionalPackagesForCuis
+^(EruditeBookSection basicNew title: 'Additional Packages for Cuis'; document: ((EruditeDocument contents: '!!!! Additional Packages for Cuis
 
-<book: 'Erudite Manual'>
+The Cuis base image includes only kernel functionailty, very basic libraries, and development tools. Optional functionality, that can be loaded as needed, is stored in separate code Packages. The Cuis community developes and maintains several dozens of such Packages.
 
-^(EruditeBook basicNew title: 'Erudite Manual'; sections: ((OrderedCollection new) add: (EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Erudite Manual
+Some of them are included in the main Cuis GitHub repository, at https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev in the ''Packages'' folder. Loading ''Core-Packages.pck.st'' loads them all:
 
-by **Mariano Montone** //(marianomontone@gmail.com)//
+[[[Feature require: ''Core-Packages'']]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-This is a manual and reference of Erudite Documentation System.
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+CuisAndGithub
+^(EruditeBookSection basicNew title: 'Cuis and Github'; document: ((EruditeDocument contents: '!!!! Using Git and GitHub to host and manage Cuis code
 
-Erudite {EruditeDocument::class|documents} are edited using a wiki-like markup with capabilities for linking and embedding Smalltalk code. 
+Cuis includes tools and procedures for managing Smalltalk code. Central to this is the management of Packages and Package Files (.pck). But Cuis doesn''t do version control. Instead, we suggest using external VCS tools.  In particular, we''re using {http://www.github.com::url|GitHub}, and the first project we''re hosting there is {https://github.com/bpieber/Cuis-StyledTextEditor::url|StyledTextEditor}.
 
-Main documentation is realized via {EruditeBook::class|books}, a collection of documents organized in {EruditeBookSection::class|sections}.
+The guiding principle is to **not duplicate concepts and behavior**. As we''re using an external tool (Git) for version control, then we use it as it meant to be used. Most people use Git for version control and a file based IDE such as Eclipse for development. Such IDEs don''t do version control themselves. It is done by Git. Do the same: do not include package version control in Cuis. This is a departure from the Monticello /Git integration (smallsource and MonticelloFileTree) by Otto Behrens, Dale Henrichs, etc.
 
-Books are read and edited via the {EruditeBookReaderMorph::class|reader} and {EruditeBookEditorMorph::class|editor} morphic applications.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Book reader and editor'; document: ((EruditeDocument contents: '!!!! Book reader and editor
+We use GitHub to host, version, diff and merge external packages (.pck files), i.e. code that is maintained independently and outside Cuis.
+
+Package files need to be simple text files. Cuis encoding for latin alphabet (ISO 8859-15) is handled without problems by GitHub. Cuis uses the LF (ascii code 10) newline convention, as preferred in GitHub. This allows Git/GitHub to diff versions, and merge branches.
+
+Each GitHub repository has one set of users and permissions. Each GitHub repository has one state (Git commits repositories, not individual files). Branch and merges are done on the whole repository and not on individual files. Therefore, we need a separate GitHub repository for each project, i.e., for each package or set of closely related packages that are always loaded and maintained together as a whole.
+
+!!!!!!!!!!!! Development process for External Packages
+
+This is the suggested procedure for developing external packages. Usually do this every day.
+
+* Start with a standard (i.e. fresh) Cuis image. Never save the image.
+
+* Set up Git repositories for external packages (if not already done)
+
+* Install packages from Git repositories.
+
+* Develop. Modify and/or create packages.
+
+* Save own packages (to Git repositories).
+
+* Git add / commit / push as appropriate.
+
+* Fileout changes that are not part of any package. These are automatically captured in numbered changesets, separated from changes to packages.
+
+* Exit the image. Usually without saving.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+CuisSmalltalk
+^(EruditeBookSection basicNew title: 'Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!! Cuis Smalltalk
+
+{http://www.cuis-smalltalk.org::url|Cuis} is a free {https://en.wikipedia.org/wiki/Smalltalk::url|Smalltalk-80} environment originally derived from {http://www.squeak.org::url|Squeak} with a specific set of goals: being simple and powerful. It is also portable to any platform, fast and efficient. This means it is a great tool for running on any hardware, ranging from RasPis and the like, and phones, up to cloud servers, and everything in between, including regular laptops and PCs.
+
+Cuis is
+
+* **Small**
+* **Clean**
+* **Appropriable**
+
+Like Squeak, Cuis is also:
+
+* **Open Source**
+* **Self contained**
+* **Multiplatform**
+
+Like other Smalltalk-80 environments (including Squeak, Pharo and others), Cuis is also:
+
+* **A complete development environment written in itself**
+* **A pure, dynamic Object Oriented language**
+
+Cuis shares the {http://www.opensmalltalk.org::url|OpenSmalltalk Virtual Machine} with Squeak, Pharo and Newspeak. What sets Cuis apart from the other members of the Squeak family is the focus on Smalltalk-80 and an active attitude towards system complexity:
+
+Unbound complexity growth, together with development strategies focused only in the short term, are the worst long term enemies of all software systems. As systems grow older, they usually become more complex. New features are added as layers on top of whatever is below, sometimes without really understanding it, and almost always without modifying it. Complexity and size grow without control. Evolution slows down. Understanding the system becomes harder every day. Bugs are harder to fix. Codebases become huge for no clear reason. At some point, the system can''t evolve anymore and becomes "legacy code".
+
+Complexity puts a limit to the level of understanding of the system a person might reach, and therefore limits the things that can be done with it. Dan Ingalls says all this in {http://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html::url|"Design Principles Behind Smalltalk"}. Even if you have already done so, please go and read it again!!!!
+
+This presentation by Rich Hickey, {http://www.infoq.com/presentations/Simple-Made-Easy::url|"Simple made Easy"} is also an excellent reflection on these values.
+
+We follow a set of ideas that started with Jean Piaget''s {https://en.wikipedia.org/wiki/Constructivism_(philosophy_of_education::url|Constructivism}, and were further developed in Seymour Papert''s {https://en.wikipedia.org/wiki/Experiential_learning::url|Mathland}. These lead to Alan Kay''s Learning Research Group''s {http://www.vpri.org/pdf/hc_pers_comp_for_children.pdf::url|Personal Computer for Children of All Ages}, {http://www.vpri.org/pdf/m1977001_dynamedia.pdf::url|Personal Dynamic Media}, i.e. the {http://www.vpri.org/pdf/hc_what_Is_a_dynabook.pdf::url|Dynabook} and to {https://en.wikipedia.org/wiki/Smalltalk::url|Smalltalk-80}. To us, a Smalltalk system is a Dynabook. A place to experiment and learn, and a medium to express and register the knlowledge we acquire. We understand software development as the activity of learning and documenting knowledge, for us and others to use, and also to be run on a computer. The fact that the computer run is useful, is a consequence of the knowldege being sound and relevant. (Just making it work is **not** the important part!!!!)
+
+Cuis Smalltalk is our attempt at this challenge. Furthermore, we believe we are doing something else that no other Smalltalk, commercial or open source, does. We attempt to give the true Smalltalk-80 experience, and keep Smalltalk-80 not as legacy software historic significance, but as a live, evolving system. We feel we are the keepers of the Smalltalk-80 heritage, and enablers of the Dynabook experience.
+
+Cuis is continuously evolving towards simplicity. Each release is better (i.e. simpler) than the previous one. At the same time, features are enhanced, and any reported bugs fixed. We also adopt recent enhancements from Squeak and share our work with the wider Squeak and Smalltalk community.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new        add: self CuisSmalltalkAboutTheNameCuis;
+        add: self CuisSmalltalkLearningAboutCuisSmalltalk;
+        add: self CuisSmalltalkContributingToCuis;
+        add: self CuisSmalltalkLicense;
+ yourself); yourself)! !
+
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+CuisSmalltalkAboutTheNameCuis
+^(EruditeBookSection basicNew title: 'About the name Cuis'; document: ((EruditeDocument contents: '!!!!!! About the name Cuis
+
+Cuis is the common name of a {https://en.wikipedia.org/wiki/Southern_mountain_cavy::url|small animal} that lives in Argentina''s countryside. Cuis Smalltalk was originally forked from Squeak Smalltalk and many of us are also active in the Squeak community. So, picking the onomatopoeia of the voice of a mouse for the name makes sense. As the project was started in Buenos Aires, ''Cuis'' (essentially ''Squeak'' in Rioplatense Spanish) was the obvious choice.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+CuisSmalltalkContributingToCuis
+^(EruditeBookSection basicNew title: 'Contributing to Cuis'; document: ((EruditeDocument contents: '!!!!!! Contributing to Cuis
+
+Cuis is maintained on {https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev::url}. The main meeting point for Cuis users and developers is the mail list {http://cuis-smalltalk.org/mailman/listinfo/cuis-dev_cuis-smalltalk::url}.org . You can broswse the archives for a glimpse of our discussions.
+
+If you want to contribute code to the project, please read {Managing your code in Cuis::section}, about developing packages for Cuis, and {Cuis and Github::section}. While Cuis should work equally well with any file-based DVCS, we encourage the use of Git and GitHub.
+
+In any case, we also accept contributions as ChangeSet files in email. Any contribution must be under the MIT license.
+
+To contribute code, please use an image with all included packages already loaded, using updated versions, especially, of any affected packages. This will ensure we don''t break them while we evolve Cuis.
+Here is a Smalltalk script to load all packages currently included:
+
+[[[Feature require: ''Core-Packages'']]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+CuisSmalltalkLearningAboutCuisSmalltalk
+^(EruditeBookSection basicNew title: 'Learning about Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!!!! Learning about Cuis Smalltalk
+
+If you are learning Smalltalk, the Cuis community can help you. Check the {https://github.com/Cuis-Smalltalk-Learning/Learning-Cuis::url|"Learning Cuis Smalltalk"} repository. It includes several great tutorials. Also, the TerseGuide.pck.st package (in the /Packages folder in this repo) is useful both as a guide and a reference.
+
+Additionally, there are many tutorials and references for Smalltalk in the web. They apply quite well to Cuis, especially those written originally for Smalltalk-80 or Squeak. These books {http://stephane.ducasse.free.fr/FreeBooks/BlueBook/Bluebook.pdf::url|"Smalltalk-80 the language and its implementation"} and {http://stephane.ducasse.free.fr/FreeBooks/InsideST/InsideSmalltalk.pdf::url|"Inside Smalltalk volume I"} are great introductory texts, and they are also the reference for the language and basic class library. Both are freely available.
+
+The user interface enables you to access most of the code and conduct Smalltalk experiments on your own. You can review its features at {https://github.com/Cuis-Smalltalk-Learning/Learning-Cuis/blob/master/Quick-UI-Tour.md::url|"Quick Tour of the UI"}. ') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+CuisSmalltalkLicense
+^(EruditeBookSection basicNew title: 'License'; document: ((EruditeDocument contents: '!!!!!! Cuis License
+
+Cuis is distributed subject to the MIT License. See the LICENSE file. Any contribution submitted for incorporation into or for distribution with Cuis shall be presumed subject to the same license.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+Introduction
+^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Introduction
+
+This is a manual about Cuis Smalltalk.
+
+NOTE: Most of its content was taken from Cuis documentation at: {https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/tree/master/Documentation::url}') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+ManagingYourCodeInCuis
+^(EruditeBookSection basicNew title: 'Managing your code in Cuis'; document: ((EruditeDocument contents: '!!!! Managing your code in Cuis
+
+Cuis includes tools and procedures for managing Smalltalk code. Code that is not part of the Cuis Core image itself, like applications, frameworks and libraries, should be stored in {CodePackage::class|Packages}. New code that are meant as patches, fixes or additions; that could eventually become part of Cuis itself, is not part of any //Package//, and is therefore automatically stored in {ChangeSet::class|ChangeSets}.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new        add: self ManagingYourCodeInCuisPackages;
+        add: self ManagingYourCodeInCuisChangesToTheCuisBaseImage;
+        add: self ManagingYourCodeInCuisLoadingChangeSetFilesIntoCuis;
+ yourself); yourself)! !
+
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+ManagingYourCodeInCuisChangesToTheCuisBaseImage
+^(EruditeBookSection basicNew title: 'Changes to the Cuis base image'; document: ((EruditeDocument contents: '!!!!!! Changes to the Cuis base image
+
+The way //ChangeSets// are created and managed in Cuis is different from Squeak. This was done to make ChangeSets a good way to manage changes to the base Cuis Core image, while keeping code in Packages out of the way, so they don''t get mixed together.
+
+What is not in a Package belongs (at least temporarily) to the Cuis Core image. Such code is automatically captured in a //ChangeSet//. The ChangeSet for Core changes is created automatically and named like //"1243-CuisCore-JuanVuletich-2012Apr03-22h50m"//. The number at the beginning is the next number for the Cuis update stream, and is provided only as a suggestion. The "CuisCore" part is to reveal that the code belongs in the base image and not in some package. Then we have author name and date / time of creation. These //ChangeSets// are created automatically. There is no longer a way to manually create them, or make them "current" or "active". It is best to rename them, replacing //''CuisCore''// with some meaningful name. These //ChangeSets// will not capture any code that belongs in a Package.
+
+Opening a [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: Change Sorter. will show the CuisCore change set. This is useful, for example, to check that no code that was intended for a Package ends here by mistake (because of the wrong class or method category). But it is also useful when doing changes to the base system. Now, we can do changes both to the base system and to a number of packages, all in the same session, without having to be careful about selecting the proper change set before saving a method: The code is automatically added to the proper //Package// or //ChangeSet//, simply following the class or method category. Gone are the days of messed up change sets and lost code!!!!
+
+When the changes to the base system are complete, it is a good time to review the CuisCore change set and, maybe remove from it changes that we don''t want to keep (for example, experiments, halts, etc). Then, just do right click / File out and remove. This saves the //ChangeSet// on disk. It also removes it from the **ChangeSorter** (but it doesn''t remove any code). This is good, because the next changes done will end in a new CuisCore change set, and there''s no risk of having undesired changes in the old one. As changes to the base image progress, and several CuisCore //ChangeSets// are saved to disk, these numbered files are created in sequence. They will be ready to be loaded back in proper order in a fresh Cuis image, or to be sent to Cuis maintainers for integration in the update stream and in next releases of Cuis.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+ManagingYourCodeInCuisLoadingChangeSetFilesIntoCuis
+^(EruditeBookSection basicNew title: 'Loading ChangeSet files into Cuis'; document: ((EruditeDocument contents: '!!!!!! Loading ChangeSet files into Cuis
+
+There are two ways to load //ChangeSet// files (.cs): **[FileIn]** and **[Install]**.
+
+**[FileIn]** loads the code without creating a new //ChangeSet// object. This means that changes that belong in the base image (and not in a package) will be added to the current ChangeSet for Cuis core changes, as if they were done by the user. This is appropriate when we are combining code from more than one source into a single ChangeSet. Any change that belongs in an installed package will be added to it, and the package will appear as dirty.
+
+**[Install]** loads the code into a separate //ChangeSet// object (viewable in the [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: ChangeSorter tool). This is appropriate for loading Cuis updates, or other code that we are not authoring, as it doesn''t add new items (class or method definitions) to the current ChangeSet for our changes to Cuis. Usually any ChangeSets should be installed before doing changes to the image. The reason is that an installed ChangeSet could overwrite changes done by you, or packages you have installed. If this is the case, the affected packages would appear as dirty, and your change set would include any installed changes (that don''t belong in a package). Be careful when saving packages or change sets if this was the case!!!!') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+ManagingYourCodeInCuisPackages
+^(EruditeBookSection basicNew title: 'Packages'; document: ((EruditeDocument contents: '!!!!!! Packages
+
+Let''s start with //Packages// . The Package implementation in Cuis is based on PackageInfo, the standard way to specify packages in Squeak and its derivatives, and used, for example, by Monticello. It uses Package names to specify prefixes for Class and Method categories. Classes and Methods whose categories match a Package''s prefixes belong in that Package. More details about how PackageInfo decides what code belongs in a package are available at {http://wiki.squeak.org/squeak/3329::url} .
+
+To install packages //(.pck.st files)// in Cuis, use the [[[FileListWindow openFileList]]] doItWithButton: FileList., navigate to the appropriate directory (on disk, or in a GitHub repository, etc), select the package file and click on **[Install Package]**.
+
+Cuis includes a tool to manage installed //Packages//. It is at [[[CodePackageListWindow openPackageList]]] doItWithButton: World / Open / Installed Packages.. To create a new package (instead of installing an existing one from a file), click on **[Create Package]** This creates a new package, and associates with it all the existing code in the image that matches the package name.
+
+The operations available on installed or newly created packages are:
+
+**[Save]** Saves a package on the file system. Overwrites any existing version. It is good to save the package from time to time, to reduce the risk of losing code.
+
+**[Delete]** Removes the Package instance from the image. Does not remove any code. This means, effectively, to merge back the code into Cuis.
+
+**[Browse unsaved Changes]** This opens a ChangeSorter on the ChangeSet that captures all the changes done to the Package since it was last saved. Therefore it shows the work done on the package that would be lost if the package is not saved.
+
+**[Browse package code]** This opens a Class Browser that only shows the code that belongs in the package. This is useful for working on a package, or studying it.
+
+**[Add requirement]** This opens a select list of loaded packages.  Each package provides a //Feature//.  You can CANCEL, require the current Cuis base version (at a minimum) or require any of the packages on the list.  Required packages will be loaded before the selected package (```Feature require: #''your-package''.```).  When a package is selected, the lower browser pane shows its requirents, which may be deleted.  Don''t forget to //Save// your package after adding or deleting  requirements!!!!
+
+The tool shows, for each Package, the name, whether it is dirty (has unsaved changes) and the file it was installed from / saved to.
+
+Handling Packages like this, Cuis behaves as a sort of document editor (like, for example a regular text editor) whose documents are //Package// files //(.pck.st)//. Cuis doesn''t handle Package versions, ancestries, etc. If versioning of Packages is desired, the best is to use a versioning file repository, such as Git or Mercurial. The recommendation is to use a GitHub repository with a name beginning with ''Cuis-Smalltalk-'', so it will be easy for anybody to find it. Cuis //Package// files are uncompressed, use Lf (ASCII 10) as newLine, and are encoded in ISO 8859-15. This means they are Git friendly, and Git/GitHub can diff and merge them, and browse them with syntax highlighting.
+
+This is not unlike using Git or GitHub with a file-based development environment such as Eclipse or a text editor. Like Cuis, these tools don''t do version handling themselves, they just load and save files; and let Git do its magic.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:00:57'!
+initialize
+    title _ 'Cuis Manual'.
+    sections _ OrderedCollection new 
+        add: self Introduction;
+        add: self CuisSmalltalk;
+        add: self ManagingYourCodeInCuis;
+        add: self AdditionalPackagesForCuis;
+        add: self CuisAndGithub;
+    yourself! !
+
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+BookReaderAndEditor
+^(EruditeBookSection basicNew title: 'Book reader and editor'; document: ((EruditeDocument contents: '!!!! Book reader and editor
 
 To read a book, send {open::selector} to a {Book::class}:
 
-[[[EruditeBook eruditeManual open]]] doIt
+[[[EruditeManual open]]] doIt
 
 The {EruditeBookReaderMorph::class|book reader} has editing capabilities, but the {EruditeBookEditorMorph::class|editor} provides live preview and instant updates for editing.
 
 To edit a book, send {edit ::selector} to a Book:
 
-[[[EruditeBook eruditeManual edit]]] doIt
+[[[EruditeManual edit]]] doIt
 
-Books are stored as methods in the class side of {EruditeBook::class} class and are marked with a pragma [[[<book: ''title''>]]]. To **remove** a book, just delete the method. To specify the **package** the book belongs to, just recategorize the method (//*PackageName//).
+Books are stored as subclasses of {EruditeBook::class} class . To **remove** a book, just delete the class. To specify the **package** the book belongs to, just recategorize the class.
 
 !!!!!! The book editor
 
@@ -3564,7 +3651,173 @@ MOas+hNzqSf2C+QpD4/B7NU2PLouGzv3bMIJ+pPA0Ac5fdEXfdEXfZAPvrjre+e+Tbi/YgoD
 QU5f9EUf5PRFX/RFX/RBTl/0RR/k9EVf9EVf9EFOX/RBTl/0RV/0RR/k9EVf9EFOX/RFX/RF
 H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
-BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Syntax reference'; document: ((EruditeDocument contents: '!!!! Syntax reference
+BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+Extensions
+^(EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
+
+Extensions to Smalltalk tools are shipped separately.
+
+To install: [[[Feature require: ''EruditeToolsExtensions'']]] doIt
+
+!!!!!! List of extensions
+
+**Markup and formatting in class comments**
+
+This is implemented.
+
+**Markup and formatting of code comments**
+
+TODO. Not implemented yet. ') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+Extras
+^(EruditeBookSection basicNew title: 'Extras'; document: ((EruditeDocument contents: '!!!! Extras
+
+A PetitParser tutorial is included in the Erudite distribution.
+
+To install: [[[Feature require: ''PetitParserTutorial'']]] doIt
+
+Also, a book on Morphic, the Cuis UI system:
+
+To install: [[[Feature require: ''MorphicBook'']]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+Implementation
+^(EruditeBookSection basicNew title: 'Implementation'; document: ((EruditeDocument contents: '!!!! Implementation
+
+This section describes how Erudite is implemented. It is a simple example of how literate-programming can be realized with Erudite.
+
+!!!!!! Model
+
+The model in Erudite consists of {EruditeDocument::class} and {EruditeBook::class} classes.
+
+Erudite documents are piece of text meant to be formatted. Their content is Erudite source code.
+
+Erudite books are formed of {EruditeBookSection::class|sections}. Each section has a document and other subsections as children. Each subsection also has a document and other subsubsections as children, and so on, and so on.
+
+!!!!!! Parser
+
+The Erudite source code parser is implemented as a PEG parser using {PetitParser tutorial#Introduction::section|PetitParser}. {EruditeMarkupGrammar::class} describes the grammar abstractly and {EruditeMarkupParser::class} is the actual parser (returns parse nodes). You can test the parser invoking the {parse: ::selector} message on it:
+
+[[[EruditeMarkupParser parse: ''!!!!!! A heading'']]] inspectIt
+
+You can also test particular grammar rules:
+
+[[[EruditeMarkupParser new heading2 parse: ''!!!!!! A heading'']]] printItHere
+
+!!!!!!!! Smalltalk parser
+
+The {SmalltalkEruditeParser::class|Smalltalk parser} parses Smalltalk comments into Erudite documents. This parser tries to interpret the different type of references in Smalltalk comments, like classes methods and selectors. This parser is used by the Erudite tools extensions.
+
+!!!!!! Formatter
+
+There are two formatters implemented at the moment. A Morphic formatter, used by the Morphic book reader and editor. And a Latex formatter with which you can generate PDF documents.
+
+!!!!!!!! Morphic formatter
+
+The Morphic formatter is implemented in {MorphicEruditeDocRenderer::class}. It is implemented as a visitor that outputs attributed Morphic {Text::class} on each visit to a parse node.
+
+Here is an example of how it is used:
+
+[[[|erudite|
+erudite _ SmalltalkEruditeParser parse: ''This is an Object. Look at Object>>at:
+Events are triggered via #triggerEvent:''.
+
+(MorphicEruditeDocRenderer on: erudite) render edit]]] doIt
+
+!!!!!!!! Latex formatter
+
+The Latex formatter is implemented in {LatexEruditeDocRenderer::class}.
+
+For example, this is how to generate a Latex/PDF for Erudite manual. First generate the ```.tex``` file:
+
+[[[ (LatexEruditeDocRenderer on: EruditeBook eruditeManual)
+	texFilePath: ''/tmp/EruditeManual.tex'';
+	render]]] doIt
+
+Then process it with ```pdflatex``` command:
+
+```pdflatex -shell-escape /tmp/EruditeManual.tex```
+
+!!!!!!!! Links renderers
+
+Erudite document links are parsed in a generic way. Their syntax is like this: ```{target::linkClass|optionalLabel}```. That linkClass is then used to match a valid renderer. Links renderers are subclasses of {DocLinkRenderer::class} and are matched looking for the class named <linkClass>DocLinkRenderer (DocLinkRenderer classes with linkClass as prefix), and invoked via {render:in:on: ::selector|render: aDocLink in: aDocument on: aStream} message.
+
+!!!!!! Book storage
+
+Books are stored as subclasses of {EruditeBook::class}, with each section serialized as a class method:
+
+{EruditeBook>>storeAsClass::method}[embed]
+
+There''s also the possibility of storing in a class method, but that''s not the default:
+
+{EruditeBook>>store::method}[embed]
+
+{EruditeBook>>storeOnMethod: ::method}[embed]
+
+As you can see, it is done via the {storeOn: ::selector} method (it is indirectly call from {WriteStream>>store: ::method} method).
+
+Invoking the serialized methods returns the book:
+
+[[[EruditeBook cuisManual]]] inspectIt
+
+Methods with Books are tagged with a //book// pragma, that is used later for listing available books:
+
+{EruditeBook class>>booksList::method}[embed]') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+Introduction
+^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Erudite Manual
+
+by **Mariano Montone** //(marianomontone@gmail.com)//
+
+This is a manual and reference of Erudite Documentation System.
+
+Erudite {EruditeDocument::class|documents} are edited using a wiki-like markup with capabilities for linking and embedding Smalltalk code. 
+
+Main documentation is realized via {EruditeBook::class|books}, a collection of documents organized in {EruditeBookSection::class|sections}.
+
+Books are read and edited via the {EruditeBookReaderMorph::class|reader} and {EruditeBookEditorMorph::class|editor} morphic applications.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+LiterateProgramming
+^(EruditeBookSection basicNew title: 'Literate Programming'; document: ((EruditeDocument contents: '!!!! Literate Programming
+
+!!!!!! Concept
+
+Literate programming is a style of programming invented by Donald Knuth, where the main idea is that a program''s source code is made primarily to be read and understood by other people, and secondarily to be executed by the computer.
+
+This frees the programmer from the structure of a program imposed by the computer and means that the programmer can develop programs in the order of the flow of their thoughts.
+
+A Literate program consists of explanation of the code in a natural language such as English, interspersed with snippets of code to be executed. This means that Literate programs are very easy to understand and share, as all the code is well explained.
+
+**Donald Knuth. "Literate Programming (1984)" in Literate Programming. CSLI, 1992, pg. 99.:**
+
+//"I believe that the time is ripe for significantly better documentation of programs, and that we can best achieve this by considering programs to be works of literature. Hence, my title: "Literate Programming."//
+
+//Let us change our traditional attitude to the construction of programs: Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.//
+
+//The practitioner of literate programming can be regarded as an essayist, whose main concern is with exposition and excellence of style. Such an author, with thesaurus in hand, chooses the names of variables carefully and explains what each variable means. He or she strives for a program that is comprehensible because its concepts have been introduced in an order that is best for human understanding, using a mixture of formal and informal methods that reinforce each other."//
+
+!!!!!! Advantages
+
+According to Knuth, literate programming provides higher-quality programs, since it forces programmers to explicitly state the thoughts behind the program, making poorly thought-out design decisions more obvious. Knuth also claims that literate programming provides a first-rate documentation system, which is not an add-on, but is grown naturally in the process of exposition of one''s thoughts during a program''s creation. The resulting documentation allows the author to restart his own thought processes at any later time, and allows other programmers to understand the construction of the program more easily. This differs from traditional documentation, in which a programmer is presented with source code that follows a compiler-imposed order, and must decipher the thought process behind the program from the code and its associated comments. The meta-language capabilities of literate programming are also claimed to facilitate thinking, giving a higher "bird''s eye view" of the code and increasing the number of concepts the mind can successfully retain and process. Applicability of the concept to programming on a large scale, that of commercial-grade programs, is proven by an edition of TeX code as a literate program.
+
+!!!!!! Contrast with documentation generation
+
+Literate programming is very often misunderstood to refer only to formatted documentation produced from a common file with both source code and comments -which is properly called documentation generation-; or to voluminous commentaries included with code. This is backwards: well-documented code or documentation extracted from code follows the structure of the code, with documentation embedded in the code; in literate programming code is embedded in documentation, with the code following the structure of the documentation.
+
+This misconception has led to claims that comment-extraction tools, such as the Perl Plain Old Documentation or Java Javadoc systems, are "literate programming tools". However, because these tools do not implement the "web of abstract concepts" hiding behind the system of natural-language macros, or provide an ability to change the order of the source code from a machine-imposed sequence to one convenient to the human mind, they cannot properly be called literate programming tools in the sense intended by Knuth.
+
+!!!!!! Literate Programming with Erudite
+
+Literate Programming can be realized by the creation of Erudite {EruditeBook::class|books}. In particular, via code embedding in its different forms. Contrary to other LP systems, there''s no need for a tangling and weaving phase; the document source is kept separately from the source code, Smalltalk code is referenced and embedded from the documentation. That means that in spite of documentation and code being separate, the referenced code is always up to date. Finally, the possibility of evaluating Smalltalk code from the documentation makes Erudite very unique compared to the other LP systems.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+SyntaxReference
+^(EruditeBookSection basicNew title: 'Syntax reference'; document: ((EruditeDocument contents: '!!!! Syntax reference
 
 !!!!!! Headings
 
@@ -4145,37 +4398,11 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 4YOPPr55eaRd0dHThGt37nxPyt/22Q+A3zgAmPXDDz/smLxz58a9997Dg8fv/zw2WKG4fHn0
 +/c++nr2A2C2VIFz169vunDt2tSDx4/R11WHodMDf7z23nuzHwCzDgRTUya37ty6cfP27ZDz
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
-AAAAAElFTkSuQmCC')); yourself); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Literate Programming'; document: ((EruditeDocument contents: '!!!! Literate Programming
+AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!!!!!! Concept
-
-Literate programming is a style of programming invented by Donald Knuth, where the main idea is that a program''s source code is made primarily to be read and understood by other people, and secondarily to be executed by the computer.
-
-This frees the programmer from the structure of a program imposed by the computer and means that the programmer can develop programs in the order of the flow of their thoughts.
-
-A Literate program consists of explanation of the code in a natural language such as English, interspersed with snippets of code to be executed. This means that Literate programs are very easy to understand and share, as all the code is well explained.
-
-**Donald Knuth. "Literate Programming (1984)" in Literate Programming. CSLI, 1992, pg. 99.:**
-
-//"I believe that the time is ripe for significantly better documentation of programs, and that we can best achieve this by considering programs to be works of literature. Hence, my title: "Literate Programming."//
-
-//Let us change our traditional attitude to the construction of programs: Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.//
-
-//The practitioner of literate programming can be regarded as an essayist, whose main concern is with exposition and excellence of style. Such an author, with thesaurus in hand, chooses the names of variables carefully and explains what each variable means. He or she strives for a program that is comprehensible because its concepts have been introduced in an order that is best for human understanding, using a mixture of formal and informal methods that reinforce each other."//
-
-!!!!!! Advantages
-
-According to Knuth, literate programming provides higher-quality programs, since it forces programmers to explicitly state the thoughts behind the program, making poorly thought-out design decisions more obvious. Knuth also claims that literate programming provides a first-rate documentation system, which is not an add-on, but is grown naturally in the process of exposition of one''s thoughts during a program''s creation. The resulting documentation allows the author to restart his own thought processes at any later time, and allows other programmers to understand the construction of the program more easily. This differs from traditional documentation, in which a programmer is presented with source code that follows a compiler-imposed order, and must decipher the thought process behind the program from the code and its associated comments. The meta-language capabilities of literate programming are also claimed to facilitate thinking, giving a higher "bird''s eye view" of the code and increasing the number of concepts the mind can successfully retain and process. Applicability of the concept to programming on a large scale, that of commercial-grade programs, is proven by an edition of TeX code as a literate program.
-
-!!!!!! Contrast with documentation generation
-
-Literate programming is very often misunderstood to refer only to formatted documentation produced from a common file with both source code and comments -which is properly called documentation generation-; or to voluminous commentaries included with code. This is backwards: well-documented code or documentation extracted from code follows the structure of the code, with documentation embedded in the code; in literate programming code is embedded in documentation, with the code following the structure of the documentation.
-
-This misconception has led to claims that comment-extraction tools, such as the Perl Plain Old Documentation or Java Javadoc systems, are "literate programming tools". However, because these tools do not implement the "web of abstract concepts" hiding behind the system of natural-language macros, or provide an ability to change the order of the source code from a machine-imposed sequence to one convenient to the human mind, they cannot properly be called literate programming tools in the sense intended by Knuth.
-
-!!!!!! Literate Programming with Erudite
-
-Literate Programming can be realized by the creation of Erudite {EruditeBook::class|books}. In particular, via code embedding in its different forms. Contrary to other LP systems, there''s no need for a tangling and weaving phase; the document source is kept separately from the source code, Smalltalk code is referenced and embedded from the documentation. That means that in spite of documentation and code being separate, the referenced code is always up to date. Finally, the possibility of evaluating Smalltalk code from the documentation makes Erudite very unique compared to the other LP systems.') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Syntax test'; document: ((EruditeDocument contents: '!!!! Syntax test
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+SyntaxTest
+^(EruditeBookSection basicNew title: 'Syntax test'; document: ((EruditeDocument contents: '!!!! Syntax test
 
 !!!!!! Headings
 
@@ -5585,105 +5812,21 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 4YOPPr55eaRd0dHThGt37nxPyt/22Q+A3zgAmPXDDz/smLxz58a9997Dg8fv/zw2WKG4fHn0
 +/c++nr2A2C2VIFz169vunDt2tSDx4/R11WHodMDf7z23nuzHwCzDgRTUya37ty6cfP27ZDz
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
-AAAAAElFTkSuQmCC')); yourself); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Implementation'; document: ((EruditeDocument contents: '!!!! Implementation
+AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-This section describes how Erudite is implemented. It is a simple example of how literate-programming can be realized with Erudite.
-
-!!!!!! Model
-
-The model in Erudite consists of {EruditeDocument::class} and {EruditeBook::class} classes.
-
-Erudite documents are piece of text meant to be formatted. Their content is Erudite source code.
-
-Erudite books are formed of {EruditeBookSection::class|sections}. Each section has a document and other subsections as children. Each subsection also has a document and other subsubsections as children, and so on, and so on.
-
-!!!!!! Parser
-
-The Erudite source code parser is implemented as a PEG parser using {PetitParser tutorial#Introduction::section|PetitParser}. {EruditeMarkupGrammar::class} describes the grammar abstractly and {EruditeMarkupParser::class} is the actual parser (returns parse nodes). You can test the parser invoking the {parse: ::selector} message on it:
-
-[[[EruditeMarkupParser parse: ''!!!!!! A heading'']]] inspectIt
-
-You can also test particular grammar rules:
-
-[[[EruditeMarkupParser new heading2 parse: ''!!!!!! A heading'']]] printItHere
-
-!!!!!!!! Smalltalk parser
-
-The {SmalltalkEruditeParser::class|Smalltalk parser} parses Smalltalk comments into Erudite documents. This parser tries to interpret the different type of references in Smalltalk comments, like classes methods and selectors. This parser is used by the Erudite tools extensions.
-
-!!!!!! Formatter
-
-There are two formatters implemented at the moment. A Morphic formatter, used by the Morphic book reader and editor. And a Latex formatter with which you can generate PDF documents.
-
-!!!!!!!! Morphic formatter
-
-The Morphic formatter is implemented in {MorphicEruditeDocRenderer::class}. It is implemented as a visitor that outputs attributed Morphic {Text::class} on each visit to a parse node.
-
-Here is an example of how it is used:
-
-[[[|erudite|
-erudite _ SmalltalkEruditeParser parse: ''This is an Object. Look at Object>>at:
-Events are triggered via #triggerEvent:''.
-
-(MorphicEruditeDocRenderer on: erudite) render edit]]] doIt
-
-!!!!!!!! Latex formatter
-
-The Latex formatter is implemented in {LatexEruditeDocRenderer::class}.
-
-For example, this is how to generate a Latex/PDF for Erudite manual. First generate the ```.tex``` file:
-
-[[[ (LatexEruditeDocRenderer on: EruditeBook eruditeManual)
-	texFilePath: ''/tmp/EruditeManual.tex'';
-	render]]] doIt
-
-Then process it with ```pdflatex``` command:
-
-```pdflatex -shell-escape /tmp/EruditeManual.tex```
-
-!!!!!!!! Links renderers
-
-Erudite document links are parsed in a generic way. Their syntax is like this: ```{target::linkClass|optionalLabel}```. That linkClass is then used to match a valid renderer. Links renderers are subclasses of {DocLinkRenderer::class} and are matched looking for the class named <linkClass>DocLinkRenderer (DocLinkRenderer classes with linkClass as prefix), and invoked via {render:in:on: ::selector|render: aDocLink in: aDocument on: aStream} message.
-
-!!!!!! Book storage
-
-Books are stored as serialized Smalltalk objects inside methods at the class side of {EruditeBook::class}:
-
-{EruditeBook>>store::method}[embed]
-
-{EruditeBook>>storeOnMethod: ::method}[embed]
-
-As you can see, it is done via the {storeOn: ::selector} method (it is indirectly call from {WriteStream>>store: ::method} method).
-
-Invoking the serialized methods returns the book:
-
-[[[EruditeBook cuisManual]]] inspectIt
-
-Methods with Books are tagged with a //book// pragma, that is used later for listing available books:
-
-{EruditeBook class>>booksList::method}[embed]') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
-
-Extensions to Smalltalk tools are shipped separately.
-
-To install: [[[Feature require: ''EruditeToolsExtensions'']]] doIt
-
-!!!!!! List of extensions
-
-**Markup and formatting in class comments**
-
-This is implemented.
-
-**Markup and formatting of code comments**
-
-TODO. Not implemented yet. ') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); add: (EruditeBookSection basicNew title: 'Extras'; document: ((EruditeDocument contents: '!!!! Extras
-
-A PetitParser tutorial is included in the Erudite distribution.
-
-To install: [[[Feature require: ''PetitParserTutorial'']]] doIt
-
-Also, a book on Morphic, the Cuis UI system:
-
-To install: [[[Feature require: ''MorphicBook'']]] doIt') images: ((Dictionary new)); yourself); subsections: ((OrderedCollection new)); yourself); yourself); updateParents; yourself)! !
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:06:38'!
+initialize
+    title _ 'Erudite Manual'.
+    sections _ OrderedCollection new 
+        add: self Introduction;
+        add: self BookReaderAndEditor;
+        add: self SyntaxReference;
+        add: self LiterateProgramming;
+        add: self SyntaxTest;
+        add: self Implementation;
+        add: self Extensions;
+        add: self Extras;
+    yourself! !
 
 !EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:52'!
 contents: aString
@@ -5933,7 +6076,7 @@ eruditeWorldMenu
 			} asDictionary.
 		}`! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 15:34:59'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 22:45:40'!
 initialize
 
 	Preferences addPreference: #eruditeBrowserClassComments 
@@ -5943,7 +6086,7 @@ initialize
 					
 	Preferences setPreference:  #tapAndHoldEmulatesButton2 toValue: false.
 					 
-	EruditeBook eruditeManual open! !
+	EruditeManual open! !
 
 !EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:58:27'!
 menu: titleString
