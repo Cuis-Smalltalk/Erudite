@@ -1,78 +1,78 @@
-'From Cuis 5.0 [latest update: #4249] on 21 July 2020 at 11:26:58 pm'!
+'From Cuis 5.0 [latest update: #4425] on 24 October 2020 at 5:09:23 pm'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 27!
+!provides: 'MorphicBook' 1 28!
 !requires: 'Erudite' 1 133 nil!
 !requires: 'Dice' 1 0 nil!
-SystemOrganization addCategory: #MorphicBook!
+SystemOrganization addCategory: 'MorphicBook'!
 
 
-!classDefinition: #CrossMorph category: #MorphicBook!
-Morph subclass: #CrossMorph
+!classDefinition: #CrossMorph category: 'MorphicBook'!
+MovableMorph subclass: #CrossMorph
 	instanceVariableNames: 'color'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MorphicBook'!
-!classDefinition: 'CrossMorph class' category: #MorphicBook!
+!classDefinition: 'CrossMorph class' category: 'MorphicBook'!
 CrossMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #CrossMorph2 category: #MorphicBook!
+!classDefinition: #CrossMorph2 category: 'MorphicBook'!
 CrossMorph subclass: #CrossMorph2
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MorphicBook'!
-!classDefinition: 'CrossMorph2 class' category: #MorphicBook!
+!classDefinition: 'CrossMorph2 class' category: 'MorphicBook'!
 CrossMorph2 class
 	instanceVariableNames: ''!
 
-!classDefinition: #CrossMorph3 category: #MorphicBook!
+!classDefinition: #CrossMorph3 category: 'MorphicBook'!
 CrossMorph2 subclass: #CrossMorph3
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MorphicBook'!
-!classDefinition: 'CrossMorph3 class' category: #MorphicBook!
+!classDefinition: 'CrossMorph3 class' category: 'MorphicBook'!
 CrossMorph3 class
 	instanceVariableNames: ''!
 
-!classDefinition: #CrossMorph4 category: #MorphicBook!
+!classDefinition: #CrossMorph4 category: 'MorphicBook'!
 CrossMorph3 subclass: #CrossMorph4
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MorphicBook'!
-!classDefinition: 'CrossMorph4 class' category: #MorphicBook!
+!classDefinition: 'CrossMorph4 class' category: 'MorphicBook'!
 CrossMorph4 class
 	instanceVariableNames: ''!
 
-!classDefinition: #CrossMorph5 category: #MorphicBook!
+!classDefinition: #CrossMorph5 category: 'MorphicBook'!
 CrossMorph4 subclass: #CrossMorph5
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MorphicBook'!
-!classDefinition: 'CrossMorph5 class' category: #MorphicBook!
+!classDefinition: 'CrossMorph5 class' category: 'MorphicBook'!
 CrossMorph5 class
 	instanceVariableNames: ''!
 
-!classDefinition: #CrossMorph6 category: #MorphicBook!
+!classDefinition: #CrossMorph6 category: 'MorphicBook'!
 CrossMorph5 subclass: #CrossMorph6
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MorphicBook'!
-!classDefinition: 'CrossMorph6 class' category: #MorphicBook!
+!classDefinition: 'CrossMorph6 class' category: 'MorphicBook'!
 CrossMorph6 class
 	instanceVariableNames: ''!
 
-!classDefinition: #MorphicBook category: #MorphicBook!
+!classDefinition: #MorphicBook category: 'MorphicBook'!
 EruditeBook subclass: #MorphicBook
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MorphicBook'!
-!classDefinition: 'MorphicBook class' category: #MorphicBook!
+!classDefinition: 'MorphicBook class' category: 'MorphicBook'!
 MorphicBook class
 	instanceVariableNames: ''!
 
