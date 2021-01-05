@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4425] on 24 October 2020 at 5:09:23 pm'!
+'From Cuis 5.0 [latest update: #4519] on 5 January 2021 at 3:00:25 pm'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 28!
+!provides: 'MorphicBook' 1 29!
 !requires: 'Erudite' 1 133 nil!
 !requires: 'Dice' 1 0 nil!
 SystemOrganization addCategory: 'MorphicBook'!
@@ -174,8 +174,8 @@ mouseEnter: anEvent
 mouseLeave: anEvent
 	anEvent hand newKeyboardFocus: nil! !
 
-!CrossMorph5 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 12:41:53'!
-processKeystroke: anEvent localPosition: localEventPosition
+!CrossMorph5 methodsFor: 'as yet unclassified' stamp: 'jmv 1/5/2021 14:32:03'!
+processKeystroke: anEvent
 
 	| keyValue |
 	keyValue := anEvent keyValue.
