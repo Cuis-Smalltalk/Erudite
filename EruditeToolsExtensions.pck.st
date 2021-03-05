@@ -1,11 +1,11 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3511] on 16 December 2018 at 11:28:39 am'!
+'From Cuis 5.0 [latest update: #4528] on 5 March 2021 at 5:31:06 pm'!
 'Description Erudite extensions to Smalltalk tools.'!
-!provides: 'EruditeToolsExtensions' 1 1!
+!provides: 'EruditeToolsExtensions' 1 2!
 !requires: 'Erudite' 1 88 nil!
 
 
 
-!BrowserWindow methodsFor: '*EruditeToolsExtensions' stamp: 'MM 12/15/2018 15:32:16'!
+!BrowserWindow methodsFor: '*EruditeToolsExtensions' stamp: 'MM 3/5/2021 17:07:35'!
 buildMorphicCommentPane
 	"Construct the pane that shows the class comment."
 
@@ -23,7 +23,9 @@ buildMorphicCommentPane
 				on: model)
 				textGetter: #classCommentText
 				textSetter: #newClassComment:
-				selectionGetter: nil).
+				selectionGetter: nil;
+				editing: false; 
+				yourself).
 		model addDependent: commentPane].
 	
 	^ commentPane! !

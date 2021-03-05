@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4528] on 5 March 2021 at 1:49:15 pm'!
+'From Cuis 5.0 [latest update: #4528] on 5 March 2021 at 5:32:01 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 146!
+!provides: 'Erudite' 1 148!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
@@ -17,7 +17,7 @@ SystemOrganization addCategory: #'Erudite-Test'!
 
 !classDefinition: #EruditePluggableTextModel category: #'Erudite-Morphic'!
 PluggableTextModel subclass: #EruditePluggableTextModel
-	instanceVariableNames: 'editing'
+	instanceVariableNames: 'editing sourceGetter'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
@@ -105,16 +105,6 @@ TextModelMorph subclass: #EruditeDocEditorMorph
 EruditeDocEditorMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeClassCommentMorph category: #'Erudite-Morphic'!
-EruditeDocEditorMorph subclass: #EruditeClassCommentMorph
-	instanceVariableNames: 'separator separatorHeight proportionalHeight'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Erudite-Morphic'!
-!classDefinition: 'EruditeClassCommentMorph class' category: #'Erudite-Morphic'!
-EruditeClassCommentMorph class
-	instanceVariableNames: ''!
-
 !classDefinition: #EruditeDocViewerMorph category: #'Erudite-Morphic'!
 TextModelMorph subclass: #EruditeDocViewerMorph
 	instanceVariableNames: ''
@@ -123,6 +113,16 @@ TextModelMorph subclass: #EruditeDocViewerMorph
 	category: 'Erudite-Morphic'!
 !classDefinition: 'EruditeDocViewerMorph class' category: #'Erudite-Morphic'!
 EruditeDocViewerMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeClassCommentMorph category: #'Erudite-Morphic'!
+EruditeDocViewerMorph subclass: #EruditeClassCommentMorph
+	instanceVariableNames: 'separator separatorHeight proportionalHeight'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeClassCommentMorph class' category: #'Erudite-Morphic'!
+EruditeClassCommentMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeBookReaderMorph category: #'Erudite-Morphic'!
@@ -143,6 +143,16 @@ EruditeBookReaderMorph subclass: #EruditeBookEditorMorph
 	category: 'Erudite-Morphic'!
 !classDefinition: 'EruditeBookEditorMorph class' category: #'Erudite-Morphic'!
 EruditeBookEditorMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeDocEditorWindow category: #'Erudite-Morphic'!
+SystemWindow subclass: #EruditeDocEditorWindow
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeDocEditorWindow class' category: #'Erudite-Morphic'!
+EruditeDocEditorWindow class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeBookSectionExplorerWrapper category: #'Erudite-Core'!
@@ -519,14 +529,14 @@ EruditeStyledText class
 !EruditeDocEditor commentStamp: '<historical>' prior: 0!
 Tap and hold emulates button2 preference has to be false in order for clicking on links to work properly (avoid opening a context menu).!
 
-!EruditeBookReaderMorph commentStamp: '<historical>' prior: 0!
+!EruditeBookReaderMorph commentStamp: 'MM 3/5/2021 17:31:49' prior: 0!
 !!!!!! EruditeBookReaderMorph
 
 This is the {EruditeBook::class} reader.
 
 To open a reader on a Book, send {open::selector} to it:
 
-[[[EruditeBook eruditeManual open]]] doIt.
+[[[EruditeManual open]]] doIt.
 
 See {Erudite Manual#Book reader and editor ::section}.!
 
@@ -676,6 +686,18 @@ editing: anObject
 	editing _ anObject.
 	self refetch! !
 
+!EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 3/5/2021 17:11:51'!
+sourceGetter
+	"Answer the value of sourceGetter"
+
+	^ sourceGetter! !
+
+!EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 3/5/2021 17:11:51'!
+sourceGetter: anObject
+	"Set the value of sourceGetter"
+
+	sourceGetter _ anObject! !
+
 !EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:35'!
 editorClass
 
@@ -694,11 +716,12 @@ getActualContents
 			MorphicEruditeDocRenderer render: parsed]
 	! !
 
-!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:28'!
+!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 17:12:35'!
 initWith: aTextProvider
 
 	super initWith: aTextProvider.
-	editing _ false! !
+	editing _ true.
+	sourceGetter _ nil.! !
 
 !EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:46'!
 refetch
@@ -714,6 +737,11 @@ refetch
 				stringOrText: self getActualContents).
 			self changed: #refetched.
 			^true ]! !
+
+!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 17:13:27'!
+sourceContents
+	^ sourceGetter ifNotNil: [textProvider perform: sourceGetter]
+		ifNil: [textProvider perform: textGetter]! !
 
 !EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/16/2018 11:01:54'!
 classOrMetaClass: aClass
@@ -753,6 +781,17 @@ on: aBook
 
 	^ self new initialize: aBook! !
 
+!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 17:24:02'!
+editEruditeSource
+
+	|sourceModel| 
+	
+	sourceModel _ EruditePluggableTextModel on: model textProvider.
+	
+	sourceModel textGetter: #eruditeSources textSetter: #eruditeSources:notifying: selectionGetter: nil.
+	
+	EruditeDocEditorWindow open: sourceModel label: 'Edit Erudite source'.! !
+
 !EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 12:54:08'!
 getInsertMarkupMenu
 	
@@ -770,7 +809,7 @@ getInsertMarkupMenu
 			
 	menu popUpInWorld: morph world.! !
 
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 12:44:15'!
+!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 14:35:47'!
 getMenu
 
 	|menu|
@@ -778,8 +817,9 @@ getMenu
 	menu _ super getMenu.
 	
 	menu addLine;
-		    add: 'Toggle editing' action: #toggleEditing;
-		    add: 'Insert markup (i)...' action: #getInsertMarkupMenu.
+		   " add: 'Toggle editing' action: #toggleEditing;
+		    add: 'Insert markup (i)...' action: #getInsertMarkupMenu."
+		add: 'Edit Erudite source' action: #editEruditeSource.
 		
 	^ menu! !
 
@@ -838,6 +878,10 @@ save: aKeyboardEvent
 
 	self acceptContents.
 	^ true! !
+
+!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 14:47:44'!
+sourceContents
+	model sourceContents ! !
 
 !EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:56'!
 toggleEditing
@@ -966,6 +1010,34 @@ initialize
 innerMorphClass
 	^ InnerEruditeDocMorph.! !
 
+!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 15:48:54'!
+textProvider: aTextProvider textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter
+	| newModel answer |
+	answer _ self new.
+	newModel _ EruditePluggableTextModel on: aTextProvider.
+	newModel textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter.
+	aTextProvider addDependent: newModel.
+	answer model: newModel.
+	^answer! !
+
+!EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 15:11'!
+acceptsContentsOnChange
+	^ false! !
+
+!EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:30'!
+innerMorphClass
+	^ InnerEruditeDocMorph.! !
+
+!EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 15:49:04'!
+textProvider: aTextProvider textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter
+	| newModel answer |
+	answer _ self new.
+	newModel _ EruditePluggableTextModel on: aTextProvider.
+	newModel textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter.
+	aTextProvider addDependent: newModel.
+	answer model: newModel.
+	^answer! !
+
 !EruditeClassCommentMorph methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2020 19:12:45'!
 hidePane
 
@@ -999,14 +1071,6 @@ update: anAspect
 	(model textProvider editSelection == #editClass)
 		ifTrue: [ self showPane ]
 		ifFalse: [ self hidePane ]! !
-
-!EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 15:11'!
-acceptsContentsOnChange
-	^ false! !
-
-!EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:30'!
-innerMorphClass
-	^ InnerEruditeDocMorph.! !
 
 !EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
 bindingNamesDo: aBlock
@@ -1185,6 +1249,19 @@ editBook
 editorClassFor: textGetter
 	"Enable any object to be the textProvider for a PluggableTextModel"
 	^ EruditeDocEditor.! !
+
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 17:24:07'!
+eruditeSources
+	^ currentSection document contents! !
+
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 17:24:16'!
+eruditeSources: aString notifying: aRequestor
+	currentSection ifNil: [^ self inform: 'Create or select a book section to edit'].
+	currentSection document contents: aString.
+	self invalidateDocumentStyle: currentSection document.
+	sourcesChanged _ true.
+	self contentsChanged.
+	^ true! !
 
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/2/2018 00:06'!
 exploreBook
@@ -1405,6 +1482,19 @@ selectFrom: aSmallInteger to: aSmallInteger2
 selectInvisiblyFrom: aSmallInteger to: aSmallInteger2 
 ! !
 
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 15:45:23'!
+sourceContents
+	^ currentSection document contents! !
+
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 16:09:37'!
+sourceContents: aString notifying: aRequestor
+	currentSection ifNil: [^ self inform: 'Create or select a book section to edit'].
+	currentSection document contents: aString.
+	self invalidateDocumentStyle: currentSection document.
+	sourcesChanged _ true.
+	self contentsChanged.
+	^ true! !
+
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 11:36'!
 sourcesChanged
 
@@ -1542,6 +1632,16 @@ toggleViewSources
 	viewSources  _ viewSources not.
 	
 	sourceMorph visible: viewSources! !
+
+!EruditeDocEditorWindow methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 17:01:29'!
+buildMorphicWindow
+
+	| sourceMorph |
+	
+	sourceMorph _ TextModelMorph
+		withModel: model.
+		
+	self layoutMorph addMorphUseAll: sourceMorph.! !
 
 !EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 14:09'!
 asString
@@ -7359,6 +7459,15 @@ text: anObject
 text: aString style: aSymbol
 
 	^ self new initialize: aString style: aSymbol! !
+
+!Browser methodsFor: '*Erudite' stamp: 'MM 3/5/2021 17:25:35'!
+eruditeSources
+	^ self classCommentText ! !
+
+!Browser methodsFor: '*Erudite' stamp: 'MM 3/5/2021 17:28:59'!
+eruditeSources: aString notifying: aRequestor
+	editSelection _ #editComment.
+	^ self contents: aString notifying: aRequestor! !
 
 !Browser methodsFor: '*Erudite' stamp: 'MM 12/13/2018 18:25'!
 selectionInterval
