@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4241] on 22 July 2020 at 11:51:58 am'!
+'From Cuis 5.0 [latest update: #4528] on 5 March 2021 at 1:22:54 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 144!
+!provides: 'Erudite' 1 145!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
@@ -85,6 +85,16 @@ Form subclass: #EruditeForm
 EruditeForm class
 	instanceVariableNames: ''!
 
+!classDefinition: #InnerEruditeDocMorph category: #'Erudite-Morphic'!
+InnerTextMorph subclass: #InnerEruditeDocMorph
+	instanceVariableNames: 'editing'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Morphic'!
+!classDefinition: 'InnerEruditeDocMorph class' category: #'Erudite-Morphic'!
+InnerEruditeDocMorph class
+	instanceVariableNames: ''!
+
 !classDefinition: #EruditeDocEditorMorph category: #'Erudite-Morphic'!
 TextModelMorph subclass: #EruditeDocEditorMorph
 	instanceVariableNames: 'acceptContentsOnChange'
@@ -133,16 +143,6 @@ EruditeBookReaderMorph subclass: #EruditeBookEditorMorph
 	category: 'Erudite-Morphic'!
 !classDefinition: 'EruditeBookEditorMorph class' category: #'Erudite-Morphic'!
 EruditeBookEditorMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #InnerEruditeDocMorph category: #'Erudite-Morphic'!
-InnerTextMorph subclass: #InnerEruditeDocMorph
-	instanceVariableNames: 'editing'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Erudite-Morphic'!
-!classDefinition: 'InnerEruditeDocMorph class' category: #'Erudite-Morphic'!
-InnerEruditeDocMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeBookSectionExplorerWrapper category: #'Erudite-Core'!
@@ -590,12 +590,12 @@ Renders a Book to a Latex file.
 
 Example:
 
-(LatexEruditeDocRenderer on: EruditeBook cuisManual)
-	texFilePath: '/home/marian/src/Cuis-Smalltalk-Erudite/CuisManual.tex';
+(LatexEruditeDocRenderer on: CuisManual new)
+	texFilePath: '/home/marian/src/Cuis/Erudite/CuisManual.tex';
 	render.
 	
-(LatexEruditeDocRenderer on: EruditeBook eruditeManual)
-	texFilePath: '/home/marian/src/Cuis-Smalltalk-Erudite/EruditeManual.tex';
+(LatexEruditeDocRenderer on: EruditeManual new)
+	texFilePath: '/home/marian/src/Cuis/Erudite/EruditeManual.tex';
 	render.
 
 Then process with pdflatex -shell-escape <file.tex>!
@@ -912,6 +912,28 @@ fromBase64String: aString
 fromFileNamed: aString
 
 	^ (super fromFileNamed: aString) as: EruditeForm! !
+
+!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:57'!
+initialize
+
+	super initialize.
+	editing _ false! !
+
+!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:51'!
+keyStroke: aKeyboardEvent
+
+	super keyStroke: aKeyboardEvent.
+	
+	owner acceptsContentsOnChange ifTrue: [
+		self hasUnacceptedEdits  ifTrue: [
+			self acceptContents]]! !
+
+!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:59'!
+toggleEditing
+
+	editing _ editing not.
+	owner enableEditing: editing.
+	^ editing! !
 
 !EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:38'!
 acceptContents
@@ -1504,28 +1526,6 @@ toggleViewSources
 	viewSources  _ viewSources not.
 	
 	sourceMorph visible: viewSources! !
-
-!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:57'!
-initialize
-
-	super initialize.
-	editing _ false! !
-
-!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:51'!
-keyStroke: aKeyboardEvent
-
-	super keyStroke: aKeyboardEvent.
-	
-	owner acceptsContentsOnChange ifTrue: [
-		self hasUnacceptedEdits  ifTrue: [
-			self acceptContents]]! !
-
-!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:59'!
-toggleEditing
-
-	editing _ editing not.
-	owner enableEditing: editing.
-	^ editing! !
 
 !EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 14:09'!
 asString
@@ -6425,7 +6425,7 @@ renderSubsubsection: aBookSection
 	
 	! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/20/2019 10:46:50'!
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 13:19:14'!
 renderWithTemplate: aBlock
 
 	stream nextPutAll: '\documentclass[11pt,pdflatex,makeidx]{scrbook}   % Book class in 11 points'; newLine;
@@ -6454,7 +6454,7 @@ keywordstyle=\color{black}\bfseries,stringstyle=\ttfamily,showstringspaces=false
 			nextPutAll: '% Note that book class by default is formatted to be printed back-to-back.'; newLine;
 			nextPutAll: '\makeindex'; newLine;
 			nextPutAll: '\begin{document}                        % End of preamble, start of text.'; newLine;
-			nextPutAll: '\title{\bf '; nextPutAll: book title; nextPutAll: '}'; newLine;
+			nextPutAll: '\title{\textbf '; nextPutAll: book title; nextPutAll: '}'; newLine;
 			nextPutAll: '\date{\today}                           %   Use current date.'; newLine;
 			nextPutAll: '\frontmatter                            % only in book class (roman page #s)'; newLine;
 			nextPutAll: '\maketitle                              % Print title page.'; newLine;
@@ -7353,6 +7353,13 @@ selectionInterval
 text
 	^ ''! !
 
+!InnerTextMorph methodsFor: '*Erudite' stamp: 'MM 12/7/2018 12:59'!
+enableEditing: aBoolean
+
+	self setProperty: #disablesEdition toValue: aBoolean.
+	aBoolean ifFalse: [self stopBlinking]
+				ifTrue: [self removeProperty: #disablesEdition. self startBlinking]! !
+
 !HierarchicalListMorph methodsFor: '*Erudite' stamp: 'MM 12/13/2018 18:42'!
 expandRoot
 	scroller submorphs first toggleExpandedState ! !
@@ -7360,11 +7367,4 @@ expandRoot
 !TextModelMorph methodsFor: '*Erudite' stamp: 'MM 12/7/2018 12:55'!
 enableEditing: aBoolean
 	self textMorph enableEditing: aBoolean! !
-
-!InnerTextMorph methodsFor: '*Erudite' stamp: 'MM 12/7/2018 12:59'!
-enableEditing: aBoolean
-
-	self setProperty: #disablesEdition toValue: aBoolean.
-	aBoolean ifFalse: [self stopBlinking]
-				ifTrue: [self removeProperty: #disablesEdition. self startBlinking]! !
 EruditeSystem initialize!
