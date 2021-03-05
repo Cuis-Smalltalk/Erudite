@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4528] on 5 March 2021 at 1:22:54 pm'!
+'From Cuis 5.0 [latest update: #4528] on 5 March 2021 at 1:49:15 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 145!
+!provides: 'Erudite' 1 146!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
@@ -1465,7 +1465,7 @@ contentsChanged
 	super contentsChanged.
 	self changed: #sourceContents! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 15:20:28'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 13:43:58'!
 explorerMenu
 
 	|menu|
@@ -1475,7 +1475,23 @@ explorerMenu
 	menu add: 'toggle live editing' action: #toggleLiveEditing.
 	menu lastItem setIcon: Theme current switchIcon.
 	
+	menu addLine.
+	menu add: 'export to latex' action: #exportToLatex.
+	menu lastItem setIcon: Theme current saveIcon.
+	
 	^ menu! !
+
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 13:48:55'!
+exportToLatex
+	
+	| defaultFilePath |
+	
+	defaultFilePath _ DirectoryEntry currentDirectory / (model title, '.tex').
+	self request: 'Export to:' initialAnswer: defaultFilePath asString do: [:filePath |
+		(LatexEruditeDocRenderer on: model)
+			texFilePath: filePath;
+			render.
+		self inform: 'Book exported']! !
 
 !EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 14:06:54'!
 initialExtent
