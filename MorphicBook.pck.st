@@ -623,7 +623,7 @@ layout3 addMorph: ImageMorph new]]]
 
 [[[layout3]]] embedIt
 
-We can change submorphs alignment via using {axisEdgetWeight: ::selector}: . The axisEdgeWeight can be be either a number between 0.0 and 1.0, or one of #columnTop, #rowLeft, #center, #rowRight, #columnBottom. For example, let''s center our submorphs:
+We can change submorphs alignment via using {axisEdgeWeight: ::selector}: . The axisEdgeWeight can be be either a number between 0.0 and 1.0, or one of #columnTop, #rowLeft, #center, #rowRight, #columnBottom. For example, let''s center our submorphs:
 
 [[[layout4 := layout3 copy]]]
 
