@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4528] on 6 March 2021 at 5:18:31 pm'!
+'From Cuis 5.0 [latest update: #4528] on 6 March 2021 at 5:28:35 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 149!
+!provides: 'Erudite' 1 150!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
@@ -540,14 +540,14 @@ To open a reader on a Book, send {open::selector} to it:
 
 See {Erudite Manual#Book reader and editor ::section}.!
 
-!EruditeBookEditorMorph commentStamp: '<historical>' prior: 0!
+!EruditeBookEditorMorph commentStamp: 'MM 3/6/2021 17:27:53' prior: 0!
 !!!!!! EruditeBookEditorMorph
 
 This is the {EruditeBook::class} editor.
 
 To open an editor on a Book, send {edit::selector} to it:
 
-[[[EruditeBook eruditeManual edit]]] doIt.
+[[[EruditeManual edit]]] doIt.
 
 See {Erudite Manual#Book reader and editor ::section}.!
 
