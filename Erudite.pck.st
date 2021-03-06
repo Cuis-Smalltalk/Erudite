@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4528] on 5 March 2021 at 5:32:01 pm'!
+'From Cuis 5.0 [latest update: #4528] on 6 March 2021 at 5:18:31 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 148!
+!provides: 'Erudite' 1 149!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
@@ -809,7 +809,7 @@ getInsertMarkupMenu
 			
 	menu popUpInWorld: morph world.! !
 
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 14:35:47'!
+!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 3/6/2021 17:16:43'!
 getMenu
 
 	|menu|
@@ -819,7 +819,7 @@ getMenu
 	menu addLine;
 		   " add: 'Toggle editing' action: #toggleEditing;
 		    add: 'Insert markup (i)...' action: #getInsertMarkupMenu."
-		add: 'Edit Erudite source' action: #editEruditeSource.
+		add: 'Edit Erudite source' action: #editEruditeSource icon: #textEditorIcon.
 		
 	^ menu! !
 
