@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4528] on 12 March 2021 at 9:38:43 am'!
+'From Cuis 5.0 [latest update: #4528] on 12 March 2021 at 4:58:35 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 152!
+!provides: 'Erudite' 1 153!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
@@ -1892,10 +1892,10 @@ setAttributesIn: aText fromRanges: ranges in: anInterval
 			attributes do: [ :each |
 				aText addAttribute: each from: range start to: range end ]]]! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 13:45'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 15:11:37'!
 assignLinkOption
 
-	^ (#word asParser plus flatten, $= asParser, #word asParser plus flatten) ! !
+	^ #word asParser plus flatten, $= asParser, {$,.$]} asChoiceParser negate plus flatten! !
 
 !EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:04'!
 bold
@@ -6756,7 +6756,7 @@ renderLink: aDocLink on: aStream
 									ifAbsent: [self error: 'Class not found: ', className asString].
 						self browse: class selector: nil]))! !
 
-!ImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 7/2/2020 16:56:53'!
+!ImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 16:56:04'!
 render: aDocLink in: aDocument on: aStream
 
 	|filePath form imageMorph |
@@ -6767,8 +6767,13 @@ render: aDocLink in: aDocument on: aStream
 					on: Error
 					do: [:e | ^aStream nextPut: e printString]].
 	
+	"Process image options performing options as messages."
+	aDocLink options keysAndValuesDo: [:key :value |
+		[form _ form perform: (key, ':') asSymbol with: (Compiler evaluate: value)]
+			on: Error do: [:e | aStream nextPut: e messageText asText]].
+	
 	imageMorph _ ImageMorph new
-						image: form.
+					image: form.
 							
 	aStream nextPut: (Text streamContents: [:s | imageMorph printOn: s])
 	! !
