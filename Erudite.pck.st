@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4528] on 12 March 2021 at 4:58:35 pm'!
+'From Cuis 5.0 [latest update: #4528] on 17 March 2021 at 9:02:51 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 153!
+!provides: 'Erudite' 1 154!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
@@ -2828,7 +2828,7 @@ initialize
         self addSection: self CuisAndGithub.
 ! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:38:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
 BookReaderAndEditor
 ^(EruditeBookSection basicNew title: 'Book reader and editor'; document: ((EruditeDocument contents: '!!!! Book reader and editor
 
@@ -3774,7 +3774,7 @@ H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
 BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:38:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
 Extensions
 ^(EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
 
@@ -3792,7 +3792,7 @@ This is implemented.
 
 TODO. Not implemented yet. ') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:38:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
 Extras
 ^(EruditeBookSection basicNew title: 'Extras'; document: ((EruditeDocument contents: '!!!! Extras
 
@@ -3804,7 +3804,7 @@ Also, a book on Morphic, the Cuis UI system:
 
 To install: [[[Feature require: ''MorphicBook'']]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:38:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
 Implementation
 ^(EruditeBookSection basicNew title: 'Implementation'; document: ((EruditeDocument contents: '!!!! Implementation
 
@@ -3854,7 +3854,7 @@ The Latex formatter is implemented in {LatexEruditeDocRenderer::class}.
 
 For example, this is how to generate a Latex/PDF for Erudite manual. First generate the ```.tex``` file:
 
-[[[ (LatexEruditeDocRenderer on: EruditeBook eruditeManual)
+[[[ (LatexEruditeDocRenderer on: EruditeManual new)
 	texFilePath: ''/tmp/EruditeManual.tex'';
 	render]]] doIt
 
@@ -3878,17 +3878,9 @@ There''s also the possibility of storing in a class method, but that''s not the 
 
 {EruditeBook>>storeOnMethod: ::method}[embed]
 
-As you can see, it is done via the {storeOn: ::selector} method (it is indirectly call from {WriteStream>>store: ::method} method).
+As you can see, it is done via the {storeOn: ::selector} method (it is indirectly call from {WriteStream>>store: ::method} method).') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-Invoking the serialized methods returns the book:
-
-[[[EruditeBook cuisManual]]] inspectIt
-
-Methods with Books are tagged with a //book// pragma, that is used later for listing available books:
-
-{EruditeBook class>>booksList::method}[embed]') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
-
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:38:39'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
 Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Erudite Manual
 
@@ -3902,7 +3894,7 @@ Main documentation is realized via {EruditeBook::class|books}, a collection of d
 
 Books are read and edited via the {EruditeBookReaderMorph::class|reader} and {EruditeBookEditorMorph::class|editor} morphic applications.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:38:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
 LiterateProgramming
 ^(EruditeBookSection basicNew title: 'Literate Programming'; document: ((EruditeDocument contents: '!!!! Literate Programming
 
@@ -3936,7 +3928,7 @@ This misconception has led to claims that comment-extraction tools, such as the 
 
 Literate Programming can be realized by the creation of Erudite {EruditeBook::class|books}. In particular, via code embedding in its different forms. Contrary to other LP systems, there''s no need for a tangling and weaving phase; the document source is kept separately from the source code, Smalltalk code is referenced and embedded from the documentation. That means that in spite of documentation and code being separate, the referenced code is always up to date. Finally, the possibility of evaluating Smalltalk code from the documentation makes Erudite very unique compared to the other LP systems.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:38:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
 SyntaxReference
 ^(EruditeBookSection basicNew title: 'Syntax reference'; document: ((EruditeDocument contents: '!!!! Syntax reference
 
@@ -4524,7 +4516,7 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
 AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:38:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
 SyntaxTest
 ^(EruditeBookSection basicNew title: 'Syntax test'; document: ((EruditeDocument contents: '!!!! Syntax test
 
@@ -5938,7 +5930,7 @@ H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
 BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:38:39'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
 initialize
     super initialize.
     title _ 'Erudite Manual'.
