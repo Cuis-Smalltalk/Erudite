@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4854] on 7 September 2021 at 9:20:11 pm'!
+'From Cuis 5.0 [latest update: #4868] on 20 September 2021 at 1:49:53 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 156!
+!provides: 'Erudite' 1 157!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -6832,13 +6832,15 @@ embed: aDocLink on: aStream
 								selector: methodReference selector]. 
 							TextEmphasis underlined})! !
 
-!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:33:27'!
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:47:00'!
 methodReferenceFor: aDocLink 
 
 	| classAndMethod class |
 	
 	classAndMethod _ aDocLink target subStrings: '>>'.
 	class _ [Compiler evaluate: classAndMethod first] on: Error do:[nil].
+	
+	classAndMethod size = 2 ifFalse: [^nil].
 	
 	^ MethodReference 
 		class: class
@@ -6853,7 +6855,7 @@ render: aDocLink in: aDocument on: aStream
 	
 	self renderLink: aDocLink on: aStream! !
 
-!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:44'!
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:49:13'!
 renderLink: aDocLink on: aStream
 
 	|methodReference|
@@ -6865,7 +6867,8 @@ renderLink: aDocLink on: aStream
 			(Text string: aDocLink labelOrTarget 
 					attribute: (BlockTextAction do: [:x | 
 							self browse: methodReference actualClass
-								selector: methodReference selector]))]! !
+								selector: methodReference selector]))]
+				ifNil: [aStream nextPut: (Text string: aDocLink labelOrTarget)]! !
 
 !SectionDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:58'!
 render: aDocLink in: aDocument on: aStream

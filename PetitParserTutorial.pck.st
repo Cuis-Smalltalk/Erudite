@@ -1,24 +1,24 @@
-'From Cuis 5.0 [latest update: #4249] on 21 July 2020 at 11:26:56 pm'!
+'From Cuis 5.0 [latest update: #4868] on 20 September 2021 at 1:41:35 pm'!
 'Description Please enter a description for this package'!
-!provides: 'PetitParserTutorial' 1 15!
+!provides: 'PetitParserTutorial' 1 16!
 !requires: 'PetitTutorial' 1 0 nil!
 !requires: 'Erudite' 1 73 nil!
 !requires: 'PetitParser' 1 2 nil!
-SystemOrganization addCategory: #PetitParserTutorial!
+SystemOrganization addCategory: 'PetitParserTutorial'!
 
 
-!classDefinition: #PetitParserTutorial category: #PetitParserTutorial!
+!classDefinition: #PetitParserTutorial category: 'PetitParserTutorial'!
 EruditeBook subclass: #PetitParserTutorial
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'PetitParserTutorial'!
-!classDefinition: 'PetitParserTutorial class' category: #PetitParserTutorial!
+!classDefinition: 'PetitParserTutorial class' category: 'PetitParserTutorial'!
 PetitParserTutorial class
 	instanceVariableNames: ''!
 
 
-!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:41'!
+!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:41:24'!
 CompositeGrammarsWithPetitParser
 ^(EruditeBookSection basicNew title: 'Composite grammars with PetitParser'; document: ((EruditeDocument contents: '!!!! Composite grammars with PetitParser
 
@@ -31,7 +31,7 @@ Luckily there is {PPCompositeParser::class} to the rescue.') images: ((Dictionar
         add: self CompositeGrammarsWithPetitParserEasyExpressionsWithPPExpressionParser;
  yourself); yourself)! !
 
-!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:41'!
+!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:41:24'!
 CompositeGrammarsWithPetitParserDefiningAPrettyPrinter
 ^(EruditeBookSection basicNew title: 'Defining a Pretty-Printer'; document: ((EruditeDocument contents: '!!!!!! Defining a Pretty-Printer
 
@@ -52,7 +52,7 @@ This pretty printer can be tried out as shown by the following expressions:
 [[[parser parse: ''1+2 *3''.]]] printItHere
 [[[parser parse: ''(1+ 2   )* 3''.]]] printItHere') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:41'!
+!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:41:24'!
 CompositeGrammarsWithPetitParserDefiningAnEvaluator
 ^(EruditeBookSection basicNew title: 'Defining an evaluator'; document: ((EruditeDocument contents: '!!!!!! Defining an evaluator
 
@@ -78,7 +78,7 @@ The evaluator is now ready to be tested:
 [[[parser parse: ''1 + 2 * 3''.]]] printItHere
 [[[parser parse: ''(1 + 2) * 3''.]]] printItHere') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:41'!
+!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:41:24'!
 CompositeGrammarsWithPetitParserDefiningTheGrammar
 ^(EruditeBookSection basicNew title: 'Defining the grammar'; document: ((EruditeDocument contents: '!!!!!! Defining the grammar
 
@@ -121,7 +121,7 @@ Instantiating the ExpressionGrammar gives us an expression parser that returns a
 [[[parser parse: ''1 + 2 * 3'']]] printItHere
 [[[parser parse: ''(1 + 2) * 3'']]] printItHere') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:41'!
+!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:41:24'!
 CompositeGrammarsWithPetitParserEasyExpressionsWithPPExpressionParser
 ^(EruditeBookSection basicNew title: 'Easy expressions with PPExpressionParser'; document: ((EruditeDocument contents: '!!!!!! Easy expressions with PPExpressionParser
 
@@ -155,7 +155,7 @@ other hand, if you have a grammar that''s composed of many parsers, you
 should subclass PPCompositeParser .
 ') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:41'!
+!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:41:24'!
 CompositeGrammarsWithPetitParserWritingDependentGrammars
 ^(EruditeBookSection basicNew title: 'Writing dependent grammars'; document: ((EruditeDocument contents: '!!!!!! Writing dependent grammars
 
@@ -179,7 +179,7 @@ MyNewGrammar>>number
 "Answer the same parser as ExpressionGrammar>>number."
 ^ (self dependencyAt: ExpressionGrammar) number]]]') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:41'!
+!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:41:24'!
 Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! PetitParser: Building modular parsers
 
@@ -191,7 +191,7 @@ with the participation of:
 Building parsers to analyze and transform data is a common task in software development. In this chapter we present a powerful parser framework called PetitParser. PetitParser combines many ideas from various parsing technologies to model grammars and parsers as objects that can be reconfigured dynamically. PetitParser was written by Lukas Renggli as part of his work on the Helvetia system 1 but it can be used as a standalone library.
 ') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:41'!
+!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:41:24'!
 WritingParsersWithPetitParser
 ^(EruditeBookSection basicNew title: 'Writing parsers with PetitParser'; document: ((EruditeDocument contents: '!!!! Writing parsers with PetitParser
 
@@ -209,7 +209,7 @@ Let''s have a quick look at these four parser methodologies:
         add: self WritingParsersWithPetitParserWritingAMoreComplicatedGrammar;
  yourself); yourself)! !
 
-!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:41'!
+!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:41:24'!
 WritingParsersWithPetitParserDifferentKindsOfParsers
 ^(EruditeBookSection basicNew title: 'Different kinds of parsers'; document: ((EruditeDocument contents: '!!!!!! Different kinds of parsers
 
@@ -295,7 +295,7 @@ The message PPParser»==> lets you specify a block to be executed when the parse
 The table 1.3 shows the basic elements to build parsers. There are a few more well documented and tested factory methods in the operators protocols of PPParser . If you want to know more about these factory methods, browse these protocols. An interesting one is separatedBy: which answers a new parser that parses the input one or more times, with separations specified by another parser.
 ') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:41'!
+!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:41:24'!
 WritingParsersWithPetitParserParsingSomeInput
 ^(EruditeBookSection basicNew title: 'Parsing some input'; document: ((EruditeDocument contents: '!!!!!! Parsing some input
 
@@ -331,7 +331,7 @@ input. To be able to compose parsers easily, it is important that parsers do not
 [[[identifier matchesSkipIn: ''foo 123 bar12'']]] printItHere
 [[[identifier matchesIn: ''foo 123 bar12'']]] printItHere
 
-The {PPParser>>matchesSkipIn: ::method} method returns a collection of arrays containing what has been matched. This function avoids parsing the same character twice. The method {PPParser»matchesIn: ::method} does a similar job but returns a collection with all possible sub-parsed elements: e.g., evaluating [[[identifier matchesIn: ''foo 123 bar12'']]] returns a collection of 6 elements.
+The {PPParser>>matchesSkipIn: ::method} method returns a collection of arrays containing what has been matched. This function avoids parsing the same character twice. The method {PPParser>>matchesIn: ::method} does a similar job but returns a collection with all possible sub-parsed elements: e.g., evaluating [[[identifier matchesIn: ''foo 123 bar12'']]] returns a collection of 6 elements.
 
 Similarly, to find all the matching ranges (index of first character and
 index of last character) in the given input one can use either {PPParser>>matchingSkipRangesIn: ::method} or {PPParser>>matchingRangesIn: ::method} as shown by the script below:
@@ -340,7 +340,7 @@ index of last character) in the given input one can use either {PPParser>>matchi
 [[[identifier matchingRangesIn: ''foo 123 bar12'']]] printItHere
 ') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:41'!
+!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:41:24'!
 WritingParsersWithPetitParserWritingAMoreComplicatedGrammar
 ^(EruditeBookSection basicNew title: 'Writing a more complicated grammar'; document: ((EruditeDocument contents: '!!!!!! Writing a more complicated grammar
 
@@ -371,7 +371,7 @@ That''s it, we can now test our parser:
 [[[start parse: ''1 + 2 * 3'']]] printItHere
 [[[start parse: ''(1 + 2) * 3'']]] printItHere') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:41'!
+!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:41:24'!
 WritingParsersWithPetitParserWritingASimpleGrammar
 ^(EruditeBookSection basicNew title: 'Writing a simple grammar'; document: ((EruditeDocument contents: '!!!!!! Writing a simple grammar
 
@@ -381,7 +381,7 @@ Writing grammars with PetitParser is as simple as writing Smalltalk code. For ex
 identifier parse: ''a987jlkj''
 ]]] printItHere') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:26:41'!
+!PetitParserTutorial methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:41:24'!
 initialize
     super initialize.
     title _ 'PetitParser tutorial'.
