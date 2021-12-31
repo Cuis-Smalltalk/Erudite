@@ -1,13 +1,13 @@
 'From Cuis 5.0 [latest update: #4528] on 5 March 2021 at 1:04:45 pm'!
 'Description Please enter a description for this package'!
-!provides: 'MorphicBook' 1 31!
+!provides: 'MorphicBook' 1 32!
 !requires: 'Erudite' 1 133 nil!
 !requires: 'Dice' 1 0 nil!
 SystemOrganization addCategory: 'MorphicBook'!
 
 
 !classDefinition: #CrossMorph category: 'MorphicBook'!
-MovableMorph subclass: #CrossMorph
+PlacedMorph subclass: #CrossMorph
 	instanceVariableNames: 'color'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -563,9 +563,9 @@ ManipulatingMorphs
 Morphs are objects, so we can manipulate them like any other object in Cuis: by sending messages, we can change their properties, create new subclasses of Morph, and so on.
 Every morph, even if it is not currently open on the screen, has a position and a size. For convenience, all morphs are considered to occupy a rectangular region of the screen; if they are irregularly shaped, their position and size are those of the smallest rectangular box that surrounds them, which is known as the morph''s bounding box, or just its bounds. The position method returns a Point that describes the location of the morph''s upper left corner (or the upper left corner of its bounding box). The origin of the coordinate system is the screen''s upper left corner, with y coordinates increasing down the screen and x coordinates increasing to the right. The extent method also returns a point, but this point specifies the width and height of the morph rather than a location.
 
-[[[joe := WidgetMorph new color: Color blue.
+[[[joe := BoxedMorph new color: Color blue.
 joe openInWorld.
-bill := WidgetMorph new color: Color red.
+bill := BoxedMorph new color: Color red.
 bill openInWorld.
 ]]] doIt
 
@@ -610,7 +610,7 @@ Now we can add a submorph to the row, in this case a simple rectangle:
 
 [[[layout2 := layout1 copy]]]
 
-[[[layout2 addMorph: (WidgetMorph new :: color: Color blue; yourself)]]]
+[[[layout2 addMorph: (BoxedMorph new :: color: Color blue; yourself)]]]
 
 [[[layout2]]] embedIt
 
@@ -689,8 +689,8 @@ To specify space with proportions, use {proportionalWidth::selector} and {propor
 
 [[[l2 := LayoutMorph newRow.
 l2 morphExtent: 200@100.
-l2 addMorph: (WidgetMorph new color: Color red; yourself) proportionalWidth: 0.333.
-l2 addMorph: (WidgetMorph new color: Color blue; yourself) proportionalWidth: 0.666]]]
+l2 addMorph: (BoxedMorph new color: Color red; yourself) proportionalWidth: 0.333.
+l2 addMorph: (BoxedMorph new color: Color blue; yourself) proportionalWidth: 0.666]]]
 
 [[[l2]]] embedIt
 
@@ -720,8 +720,8 @@ Submorphs can have a fixed width and height too:
 
 [[[l4 := LayoutMorph newRow.
 l4 morphExtent: 200@100.
-l4 addMorph: (WidgetMorph new color: Color red; yourself) fixedWidth: 50.
-l4 addMorphUseAll: (WidgetMorph new color: Color blue; yourself)]]]
+l4 addMorph: (BoxedMorph new color: Color red; yourself) fixedWidth: 50.
+l4 addMorphUseAll: (BoxedMorph new color: Color blue; yourself)]]]
 
 [[[l4]]] embedIt
 
@@ -736,8 +736,8 @@ It is possible to add morphs with interactive adjusters in-between:
 
 [[[l3 := LayoutMorph newRow.
 l3 morphExtent: 200@100.
-l3 addMorph: (WidgetMorph new color: Color red; yourself) proportionalWidth: 0.333.
-l3 addAdjusterAndMorph: (WidgetMorph new color: Color blue; yourself) proportionalWidth: 0.666]]]
+l3 addMorph: (BoxedMorph new color: Color red; yourself) proportionalWidth: 0.333.
+l3 addAdjusterAndMorph: (BoxedMorph new color: Color blue; yourself) proportionalWidth: 0.666]]]
 
 [[[l3]]] embedIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
@@ -758,7 +758,7 @@ This creates a Morph to represent the string ''Morph'' , and then opens it (that
 
 Of course, it is possible to define morphs that are more interesting graphical representations than the one that you have just seen. The method asMorph has a default implementation in class Object class that just creates a String-Morph . So, for example, Color tan asMorph returns a StringMorph labeled with the result of Color tan printString . Let''s change this so that we get a coloured rectangle instead.
 
-[[[WidgetMorph new color: Color blue; openInWorld]]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+[[[BoxedMorph new color: Color blue; openInWorld]]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
 !MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 13:04:36'!
 ThePastAndFutureOfMorphic
