@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5062] on 8 February 2022 at 2:22:56 pm'!
+'From Cuis 6.0 [latest update: #5062] on 8 February 2022 at 4:09:47 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 160!
+!provides: 'Erudite' 1 162!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -2639,7 +2639,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 AdditionalPackagesForCuis
 ^(EruditeBookSection basicNew title: 'Additional Packages for Cuis'; document: ((EruditeDocument contents: '!!!! Additional Packages for Cuis
 
@@ -2649,7 +2649,7 @@ Some of them are included in the main Cuis GitHub repository, at https://github.
 
 [[[Feature require: ''Core-Packages'']]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 CuisAndGithub
 ^(EruditeBookSection basicNew title: 'Cuis and Github'; document: ((EruditeDocument contents: '!!!! Using Git and GitHub to host and manage Cuis code
 
@@ -2683,7 +2683,7 @@ This is the suggested procedure for developing external packages. Usually do thi
 
 * Exit the image. Usually without saving.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 CuisSmalltalk
 ^(EruditeBookSection basicNew title: 'Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!! Cuis Smalltalk
 
@@ -2724,13 +2724,13 @@ Cuis is continuously evolving towards simplicity. Each release is better (i.e. s
         add: self CuisSmalltalkLicense;
  yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 CuisSmalltalkAboutTheNameCuis
 ^(EruditeBookSection basicNew title: 'About the name Cuis'; document: ((EruditeDocument contents: '!!!!!! About the name Cuis
 
 Cuis is the common name of a {https://en.wikipedia.org/wiki/Southern_mountain_cavy::url|small animal} that lives in Argentina''s countryside. Cuis Smalltalk was originally forked from Squeak Smalltalk and many of us are also active in the Squeak community. So, picking the onomatopoeia of the voice of a mouse for the name makes sense. As the project was started in Buenos Aires, ''Cuis'' (essentially ''Squeak'' in Rioplatense Spanish) was the obvious choice.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 CuisSmalltalkContributingToCuis
 ^(EruditeBookSection basicNew title: 'Contributing to Cuis'; document: ((EruditeDocument contents: '!!!!!! Contributing to Cuis
 
@@ -2745,7 +2745,7 @@ Here is a Smalltalk script to load all packages currently included:
 
 [[[Feature require: ''Core-Packages'']]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 CuisSmalltalkLearningAboutCuisSmalltalk
 ^(EruditeBookSection basicNew title: 'Learning about Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!!!! Learning about Cuis Smalltalk
 
@@ -2755,13 +2755,13 @@ Additionally, there are many tutorials and references for Smalltalk in the web. 
 
 The user interface enables you to access most of the code and conduct Smalltalk experiments on your own. You can review its features at {https://github.com/Cuis-Smalltalk-Learning/Learning-Cuis/blob/master/Quick-UI-Tour.md::url|"Quick Tour of the UI"}. ') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 CuisSmalltalkLicense
 ^(EruditeBookSection basicNew title: 'License'; document: ((EruditeDocument contents: '!!!!!! Cuis License
 
 Cuis is distributed subject to the MIT License. See the LICENSE file. Any contribution submitted for incorporation into or for distribution with Cuis shall be presumed subject to the same license.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Introduction
 
@@ -2769,7 +2769,7 @@ This is a manual about Cuis Smalltalk.
 
 NOTE: Most of its content was taken from Cuis documentation at: {https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/tree/master/Documentation::url}') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 ManagingYourCodeInCuis
 ^(EruditeBookSection basicNew title: 'Managing your code in Cuis'; document: ((EruditeDocument contents: '!!!! Managing your code in Cuis
 
@@ -2778,7 +2778,7 @@ Cuis includes tools and procedures for managing Smalltalk code. Code that is not
         add: self ManagingYourCodeInCuisLoadingChangeSetFilesIntoCuis;
  yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 ManagingYourCodeInCuisChangesToTheCuisBaseImage
 ^(EruditeBookSection basicNew title: 'Changes to the Cuis base image'; document: ((EruditeDocument contents: '!!!!!! Changes to the Cuis base image
 
@@ -2790,7 +2790,7 @@ Opening a [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: Change Sorte
 
 When the changes to the base system are complete, it is a good time to review the CuisCore change set and, maybe remove from it changes that we don''t want to keep (for example, experiments, halts, etc). Then, just do right click / File out and remove. This saves the //ChangeSet// on disk. It also removes it from the **ChangeSorter** (but it doesn''t remove any code). This is good, because the next changes done will end in a new CuisCore change set, and there''s no risk of having undesired changes in the old one. As changes to the base image progress, and several CuisCore //ChangeSets// are saved to disk, these numbered files are created in sequence. They will be ready to be loaded back in proper order in a fresh Cuis image, or to be sent to Cuis maintainers for integration in the update stream and in next releases of Cuis.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 ManagingYourCodeInCuisLoadingChangeSetFilesIntoCuis
 ^(EruditeBookSection basicNew title: 'Loading ChangeSet files into Cuis'; document: ((EruditeDocument contents: '!!!!!! Loading ChangeSet files into Cuis
 
@@ -2800,7 +2800,7 @@ There are two ways to load //ChangeSet// files (.cs): **[FileIn]** and **[Instal
 
 **[Install]** loads the code into a separate //ChangeSet// object (viewable in the [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: ChangeSorter tool). This is appropriate for loading Cuis updates, or other code that we are not authoring, as it doesn''t add new items (class or method definitions) to the current ChangeSet for our changes to Cuis. Usually any ChangeSets should be installed before doing changes to the image. The reason is that an installed ChangeSet could overwrite changes done by you, or packages you have installed. If this is the case, the affected packages would appear as dirty, and your change set would include any installed changes (that don''t belong in a package). Be careful when saving packages or change sets if this was the case!!!!') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 ManagingYourCodeInCuisPackages
 ^(EruditeBookSection basicNew title: 'Packages'; document: ((EruditeDocument contents: '!!!!!! Packages
 
@@ -2828,13 +2828,14 @@ Handling Packages like this, Cuis behaves as a sort of document editor (like, fo
 
 This is not unlike using Git or GitHub with a file-based development environment such as Eclipse or a text editor. Like Cuis, these tools don''t do version handling themselves, they just load and save files; and let Git do its magic.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 Tools
-^(EruditeBookSection basicNew title: 'Tools'; document: ((EruditeDocument contents: '') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new        add: self ToolsTheSystemBrowser;
+^(EruditeBookSection basicNew title: 'Tools'; document: ((EruditeDocument contents: '') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new        add: self ToolsWorkspace;
+        add: self ToolsTheSystemBrowser;
         add: self ToolsTheDebugger;
  yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 ToolsTheDebugger
 ^(EruditeBookSection basicNew title: 'The Debugger'; document: ((EruditeDocument contents: '!!!! The Debugger
 
@@ -3550,7 +3551,7 @@ wz9++OH3F374GbnjZ17mRoRUpSziH1D88AdgfvjhHz/88PsLP/yMuPEj6dwJc/chZHb2k/Lc
 Bu+32fjhhx9++OGHH3744We4IulbSeeOlwSv9J/szCp+0csPP/zwww8//PDDz4gRu5K+lXRu
 j+CVkBSwenoDP/zwww8//PDDDz/8DDckPevO7Lr5/wHdAwDI5tvHpgAAAABJRU5ErkJggg==')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 ToolsTheSystemBrowser
 ^(EruditeBookSection basicNew title: 'The System Browser'; document: ((EruditeDocument contents: '!!!! The System Browser
 
@@ -6548,7 +6549,355 @@ Do774LOXKlwrV7VOYMO32pwbs2P1t30r2zl133G396POBzHo/VB++pknvdYe87XxmUXQ4OPj
 4+Pj4+Pj4+Pj4wcNPj4+Pj4+Pj4+Pj4+ftDg4+Pj4+Pj4+Pj4+MHDT4+Pj4+Pj4+Pj4+ftDg
 4+Pj4+Pjyz95ho+Pj48vDb8IfHx8fHx8fHx8fHwG9/+0zlBgI8MZ2wAAAABJRU5ErkJggg==')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 14:20:59'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
+ToolsWorkspace
+^(EruditeBookSection basicNew title: 'Workspace'; document: ((EruditeDocument contents: '!!!! Workspace
+
+//A window used as a scratchpad area where fragments of Smalltalk code can be entered, stored, edited, and evaluated. (Inside Smalltalk, vol I, p. 71)//
+
+A workspace is a place to quickly try out code snippets and thus develop code which later might be copied to instance or class methods.
+
+{/home/marian/src/Cuis/Erudite/workspace.png::image}
+
+You can then type in any Smalltalk code inside the workspace window and execute it or inspect it.
+
+This is normally done by typing in some code, highlighting it with the mouse, and then selecting //"do it"// or //"print it"// or //"inspect it"// from the pop-up menu. Or //"debug it"// to open a Debugger on the code.
+
+For example, if you type 3 + 4 in a workspace, highlight it, and select //"print it"// from the pop-up menu, it will print the result 7. You can type any small or large piece of Smalltalk code...
+
+You can create and use temporary variables local to the workspace. You don''t need to declare them like in methods. Variable names starting with a lowercase letter will automatically be created as a local variable (e.g., i := 2). Variable names starting with an uppercase letter will cause a dialog box to question if you want to create a Global variable or pick from similar variables (e.g., I := 2).
+
+**Tip:** Have a look at the window menu button (blue button on the top left of the window) for configuration options and actions like ''Save as ...'' for saving the contents of the workspace o a file.') images: ((Dictionary new) add: ('/home/marian/src/Cuis/Erudite/workspace.png'->(EruditeForm fromBase64String:'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
+NG950QRTvlEvz03RiEGPeMrjzfT8uJmjteLDpHr7iY+Pj4+Pj8+ZRgUFHeXPlzsf1IaJrfRF
+3446/UhP/d2EQis0/p8JjBf7PKITvbrpveT7tePdNgpUR706P2+jDS/dri/MtPLpzN95QqEV
+Gv9v0fW6OPc6nTD//97cG/Xxtvsc17lrbztNWvBHxc3+vaJNYOy/qoknNFrT0HFZf1QfM908
+ZMYdetdMbTqtc9vuXho5Y4gihy/XvakfeEKhNcLYauxnajHqY92TslG90yYqe1M3x3U611NF
+BXtNij+gQjOteqhWWXcVHz9syg7p+JE4v8sfN6Hp2PFtKi8uNq/bq8Ljz+toUc+a1xwapYLy
+Qyoriam/vN+ynjp87D1T3zYT8rp77iMsPrZSX5XtU/lJs46Th1V2fKVKDsd52/pp5ajk9EEq
+OrJSx8sO6eRJU+fx1Sr2bYfl+CAdKXhPRcUlOmnaWlY6V0WHRvht36H8UTpSskmF5SWefVNe
+9rGOlzxRv7zokKe8uGibjpc+ryNF3Rugj/j4+Pj4+BgaHTvWUYFY09Cb17VW9oyWyk5qpXej
+79c7/VrrrfEtzeigCZH72ivY8n7rPPigct67V2+vukNvZd6gjU//TtmzrtebS27Txteb6ov9
+D4RcZ96XD+qVN1po5nNNNfipCMU+ebsSJt2uCWa08fmVd2vf51dTZyetfK27mYpOUM9Rj6vd
+ozPUefhkDZ0yVJkv9dVn+zqFXCfCniSN9dzn2IO/L/j4+Pj4+H7mGh050kF8fGGzb4hmWFPH
+K6P4+4KPj4+Pj+9nrtHhwx3Exxc2eSN11Ewdf1Uczd8XfHx8fHx8P3ON8vMfFB8fHx8fHx8f
+H19djax7Bvn4+Pj4+Pj4+PjqanTgQHtVWZ//HR8fHx8fHx8f3y9Eefm0q1KVDesFxStXLvPx
+8fHx8fHx8f3MVQXF/fsfC8mWLY/ygyIfHx8fHx8fHzUo7tqVyg+KfHYui/8nHx8fHx/fL1Ow
+oDhnTj+9/HIiPyjy8fHx8fHx8fGDYu3RxGnTntSUKSk/t6B4QXnZZWoZfVD/FV2sKYUXflI7
+vKLkjLoMKdb2S05eW6q28WXKucQ/UPn4+Pj4+Ph+OkHRGk18+umnPfyNKjoPiue3KnNZd7UZ
+/VtdM3qwdnxfpxEVB/T6uj5qMfomXZ/WUY9u3qWLoZTXde6kYuKLtSCMAfHfFdj4QZGPj4+P
+j4/vpxYUq0YTq4Kiv1FF50Hx+336IHer9uU+rjZpdYPiBe17q6NaLFihYxXeUDlxegs9mlvq
+sNz/iF24wxU/KPLx8fHx8fHxg2L90cRAo4ohTz1XlM1Wx4w6QbFiq8ZltNHEgprRvzOfmNHD
+eStU6qS87jryT6lpj2P6j/b7dE0PM/U85IT2VnjLSraeUK+RRbrB+v/oInXJLNNe3wBW8Y2y
+VxxXy3hT3qNAESOLtfK0We+l0xoQ71Nnj8OK2Xreu8ylPykrs0BNrWnu+COKWXtaJRW+Ie+4
+sjZ9rZghh025d7q5bvgL1i5+UOTj4+Pj4+P7KQXFuqOJgUYVwxMUzy5R97R+ev28z+tKzchj
+Rpr2VTgoD2EU7kzet8o7Vxk4L13UyplFiph5Tmc85eeVk2n+PdmEtHOV9Zz7RkeDBrbzWj/z
+sJpmnvOGQxMaZ6cdVtu1F1VRtYwJfy0XnasOj/7qCtYuflDk4+Pj4+Pj+ykFRX+jif5GFcMS
+FCvKFqijmY7+4Hv/r7MrdzNdW1H4tVoOOuUdcay6r7HkgvM6zTK94guUdbrm/y7mFavpkK+V
+V1G5THSBGZUMrX2+7eIHRT4+Pj4+Pr6fUlCcPz/eExb9Wbas3891RPGCSj49o5SMI4rwPA1d
+YKZ6zXRydFnldHDw+xr91elvmYrCUjN1baaYg4S82v9v1y5+UOTj4+Pj4+P76T31HPZfZgnl
+HsUmNvcoNglwj2Kw0b+Y+COa8OmfPdPC1SN38d5AVjOiGMIDMk5GFO2Cok27+EGRj4+Pj4+P
+jxEUS2fXm0ZumKee/YSr02dNqCvWlPxLlfcf/kkLJh/WNZUjd1X3KDad7PMgic89it7lTSis
+NTV9XutNHdX3IF4ydda9R9EuKNq0ix8U+fj4+Pj4+H4KQdEKfqFyFhTNqODI0b/SNQn/XWP0
+cO2omjr2fE9id7UYGux7FIOUO5x6zttUbP7f+0Rz07RTytp0Qi0HldV88bXfp55rQuH2FaXe
+p5ujizRgl+9Tz8WV08ZHFLOi7lPP9lPPwdrFD4p8fHx8fHx8/+6geOHCp1eF/xN+fHx8fHx8
+fD4u6wr/z18UflDk4+Pj4+Pj4+PjB0U+Pj4+Pj4+Pj53QfHMmWyVlCxWUdEzHtbfrf/jB0U+
+Pj4+Pj4+PnBQtAJhQcFkHTmSXov1f3XDom1QtP7Ox8fHx8fHx8f38xIoKFqjh3VDYhWrjB8U
++fj4+Pj4+PigQdGaag4UFK0yflDk4+Pj4+Pj44MGxUAhsUroQXHPBiXM7qCbk2/UdSM6qOvq
+7Vpe1ZD9ezRodjc1HhGha035tanN1Wz2JI3ZVu6sPL9QU1alqHVGE11nlY+IVOuFSzUj13dj
+z2px9iS1G9vEU8d1Y6MUuymE5ffkKCHTtCH1t7omNUlTcmvvyDXbZqpZ8q/0a2t5j+bqWl1/
+Hfu3KzbjRk89GbnfOX+N7X6w2c/haofr/eG2v77T8m1LFTU10ru82Q/NM+dqyp6zjttnV7/t
+fgxabrN9DvrRbvvsyu2PR5fng93+C1ZujqmeY6vaVeVXumZsumbsr9pHX2jMoihFpFrr76CO
+q+rsf7tyR8ewTR8HW4eTbXB7zbA9l92cI+HoY/fXq4Y9j91f151dL91dq9wdB0620cVxFJY+
+DL5+1+8VwfrQwXnq+jxsyHLX2Sccx8ePFRTNBXfQxCZqlpWjLGvFuXs0wjSsa3Zh9YGatbtQ
+a6p3TqFmrI7SzdWdaVO+P1/p69doxu7ymgv8wkjdPG2NFlcuk5WdosYT05Wxu/IAzi3U4qqD
+2cHyVpszsnM0IzvddFqAi/6IIIGrWrmmZHVTs2nmDSjg6wO9xm4/2O3ncLXD5f5w21+5G9TV
+XNTard/jPaBNfRlZ5kCfuNhxfwU/Hmz2o2253fbZ9KPd9jnYfrvj0e35EHR5B+W1FSp9dhM1
+ztpeuU/OaobZnohpSzVvv/eNICqjuTr6XC+Clzs4hh1ck5yvw982uD1H7M9lV+dIGPrY9fWq
+wc9j99d1J9dCt9cqV8eB3Ta6PY7c9qGD9bt9r3Deh/7PU3f7v4HL3WafMBwfP15Q3L1YzUfE
+acwe34tkujnpltZ0dq3OsXZGnBpPXXx15Z76J6nx2BRNqQxQCRmRiso563iotdbydS/uY68+
+KC7fZLbbtHtOTuDXO3mN3/0Qwn4OVzvc7o+r6q9tcz3bmZ57lf1lV7/dfgz1eA7SPr/9aLd9
+Drbf7uLn6nywWz7U+ncvVWvzSXbQtqo3+BwzClB7+axXzRv01Mr9a1fu5Bi268MQ1uF3G9ye
+I7btC9854vaaedXXq4Y+j8NwXbfdxjD0g6vjwG4b3R5HbvvQQftdvVeE0IeBzlNX+7+hy91m
+H7fHx48fFKNqNybHpP+xo2umaaxPbJnNzfDobz0/7xcx25yU++t8ogtaXnsofd7qbrq56qLu
+OTi6KXZVulqbTz/XjWjuGX6dk+tweacXfTN0e7MZIr7OGt5dtMY7ElFniLlnRpSGmoM04MFp
++5og+8HRfg5XO8KwP662v8zFbaiZ6qj1KXZRBzVblFNvyNxv++zqt9uPTvdz0OMpSD/abZ+D
+7Q+6/92eD7b7L5T6Td2rOtTeNwEuXrX3f5ByJ8ewoz52sI5A2+D2HLFtX/jOEVfXTDfXq4Y+
+j8NwXbc/jtz3g6vjwLYfXR5HbvvQQftdvVeEFBT9n6fuzsMGLnebfdweHz/u1PMe86klwju8
+ub9qeLOJfp2a4rdT1+zOUcJUMzy8yP99R3blyzdNMidzVPWnhjXmU491IDTL2lCz/mlNFJG5
+wdHyjg5Gc4LMqxyuX2OmqQaZ9kUszKl1L0l6ZgdzQuV7hpH9X1SdvCbIfnC0n8PbjqvfHy77
+y1y8o6z7hZL/W782J8/N0/yfPP7aZ1u/3X4M8XgOdjwFPJ7tts+uPMj+d3s+2C0fUv1mX8Za
+U1e1pqLm1jvefPvRrtzRMWzTh87WEXgbXJ8jTtoXpnPk6q+ZLq9XDX0eh+O6brONYekHF8eB
+7TaG4zhy04dO2u/ivSKkoBjoPHWz/xu63GX2cXt8/OgPs6zZ/bpip5k0nxqhiIwUJaxKUYTv
+jd91d4hJtRHBhk8DlGeZHdF8bJQScsrrDB87+1Tmd/lQh7er21dT/+JXk9TYZrjdyWvs9oPd
+fg53O652f7jqL+vgnthc7VbX/hTbOPN1730WtiMRDj7l2uxHp8ez3fHktx/tti+E7fe7/92e
+D2EccV2+abR3u3Ptp3tCGe1zcgwH7cMQRhT9bkMYzhH79oXnHLnaa6br69WPcB67va7bbmMY
+++GqjgMH2+jqOApDH17de3/435vtztOr3f8NXe4q+7g9Pn70p57rWLw+So1nbwj4pGKggyVw
+ufXk1mhzgFtpubze02o9M+JsToYgy7u+6JcrY3aEfp1shrZTq9zoGUa+NjVSXbPLHb4m9P1U
+ez+Hvx1XHxRd9JdntCdO6Xuu9t4mJ8dDaMdr/fIg2+eHtf7q/WO3fSFsv9/6HW1/iP2Tk67q
+5e3K86tU3li+yOcBEEuA+wNvtrlHsWa65erOpVp9aLsOm23w4fbDlP/22exjR8eIiz4Ox/Uq
+hOP46s/jINto20cOtjEs/eDiOAhhG6/qOApjHwZuv932u+lD5+fp1e//H7c89P3j4vio9COO
+KOZreeWGZeUsVsex3VQ9zWGGUzNy8mueQtq9wXxKsTq1cqrMptzaEfNetVJwnOc+En87ak5W
+NzWverJn/xdmeLW5GV7e4HD5OgfjiPpfj5C1bY8WV01H7Nlef/h8f7mW59aw0n1jc4JZj7mv
+cfga+/0QfD+Hqx3u94fL/qr3pF2h+RQbqesmLvZ/34qf9gU/Huz3Y/Dy4Ntn249222e7/fb7
+3935YL+83f712L3Gc2N5Qr11hOGpZwfHsF0fOnrqOeA2uL9m2LXP3Tnito/DcL1q8PPY7XXd
+yXHkvh/cHgd22+jmOApHH9qt3917hYM+tLnWuNv/DVsejuzj7vj4UYOidQOlGcK3vo/MfDqL
+mDhaQ32GP9dsW6yuEyM93+Pj/R6nbuq6aoMW73dWbn3675r6K12TXOf7kqxPNT73QaRXfSea
+9V1PtW44drJ85WvMp8lqqVWfmszJtiqu5ruORkSqXVawG3JtDuoAr7HdDzb7OVztcL0/3PaX
+sTzH2hfNvd8NlWxOnGmTlL77rMP22dVvtx9tym22z74f7bcveLmD49H1+RC8f2zLjXmruunm
+iYGe7rO+w7CbIpKDfY9ikHLbY9jBueJgHcG3wc01w0n7XJwj4ehj19erBj6PXV/XnV4L3Vyr
+XB4Httvo7jhy34f211L37xX2fRj4PHV7HjZsuevsE47jI//fOPXMx8fHx8fHx8f308YPinx8
+fHx8fHx8fPygyMfHx8fHx8fHxw+KfHx8fHx8fHx8/KDIx8fHx8fHx8fHD4p8fHx8fHx8fHz8
+oMjHx8fHx8fHx0cJins2KGF2B8/3AV03ooO6rq7znWR7cpSQ2U2NU3+ra1ID/YD+r/Tr6u8C
+aq6um2p/H9Hi7ElqN7ZJ5fcNRSnWt9zznWiV3xXl5zvRlm9bqqipkd7vgrK+Sypzrqbs8fk+
+L7v2+9q/XbHWb1+m1vm+LZttdFRHsO3cv0eDZner+U4osx3NZk/yfDmso+2wvqV/bJ3vWzL7
+/JpaP+djs58buB9tl7dZf/B+LtSUVSlqndHEW279QPzCpZqRG8JxErT99vUH3T4n/WvbPy77
+P+h5YL997s5Dm/pt22/XPrv6bfa/g/1nd/y6PT7dnh/uzh+79Ts4PuzaZ3P8uH2fsTt/3J3/
+Dq/xdtvIL+eXN2T5vy0omoYNmtjE+8PT1oo9PzxtTmLfXzkw/5eRnaMZ2enmQhwgYAT5Yuis
+7BQ1npiujKov+swt1OI9Dn9lod63y+crw7z+5qpvl3fS/mrlmpLVTc2mmY6o216bbXRSh912
+Zu0u9PmFlULNWB2lm6veqELaDu+F3fOzR1k1P3sUfP0N3Y8OviA82Ppt+zlf6evXaMbu8poT
+amGkbp62JsAvotRZ3q79dvXbbp9N/9qu32X/2y1vu31uz0P7/Re8/TbLO2i/3f63O3+C9m8Y
+tt/V+eH2/LFbv5P+C9o+m+MnDO8zQc8ft+e/o2u8218l4pfzy13+qtW/LSgG+IH9ZtOW+v+p
+prEhBgxzgUjIqP27rLXL/f9ua0TV77Zum+tpX3qtT+Y+v1cZQvuXbzL/P3Wx5uQEbq/9j5cH
+qMNuO+ttt/VGFqfGUysvZCFsh8fupZ6fPar+OZ8Q1t8g/Zjv7JdkAq7frp/91uNTbrd8qP3j
+Z/1Ot89v/9qt323/h7p8vf3j8jx0sP+Ctj/U5e3K6+5/B+sP2r9h2H5X50cYzp+Qjt/8UH/b
+2eb4cfs+Y3f+hPH8D3yNt9lGfjm/vCHLA7BynCfL5YcQFI+ke15TxWFQjHL0w+NBA4YZyr/Z
+TPtcZ01ZLPL5mR3PBbmbYlelq7X5xHfdiOaeKY3qn1EKcAGpXr85wYea6YRanxQXdVCzqt9T
+dNp+M+3RMyPK85uKwS6YQS/Sweqw204P80k10/o5pd96fsooYra5GO333Q9RDn8A/qzmrTKf
+ln0PIEfrb8B+tFvebv12/ZzvZx+s7lazD2yPE+f7x2/9jrYvWP86OQ/c9H8oy/vZPrfnoYP9
+F7T9IS0fqDzI/new/qD9G4btd3V+hOH8cbp+u/3vd/12x4/b9xm78ydc53/Qa7yTbeSX88sb
+qDzAtbI6yzVoUNy/x3zSivBOCViN8UwJNNGvU1P8Bwl/FzBzUs6rHMJfY4ZLfX+4e435pGdd
+nJplbaipf5opz9xQU14ntNVbjzl5o6z7RZL/W782bwA3T/N5A3DUfjPNlNnBXES8P+B9dUEx
+eB1221lvPbtzlDDV+gHxynsQQugH67Wx1jSLz5B0KOtviH60W97R+oP1cx3LN00y+z+q9ohU
+kOVD7R+/9TvcPn/9a7t+l/0f0vJ+ts/1eehk/wVrfyjLOyivd345Wb9d/7rdfrfnh9vzJ4Tj
+N9j+9bd+2+PH5fuMo/PX9fnv4BofZBv55fzyhiz/9wZFz0X1dcVOM5+wUyMUkZGihFUpivBz
+b4+TRld9Uoxw+knSdiTDXGAmNle71bU/KTbOfN17r4uD9i9+NUmNp9X5ZB9iULStI+QRnar9
+5DM15LAflm8a7V2u3id6dyPDrvrRbnnbERH7fq6SZd7Emo+NUkKtH+C3WT6E9vutP4Tt89u/
+Dtbvqv9DWN7v9oXhPHS6/wK13+nyofVP/alTu/X77d8wbv9VnR9hPH/s1m/X/qsaUXT7PmN3
+/oTh/Hd2jeePePHLiSOKfla8eH2UGs/eEPInXf8X2O1mKD8uyAnuf16+esrDk7LjlF5r5wW/
+N6h2+8uVMTtCv0420y2pVW70TE1dmxqprtnlDrbRQR1223kVQcN/P1TehL+o5iZ87xuF8/U3
+SD+6fSN01M/WU4ujzf9ZIx113sTslnfU/iD1X3VQvPr9F1L/O1o+yPaF5Tx0sv+Ctd9u+XD0
+j/P9V2v5sG1/AwXFq7hO1l+/s/aHco9isNsLQnqfsTt/XJ//Tq7xNtvIL+eXN2T5v39EMV/L
+q57MzFmsjmO7BZ5yGFH/K2Gytu3R4qrh+T3b60xpnNWcrG5qXvW02/4vzJRDc1O+obo8tKct
+C80nxUhd5/s0n13795dreW4N6xNzYyu5m4vhGkfb6KSO4NtpTYVl5OTXPGG5e4P5BGy9Yfnc
+Q+SkH3av8dyEn1Cvf+z2c8P3Y/DlbdZv289nNe9VawQiznP/UL0TxsHydu0PWr/N9tn3r33/
+uOt/u+Xtt8/deWhXv/3xa9e+YOVOzi+79Qc9fl1vv8vzIwznj9357aj/glw/7J7YdPs+E/T8
+cX3+O7vG85/K5Zczn3r23LRshtyt7+0xn6YiJo7W0Jz6ow1dU3/l+XRVLbXqk6o5AVfF1Xx/
+2YhItcuqc5O09dULVd8NZH2/Vd2biD3fHdRNEckBvr/NXFS6Tmzu/X6sZHPxnzZJ6bt93gDt
+2u/kQhR0G53WEXg712yztiHS8x1i3u/w6qauqzZo8f7vQtqOeau66eaJAT5h2O7nhuxHJ8sH
+38dB+7lq2eQ634XnM4UY/Dixab9t/cG3z75/7fefu/63Wd7B/nN1HjqpP1j77Za3KXe0/232
+n93x62773Z8frs4fu/U7Oj7s2hfs+HH7PmN/fXN1/ju+xgc/R/jl/PIGLf8pTT3z8fHx8fHx
+8fH9tPGDIh8fHx8fHx8fHz8o8vHx8fHx8fHx8YMiHx8fHx8fHx8fPyjWrIePj4+Pj4+Pjy/8
++EGRj4+Pj4+Pj4+PHxT5+Pj4+MLnyhX+n3x8v3QNHxQ9391T+f1SAb/b5+rKPeupOKDX1/VR
+i9E36fq0jnp08y5d5HcsHx8fHx8fH99PPSg27LeJX7lyQfve6qgWC1boWIVZ5/mtmji9hR7N
+LeV3Lh8fHx8fHx/fTzooBvh9wQib3x90Wn6lYqvGZbTRxIIL1es884kZXZy3QqX8zuXj4+Pj
+4+Pj+wkHxd2L1XxEnR9L3+bzY+kuy6+cXaLuaf30+vmaDaoofVxtMtK0r4LfuXx8fHx8fHx8
+P9mguGbb3Hq/Z+n5jcuxSZW/oequvKJsgTqmDdYH3/sExbLZ6pgxWDu+53cuHx8fHx8fHx9/
+RJE/osjHx8fHx8fH98u4R/Fmm3sQnZYHukexCf8eRT4+Pj4+Pj4+/lPP/Kee+fj4+Pj4+Ph+
+lkGx6nsQuykiOdj3JF5duWc9nu9R7K4WQ/nfo8jHx8fHx8fH9/MKivxfZuHj4+Pj4+Pj4wdF
+flDk4+Pj4+Pj4+MHRX5Q5OPj4+Pj4+PjB0V+UOTz0BX+n3x8fHx8fCgNGhT5+Pj4+Pj4+Pj4
+QZEfFPn4+Pj4+Pj4+EGRHxT5+Pj4+Pj4+PhBkR8U+fj4+Pj4+Pj4QZEfFPn4+Pj4+Pj4+PhB
+kY+Pj4+Pj4+Pjx8U+fj4+Pj4+Pj4+EGRj4+Pj4+Pj4+PHxT5+Pj4+Pj4+Pj4QZGPj4+Pj4+P
+j48fFPn4+Pj4+Pj4+PhBkY+Pj4+Pj+/nS1f4fyLwgyIfHx8fHx8fHx8/KPLx8fHx8fHx8fGD
+Ih8fHx8fHx8fHz8o8vHx8fHx8fHx8YMiHx8fHx8fHx8fPyjy8fHx8fHx8fHxg6KP09qe3kGJ
+64/+Qnf4Be2d3EHRK45iD7iKklK1HVSm7ZfCWF98mXIu1f57w7T9jLoMKQ5b2/n4+Pj4+PhB
+0ceZ9VHqNHmvKkxgyvMTmCqOzlGPyAztrTD/rtinxVnd1SYtQtcPvUnXj26hjllP6fXS0842
+rmKXpk+/SdeMHqwPvg/y5l82Wx2H/kr/Za3Do4VGHjldK9yV5j6lhCebespvy+ij6UdOX319
+Z1YrOjJVORcbpkMvFp7UhIwjuqHHQf1XdIGajizT7LzzYQ1k4Q6KFSXnNDvTtDXatNm0+4ZB
+BUpZcVJ5l/59QbGhQycfHx8fHx8/KNYdLRzVWkNzrNB0VOujO2hy3oXao23p96jT/C9NkPT+
++8zZ0sq/W8GvVPu29FGTjMe1r8J+ZHLHW93VcUEftUhzEBSDvOZM7nC1mfm4Pjhb2dbvS1V6
+/sJV12e1LSfxHvVoiFHFS99q9KAiDdh0URcr9+HFkm+1vfDSTzYoXswvVZf4Yo3eelFnKvu1
+4txF5bxxQgsKL/CDIh8fHx8fHyIoVnypWZ0e1gsl5u8XN2toZL/ao2oVO5Te/J464dG33AqK
+/dRm3hKV2o2qHXlcHc3rDhTYhTabYFdxQJnT22hiwQXnAaPMfp1n1j+sP/ZYrTMByku2nlCv
+kUWVo4JF6pJZpr2XagJ13qZT6mJG3byjb8VK2fSNN1CbqdG28ceVfS5YmPyTsqpG7+KPKGbt
+aZVU+Iaj48ra9LVihhw25ZXTrJdOa0D8Mf1H+326xmpTj8OK2Vo5SlnxjdYvKVXLaG9bey05
+qaMVtcPrgpneEc6IkcVasOmEWlYHxW+UlXZYvTb92SYA27U5QFC0a5spz15xXC3jrW0q8LRv
+5ekLAbe3Xv0O9uXKrWc0YORhT181TTuh9acv8C88fHx8fHz8oFgdnPIyFHnd73Tdb36jRo3+
+U7/x/P0/zd9/4/n7bZ3meN+8S15Ujz9Gaf2ZOiODy1rotqG/1TUJ/60WWSb82Y0mnn9P46b3
+0dKyC45Cm3eq+CY1MVPct6W1Ud9163Ssah1nV6hvWndN3/y4+pqp59vSWqjv2hU6cLX1Ve+T
+NDX/Y6p3it1fkMz7VnnnKgPFpYtaObNIETPPeYPl6bPqZQLc7PzKUcKK8yo5fak6uEwYUqCW
+mWeUnXdRJZfqhpLzWj/zsJpmnvMGGvP62SaotV170RM0PeHGBJqWi85VB57gI2znlZNZ5Hm9
+pw+tYGba2nbFnypHgs36Jtde34KMAv1HdGVQ9GxLqQlnwfrUQZv9BkX7tlnlEZNNCD9XNZL5
+jY5eCry9det3ui+94fS8ti85ooiMsyrhX3j4+Pj4+PhBsc4oX04/RQ7d7JkSLXnhYZ8p5pr7
+EyNv6xfw3r2Ks1uVOa+p2qzbVTmt6k+pNi7rqIQdx7xv1g6C4pWKYzpWOZVccX6rFpt1tFi7
+1bOOirIFntDX8a33vNOi3+/TmgWmfNl7gdsQpL6abZ3m2dbtDu9TrCj82ozCnfIGy3MnTbg6
+UmuqttZrT3+rrCVlnhHHa8yIWETGCWVXjWJ5li1Qlk8wu5hXrKZDvlZeRWW4iS7wG9z8BsVz
+5xQzqHbQq8g3I4ZDTnjqC7S+iHhvUKzwjIDaTO86abO/oOigbTEmcC8oueB46rl2/U7aVWf9
+nn40o7QV/AsPHx8fHx8/KNa+/3BUayVml3rCXHZia6XvrfMG7XdEsc6bd8HjapExXDsCvNGW
+fjJYbRasqJ6adhQU/a4jzXsf5Nkl6p7WR6+fr13epqo81PocjSheUMmnZ5SSYUafor0PpNzQ
+41jNKJxVnlem0ZNN4LIeVsk4pZX5Ae5BNKOR682o2Q1pZZ5RLH/BrKLQTM3Ge8NLsPvy/Acn
+U59pmzVte0N0JWuqtnLKOvD6nI8ohtLm2n8PvW2hBEV/ywdqV3W59X/V0+4/N5d1hf8nHx8f
+H07DBsWKHRrV3Ew1X/cb/WejRvrNb7xT0P9pTUFbf7+t8p7FytcGvUfR8Be6apzWB1kR+q+h
+Zsp3dJWbPFPW149uo5H7nT0tXWsdFbvMNHa/sAfFoPcoeka6jmjCp3+uHnH1jETF+wsYl5SX
+fVwRVaNk/tbvO4oVwuhcvXr8BCNPfWbUbn2geyJtRhQd3aN41SOK9m3zjigG2G/+gmDd+kPc
+l/ygyMfHx8fHD4r+RhStr73pMUdHrTfLvamKTHzNT0iq/dSzNdX8QcGxmrB09j1lzrSmnrcG
+mfY9rYvf1zhz5Cm1STNBr+x0rWlu33WeKd2n0soRx4rzu+pMFV/Qgbe6q/tbW73trTigNVkt
+THmgqWe7+ryBNuhTz5X3IE6pHCWsOPcnLZh8WNdUjSieu6jthX+ubl/J1jITFL+unE79Viu3
+fqujVfcmVvxZObXui/PeM1h9D6J1z2CA+/38t8sEo1pTteeVnXlEbZecq76378qlPyuvsCrk
+/rn++nzvUbxS89TzBN+nni994/PUs/M2126/Xdu89yg2nVzzoJDvPYr+trdu/aHuS35Q5OPj
+4+PjB0U/QdG6J7GHJwBaYbBD5RS0n1EcEyg7RWZ4R2TKlmjkzDZqUvl9hLdldNfIze+ptML5
+xtlPPZsguLlfzXc1prVRwlt1Hj6pOKaN6/qoxWjvdzl2D/owi4P6PN+jODjI9yhaTzUXm5Dh
+fRK3adopZfk+KXz6nOd7EiN6+JTn1zzMkrXICijeJ6K9T0yf0XbfUTXPk7rFldPaRxSzwv8T
+xPXbdV7bV5R6n/A19Q7Y5fPUs/XkcHTlk8NDSjW66insK97wGvip58qwaH2P4sw636O41ud7
+FB22uV777drm96nnwNtbr/4Q9yU/KPLx8fHx8YNiWH6ZpfQXusP5v8zCx8fHx8fHxw+KfHx8
+fHx8fHx8/KDID4p8fHx8fHx8fPygyA+KfHx8fHx8fHz8oMgPinx8fHx8fHx8/KDID4p8fHx8
+fHx8fHz8oMjHx8fHx8fHx8cPinx8fHx8fHx8fPygyMfHx8fHx8fHF25WrrNCXxUrDB45kq5A
+f1qvqcIPinx8fHx8fHx8v2D8oMjHx8fHx8fHx8cPinx8fHx8fHx8fPygyMfHx8fHx8fHxw+K
+fHx8fHx8fHx8/KDIx8fHx8fHx8fHD4p8fHx8fHx8fHz8oMjHx8fHx8fHx8cPinx8fHx8fHx8
+fPygyMfHx8fHx8fHxw+K/KDIx8fHx8fHx8cPivygyMfHx8fHx8fHD4r8oMjHx8fHZ1zh4+Pj
+B0V+UOTj4+Pj4+Pj4+MHRT4+Pj4+Pj4+Pn5Q5OPj4+Pj4+Pj4wdFPj4+Pj4+Pj4+flDk4+Pj
+4+Pj4+PjB0U+Pj4+Pj4+Pj5+UOTj4+Pj4+Pj4+MHRT4+Pj4+Pj4+Pn5Q5OPj4+Pj4+Pj4wdF
+flDk4+Pj4+Pj4+MHRX5Q5OPj4+Pj4+PjB0V+UOTj4+Pj4+Pj4wdFflDk05Ur/D/5+Pj4+Pj4
++EGRj4+Pj4+Pj4+PHxT5+Pj4+Pj4+Pj4QZGPj4+Pj4+Pj48fFPn4+Pj4+Pj4+PhBkY+Pj4+P
+j4+Pjx8U+fj4+Pj4+Pj4+EGRj4+Pj4+Pj4+PHxT5+Pj4+Pj4+Pj4QZGPj4+Pj4+Pj48fFPlB
+kY+Pj4+Pj4+PHxT5QZGPj4+Pj4+Pjx8U+UGRj4+Pj4+P78oV/p9k/KDIx8fHx8fHx8fHD4p8
+fHx8fHx8fHz8oMjHx8fHx8fHx8cPinx8fHx8fHx8fPygyMfHx8fHx8fHxw+KfHx8fHx8fHx8
+/KDIx8fHx8fHx8fHD4p8fHx8fHx8fHz8oMjHx8fHx8fHx8cPivygyMfHx8fHx8fHD4r8oMjH
+x8fHx8fHxw+K/KDIx8fHx8fHx8cPivygyMfH56Ur/D/5+Pj4+CrxgyIfHx8fHx8fHx8/KPLx
+8fHx8fHx8fGDIh8fHx8fHx8fHz8o8vHx8fHx8fHx8YMiHx8fHx8fHx8fPyjy8fHx8fHx8fHx
+gyIfHx8fHx8fHx8/KPLx8fHx8fHx8fGDIh8fHx8fHx8fHz8o8oMiHx8fHx8fHx8/KPKDIh8f
+Hx8fHx8fPyjygyIfHx8fHx8fH5jW84MiHx8fHx8fHx+fP/wRRT4+Pj4+Pj4+Pn5Q5OPj4+Pj
+4+Pj4wdFPj4+Pj4+Pj4+flDk4+Pj4+Pj4+PjB0U+Pj4+Pj4+Pj5+UOTj4+Pj4+Pj4+MHRT4+
+Pj4+Pj4+Pn5Q5OPj4+Pj4+Pj4wdFPj4+Pj4+Pj4+flDkB0U+Pj4+Pj4+Pn5Q5AdFPj4+Pj4+
+Pj5+UOQHRT4+Pj6Wy+L/ycfH54sfFPn4+Pj4+Pj4+PhBkY+Pj4+Pj4+Pjx8U+fj4+Pj4+Pj4
++EGRj4+Pj4+Pj4+PHxT5+Pj4+Pj4+Pj4QZGPj4+Pj4+Pj48fFPn4+Pj4+Pj4+PhBkY+Pj4+P
+j4+Pjx8U+fj4+Pj4+Pj4+EGRHxT5+Pj4+Pj4+PhBkR8U+fj4+Pj4+Pj4QZEfFPn4+Pj4+Pj4
++EGRHxSZrlzm4+Pj4+Pj4wuIHxT5+Pj4+Pj4+Pj4QZGPj4+Pj4+Pj48fFPn4+Pj4+Pj4+PhB
+kY+Pj4+Pj4+Pjx8U+fj4+Pj4+Pj4+EGRj4+Pj4+Pj4+PHxT5+Pj4+Pj4+Pj4QZGPj4+Pj4+P
+j48fFPn4+Pj4+Pj4+PhBkR8U+fj4+Pj4+Pj4QZEfFPn4+Pj4+Pj4+EGRHxT5+Pj4+Pgwrlzm
+/8lXDz8o8vHx8fHx8fHx8YMiHx8fHx8fHx8fPyjy8fHx8fHx8fHxgyIfHx8fHx8fHx8/KPLx
+8fHx8fHx8fGDIh8fHx8fHx8fHz8o8vHx8fHx8fHx8YMiHx8fHx8fHx8fPyjy8fHx8fHx8fHx
+gyI/KPLx8fHx8fHx8YMiPyjy8fHx8fHx8fGDIj8o8vHx8fHx8fHxgyI/KPLx4Vy5wv+Tj4+P
+jy84flDk4+Pj4+Pj4+PjB0U+Pj4+Pj4+Pj5+UOTj4+Pj4+Pj4+MHRT4+Pj4+Pj4+Pn5Q5OPj
+4+Pj4+Pj4wdFPj4+Pj4+Pj4+flDk4+Pj4+Pj4+PjB0U+Pj4+Pj4+Pj5+UOTj4+Pj4+Pj4+MH
+RX5Q5OPj4+Pj4+PjB0V+UOTj4+Pj4+Pj4wdFflDk4+Pj4+Pj4yMIhB8U+fj4+Pj4+Pj4+EGR
+j4+Pj4+Pj4+PHxT5+Pj4+Pj4+Pj4QZGPj4+Pj4+Pj48fFPn4+Pj4+Pj4+PhBkY+Pj4+Pj4+P
+jx8U+fj4+Pj4+Pj4+EGRj4+Pj4+Pj4+PHxT5+Pj4+Pj4+Pj4QZEfFPn4+Pj4+Pj4+EGRHxT5
++Pj4+Pj4+PhBkR8U+fj4+Pj4+Pj4QZEfFPn4+PhI+Pj4+BzhB0U+Pj4+Pj4+Pj5+UOTj4+Pj
+4+Pj4+MHRT4+Pj4+Pj4+Pn5Q5OPj4+Pj4+Pj4wdFPj4+Pj4+Pj4+flDk4+Pj4+Pj4+PjB0U+
+Pj4+Pj4+Pj5+UOTj4+Pj4+Pj4+MHRT4+Pj4+Pj4+Pn5Q5AdFPj4+Pj4+Pj5+UOQHRT4+Pj4+
+Pj4+flDkB0U+Pj4+Pj4+Pn5Q5AfFXzg+Pj4+Pj4+vtDxgyIfHx8fHx8fHx8/KPLx8fHx8fHx
+8fGDIh8fHx8fHx8fHz8o8vHx8fHx8fHx8YMiHx8fHx8fHx8fPyjy8fHx8fHx8fHxgyIfHx8f
+Hx8fHx8/KPLx8fHx8fHx8fGDIh8fHx8fHx8fHz8o8oMiHx8fHx8fHx8/KPKDIh8fHx8fHx8f
+PyjygyIfHx8fH98vz2Xx/+Rzih8U+fj4+Pj4+Pj4+EGRj4+Pj4+Pj4+PHxT5+Pj4+Pj4+Pj4
+QZGPj4+Pj4+Pj48fFPn4+Pj4+Pj4+PhBkY+Pj4+Pj4+Pjx8U+fj4+Pj4+Pj4+EGRj4+Pj4+P
+j4+PHxT5+Pj4+Pj4+Pj4QZEfFPn4+Pj4+Pj4+EGRHxT5+Pj4+Pj4+PhBkR8U+fj4+Pj4+Pj4
+QZEfFPn4frmuXObj4+Pj47sq/KDIx8fHx8fHx8fHD4p8fHx8fHx8fHz8oMjHx8fHx8fHx8cP
+inx8fHx8fHx8fPygyMfHx8fHx8fHxw+KfHx8fHx8fHx8/KDIx8fHx8fHx8fHD4p8fHx8fHx8
+fHz8oMjHx8fHx8fHx8cPivygyMfHx8fHx8fHD4r8oMjHx8fHx8fHxw+K/KDIx8fHx8fHx/eL
+cuVySH/ygyIfHx8fHx8fHx8/KPLx8fHx8fHx8fGDIh8fHx8fHx8fHz8o8vHx8fHx8fHx/RhB
+sajomYAh0SrjB0U+Pj4+Pj4+PmhQLClZHDAoWmX8oMjHx8fHx8fHBw2KZ85kq6Bgcr2QaP2f
+VcYPinx8fHx8fHx80KBYFRat0UNrqtli/b1uSOQHRT4+Pj4+Pj4+YFB0ih8U+fj4+Pj4+Pj4
+QZEfFPn4+Pj4+Pj4+EGRHxT5+Pj4+Pj4+Pgqg2J5+bSrwg+KfHx8fHx8fHyAoLh//2Mh2bLl
+UX5Q5OPj4/up4+Pj43ODHxT5+Pj4+Pj4+Pj4QZGPj4+Pj4+Pj89dUFy2rJ/mzPFv/vx4flDk
+4+Pj4+Pj46MGxZdfTtTTTz/tlxUW+UGRj4+Pj4+Pjw889TxlSkq9kDht2pPatSuVHxT5+Pj4
++Pj4+MhB0d+oYtVoIj8o8vHx8fHx8fHBH2bxHVX0HU3kB0U+Pj4+Pj4+PnhQ9B1V9B1N5AdF
+Pj4+Pj4+Pj54UKwaVaw7msgPinx8fHx8fHx8/KDoGVWsO5rID4p8fHx8fHx8fPyg6FF3NLFe
+UFz6RnKtoMjHx8fHx8fHx/fLYAVFK/iFqjoo9n18vjZti5LvyCIfHx8fHx8fHx+blQ8bNUl4
+RYOmzuaHxX8/HeD/ycfHx8fHx/cTYOVCKx96gqLFGln0nYbm4+Pj4+Pj4+PjsfKglQutfPj/
+AZTSdS27AIo1AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 16:09:33'!
 initialize
     super initialize.
     title _ 'Cuis Manual'.
