@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5062] on 8 February 2022 at 11:56:32 am'!
+'From Cuis 6.0 [latest update: #5062] on 8 February 2022 at 12:09:21 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 158!
+!provides: 'Erudite' 1 159!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -1358,13 +1358,12 @@ gotoSection: aSection
 	highlightMorph ifNotNil: [explorerMorph setSelectedMorph: highlightMorph ]
 		 ! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 13:50'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 12:07:11'!
 gotoSectionNamed: aString
 	
 	|section|
 	
-	section _ model findSectionNamed: aString
-						ifAbsent: [^nil].
+	section _ model findSectionNamed: aString.
 						
 	self gotoSection: section! !
 
@@ -2535,14 +2534,20 @@ title: anObject
 edit
 	EruditeBookEditorMorph open: self.! !
 
-!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 13:53'!
+!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 12:06:56'!
+findSectionNamed: aSectionName
+
+	^ self findSectionNamed: aSectionName ifAbsent: [self error: 'Section not found: ', aSectionName]! !
+
+!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 12:09:03'!
 findSectionNamed: aString ifAbsent: aBlock
 
 	sections do: [:aSection |
 		aSection title = aString ifTrue: [^ aSection]].
 	
-	sections do: [:aSection |
-		aSection findSectionNamed: aString ifAbsent: [^ aBlock value]].
+	sections do: [:aSection | |found|
+		found _ aSection findSectionNamed: aString ifAbsent: [nil].
+		found ifNotNil: [^ found]].
 	
 	^ aBlock value
 		 ! !
@@ -2611,6 +2616,11 @@ edit
 !EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 7/18/2020 18:05:49'!
 open
 	^ self new open! !
+
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 12:02:54'!
+openInSection: aSectionName
+	self new openInSection: aSectionName
+	! !
 
 !EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:31'!
 titled: aString
