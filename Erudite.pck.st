@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5065] on 9 February 2022 at 10:05:43 am'!
+'From Cuis 6.0 [latest update: #5067] on 9 February 2022 at 11:40:41 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 165!
+!provides: 'Erudite' 1 166!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -12369,6 +12369,21 @@ eruditeWorldMenu
 				#balloonText 	-> 		'Edit a book.'
 			} asDictionary.
 		}`! !
+
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 2/9/2022 11:40:20'!
+helpMenuOptions
+
+	^ `{
+		{
+				#itemGroup 	-> 		10.
+				#itemOrder 		-> 		30.
+				#label 			-> 		'Cuis Manual'.
+				#selector 		-> 		#open.
+				#object -> CuisManual.
+				#icon 			->	#helpIcon.
+				#balloonText 	-> 		'Read the Cuis Manual'
+			} asDictionary.
+		}` ! !
 
 !EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 22:45:40'!
 initialize
