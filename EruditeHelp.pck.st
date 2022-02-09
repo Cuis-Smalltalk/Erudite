@@ -1,11 +1,17 @@
-'From Cuis 6.0 [latest update: #5062] on 8 February 2022 at 6:25:22 pm'!
+'From Cuis 6.0 [latest update: #5065] on 9 February 2022 at 10:05:51 am'!
 'Description Provides online help for Cuis tools via Erudite.
 
 Open halos on one of the tools (system browser, workspace, etc) using middle click over the tool, then click on the help halo at the bottom.'!
-!provides: 'EruditeHelp' 1 6!
-!requires: 'Erudite' 1 163 nil!
+!provides: 'EruditeHelp' 1 7!
+!requires: 'Erudite' 1 165 nil!
 
 
+
+!CodePackageListWindow methodsFor: '*EruditeHelp' stamp: 'MM 2/9/2022 10:05:25'!
+mouseDownOnHelpHandle: anEvent
+	"The mouse went down in the show-balloon handle"
+	
+	CuisManual openInSection: 'Installed Packages'! !
 
 !BrowserWindow methodsFor: '*EruditeHelp' stamp: 'MM 2/8/2022 12:07:32'!
 mouseDownOnHelpHandle: anEvent
