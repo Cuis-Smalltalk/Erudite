@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5062] on 8 February 2022 at 6:25:01 pm'!
+'From Cuis 6.0 [latest update: #5062] on 8 February 2022 at 10:21:04 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 163!
+!provides: 'Erudite' 1 164!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -1383,6 +1383,12 @@ model: aBook
 	aBook ifNotNil: [self setLabel: aBook title].
 	
 	^ super model: aBook! !
+
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 22:20:45'!
+mouseDownOnHelpHandle: anEvent
+	"The mouse went down in the show-balloon handle"
+	
+	EruditeManual open! !
 
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 17:52'!
 moveSectionDown
