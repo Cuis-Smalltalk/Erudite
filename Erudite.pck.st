@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5067] on 9 February 2022 at 11:40:41 am'!
+'From Cuis 6.0 [latest update: #5067] on 17 February 2022 at 7:13:22 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 166!
+!provides: 'Erudite' 1 170!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -616,6 +616,8 @@ Renders a Document to a TextMorph.
 
 Example:
 
+| erudite |
+
 erudite _ 
 SmalltalkEruditeParser parse: 'This is an Object.
 
@@ -782,7 +784,204 @@ on: aBook
 
 	^ self new initialize: aBook! !
 
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 17:24:02'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:02:46'!
+addAndSelectString: aString
+
+	|from to|
+	
+	from _ self stopIndex.
+	
+	self addString: aString.
+	
+	to _ self stopIndex  - 1.
+	
+	self selectFrom: from to: to.
+	
+	^ self! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:04:09'!
+addAndSelectString: aString then: aBlock
+
+	|from to|
+	
+	from _ self stopIndex.
+	
+	self addString: aString.
+	
+	to _ self stopIndex  - 1.
+	
+	aBlock value.
+	
+	"Text selection need to be done at the end in order for it to work ..."
+	self selectFrom: from to: to.
+	
+	^ self! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:09:04'!
+embedClass
+
+	self insertMarkup: [
+		self addString: '{';
+			addAndSelectString: '<class name>' then: [
+				self addString: '::class}[embed]']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:10:35'!
+embedMethod
+
+	self insertMarkup: [
+		self addString: '{';
+			addAndSelectString: 'Class>>selector' then: [
+				self addString: ' ::method}[embed]']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 18:52:53'!
+getInsertMarkupMenu
+	
+	| menu |
+	menu _ (MenuMorph new defaultTarget: self)
+			add: 'Heading' action: #insertHeading;
+			add:  'SubHeading' action: #insertSubheading;
+			add:  'SubSubHeading' action: #insertSubSubheading;
+			addLine;
+			add: 'Bold' action: #insertBold;
+			add: 'Italics' action: #insertItalics;
+			addLine;
+			add: 'Link' subMenu: ((MenuMorph new defaultTarget: self)
+				add: 'Link' action: #insertLink;
+				add: 'Link to section' action: #insertSectionLink;
+				add: 'Link to selector' action: #insertSelectorLink;
+				add: 'Link to class' action: #insertClassLink;
+				add: 'Embed class' action: #embedClass balloonText: 'Embed class definition';
+				add: 'Link to method' action: #insertMethodLink;
+				add: 'Embed method' action: #embedMethod balloonText: 'Embed a method source code';
+				add: 'Url' action: #insertUrlLink;
+				yourself);
+			addLine;
+			add: 'Image' action: #insertImage;
+			add: 'Verbatim' action: #insertVerbatim;
+			addLine;
+			add: 'Code' subMenu: ((MenuMorph new defaultTarget: self)
+				add: 'Code' action: #insertCode;
+				add: 'Code (doIt)' action: #insertCodeDoIt balloonText: 'Renders a link besides the code with which to evaluate the code.';
+				add: 'Code (exploreIt)' action: #insertCodeExploreIt balloonText: 'Renders a link besides the code with which to explore the result of code evaluation.';
+				add: 'Code (inspectIt)' action: #insertCodeInspectIt balloonText: 'Renders a link besides the code with which to inspect the result of code evaluation';
+				yourself);
+			yourself.
+			
+	menu popUpInWorld: morph world.! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:01:34'!
+insertBold
+
+	self insertMarkup: [
+		self addString: '**';
+			addAndSelectString: 'text in bold'
+				then: [self addString: '**']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:08:54'!
+insertClassLink
+
+	self insertMarkup: [
+		self addString: '{';
+			addAndSelectString: '<class name>' then: [
+				self addString: '::class}']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:02:12'!
+insertCode
+
+	self insertMarkup: [
+		self addString: '[[[';
+			addAndSelectString: 'code' then: [
+				self addString: ']]]']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:03:07'!
+insertHeading
+
+	self insertMarkup: [
+		self addString: '!!!! ';
+			addAndSelectString: 'heading']! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:03:43'!
+insertItalics
+
+	self insertMarkup: [
+		self addString: '//';
+			addAndSelectString: 'text in italics' then: [
+				self addString: '//']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 15:30:47'!
+insertLink
+
+	self insertMarkup: [
+		self addString: '{target::type|label}']! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 15:26:57'!
+insertMarkup: aBlock
+
+	aBlock value.
+	model changed: #refetchContents.
+	self runningWorld activeHand newKeyboardFocus: morph! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 15:29:50'!
+insertMarkupMenu: aKeyboardEvent
+	
+	self getInsertMarkupMenu .
+	^ true! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:10:24'!
+insertMethodLink
+
+	self insertMarkup: [
+		self addString: '{';
+			addAndSelectString: 'Class>>selector' then: [
+				self addString: ' ::method}']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:00:06'!
+insertSectionLink
+
+	self insertMarkup: [
+		self addString: '{';
+			addAndSelectString: '<sectionName>' then: [
+			self addString: '::section}']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:05:53'!
+insertSelectorLink
+
+	self insertMarkup: [
+		self addString: '{';
+			addAndSelectString: '<selectorName>' then: [
+				self addString: '::selector}']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:06:12'!
+insertSubSubheading
+
+	self insertMarkup: [
+		self addString: '!!!!!!!! ';
+			addAndSelectString: 'subsubheading']! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:06:35'!
+insertSubheading
+
+	self insertMarkup: [
+		self addString: '!!!!!! ';
+			addAndSelectString: 'subheading']! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:12:00'!
+insertUrlLink
+
+	self insertMarkup: [
+		self addString: '{';
+			addAndSelectString: 'url' then: [
+				self addString: '::url|optional label}']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:07:08'!
+insertVerbatim
+
+	self insertMarkup: [
+		self addString: '```';
+			addAndSelectString: 'verbatim' then: [
+				self addString: '```']]! !
+
+!EruditeDocEditor methodsFor: 'actions' stamp: 'MM 3/5/2021 17:24:02'!
 editEruditeSource
 
 	|sourceModel| 
@@ -793,24 +992,7 @@ editEruditeSource
 	
 	EruditeDocEditorWindow open: sourceModel label: 'Edit Erudite source'.! !
 
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 12:54:08'!
-getInsertMarkupMenu
-	
-	| menu |
-	menu _ (MenuMorph new defaultTarget: self)
-			add: 'Heading' action: #insertHeading;
-			add:  'Subheading' action: #insertSubheading;
-			addLine;
-			add: 'Bold' action: #insertBold;
-			add: 'Italics' action: #insertItalics;
-			addLine;
-			add: 'Link' action: #insertLink;
-			add: 'Code' action: #insertCode;
-			yourself.
-			
-	menu popUpInWorld: morph world.! !
-
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 3/6/2021 17:16:43'!
+!EruditeDocEditor methodsFor: 'actions' stamp: 'MM 2/17/2022 15:11:35'!
 getMenu
 
 	|menu|
@@ -820,71 +1002,18 @@ getMenu
 	menu addLine;
 		   " add: 'Toggle editing' action: #toggleEditing;
 		    add: 'Insert markup (i)...' action: #getInsertMarkupMenu."
-		add: 'Edit Erudite source' action: #editEruditeSource icon: #textEditorIcon.
+		add: 'Edit Erudite source' action: #editEruditeSource icon: #textEditorIcon;
+		add: 'Insert Erudite markup (i)' action: #getInsertMarkupMenu icon: #textEditorIcon.
 		
 	^ menu! !
 
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/8/2018 12:17'!
-insertBold
-
-	self addString: '**text in bold**'.
-	self selectFrom: self stopIndex - 'text in bold**' size to: self stopIndex - 3.
-	! !
-
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/12/2018 19:06'!
-insertCode
-
-	self addString: '[[[code]]]'.
-	self selectFrom: self stopIndex - 'code]]]' size to: self stopIndex - 4.
-	! !
-
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/8/2018 11:59'!
-insertHeading
-
-	self addString: '!!!! heading'.
-	self selectFrom: self stopIndex - 'heading' size to: self stopIndex.
-	
-	"self afterSelectionInsertAndSelect: '* heading'"
-	
-
-	! !
-
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/8/2018 12:17'!
-insertItalics
-
-	self addString: '//text in italics//'.
-	self selectFrom: self stopIndex - 'text in italics//' size to: self stopIndex - 3.
-	! !
-
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/12/2018 19:09'!
-insertLink
-
-	self addString: '{target::type|label}'
-	! !
-
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 12:55:57'!
-insertMarkup: aKeyboardEvent
-
-	self getInsertMarkupMenu .
-	^ true! !
-
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/8/2018 12:00'!
-insertSubheading
-
-	self addString: '!!!!!! subheading'.
-	self selectFrom: self stopIndex - 'subheading' size to: self stopIndex.! !
-
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:26'!
+!EruditeDocEditor methodsFor: 'actions' stamp: 'MM 12/6/2018 11:26'!
 save: aKeyboardEvent
 
 	self acceptContents.
 	^ true! !
 
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 14:47:44'!
-sourceContents
-	model sourceContents ! !
-
-!EruditeDocEditor methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:56'!
+!EruditeDocEditor methodsFor: 'actions' stamp: 'MM 12/13/2018 16:56'!
 toggleEditing
 	|editing|
 	
@@ -892,7 +1021,11 @@ toggleEditing
 	model editing: editing
 	! !
 
-!EruditeDocEditor class methodsFor: 'as yet unclassified' stamp: 'MM 12/12/2018 18:57'!
+!EruditeDocEditor methodsFor: 'accessing' stamp: 'MM 3/5/2021 14:47:44'!
+sourceContents
+	model sourceContents ! !
+
+!EruditeDocEditor class methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 15:26:12'!
 cmdShortcutsSpec
 	"
 	Editor initialize
@@ -901,7 +1034,7 @@ cmdShortcutsSpec
 	^#(
 		#(		$s	#save:								'Save (i.e. accept)')
 		#(		$l	#cancelEdits:						'Cancel')
-		#(       $i  #insertMarkup:                         'Insert markup')
+		#(       $i  #insertMarkupMenu:                         'Insert markup')
 	)! !
 
 !EruditeTextURL methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 16:34:46'!
@@ -9005,7 +9138,7 @@ initialize
         self addSection: self Tools.
 ! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
 BookReaderAndEditor
 ^(EruditeBookSection basicNew title: 'Book reader and editor'; document: ((EruditeDocument contents: '!!!! Book reader and editor
 
@@ -9035,7 +9168,13 @@ A new book can be created from the WorldMenu //Erudite...->New...// menu. Then e
 
 Book editing can be invoked via the {edit::selector} message on the book, or the WorldMenu //Erudite...->Edit...// menu.
 
-First of all, a book //section// needs to be selected or created. Use the editor menu, //add section//. Then you can start editing the section content on the text panel on the right. Markup syntax is described in {Syntax reference ::section}.  
+First of all, a book //section// needs to be selected or created. Use the editor menu, //add section//. Then you can start editing the section content on the text panel on the right. Markup syntax is described in {Syntax reference ::section}.
+
+**IMPORTANT TIP**
+The easiest way to insert markup is by ''Insert Erudite markup'' action in context menu.
+For fast access, open it with keyboard shortcut: //cmd-i//. Then select the markup to insert from the menu options.
+Cuis menu items filtering is very handy here: to select the markup to insert, start typing the markup you want (i.e. ''bold''), then press return key.
+So, for example, to enter bold text: press //cmd-i//, then type ''bold'' and press return key.
 
 When you are done, save the book, from the explorer menu //save//.
 
@@ -9951,7 +10090,7 @@ H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
 BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
 Extensions
 ^(EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
 
@@ -9969,7 +10108,7 @@ This is implemented.
 
 TODO. Not implemented yet. ') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
 Extras
 ^(EruditeBookSection basicNew title: 'Extras'; document: ((EruditeDocument contents: '!!!! Extras
 
@@ -9981,7 +10120,7 @@ Also, a book on Morphic, the Cuis UI system:
 
 To install: [[[Feature require: ''MorphicBook'']]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
 Implementation
 ^(EruditeBookSection basicNew title: 'Implementation'; document: ((EruditeDocument contents: '!!!! Implementation
 
@@ -10057,7 +10196,7 @@ There''s also the possibility of storing in a class method, but that''s not the 
 
 As you can see, it is done via the {storeOn: ::selector} method (it is indirectly call from {WriteStream>>store: ::method} method).') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
 Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Erudite Manual
 
@@ -10071,7 +10210,7 @@ Main documentation is realized via {EruditeBook::class|books}, a collection of d
 
 Books are read and edited via the {EruditeBookReaderMorph::class|reader} and {EruditeBookEditorMorph::class|editor} morphic applications.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
 LiterateProgramming
 ^(EruditeBookSection basicNew title: 'Literate Programming'; document: ((EruditeDocument contents: '!!!! Literate Programming
 
@@ -10105,7 +10244,7 @@ This misconception has led to claims that comment-extraction tools, such as the 
 
 Literate Programming can be realized by the creation of Erudite {EruditeBook::class|books}. In particular, via code embedding in its different forms. Contrary to other LP systems, there''s no need for a tangling and weaving phase; the document source is kept separately from the source code, Smalltalk code is referenced and embedded from the documentation. That means that in spite of documentation and code being separate, the referenced code is always up to date. Finally, the possibility of evaluating Smalltalk code from the documentation makes Erudite very unique compared to the other LP systems.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
 SyntaxReference
 ^(EruditeBookSection basicNew title: 'Syntax reference'; document: ((EruditeDocument contents: '!!!! Syntax reference
 
@@ -10693,7 +10832,7 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
 AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
 SyntaxTest
 ^(EruditeBookSection basicNew title: 'Syntax test'; document: ((EruditeDocument contents: '!!!! Syntax test
 
@@ -12107,7 +12246,7 @@ H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
 BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2021 09:02:39'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
 initialize
     super initialize.
     title _ 'Erudite Manual'.
