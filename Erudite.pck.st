@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5067] on 17 February 2022 at 7:13:22 pm'!
+'From Cuis 6.0 [latest update: #5067] on 17 February 2022 at 8:09:18 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 170!
+!provides: 'Erudite' 1 171!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -833,7 +833,7 @@ embedMethod
 			addAndSelectString: 'Class>>selector' then: [
 				self addString: ' ::method}[embed]']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 18:52:53'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:05:52'!
 getInsertMarkupMenu
 	
 	| menu |
@@ -864,6 +864,12 @@ getInsertMarkupMenu
 				add: 'Code (doIt)' action: #insertCodeDoIt balloonText: 'Renders a link besides the code with which to evaluate the code.';
 				add: 'Code (exploreIt)' action: #insertCodeExploreIt balloonText: 'Renders a link besides the code with which to explore the result of code evaluation.';
 				add: 'Code (inspectIt)' action: #insertCodeInspectIt balloonText: 'Renders a link besides the code with which to inspect the result of code evaluation';
+				add: 'Code (printIt)' action: #insertCodePrintIt balloonText: 'Renders a link besides the code with which to print the result of code evaluation to the Transcript.';
+				add: 'Code (printItHere)' action: #insertCodePrintItHere balloonText: 'Renders the result of code evaluation in place.';
+				add: 'Code (embedIt)' action: #insertCodeEmbedIt balloonText: 'The code is not shown. The result is printed to the document in place';
+				add: 'Code (doItWithButton)' action: #insertCodeDoItWithButton balloonText: 'Does not render the code. Instead, it makes a link with label that evaluates the code. Syntax: [[[code]]] doItWithButton: label';
+				add: 'Code (exploreItWithButton)' action: #insertCodeExploreItWithButton balloonText: 'Does not render the code. Instead, it makes a link with label that evaluates the code and explores the result';
+				add: 'Code (exploreItWithButton)' action: #insertCodeInspectItWithButton balloonText: 'Does not render the code. Instead, it makes a link with label that evaluates the code and inspects the result';
 				yourself);
 			yourself.
 			
@@ -893,12 +899,92 @@ insertCode
 			addAndSelectString: 'code' then: [
 				self addString: ']]]']]! !
 
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:59:23'!
+insertCodeDoIt
+
+	self insertMarkup: [
+		self addString: '[[[';
+			addAndSelectString: 'code' then: [
+				self addString: ']]] doIt']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:08:12'!
+insertCodeDoItWithButton
+
+	self insertMarkup: [
+		self addString: '[[[';
+			addAndSelectString: 'code' then: [
+				self addString: ']]] doItWithButton: label.']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:08:54'!
+insertCodeEmbedItWithButton
+
+	self insertMarkup: [
+		self addString: '[[[';
+			addAndSelectString: 'code' then: [
+				self addString: ']]] embedIt']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:59:31'!
+insertCodeExploreIt
+
+	self insertMarkup: [
+		self addString: '[[[';
+			addAndSelectString: 'code' then: [
+				self addString: ']]] exploreIt']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:08:25'!
+insertCodeExploreItWithButton
+
+	self insertMarkup: [
+		self addString: '[[[';
+			addAndSelectString: 'code' then: [
+				self addString: ']]] exploreItWithButton: label.']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:59:45'!
+insertCodeInspectIt
+
+	self insertMarkup: [
+		self addString: '[[[';
+			addAndSelectString: 'code' then: [
+				self addString: ']]] inspectIt']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:08:35'!
+insertCodeInspectItWithButton
+
+	self insertMarkup: [
+		self addString: '[[[';
+			addAndSelectString: 'code' then: [
+				self addString: ']]] inspectItWithButton: label.']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:09:14'!
+insertCodePrintItHereWithButton
+
+	self insertMarkup: [
+		self addString: '[[[';
+			addAndSelectString: 'code' then: [
+				self addString: ']]] printItHere']]! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:09:08'!
+insertCodePrintItWithButton
+
+	self insertMarkup: [
+		self addString: '[[[';
+			addAndSelectString: 'code' then: [
+				self addString: ']]] printIt']]! !
+
 !EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:03:07'!
 insertHeading
 
 	self insertMarkup: [
 		self addString: '!!!! ';
 			addAndSelectString: 'heading']! !
+
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:01:02'!
+insertImage
+
+	self insertMarkup: [
+		self addString: '{';
+			addAndSelectString: 'imageFilePath' then: [
+				self addString: ' ::image}']]! !
 
 !EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:03:43'!
 insertItalics
