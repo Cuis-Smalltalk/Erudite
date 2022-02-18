@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5067] on 17 February 2022 at 8:09:18 pm'!
+'From Cuis 6.0 [latest update: #5067] on 17 February 2022 at 11:30:23 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 171!
+!provides: 'Erudite' 1 172!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -833,11 +833,13 @@ embedMethod
 			addAndSelectString: 'Class>>selector' then: [
 				self addString: ' ::method}[embed]']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:05:52'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 23:30:06'!
 getInsertMarkupMenu
 	
 	| menu |
-	menu _ (MenuMorph new defaultTarget: self)
+	menu _ (MenuMorph new
+				addTitle: 'Insert Erudite markup';
+				defaultTarget: self)
 			add: 'Heading' action: #insertHeading;
 			add:  'SubHeading' action: #insertSubheading;
 			add:  'SubSubHeading' action: #insertSubSubheading;
