@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5087] on 26 February 2022 at 1:59:43 pm'!
+'From Cuis 6.0 [latest update: #5090] on 26 February 2022 at 6:41:39 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 173!
+!provides: 'Erudite' 1 175!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -14,6 +14,7 @@ SystemOrganization addCategory: 'Erudite-Latex'!
 SystemOrganization addCategory: 'Erudite-Morphic'!
 SystemOrganization addCategory: 'Erudite-Parser'!
 SystemOrganization addCategory: 'Erudite-Test'!
+SystemOrganization addCategory: 'Erudite'!
 
 
 !classDefinition: #EruditePluggableTextModel category: 'Erudite-Morphic'!
@@ -326,6 +327,16 @@ EruditeBook subclass: #EruditeCompositeBook
 EruditeCompositeBook class
 	instanceVariableNames: ''!
 
+!classDefinition: #EruditeDynamicBook category: 'Erudite-Core'!
+EruditeBook subclass: #EruditeDynamicBook
+	instanceVariableNames: 'collectedMethods'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Core'!
+!classDefinition: 'EruditeDynamicBook class' category: 'Erudite-Core'!
+EruditeDynamicBook class
+	instanceVariableNames: ''!
+
 !classDefinition: #EruditeBookSection category: 'Erudite-Core'!
 Object subclass: #EruditeBookSection
 	instanceVariableNames: 'title parent subsections document'
@@ -536,6 +547,16 @@ DocNode subclass: #EruditeStyledText
 EruditeStyledText class
 	instanceVariableNames: ''!
 
+!classDefinition: #EruditeDynamicTestBook category: 'Erudite-Test'!
+Object subclass: #EruditeDynamicTestBook
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Test'!
+!classDefinition: 'EruditeDynamicTestBook class' category: 'Erudite-Test'!
+EruditeDynamicTestBook class
+	instanceVariableNames: ''!
+
 
 !EruditeDocEditor commentStamp: '<historical>' prior: 0!
 Tap and hold emulates button2 preference has to be false in order for clicking on links to work properly (avoid opening a context menu).!
@@ -599,6 +620,16 @@ A parser of Smalltalk comments into Erudite documents. This parser tries to inte
 
 !EruditeBook commentStamp: '<historical>' prior: 0!
 A book with title, sections, documents.!
+
+!EruditeCompositeBook commentStamp: '<historical>' prior: 0!
+A book that is composed from other books.!
+
+!EruditeDynamicBook commentStamp: '<historical>' prior: 0!
+A book that is build dynamically from tagged methods.
+
+Methods with <booksection> pragmas are collected, and an Erudite book is built from them.
+
+(EruditeDynamicBook titled: 'Dynamic book test') open!
 
 !EruditeBookSection commentStamp: '<historical>' prior: 0!
 A section of a Book.!
@@ -2833,11 +2864,11 @@ bookNamed: aString ifNone: aBlock
 	
 	^ self booksList detect: [:aBook | aBook title = aString] ifNone: aBlock! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:58:44'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 17:53:21'!
 booksList
 
 	^ (self booksListInMethods, (EruditeBook subclasses collect: [:cls | cls new]))
-		select: [:book | (book class = EruditeCompositeBook ) not]! !
+		select: [:book | ({EruditeCompositeBook.EruditeDynamicBook} includes: book class) not]! !
 
 !EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 22:42:00'!
 booksListInMethods
@@ -12388,6 +12419,65 @@ with: books
 
 	^ self new initialize: books! !
 
+!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:35:10'!
+build
+
+	| classes |
+
+	classes _ Smalltalk classes 
+		select: [:class | class name endsWith: 'Book'].
+
+	collectedMethods _ OrderedCollection new.
+
+	classes do: [:class | |ps|
+		ps _ Pragma allNamed: #booksection:parent:book: in: class.
+		collectedMethods addAll: (ps select: [:p | (p argumentAt: 3) = title])].
+	
+	collectedMethods do: [:method |
+		(method argumentAt: 2) ifNil: [ "no parent. top-level section."
+			self buildSection: method]]! !
+
+!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:38:21'!
+buildSection: aMethod
+
+	| parent parentName classInstance |
+	
+	parentName _ aMethod argumentAt: 2.
+	
+	parent _ parentName ifNil: [self]
+			ifNotNil: [	self findSectionNamed: parentName].
+			
+	classInstance _ aMethod methodClass basicNew.
+			
+	parent addSection: (EruditeBookSection 
+					title: (aMethod argumentAt: 1) 
+					contents: (classInstance perform: aMethod method selector)).
+					
+	"build subsections"
+	collectedMethods do: [:method |
+		((method argumentAt: 2) = (aMethod argumentAt: 1))
+			ifTrue: [ "a subsection"
+				self buildSection: method]]! !
+
+!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:41:22'!
+edit
+	^ self error: 'This is a read-only book'! !
+
+!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:14:25'!
+initialize: bookTitle
+
+	super initialize: bookTitle.
+	
+	self build.! !
+
+!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:41:35'!
+store
+	^ self error: 'This is a dynamic book. It can not be stored.'! !
+
+!EruditeDynamicBook class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 17:54:40'!
+titled: aString
+	^ self new initialize: aString! !
+
 !EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:52'!
 contents: aString
 
@@ -13934,6 +14024,51 @@ text: anObject
 text: aString style: aSymbol
 
 	^ self new initialize: aString style: aSymbol! !
+
+!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:04:21'!
+chapter1
+
+	<booksection: 'Chapter 1' parent: nil book: 'Dynamic book test'>
+	
+	^ '!!!! This is chapter 1
+	
+	{DynamicEruditeBook::class}'! !
+
+!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:04:29'!
+chapter2
+
+	<booksection: 'Chapter 2' parent: nil book:  'Dynamic book test'>
+	
+	^ '!!!! This is chapter 2
+	
+	{Object::class}[embed]'! !
+
+!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:04:50'!
+sub11
+
+	<booksection: 'Sub chapter 1' parent: 'Chapter 1' book: 'Dynamic book test'>
+	
+	^ '!!!!!! This is sub chapter 1
+	
+	Hello'! !
+
+!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:04:57'!
+sub12
+
+	<booksection: 'Sub chapter 2' parent: 'Chapter 1' book: 'Dynamic book test'>
+	
+	^ '!!!!!! This is sub chapter 2
+	
+	Bye'! !
+
+!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:40:19'!
+sub21
+
+	<booksection: 'Sub chapter 3' parent: 'Chapter 2' book: 'Dynamic book test'>
+	
+	^ '!!!!!! This is sub chapter 3
+	
+	Bye'! !
 
 !Browser methodsFor: '*Erudite' stamp: 'MM 3/5/2021 17:25:35'!
 eruditeSources
