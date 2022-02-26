@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5067] on 17 February 2022 at 11:30:23 pm'!
+'From Cuis 6.0 [latest update: #5087] on 26 February 2022 at 1:59:43 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 172!
+!provides: 'Erudite' 1 173!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -314,6 +314,16 @@ EruditeBook subclass: #EruditeManual
 	category: 'Erudite-Books'!
 !classDefinition: 'EruditeManual class' category: 'Erudite-Books'!
 EruditeManual class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeCompositeBook category: 'Erudite-Core'!
+EruditeBook subclass: #EruditeCompositeBook
+	instanceVariableNames: 'books'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Core'!
+!classDefinition: 'EruditeCompositeBook class' category: 'Erudite-Core'!
+EruditeCompositeBook class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeBookSection category: 'Erudite-Core'!
@@ -2823,10 +2833,11 @@ bookNamed: aString ifNone: aBlock
 	
 	^ self booksList detect: [:aBook | aBook title = aString] ifNone: aBlock! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 22:43:15'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:58:44'!
 booksList
 
-	^ self booksListInMethods, (EruditeBook subclasses collect: [:cls | cls new])! !
+	^ (self booksListInMethods, (EruditeBook subclasses collect: [:cls | cls new]))
+		select: [:book | (book class = EruditeCompositeBook ) not]! !
 
 !EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 22:42:00'!
 booksListInMethods
@@ -12348,6 +12359,35 @@ initialize
         self addSection: self Extras.
 ! !
 
+!EruditeCompositeBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:50:43'!
+edit
+	^ self error: 'This is a read-only book'! !
+
+!EruditeCompositeBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:28:16'!
+initialize: aCollectionOfBooks
+
+	books _ aCollectionOfBooks! !
+
+!EruditeCompositeBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:50:02'!
+sections
+
+	^ books collect: [:book | |section|
+		section _ EruditeBookSection
+					title: book title
+					document: book sections first document.
+		book sections do: [:bookSection |
+			section addSection: bookSection copy].
+		section]! !
+
+!EruditeCompositeBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:51:42'!
+store
+	^ self error: 'This is a composite book. It can not be stored.'! !
+
+!EruditeCompositeBook class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:53:34'!
+with: books
+
+	^ self new initialize: books! !
+
 !EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:52'!
 contents: aString
 
@@ -12571,7 +12611,7 @@ editBook
 	EruditeBook withBookSelectionDo: [ :book |
 		book edit ].! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 15:20:02'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:55:02'!
 eruditeWorldMenu
 	"Build the Erudite menu for the world."
 
@@ -12594,6 +12634,12 @@ eruditeWorldMenu
 				#selector 		-> 		#editBook.
 				#icon 			-> 		#textEditorIcon.
 				#balloonText 	-> 		'Edit a book.'
+			} asDictionary.
+			{
+				#label 			-> 		'Read all books'.
+				#selector 		-> 		#readAllBooks.
+				#icon 			-> 		#openIcon.
+				#balloonText 	-> 		'Read all books.'
 			} asDictionary.
 		}`! !
 
@@ -12647,6 +12693,12 @@ openEruditeMenu
 	"Build and show the preferences menu for the world."
 
 	self eruditeWorldMenu popUpInWorld: self runningWorld! !
+
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:55:40'!
+readAllBooks
+
+	(EruditeCompositeBook
+		with: EruditeBook booksList) open.! !
 
 !EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:59:53'!
 readBook
