@@ -1,12 +1,14 @@
-'From Cuis 6.0 [latest update: #5090] on 26 February 2022 at 7:16:49 pm'!
+'From Cuis 6.0 [latest update: #5171] on 11 June 2022 at 6:06:57 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 176!
+!provides: 'Erudite' 1 182!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
+!requires: 'OSProcess' 1 23 nil!
+!requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
 SystemOrganization addCategory: 'Erudite-Books'!
 SystemOrganization addCategory: 'Erudite-Core'!
@@ -229,7 +231,7 @@ SHTextStylerClassComment class
 
 !classDefinition: #EruditeMarkupGrammar category: 'Erudite-Parser'!
 PPCompositeParser subclass: #EruditeMarkupGrammar
-	instanceVariableNames: 'heading4 heading3 heading2 heading1 heading markup unformatted erudite codeAction code bold italic plainText linkOptions linkOptionsList linkOption falseLinkOption trueLinkOption assignLinkOption link buttonCodeAction simpleCodeAction'
+	instanceVariableNames: 'heading4 heading3 heading2 heading1 heading markup unformatted erudite codeAction code bold italic plainText linkOptions linkOptionsList linkOption falseLinkOption trueLinkOption assignLinkOption link buttonCodeAction simpleCodeAction math'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
@@ -527,6 +529,16 @@ DocNode subclass: #DocList
 DocList class
 	instanceVariableNames: ''!
 
+!classDefinition: #DocMath category: 'Erudite-Parser'!
+DocNode subclass: #DocMath
+	instanceVariableNames: 'formula'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Parser'!
+!classDefinition: 'DocMath class' category: 'Erudite-Parser'!
+DocMath class
+	instanceVariableNames: ''!
+
 !classDefinition: #DocUnformatted category: 'Erudite-Parser'!
 DocNode subclass: #DocUnformatted
 	instanceVariableNames: ''
@@ -675,55 +687,6 @@ Look at Object>>at:
 Properties are triggered via #triggerEvent:'.
 
 (MorphicEruditeDocRenderer on: erudite) render edit.!
-
-!EruditeForm methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:46:23'!
-storeOn: aStream
-
-	aStream nextPutAll: '(EruditeForm fromBase64String:'.
-	self base64String storeOn: aStream.
-	aStream nextPut: $).
-	
-	! !
-
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:20'!
-bindingOf: aString
-
-	(bindings includesKey: aString) ifFalse: [
-		aString first isUppercase
-			ifTrue: [^nil]
-			ifFalse: [bindings at: aString put: nil]].
-	^bindings associationAt: aString! !
-
-!EruditeBook methodsFor: 'storage' stamp: 'MM 12/4/2018 20:16'!
-storeOn: aStream
-
-	aStream nextPutAll: '(';
-	              nextPutAll: self class name;
-	              nextPutAll: ' basicNew';
-	              nextPutAll: ' title: '; store: title;
-	              nextPutAll: '; sections: '; store: sections;
-			   nextPutAll: '; updateParents; yourself)'! !
-
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:10'!
-storeOn: aStream
-
-	aStream
-		nextPutAll: '('; 
-	 	nextPutAll: self class name;
-		nextPutAll: ' basicNew';
-		nextPutAll: ' title: '; store: title;
-		nextPutAll: '; document: '; store: document;
-		nextPutAll: '; subsections: '; store: subsections;
-		nextPutAll: '; yourself)'
-		        ! !
-
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:15:42'!
-storeOn: aStream
-
-	aStream nextPutAll: '((EruditeDocument contents: ';
-			nextPutAll: contents asString printString;
-			nextPutAll: ') images: '; store: images;
-			nextPutAll: '; yourself)'! !
 
 !EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 12/13/2018 16:17'!
 editing
@@ -1214,6 +1177,13 @@ base64String
 	"TODO: how to support other image formats apart from PNG?"
 	 ^ ("ImageReadWriter" PNGReadWriter bytesFor: self) base64Encoded.! !
 
+!EruditeForm methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:46:49'!
+storeOn: aStream
+
+	aStream nextPutAll: '(EruditeForm fromBase64String:'.
+	self base64String storeOn: aStream.
+	aStream nextPut: $).! !
+
 !EruditeForm class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 20:16:23'!
 fromBase64String: aString
 
@@ -1347,6 +1317,15 @@ update: anAspect
 bindingNamesDo: aBlock
 
 	bindings keysDo: aBlock! !
+
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:20'!
+bindingOf: aString
+
+	(bindings includesKey: aString) ifFalse: [
+		aString first isUppercase
+			ifTrue: [^nil]
+			ifFalse: [bindings at: aString put: nil]].
+	^bindings associationAt: aString! !
 
 !EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
 hasBindingOf: aString
@@ -2289,10 +2268,17 @@ linkOptionsList
 	^ linkOption, 
 		($, asParser trim, linkOption) star! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 15:13'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 16:30:54'!
 markup
 
-	^ heading / code / bold / italic / unformatted / link! !
+	^ heading / code / bold / italic / unformatted / link / math! !
+
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 16:47:26'!
+math
+
+	^ ($$ asParser min: 1 max: 1) flatten,
+	   ($$ asParser min: 1 max: 1) negate plus flatten,
+	   ($$ asParser min: 1 max: 1) flatten! !
 
 !EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:30'!
 plainText
@@ -2416,6 +2402,14 @@ linkOptions
 		res second second do: [:x |
 			opts add: x second].
 		opts]! !
+
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 16:47:43'!
+math
+
+	^ super math ==> [:res |
+		(DocMath new)
+			formula: res second;
+			yourself]! !
 
 !EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 12:25'!
 simpleCodeAction
@@ -2693,6 +2687,16 @@ storeAsClassNamed: className category: aCategory
 		self storeSection: sect on: bookClass].
 		
 	^ bookClass! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 12/4/2018 20:16'!
+storeOn: aStream
+
+	aStream nextPutAll: '(';
+	              nextPutAll: self class name;
+	              nextPutAll: ' basicNew';
+	              nextPutAll: ' title: '; store: title;
+	              nextPutAll: '; sections: '; store: sections;
+			   nextPutAll: '; updateParents; yourself)'! !
 
 !EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:59:29'!
 storeOnMethod: aMethodReference
@@ -9276,7 +9280,7 @@ initialize
         self addSection: self Tools.
 ! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
 BookReaderAndEditor
 ^(EruditeBookSection basicNew title: 'Book reader and editor'; document: ((EruditeDocument contents: '!!!! Book reader and editor
 
@@ -10228,7 +10232,7 @@ H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
 BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
 Extensions
 ^(EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
 
@@ -10246,7 +10250,7 @@ This is implemented.
 
 TODO. Not implemented yet. ') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
 Extras
 ^(EruditeBookSection basicNew title: 'Extras'; document: ((EruditeDocument contents: '!!!! Extras
 
@@ -10258,7 +10262,7 @@ Also, a book on Morphic, the Cuis UI system:
 
 To install: [[[Feature require: ''MorphicBook'']]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
 Implementation
 ^(EruditeBookSection basicNew title: 'Implementation'; document: ((EruditeDocument contents: '!!!! Implementation
 
@@ -10334,7 +10338,7 @@ There''s also the possibility of storing in a class method, but that''s not the 
 
 As you can see, it is done via the {storeOn: ::selector} method (it is indirectly call from {WriteStream>>store: ::method} method).') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
 Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Erudite Manual
 
@@ -10348,7 +10352,7 @@ Main documentation is realized via {EruditeBook::class|books}, a collection of d
 
 Books are read and edited via the {EruditeBookReaderMorph::class|reader} and {EruditeBookEditorMorph::class|editor} morphic applications.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
 LiterateProgramming
 ^(EruditeBookSection basicNew title: 'Literate Programming'; document: ((EruditeDocument contents: '!!!! Literate Programming
 
@@ -10382,7 +10386,7 @@ This misconception has led to claims that comment-extraction tools, such as the 
 
 Literate Programming can be realized by the creation of Erudite {EruditeBook::class|books}. In particular, via code embedding in its different forms. Contrary to other LP systems, there''s no need for a tangling and weaving phase; the document source is kept separately from the source code, Smalltalk code is referenced and embedded from the documentation. That means that in spite of documentation and code being separate, the referenced code is always up to date. Finally, the possibility of evaluating Smalltalk code from the documentation makes Erudite very unique compared to the other LP systems.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
 SyntaxReference
 ^(EruditeBookSection basicNew title: 'Syntax reference'; document: ((EruditeDocument contents: '!!!! Syntax reference
 
@@ -10484,6 +10488,20 @@ Images are serialized to the Erudite Document; there''s no need to ship the imag
 Example: 
 
 {/home/marian/Escritorio/smalltalk-logo.png::image}
+
+!!!!!! Latex Math
+
+Latex math formulas are surrounded by dollar signs:
+
+```$x^2 + y^2$```
+
+The formulas are converted to images and then displayed.
+
+**IMPORTANT: this feature requires** {https://www.mersenneforum.org/mimetex.html::url|mimeTeX} **and** {https://imagemagick.org::url|imagemagick}**. If those are not installed, there will be an error.**
+
+Example:
+
+$x^2 + y^2$
 
 !!!!!! Code
 
@@ -10968,9 +10986,29 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 4YOPPr55eaRd0dHThGt37nxPyt/22Q+A3zgAmPXDDz/smLxz58a9997Dg8fv/zw2WKG4fHn0
 +/c++nr2A2C2VIFz169vunDt2tSDx4/R11WHodMDf7z23nuzHwCzDgRTUya37ty6cfP27ZDz
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
-AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+AAAAAElFTkSuQmCC')); add: ('/tmp/ec88764d14d565e8c68aa2804ff42cfc08c65eea.png'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAVCAYAAAD2KuiaAAABXklEQVR4XuVYQQ6EIAzkdb7A
+D/gBn+TdV3j37nu6GRM2ikVaCspmD40RYRhGOhUdETkyxLZt5Jz7Bu7JiFk67jiagNd13QGX
+ZdkBccU92ltZfIqjCXwYBur7/rTYcRwJ0YoAKY4mcL+luPZWBEhxfERxCcm3dkVxcABjgpYF
+OHKsYjhaE3xSgJBjtFygg+98jFSpySmDGgGOHLVYHMfLQywapQIuGb7NGLhl8VoB0HeaJrUA
+MY6ngX6xYe2UvJGTqsotrRXgbgzXfseRHegFkObTPM9kyWmtAJiPG8PxTnGMTiIxMvSDm4Y+
+Eau7sei6ju6eS42Wa09xLJ7PtT1As81FWGKzqFiqSgiQew4RpYDUE94SAPywzXPOIKz7A8hX
+AN9WMyVyBAj54etOUrUuWOFZmfsAqu0HWgFCzrGqkJ0Cb5zYLON9/v+lAOav0NZ+X0nECj3L
+kqI/J0Dpf5AfEL+5pSfJ82wAAAAASUVORK5CYII=')); add: ('/tmp/erudite-formula-ec88764d14d565e8c68aa2804ff42cfc08c65eea.png'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAVCAYAAAD2KuiaAAABXklEQVR4XuVYQQ6EIAzkdb7A
+D/gBn+TdV3j37nu6GRM2ikVaCspmD40RYRhGOhUdETkyxLZt5Jz7Bu7JiFk67jiagNd13QGX
+ZdkBccU92ltZfIqjCXwYBur7/rTYcRwJ0YoAKY4mcL+luPZWBEhxfERxCcm3dkVxcABjgpYF
+OHKsYjhaE3xSgJBjtFygg+98jFSpySmDGgGOHLVYHMfLQywapQIuGb7NGLhl8VoB0HeaJrUA
+MY6ngX6xYe2UvJGTqsotrRXgbgzXfseRHegFkObTPM9kyWmtAJiPG8PxTnGMTiIxMvSDm4Y+
+Eau7sei6ju6eS42Wa09xLJ7PtT1As81FWGKzqFiqSgiQew4RpYDUE94SAPywzXPOIKz7A8hX
+AN9WMyVyBAj54etOUrUuWOFZmfsAqu0HWgFCzrGqkJ0Cb5zYLON9/v+lAOav0NZ+X0nECj3L
+kqI/J0Dpf5AfEL+5pSfJ82wAAAAASUVORK5CYII=')); add: ('/tmp/f204c64cd3e8bca6a3758a4d624354faff612b7a.png'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAADgAAAAVCAYAAAATtC32AAABNElEQVR4Xt2YQRKDIAxFOZ0n
+8AJewCO59xTu3XuedL4zdGiaYCLSKotMRwoxD/kfNBBRoMLYto1CCO/ANV2Q94ooTrCu6w61
+LMsOhV9co70JwGEYqO/7D5hxHAnRBGBcllJ7E4DWp2qZqMcAAg6QTQJG0/GazM8AU8tHkbHg
+NI62izPbhAcwrfEolzgQULB7OCF/GlrSEjgvIPpO0+QHTGH4/maZ0RTOu+S8gLkxWUCuJavm
+5nmmEk15AXE/aQyvO5vEYhToB8fkOtX2Ri26rqPc/1Yj+5JUDT3V1qDWX5SKB7Dm6eQKQOkc
+bF6iVk3+CxD1QSr8DKy6JzpGB41tNZfsGUBeH05Q3PXF9zlpg6+tRy8gr1lz1XCbF9PC5R/1
+1yRgzvVvA+idDO4ZmoQeCej5BvQCkoPuzDTgYBcAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
 SyntaxTest
 ^(EruditeBookSection basicNew title: 'Syntax test'; document: ((EruditeDocument contents: '!!!! Syntax test
 
@@ -12384,7 +12422,7 @@ H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
 BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
 initialize
     super initialize.
     title _ 'Erudite Manual'.
@@ -12545,6 +12583,19 @@ sections
 
 	^ subsections! !
 
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:10'!
+storeOn: aStream
+
+	aStream
+		nextPutAll: '('; 
+	 	nextPutAll: self class name;
+		nextPutAll: ' basicNew';
+		nextPutAll: ' title: '; store: title;
+		nextPutAll: '; document: '; store: document;
+		nextPutAll: '; subsections: '; store: subsections;
+		nextPutAll: '; yourself)'
+		        ! !
+
 !EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:12'!
 updateParents
 
@@ -12687,6 +12738,14 @@ initialize
 removeImage: aKey
 
 	images removeKey: aKey! !
+
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:15:42'!
+storeOn: aStream
+
+	aStream nextPutAll: '((EruditeDocument contents: ';
+			nextPutAll: contents asString printString;
+			nextPutAll: ') images: '; store: images;
+			nextPutAll: '; yourself)'! !
 
 !EruditeDocument methodsFor: 'accessing' stamp: 'MM 11/29/2018 19:25'!
 contents
@@ -13200,6 +13259,14 @@ visitLink: aDocLink
 			stream nextPutAll: '\url{';
 				nextPutAll: aDocLink target;
 				nextPutAll: '}']! !
+
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 18:02:56'!
+visitMath: aDocMath
+
+	^ stream
+		nextPutAll: '$';
+		nextPutAll: aDocMath formula;
+		nextPutAll: '$'! !
 
 !LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 18:50:37'!
 visitStyledText: aStyledText
@@ -13732,6 +13799,29 @@ visitLink: aDocLink
 	(self linkRendererFor: aDocLink type) ifNotNil: [:aLinkRenderer |
 		aLinkRenderer render: aDocLink in: document on: stream]! !
 
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:43:52'!
+visitMath: aDocMath
+
+	| formulaId pngPath |
+	formulaId := (((SecureHashAlgorithm new)
+		initialize;
+		hashMessage: aDocMath formula)
+			printStringBase: 16) asLowercase.
+	pngPath := '/tmp/erudite-formula-', formulaId, '.png'.
+
+	(document imageAt: pngPath) isNil ifTrue: [
+		| gifPath proc |
+		gifPath := '/tmp/erudite-formula-', formulaId, '.gif'.
+		proc := ThisOSProcess thisOSProcess command:
+			'mimetex -e ', gifPath,
+			' "', aDocMath formula, '"',
+			' && convert ', gifPath,' ', pngPath.
+		[proc isComplete] whileFalse: [(Delay forMilliseconds: 10) wait]
+	].
+
+	^ (DocLink target: pngPath type: #image label: aDocMath formula)
+		accept: self.! !
+
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:34'!
 visitStyledText: aStyledText
 
@@ -13993,6 +14083,23 @@ type: anObject
 target: anObject type: aSymbol label: aString
 
 	^ self new initialize: anObject type: aSymbol label: aString! !
+
+!DocMath methodsFor: 'accessing' stamp: 'AS 6/11/2022 16:43:37'!
+formula
+	"Answer the value of formula"
+
+	^ formula! !
+
+!DocMath methodsFor: 'accessing' stamp: 'AS 6/11/2022 16:43:37'!
+formula: anObject
+	"Set the value of formula"
+
+	formula := anObject! !
+
+!DocMath methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 16:48:02'!
+accept: aVisitor
+
+	^ aVisitor visitMath: self! !
 
 !EruditeStyledText methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:09'!
 accept: aVisitor
