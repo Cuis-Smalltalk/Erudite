@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5090] on 26 February 2022 at 7:16:49 pm'!
+'From Cuis 6.0 [latest update: #5234] on 11 June 2022 at 7:32:38 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 176!
+!provides: 'Erudite' 1 178!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -349,7 +349,7 @@ EruditeBookSection class
 
 !classDefinition: #EruditeDocument category: 'Erudite-Core'!
 Object subclass: #EruditeDocument
-	instanceVariableNames: 'contents images'
+	instanceVariableNames: 'contents images parser'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
@@ -1583,12 +1583,12 @@ explorerMenu
 	
 	^ menu! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 00:31:08'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 18:59:00'!
 getStyledText: aDocument
 	^ styledDocuments
 		at: aDocument
 		ifAbsent: [ | erudite text |
-			erudite _ EruditeMarkupParser parse: aDocument contents.
+			erudite _ aDocument parsedContents.
 			"We transplant the images from document to styledDocument and back. TODO: this is not good!!!! FIX"
 			erudite images: aDocument images.
 			text _ MorphicEruditeDocRenderer render: erudite notifying: self.
@@ -2422,10 +2422,11 @@ simpleCodeAction
 
 	^ super simpleCodeAction ==> [:res | {#action-> res asSymbol} as: Dictionary]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:27'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 18:58:19'!
 start
-	^ super start ==> [ :contents |
-		EruditeDocument contents: contents ].! !
+	^ super start ==> [ :contents | 		(EruditeDocument contents: contents)
+								parser: self;
+								yourself ].! !
 
 !EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:18'!
 trueLinkOption
@@ -2845,6 +2846,10 @@ parent
 	"For navigation. BookSection interface."
 	^ nil! !
 
+!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:32:00'!
+parser
+	^ self class parser! !
+
 !EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 18:06'!
 removeSection: aSection
 
@@ -2898,6 +2903,10 @@ open
 openInSection: aSectionName
 	self new openInSection: aSectionName
 	! !
+
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:32:21'!
+parser
+	^ EruditeMarkupParser new! !
 
 !EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:31'!
 titled: aString
@@ -12521,6 +12530,10 @@ nextSection
 		ifNotEmpty: [subsections first]
 		ifEmpty: [parent sections after: self ifNone: [parent parent ifNotNil: [:parentParent | parentParent sections after: parent]]]! !
 
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:29:18'!
+parser
+	^ document parser! !
+
 !EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 17:42:13'!
 previousSection
 	|beforeMe| 
@@ -12590,11 +12603,14 @@ parent
 
 	^ parent! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:27'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 6/11/2022 19:29:07'!
 parent: anObject
 	"Set the value of parent"
 
-	parent _ anObject! !
+	parent _ anObject.
+	
+	"Initialize ourselves with parent data."
+	document parser: parent parser! !
 
 !EruditeBookSection methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:27'!
 subsections
@@ -12683,10 +12699,23 @@ initialize
 
 	images _ Dictionary new! !
 
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:00:30'!
+parsedContents
+
+	^ self parser parse: contents.! !
+
 !EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:02:02'!
 removeImage: aKey
 
 	images removeKey: aKey! !
+
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:15:42'!
+storeOn: aStream
+
+	aStream nextPutAll: '((EruditeDocument contents: ';
+			nextPutAll: contents asString printString;
+			nextPutAll: ') images: '; store: images;
+			nextPutAll: '; yourself)'! !
 
 !EruditeDocument methodsFor: 'accessing' stamp: 'MM 11/29/2018 19:25'!
 contents
@@ -12699,6 +12728,18 @@ contents: anObject
 	"Set the value of contents"
 
 	contents _ anObject! !
+
+!EruditeDocument methodsFor: 'accessing' stamp: 'MM 6/11/2022 19:00:47'!
+parser
+	"Answer the value of parser"
+
+	^ parser ifNil: [EruditeMarkupParser new]! !
+
+!EruditeDocument methodsFor: 'accessing' stamp: 'MM 6/11/2022 18:59:58'!
+parser: anObject
+	"Set the value of parser"
+
+	parser := anObject! !
 
 !EruditeDocument class methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 23:33'!
 contents: aCollection
