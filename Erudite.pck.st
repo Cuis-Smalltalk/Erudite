@@ -1,14 +1,14 @@
-'From Cuis 6.0 [latest update: #5171] on 11 June 2022 at 6:06:57 pm'!
+'From Cuis 6.0 [latest update: #5171] on 11 June 2022 at 8:30:00 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 182!
+!provides: 'Erudite' 1 184!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
+!requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'SqueakCompatibility' 1 29 nil!
 !requires: 'OSProcess' 1 23 nil!
-!requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
 SystemOrganization addCategory: 'Erudite-Books'!
 SystemOrganization addCategory: 'Erudite-Core'!
@@ -231,7 +231,7 @@ SHTextStylerClassComment class
 
 !classDefinition: #EruditeMarkupGrammar category: 'Erudite-Parser'!
 PPCompositeParser subclass: #EruditeMarkupGrammar
-	instanceVariableNames: 'heading4 heading3 heading2 heading1 heading markup unformatted erudite codeAction code bold italic plainText linkOptions linkOptionsList linkOption falseLinkOption trueLinkOption assignLinkOption link buttonCodeAction simpleCodeAction math'
+	instanceVariableNames: 'heading4 heading3 heading2 heading1 heading markup unformatted erudite codeAction code bold italic plainText linkOptions linkOptionsList linkOption falseLinkOption trueLinkOption assignLinkOption link buttonCodeAction simpleCodeAction math plot'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
@@ -2268,10 +2268,10 @@ linkOptionsList
 	^ linkOption, 
 		($, asParser trim, linkOption) star! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 16:30:54'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 19:55:37'!
 markup
 
-	^ heading / code / bold / italic / unformatted / link / math! !
+	^ heading / code / bold / italic / unformatted / link / math / plot! !
 
 !EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 16:47:26'!
 math
@@ -2284,6 +2284,13 @@ math
 plainText
 
 	^ markup negate plus flatten! !
+
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 19:58:33'!
+plot
+
+	^ '<plot>' asParser flatten,
+		'</plot>' asParser negate plus flatten,
+		'</plot>' asParser flatten! !
 
 !EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 15:43'!
 simpleCodeAction
@@ -2410,6 +2417,35 @@ math
 		(DocMath new)
 			formula: res second;
 			yourself]! !
+
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 20:25:56'!
+plot
+
+	^ super plot ==> [:res |
+		| script plotId pngPath |
+		script := res second.
+		plotId := (((SecureHashAlgorithm new)
+			initialize;
+			hashMessage: script)
+				printStringBase: 16) asLowercase.
+		pngPath := '/tmp/erudite-plot-', plotId, '.png'.
+		
+		pngPath asFileEntry exists ifFalse: [
+			| gpPath gpScript proc |
+			gpScript := 'set term png', String lf,
+				'set output "', pngPath, '"', String lf,
+				script.
+			gpPath := pngPath, '.gp'.
+			
+			gpPath asFileEntry fileContents: gpScript.
+			
+			proc := ThisOSProcess thisOSProcess command:
+				'gnuplot ', gpPath.
+			[proc isComplete] whileFalse: [(Delay forMilliseconds: 10) wait]
+		].
+
+		DocLink target: pngPath type: #image label: script
+	]! !
 
 !EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 12:25'!
 simpleCodeAction
@@ -9280,7 +9316,7 @@ initialize
         self addSection: self Tools.
 ! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 20:29:44'!
 BookReaderAndEditor
 ^(EruditeBookSection basicNew title: 'Book reader and editor'; document: ((EruditeDocument contents: '!!!! Book reader and editor
 
@@ -10232,7 +10268,7 @@ H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
 BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 20:29:44'!
 Extensions
 ^(EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
 
@@ -10250,7 +10286,7 @@ This is implemented.
 
 TODO. Not implemented yet. ') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 20:29:44'!
 Extras
 ^(EruditeBookSection basicNew title: 'Extras'; document: ((EruditeDocument contents: '!!!! Extras
 
@@ -10262,7 +10298,7 @@ Also, a book on Morphic, the Cuis UI system:
 
 To install: [[[Feature require: ''MorphicBook'']]] doIt') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 20:29:44'!
 Implementation
 ^(EruditeBookSection basicNew title: 'Implementation'; document: ((EruditeDocument contents: '!!!! Implementation
 
@@ -10338,7 +10374,7 @@ There''s also the possibility of storing in a class method, but that''s not the 
 
 As you can see, it is done via the {storeOn: ::selector} method (it is indirectly call from {WriteStream>>store: ::method} method).') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 20:29:44'!
 Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Erudite Manual
 
@@ -10352,7 +10388,7 @@ Main documentation is realized via {EruditeBook::class|books}, a collection of d
 
 Books are read and edited via the {EruditeBookReaderMorph::class|reader} and {EruditeBookEditorMorph::class|editor} morphic applications.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 20:29:44'!
 LiterateProgramming
 ^(EruditeBookSection basicNew title: 'Literate Programming'; document: ((EruditeDocument contents: '!!!! Literate Programming
 
@@ -10386,7 +10422,7 @@ This misconception has led to claims that comment-extraction tools, such as the 
 
 Literate Programming can be realized by the creation of Erudite {EruditeBook::class|books}. In particular, via code embedding in its different forms. Contrary to other LP systems, there''s no need for a tangling and weaving phase; the document source is kept separately from the source code, Smalltalk code is referenced and embedded from the documentation. That means that in spite of documentation and code being separate, the referenced code is always up to date. Finally, the possibility of evaluating Smalltalk code from the documentation makes Erudite very unique compared to the other LP systems.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 20:29:44'!
 SyntaxReference
 ^(EruditeBookSection basicNew title: 'Syntax reference'; document: ((EruditeDocument contents: '!!!! Syntax reference
 
@@ -10491,7 +10527,7 @@ Example:
 
 !!!!!! Latex Math
 
-Latex math formulas are surrounded by dollar signs:
+Latex math is enclosed between dollar signs:
 
 ```$x^2 + y^2$```
 
@@ -10502,6 +10538,24 @@ The formulas are converted to images and then displayed.
 Example:
 
 $x^2 + y^2$
+
+!!!!!! Plots
+
+Plotting with gnuplot is supported. Insert the gnuplot script between ```<plot></plot>``` tags:
+
+```<plot>
+plot sin(x)
+</plot>```
+
+**IMPORTANT: this feature requires** {http://www.gnuplot.info::url|gnuplot}**. If it is not installed, there will be an error.**
+
+A small preamble that sets the output to a png file is prepended to the script. The png file is then inserted in the document like a regular image.
+
+Example:
+
+<plot>
+plot sin(x)
+</plot>
 
 !!!!!! Code
 
@@ -11000,7 +11054,108 @@ OHKsYjhaE3xSgJBjtFygg+98jFSpySmDGgGOHLVYHMfLQywapQIuGb7NGLhl8VoB0HeaJrUA
 MY6ngX6xYe2UvJGTqsotrRXgbgzXfseRHegFkObTPM9kyWmtAJiPG8PxTnGMTiIxMvSDm4Y+
 Eau7sei6ju6eS42Wa09xLJ7PtT1As81FWGKzqFiqSgiQew4RpYDUE94SAPywzXPOIKz7A8hX
 AN9WMyVyBAj54etOUrUuWOFZmfsAqu0HWgFCzrGqkJ0Cb5zYLON9/v+lAOav0NZ+X0nECj3L
-kqI/J0Dpf5AfEL+5pSfJ82wAAAAASUVORK5CYII=')); add: ('/tmp/f204c64cd3e8bca6a3758a4d624354faff612b7a.png'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAADgAAAAVCAYAAAATtC32AAABNElEQVR4Xt2YQRKDIAxFOZ0n
+kqI/J0Dpf5AfEL+5pSfJ82wAAAAASUVORK5CYII=')); add: ('/tmp/erudite-plot-ea659a68332d07df52e242741687764a9abf024d.png'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAMAAAACDyzWAAADAFBMVEUAAAAAAAD///9/f3/l
+AAAVsBoDQ98A/////xTCAHgfHx8/Pz9fX1+fn5+/v7/f398HBwcPDw8XFxcnJycvLy83NzdH
+R0dPT09XV1dnZ2dvb293d3eHh4ePj4+Xl5enp6evr6+3t7fHx8fPz8/X19fn5+fv7+/39/cA
+AAAAMwAAZgAAmQAAzAAA/wAAADMAMzMAZjMAmTMAzDMA/zMAAGYAM2YAZmYAmWYAzGYA/2YA
+AJkAM5kAZpkAmZkAzJkA/5kAAMwAM8wAZswAmcwAzMwA/8wAAP8AM/8AZv8Amf8AzP8A//8z
+AAAzMwAzZgAzmQAzzAAz/wAzADMzMzMzZjMzmTMzzDMz/zMzAGYzM2YzZmYzmWYzzGYz/2Yz
+AJkzM5kzZpkzmZkzzJkz/5kzAMwzM8wzZswzmcwzzMwz/8wzAP8zM/8zZv8zmf8zzP8z//9m
+AABmMwBmZgBmmQBmzABm/wBmADNmMzNmZjNmmTNmzDNm/zNmAGZmM2ZmZmZmmWZmzGZm/2Zm
+AJlmM5lmZplmmZlmzJlm/5lmAMxmM8xmZsxmmcxmzMxm/8xmAP9mM/9mZv9mmf9mzP9m//+Z
+AACZMwCZZgCZmQCZzACZ/wCZADOZMzOZZjOZmTOZzDOZ/zOZAGaZM2aZZmaZmWaZzGaZ/2aZ
+AJmZM5mZZpmZmZmZzJmZ/5mZAMyZM8yZZsyZmcyZzMyZ/8yZAP+ZM/+ZZv+Zmf+ZzP+Z///M
+AADMMwDMZgDMmQDMzADM/wDMADPMMzPMZjPMmTPMzDPM/zPMAGbMM2bMZmbMmWbMzGbM/2bM
+AJnMM5nMZpnMmZnMzJnM/5nMAMzMM8zMZszMmczMzMzM/8zMAP/MM//MZv/Mmf/MzP/M////
+AAD/MwD/ZgD/mQD/zAD//wD/ADP/MzP/ZjP/mTP/zDP//zP/AGb/M2b/Zmb/mWb/zGb//2b/
+AJn/M5n/Zpn/mZn/zJn//5n/AMz/M8z/Zsz/mcz/zMz//8z/AP//M///Zv//mf//zP/////A
+vQAOAAASJklEQVR4XuXda3biMAyGYXsd2Y/X4TjJ/rcwuQDFwHD1RdKrH9OZc6bOV+shIbRF
+jl/84he/+MUvfvGLX/ziF7/4xS9+8Ytf0mr0A38T+NWr4jTzAfKrXy2L4wPkV9fiA+QXHyC/
++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')); add: ('/tmp/f204c64cd3e8bca6a3758a4d624354faff612b7a.png'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAADgAAAAVCAYAAAATtC32AAABNElEQVR4Xt2YQRKDIAxFOZ0n
 8AJewCO59xTu3XuedL4zdGiaYCLSKotMRwoxD/kfNBBRoMLYto1CCO/ANV2Q94ooTrCu6w61
 LMsOhV9co70JwGEYqO/7D5hxHAnRBGBcllJ7E4DWp2qZqMcAAg6QTQJG0/GazM8AU8tHkbHg
 NI62izPbhAcwrfEolzgQULB7OCF/GlrSEjgvIPpO0+QHTGH4/maZ0RTOu+S8gLkxWUCuJavm
@@ -11008,7 +11163,7 @@ NI62izPbhAcwrfEolzgQULB7OCF/GlrSEjgvIPpO0+QHTGH4/maZ0RTOu+S8gLkxWUCuJavm
 bF6iVk3+CxD1QSr8DKy6JzpGB41tNZfsGUBeH05Q3PXF9zlpg6+tRy8gr1lz1XCbF9PC5R/1
 1yRgzvVvA+idDO4ZmoQeCej5BvQCkoPuzDTgYBcAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 20:29:44'!
 SyntaxTest
 ^(EruditeBookSection basicNew title: 'Syntax test'; document: ((EruditeDocument contents: '!!!! Syntax test
 
@@ -12422,7 +12577,7 @@ H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
 BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:42:52'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 20:29:44'!
 initialize
     super initialize.
     title _ 'Erudite Manual'.
@@ -13799,7 +13954,7 @@ visitLink: aDocLink
 	(self linkRendererFor: aDocLink type) ifNotNil: [:aLinkRenderer |
 		aLinkRenderer render: aDocLink in: document on: stream]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 17:43:52'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'AS 6/11/2022 20:21:16'!
 visitMath: aDocMath
 
 	| formulaId pngPath |
@@ -13809,7 +13964,7 @@ visitMath: aDocMath
 			printStringBase: 16) asLowercase.
 	pngPath := '/tmp/erudite-formula-', formulaId, '.png'.
 
-	(document imageAt: pngPath) isNil ifTrue: [
+	pngPath asFileEntry exists ifFalse: [
 		| gifPath proc |
 		gifPath := '/tmp/erudite-formula-', formulaId, '.gif'.
 		proc := ThisOSProcess thisOSProcess command:
