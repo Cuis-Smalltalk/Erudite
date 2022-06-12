@@ -1591,7 +1591,7 @@ getStyledText: aDocument
 			erudite _ aDocument parsedContents.
 			"We transplant the images from document to styledDocument and back. TODO: this is not good!!!! FIX"
 			erudite images: aDocument images.
-			text _ MorphicEruditeDocRenderer render: erudite notifying: self.
+			text _ model morphicRendererClass render: erudite notifying: self.
 			styledDocuments at: aDocument put: text.
 			"TODO: this is not good!!!! FIX"
 			aDocument images: erudite images.
@@ -2355,6 +2355,11 @@ code
 		action _ (res checkedAt: 4) ifNotNil: [:a | a second].
 		DocCode code: source action: action]! !
 
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:44:08'!
+documentClass
+
+	^ EruditeDocument! !
+
 !EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:18'!
 falseLinkOption
 
@@ -2422,9 +2427,9 @@ simpleCodeAction
 
 	^ super simpleCodeAction ==> [:res | {#action-> res asSymbol} as: Dictionary]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 18:58:19'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:43:57'!
 start
-	^ super start ==> [ :contents | 		(EruditeDocument contents: contents)
+	^ super start ==> [ :contents | 		(self documentClass contents: contents)
 								parser: self;
 								yourself ].! !
 
@@ -2828,6 +2833,10 @@ findSectionNamed: aString ifAbsent: aBlock
 	
 	^ aBlock value
 		 ! !
+
+!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:52:36'!
+morphicRendererClass
+	^ MorphicEruditeDocRenderer ! !
 
 !EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 14:15'!
 open
