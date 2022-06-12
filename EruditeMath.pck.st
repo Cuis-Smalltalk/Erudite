@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5171] on 12 June 2022 at 7:10:28 pm'!
+'From Cuis 6.0 [latest update: #5171] on 12 June 2022 at 7:01:26 pm'!
 'Description '!
-!provides: 'EruditeMath' 1 6!
+!provides: 'EruditeMath' 1 5!
 !requires: 'Erudite' 1 179 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -48,22 +48,61 @@ DocMath class
 	instanceVariableNames: ''!
 
 
-!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified'!
-! !
+!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:10:47'!
+markup
+	^ super markup / plot / math! !
 
-!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified'!
-! !
+!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:10:57'!
+math
 
-!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified'!
-! !
+	^ ($$ asParser min: 1 max: 1) flatten,
+	   ($$ asParser min: 1 max: 1) negate plus flatten,
+	   ($$ asParser min: 1 max: 1) flatten! !
 
-!EruditeMathMarkupParser methodsFor: 'as yet unclassified'!
-! !
+!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:13:00'!
+plot
 
-!EruditeMathMarkupParser methodsFor: 'as yet unclassified'!
-! !
+	^ '<plot>' asParser flatten,
+		'</plot>' asParser negate plus flatten,
+		'</plot>' asParser flatten! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:10:21'!
+!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:11:41'!
+math
+
+	^ super math ==> [:res |
+		(DocMath new)
+			formula: res second;
+			yourself]! !
+
+!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:46:35'!
+plot
+	^ super plot ==> [:res |
+		| script plotId pngPath |
+		script := res second.
+		plotId := (((SecureHashAlgorithm new)
+			initialize;
+			hashMessage: script)
+				printStringBase: 16) asLowercase.
+		pngPath := '/tmp/erudite-plot-', plotId, '.png'.
+
+		pngPath asFileEntry exists ifFalse: [
+			| gpPath gpScript proc |
+			gpScript := 'set term png', String lf,
+				'set output "', pngPath, '"', String lf,
+				script.
+			gpPath := pngPath, '.gp'.
+
+			gpPath asFileEntry fileContents: gpScript.
+
+			proc := ThisOSProcess thisOSProcess command:
+				'gnuplot ', gpPath.
+			[proc isComplete] whileFalse: [(Delay forMilliseconds: 10) wait]
+		].
+
+		DocLink target: pngPath type: #image label: script
+	]! !
+
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:01:20'!
 LatexMath
 ^(EruditeBookSection basicNew title: 'Latex Math'; document: ((EruditeDocument contents: '!!!! Latex Math
 
@@ -86,19 +125,19 @@ Eau7sei6ju6eS42Wa09xLJ7PtT1As81FWGKzqFiqSgiQew4RpYDUE94SAPywzXPOIKz7A8hX
 AN9WMyVyBAj54etOUrUuWOFZmfsAqu0HWgFCzrGqkJ0Cb5zYLON9/v+lAOav0NZ+X0nECj3L
 kqI/J0Dpf5AfEL+5pSfJ82wAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:10:21'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:01:20'!
 NewMathBook
 ^(EruditeBookSection basicNew title: 'New Math Book'; document: ((EruditeDocument contents: '!!!! Creating a New Math Book
 
 To create a new book with support for EruditeMath syntax, first create a regular new Erudite book and save it.
 
-Then go to the book''s class in the Browser and add a [[[parser]]] method on the class side that returns a new {EruditeMathMarkupParser::class} object.
+Then go to the book class in the Browser and add a [[[parser]]] method on the class side that returns a new {EruditeMathMarkupParser::class} object.
 
-For example, this is what {EruditeMathManual class>>parser::method} looks like:
+For an example, this is what {EruditeMathManual class>>parser ::method} looks like:
 
-{EruditeMathManual class>>parser::method}[embed]') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+{EruditeMathManual class>>parser ::method}[embed]') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:10:21'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:01:20'!
 Plots
 ^(EruditeBookSection basicNew title: 'Plots'; document: ((EruditeDocument contents: '!!!! Plots
 
@@ -536,13 +575,13 @@ Hz58+AKQDx8+fPjw4cOHD18A8uHDhw8fPnz48OELQD58+PDhw4cPHz58AciHD58YsSr+Tz58
 +PCJC74R+PDhw4cPHz58+AKQDx8+fPjw4cOHD18A8uHDhw8fPnz48OELQD58+PDhw4cPHz58
 AciHDx8+fPjw4cOHLwD58OHDhw8fPnz4+Mb/B2TUGLchNJmiAAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:10:21'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:01:20'!
 SystemRequirements
 ^(EruditeBookSection basicNew title: 'System Requirements'; document: ((EruditeDocument contents: '!!!! System Requirements
 
 EruditeMath requires some external programs and assumes the user is running a Unix system. Which external programs are required for a feature is documented in the feature''s section of this manual.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:10:21'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:01:20'!
 initialize
     super initialize.
     title _ 'EruditeMath Manual'.
@@ -552,20 +591,54 @@ initialize
         self addSection: self Plots.
 ! !
 
-!EruditeMathManual class methodsFor: 'as yet unclassified'!
-! !
+!EruditeMathManual class methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:33:43'!
+parser
+	^ EruditeMathMarkupParser new! !
 
-!DocMath methodsFor: 'accessing'!
-! !
+!DocMath methodsFor: 'accessing' stamp: 'MM 6/12/2022 10:11:51'!
+formula
+	"Answer the value of formula"
 
-!DocMath methodsFor: 'accessing'!
-! !
+	^ formula! !
 
-!DocMath methodsFor: 'as yet unclassified'!
-! !
+!DocMath methodsFor: 'accessing' stamp: 'MM 6/12/2022 10:11:51'!
+formula: anObject
+	"Set the value of formula"
 
-!LatexEruditeDocRenderer methodsFor: '*EruditeMath'!
-! !
+	formula := anObject! !
 
-!MorphicEruditeDocRenderer methodsFor: '*EruditeMath'!
-! !
+!DocMath methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:16:32'!
+accept: aVisitor
+
+	^ aVisitor visitMath: self! !
+
+!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'MM 6/12/2022 10:27:59'!
+visitMath: aDocMath
+
+	^ stream
+		nextPutAll: '$';
+		nextPutAll: aDocMath formula;
+		nextPutAll: '$'! !
+
+!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'MM 6/12/2022 10:15:36'!
+visitMath: aDocMath
+
+	| formulaId pngPath |
+	formulaId := (((SecureHashAlgorithm new)
+		initialize;
+		hashMessage: aDocMath formula)
+			printStringBase: 16) asLowercase.
+	pngPath := '/tmp/erudite-formula-', formulaId, '.png'.
+
+	(document imageAt: pngPath) isNil ifTrue: [
+		| gifPath proc |
+		gifPath := '/tmp/erudite-formula-', formulaId, '.gif'.
+		proc := ThisOSProcess thisOSProcess command:
+			'mimetex -e ', gifPath,
+			' "', aDocMath formula, '"',
+			' && convert ', gifPath,' ', pngPath.
+		[proc isComplete] whileFalse: [(Delay forMilliseconds: 10) wait]
+	].
+
+	^ (DocLink target: pngPath type: #image label: aDocMath formula)
+		accept: self.! !
