@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5234] on 11 June 2022 at 7:32:38 pm'!
+'From Cuis 6.0 [latest update: #5234] on 12 June 2022 at 10:53:30 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 178!
+!provides: 'Erudite' 1 179!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
