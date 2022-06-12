@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5171] on 12 June 2022 at 7:33:35 pm'!
+'From Cuis 6.0 [latest update: #5171] on 12 June 2022 at 8:24:21 pm'!
 'Description '!
-!provides: 'EruditeMath' 1 7!
+!provides: 'EruditeMath' 1 8!
 !requires: 'Erudite' 1 179 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -74,7 +74,7 @@ math
 			formula: res second;
 			yourself]! !
 
-!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:46:35'!
+!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 20:22:26'!
 plot
 	^ super plot ==> [:res |
 		| script plotId pngPath |
@@ -87,7 +87,8 @@ plot
 
 		pngPath asFileEntry exists ifFalse: [
 			| gpPath gpScript proc |
-			gpScript := 'set term png', String lf,
+			gpScript := 'set term png \', String lf,
+				String tab, 'transparent truecolor', String lf,
 				'set output "', pngPath, '"', String lf,
 				script.
 			gpPath := pngPath, '.gp'.
