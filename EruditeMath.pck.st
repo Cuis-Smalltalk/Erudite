@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5171] on 12 June 2022 at 6:52:51 pm'!
+'From Cuis 6.0 [latest update: #5171] on 12 June 2022 at 7:01:26 pm'!
 'Description '!
-!provides: 'EruditeMath' 1 4!
+!provides: 'EruditeMath' 1 5!
 !requires: 'Erudite' 1 179 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -102,7 +102,7 @@ plot
 		DocLink target: pngPath type: #image label: script
 	]! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 18:52:08'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:01:20'!
 LatexMath
 ^(EruditeBookSection basicNew title: 'Latex Math'; document: ((EruditeDocument contents: '!!!! Latex Math
 
@@ -125,7 +125,7 @@ Eau7sei6ju6eS42Wa09xLJ7PtT1As81FWGKzqFiqSgiQew4RpYDUE94SAPywzXPOIKz7A8hX
 AN9WMyVyBAj54etOUrUuWOFZmfsAqu0HWgFCzrGqkJ0Cb5zYLON9/v+lAOav0NZ+X0nECj3L
 kqI/J0Dpf5AfEL+5pSfJ82wAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 18:52:08'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:01:20'!
 NewMathBook
 ^(EruditeBookSection basicNew title: 'New Math Book'; document: ((EruditeDocument contents: '!!!! Creating a New Math Book
 
@@ -137,7 +137,7 @@ For an example, this is what {EruditeMathManual class>>parser ::method} looks li
 
 {EruditeMathManual class>>parser ::method}[embed]') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 18:52:08'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:01:20'!
 Plots
 ^(EruditeBookSection basicNew title: 'Plots'; document: ((EruditeDocument contents: '!!!! Plots
 
@@ -575,10 +575,17 @@ Hz58+AKQDx8+fPjw4cOHD18A8uHDhw8fPnz48OELQD58+PDhw4cPHz58AciHD58YsSr+Tz58
 +PCJC74R+PDhw4cPHz58+AKQDx8+fPjw4cOHD18A8uHDhw8fPnz48OELQD58+PDhw4cPHz58
 AciHDx8+fPjw4cOHLwD58OHDhw8fPnz4+Mb/B2TUGLchNJmiAAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 18:52:08'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:01:20'!
+SystemRequirements
+^(EruditeBookSection basicNew title: 'System Requirements'; document: ((EruditeDocument contents: '!!!! System Requirements
+
+EruditeMath requires some external programs and assumes the user is running a Unix system. Which external programs are required for a feature is documented in the feature''s section of this manual.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 19:01:20'!
 initialize
     super initialize.
     title _ 'EruditeMath Manual'.
+        self addSection: self SystemRequirements.
         self addSection: self NewMathBook.
         self addSection: self LatexMath.
         self addSection: self Plots.
