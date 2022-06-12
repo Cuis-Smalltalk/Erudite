@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5234] on 12 June 2022 at 10:18:54 am'!
+'From Cuis 6.0 [latest update: #5234] on 12 June 2022 at 10:28:04 am'!
 'Description '!
-!provides: 'EruditeMath' 1 1!
+!provides: 'EruditeMath' 1 2!
 !requires: 'Erudite' 1 178 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -240,6 +240,14 @@ formula: anObject
 accept: aVisitor
 
 	^ aVisitor visitMath: self! !
+
+!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'MM 6/12/2022 10:27:59'!
+visitMath: aDocMath
+
+	^ stream
+		nextPutAll: '$';
+		nextPutAll: aDocMath formula;
+		nextPutAll: '$'! !
 
 !MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'MM 6/12/2022 10:15:36'!
 visitMath: aDocMath
