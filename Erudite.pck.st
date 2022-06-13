@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5234] on 12 June 2022 at 10:53:30 am'!
+'From Cuis 6.0 [latest update: #5171] on 13 June 2022 at 11:16:35 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 179!
+!provides: 'Erudite' 1 180!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -676,55 +676,6 @@ Properties are triggered via #triggerEvent:'.
 
 (MorphicEruditeDocRenderer on: erudite) render edit.!
 
-!EruditeForm methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:46:23'!
-storeOn: aStream
-
-	aStream nextPutAll: '(EruditeForm fromBase64String:'.
-	self base64String storeOn: aStream.
-	aStream nextPut: $).
-	
-	! !
-
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:20'!
-bindingOf: aString
-
-	(bindings includesKey: aString) ifFalse: [
-		aString first isUppercase
-			ifTrue: [^nil]
-			ifFalse: [bindings at: aString put: nil]].
-	^bindings associationAt: aString! !
-
-!EruditeBook methodsFor: 'storage' stamp: 'MM 12/4/2018 20:16'!
-storeOn: aStream
-
-	aStream nextPutAll: '(';
-	              nextPutAll: self class name;
-	              nextPutAll: ' basicNew';
-	              nextPutAll: ' title: '; store: title;
-	              nextPutAll: '; sections: '; store: sections;
-			   nextPutAll: '; updateParents; yourself)'! !
-
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:10'!
-storeOn: aStream
-
-	aStream
-		nextPutAll: '('; 
-	 	nextPutAll: self class name;
-		nextPutAll: ' basicNew';
-		nextPutAll: ' title: '; store: title;
-		nextPutAll: '; document: '; store: document;
-		nextPutAll: '; subsections: '; store: subsections;
-		nextPutAll: '; yourself)'
-		        ! !
-
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:15:42'!
-storeOn: aStream
-
-	aStream nextPutAll: '((EruditeDocument contents: ';
-			nextPutAll: contents asString printString;
-			nextPutAll: ') images: '; store: images;
-			nextPutAll: '; yourself)'! !
-
 !EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 12/13/2018 16:17'!
 editing
 	"Answer the value of editing"
@@ -1214,6 +1165,15 @@ base64String
 	"TODO: how to support other image formats apart from PNG?"
 	 ^ ("ImageReadWriter" PNGReadWriter bytesFor: self) base64Encoded.! !
 
+!EruditeForm methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:46:23'!
+storeOn: aStream
+
+	aStream nextPutAll: '(EruditeForm fromBase64String:'.
+	self base64String storeOn: aStream.
+	aStream nextPut: $).
+	
+	! !
+
 !EruditeForm class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 20:16:23'!
 fromBase64String: aString
 
@@ -1347,6 +1307,15 @@ update: anAspect
 bindingNamesDo: aBlock
 
 	bindings keysDo: aBlock! !
+
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:20'!
+bindingOf: aString
+
+	(bindings includesKey: aString) ifFalse: [
+		aString first isUppercase
+			ifTrue: [^nil]
+			ifFalse: [bindings at: aString put: nil]].
+	^bindings associationAt: aString! !
 
 !EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
 hasBindingOf: aString
@@ -2699,6 +2668,16 @@ storeAsClassNamed: className category: aCategory
 		self storeSection: sect on: bookClass].
 		
 	^ bookClass! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 12/4/2018 20:16'!
+storeOn: aStream
+
+	aStream nextPutAll: '(';
+	              nextPutAll: self class name;
+	              nextPutAll: ' basicNew';
+	              nextPutAll: ' title: '; store: title;
+	              nextPutAll: '; sections: '; store: sections;
+			   nextPutAll: '; updateParents; yourself)'! !
 
 !EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:59:29'!
 storeOnMethod: aMethodReference
@@ -12567,6 +12546,19 @@ sections
 
 	^ subsections! !
 
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:10'!
+storeOn: aStream
+
+	aStream
+		nextPutAll: '('; 
+	 	nextPutAll: self class name;
+		nextPutAll: ' basicNew';
+		nextPutAll: ' title: '; store: title;
+		nextPutAll: '; document: '; store: document;
+		nextPutAll: '; subsections: '; store: subsections;
+		nextPutAll: '; yourself)'
+		        ! !
+
 !EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:12'!
 updateParents
 
@@ -13099,12 +13091,12 @@ renderCodePrintItHere: aDocCode
 	stream nextPut: '==> ';
 			nextPut: (Text streamContents: [:s | result printOn: s]).! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 22:32:36'!
+!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 23:06:40'!
 renderDocument: aDocument
 	
 	|doc|
 	
-	doc _ EruditeMarkupParser parse: aDocument contents.
+	doc _ aDocument parsedContents.
 	
 	doc contents do: [:node |
 		node isString ifTrue: [
