@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5171] on 13 June 2022 at 6:31:14 pm'!
+'From Cuis 6.0 [latest update: #5171] on 13 June 2022 at 7:32:40 pm'!
 'Description '!
-!provides: 'EruditeMath' 1 14!
+!provides: 'EruditeMath' 1 15!
 !requires: 'Erudite' 1 179 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -74,7 +74,7 @@ math
 			formula: res second;
 			yourself]! !
 
-!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 18:21:55'!
+!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 19:29:55'!
 plot
 	^ super plot ==> [:res |
 		| script plotId pngPath |
@@ -83,26 +83,27 @@ plot
 			initialize;
 			hashMessage: script)
 				printStringBase: 16) asLowercase.
-		pngPath := 'erudite-plot-', plotId, '-', Theme darkModeString, '.png'.
+		pngPath := DirectoryEntry tempDirectory /
+			('erudite-plot-', plotId, '-', Theme darkModeString, '.png').
 
-		pngPath asFileEntry exists ifFalse: [
+		pngPath exists ifFalse: [
 			| gpPath gpScript |
 			gpScript := 'set term png \', String lf,
 				String tab, 'transparent truecolor', String lf,
-				'set output "', pngPath, '"', String lf,
+				'set output "', pngPath pathName, '"', String lf,
 				script.
-			gpPath := pngPath, '.gp'.
+			gpPath := pngPath pathName, '.gp'.
 
 			gpPath asFileEntry fileContents: gpScript.
 
 			OSProcess waitForCommand: 'gnuplot ', gpPath.
 			
 			Theme isDark ifTrue: [
-				OSProcess convertLightImageToDarkImage: pngPath
+				OSProcess convertLightImageToDarkImage: pngPath pathName
 			]
 		].
 
-		DocLink target: pngPath type: #image label: script
+		DocLink target: pngPath pathName type: #image label: script
 	]! !
 
 !EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 18:31:01'!
@@ -615,6 +616,14 @@ accept: aVisitor
 
 	^ aVisitor visitMath: self! !
 
+!DirectoryEntry class methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 19:31:21'!
+tempDirectory
+
+	FileIOAccessor default onUnix ifTrue: [ ^ '/tmp' asDirectoryEntry ].
+	FileIOAccessor default onWindows ifTrue: [ ^ 'C:\Windows\Temp' asDirectoryEntry ].
+	
+	^ self notYetImplemented! !
+
 !Theme class methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 17:58:17'!
 darkModeString
 
@@ -626,12 +635,6 @@ isDark
 	" If the text color is light, assume we are in dark mode"
 	^ Theme current text luminance > 0.5! !
 
-!OSProcess class methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 18:03:48'!
-convertLightImageToDarkImage: filePath
-
-	self waitForCommand:
-		'convert -grayscale Rec709Luminance -negate ', filePath, ' ', filePath! !
-
 !LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'MM 6/12/2022 10:27:59'!
 visitMath: aDocMath
 
@@ -640,19 +643,21 @@ visitMath: aDocMath
 		nextPutAll: aDocMath formula;
 		nextPutAll: '$'! !
 
-!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 18:22:24'!
+!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 19:27:44'!
 visitMath: aDocMath
 
-	| formulaId pngPath |
+	| formulaId pathNoSuffix pngPath |
 	formulaId := (((SecureHashAlgorithm new)
 		initialize;
 		hashMessage: aDocMath formula)
 			printStringBase: 16) asLowercase.
-	pngPath := 'erudite-formula-', formulaId, '-', Theme darkModeString, '.png'.
+	pathNoSuffix := DirectoryEntry tempDirectory /
+		('erudite-formula-', formulaId, '-', Theme darkModeString).
+	pngPath := pathNoSuffix pathName, '.png'.
 
 	pngPath asFileEntry exists ifFalse: [
 		| gifPath |
-		gifPath := 'erudite-formula-', formulaId, '-', Theme darkModeString, '.gif'.
+		gifPath := pathNoSuffix pathName, '.gif'.
 		OSProcess waitForCommand:
 			'mimetex -e ', gifPath, ' "', aDocMath formula, '"'.
 		OSProcess waitForCommand:
@@ -665,3 +670,9 @@ visitMath: aDocMath
 
 	^ (DocLink target: pngPath type: #image label: aDocMath formula)
 		accept: self.! !
+
+!OSProcess class methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 18:03:48'!
+convertLightImageToDarkImage: filePath
+
+	self waitForCommand:
+		'convert -grayscale Rec709Luminance -negate ', filePath, ' ', filePath! !
