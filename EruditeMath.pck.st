@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5171] on 13 June 2022 at 5:34:07 pm'!
+'From Cuis 6.0 [latest update: #5171] on 13 June 2022 at 6:07:10 pm'!
 'Description '!
-!provides: 'EruditeMath' 1 10!
+!provides: 'EruditeMath' 1 12!
 !requires: 'Erudite' 1 179 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -47,19 +47,6 @@ DocNode subclass: #DocMath
 DocMath class
 	instanceVariableNames: ''!
 
-!classDefinition: #DarkMode category: 'EruditeMath'!
-Object subclass: #DarkMode
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'EruditeMath'!
-!classDefinition: 'DarkMode class' category: 'EruditeMath'!
-DarkMode class
-	instanceVariableNames: ''!
-
-
-!DarkMode commentStamp: '<historical>' prior: 0!
-I am a helper class for converting math images and plot images to dark colors such that they are readable when the current theme is dark.!
 
 !EruditeMathMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:10:47'!
 markup
@@ -87,7 +74,7 @@ math
 			formula: res second;
 			yourself]! !
 
-!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 17:27:12'!
+!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 18:04:20'!
 plot
 	^ super plot ==> [:res |
 		| script plotId pngPath |
@@ -96,7 +83,7 @@ plot
 			initialize;
 			hashMessage: script)
 				printStringBase: 16) asLowercase.
-		pngPath := '/tmp/erudite-plot-', plotId, DarkMode fileNameSuffix, '.png'.
+		pngPath := '/tmp/erudite-plot-', plotId, '-', Theme darkModeString, '.png'.
 
 		pngPath asFileEntry exists ifFalse: [
 			| gpPath gpScript |
@@ -110,8 +97,8 @@ plot
 
 			OSProcess waitForCommand: 'gnuplot ', gpPath.
 			
-			DarkMode isEnabled ifTrue: [
-				DarkMode convertLightImageToDarkImage: pngPath
+			Theme isDark ifTrue: [
+				OSProcess convertLightImageToDarkImage: pngPath
 			]
 		].
 
@@ -1065,22 +1052,22 @@ accept: aVisitor
 
 	^ aVisitor visitMath: self! !
 
-!DarkMode class methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 17:31:19'!
-convertLightImageToDarkImage: filePath
+!Theme class methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 17:58:17'!
+darkModeString
 
-	OSProcess waitForCommand:
-		'convert -grayscale Rec709Luminance -negate ', filePath, ' ', filePath! !
+	^ self isDark ifTrue: [ 'dark' ] ifFalse: [ 'light' ]! !
 
-!DarkMode class methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 21:27:09'!
-fileNameSuffix
-
-	^ self isEnabled ifTrue: [ '-dark' ] ifFalse: [ '-light' ]! !
-
-!DarkMode class methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 21:22:31'!
-isEnabled
+!Theme class methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 17:41:50'!
+isDark
 
 	" If the text color is light, assume we are in dark mode"
 	^ Theme current text luminance > 0.5! !
+
+!OSProcess class methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 18:03:48'!
+convertLightImageToDarkImage: filePath
+
+	self waitForCommand:
+		'convert -grayscale Rec709Luminance -negate ', filePath, ' ', filePath! !
 
 !LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'MM 6/12/2022 10:27:59'!
 visitMath: aDocMath
@@ -1090,7 +1077,7 @@ visitMath: aDocMath
 		nextPutAll: aDocMath formula;
 		nextPutAll: '$'! !
 
-!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 17:28:33'!
+!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 18:04:28'!
 visitMath: aDocMath
 
 	| formulaId pngPath |
@@ -1098,18 +1085,18 @@ visitMath: aDocMath
 		initialize;
 		hashMessage: aDocMath formula)
 			printStringBase: 16) asLowercase.
-	pngPath := '/tmp/erudite-formula-', formulaId, DarkMode fileNameSuffix, '.png'.
+	pngPath := '/tmp/erudite-formula-', formulaId, '-', Theme darkModeString, '.png'.
 
-	(document imageAt: pngPath) isNil ifTrue: [
+	pngPath asFileEntry exists ifFalse: [
 		| gifPath |
-		gifPath := '/tmp/erudite-formula-', formulaId, DarkMode fileNameSuffix, '.gif'.
+		gifPath := '/tmp/erudite-formula-', formulaId, '-', Theme darkModeString, '.gif'.
 		OSProcess waitForCommand:
 			'mimetex -e ', gifPath, ' "', aDocMath formula, '"'.
 		OSProcess waitForCommand:
 			'convert ', gifPath,' ', pngPath.
 		
-		DarkMode isEnabled ifTrue: [
-			DarkMode convertLightImageToDarkImage: pngPath
+		Theme isDark ifTrue: [
+			OSProcess convertLightImageToDarkImage: pngPath
 		]
 	].
 
