@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5234] on 12 June 2022 at 9:08:36 pm'!
+'From Cuis 6.0 [latest update: #5234] on 12 June 2022 at 9:21:20 pm'!
 'Description '!
-!provides: 'EruditeUML' 1 1!
+!provides: 'EruditeUML' 1 2!
 !requires: 'Erudite' 1 179 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -72,7 +72,7 @@ uml
 
 		DocLink target: pngPath type: #image label: script	]! !
 
-!EruditeUMLManual methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 21:06:58'!
+!EruditeUMLManual methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 21:21:04'!
 About
 ^(EruditeBookSection basicNew title: 'About'; document: ((EruditeDocument contents: '!!!! EruditeUML
 
@@ -96,6 +96,13 @@ Alice -> Bob: Another authentication Request
 Alice <-- Bob: another authentication Response
 @enduml
 
+This extension requires //plantuml// binary reachable by {OSProcess::class}, and implement a //parser// method in your book class side returning an {EruditeUMLMarkupParser::class} instance.
+[[[
+parser
+	^ EruditeUMLMarkupParser new]]]
+
+!!!!!! More examples
+
 @startuml
 class foo
 foo --> bar : normal
@@ -103,13 +110,6 @@ foo --> bar1 #line:red;line.bold;text:red  : red bold
 foo --> bar2 #green;line.dashed;text:green : green dashed
 foo --> bar3 #blue;line.dotted;text:blue   : blue dotted
 @enduml
-
-This extension requires //plantuml// binary reachable by {OSProcess::class}, and implement a //parser// method in your book class side returning an {EruditeUMLMarkupParser::class} instance.
-[[[
-parser
-	^ EruditeUMLMarkupParser new]]]
-
-!!!!!! More examples
 
 @startuml
 scale 350 width
@@ -1003,7 +1003,7 @@ P0PAVt/Tzx/8wR/8kVrPwYDn4Dv9HIzEvpo+0YLVt7WikKseO/j0GQK2+p5+/uAP/uCP1HoO
 Bjyn663wHzyYmOcPZ0nuVWL6GQIYEf9zBPiDP/gjMz8HA55LzpPbsvBfUMwPP/zwkzbwC5Yf
 fvjhJ434P9DVLhl897IDAAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeUMLManual methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 21:06:58'!
+!EruditeUMLManual methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 21:21:04'!
 initialize
     super initialize.
     title _ 'EruditeUMLManual'.
