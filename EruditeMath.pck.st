@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5171] on 12 June 2022 at 9:31:15 pm'!
+'From Cuis 6.0 [latest update: #5171] on 13 June 2022 at 5:34:07 pm'!
 'Description '!
-!provides: 'EruditeMath' 1 9!
+!provides: 'EruditeMath' 1 10!
 !requires: 'Erudite' 1 179 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -87,7 +87,7 @@ math
 			formula: res second;
 			yourself]! !
 
-!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 21:24:15'!
+!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 17:27:12'!
 plot
 	^ super plot ==> [:res |
 		| script plotId pngPath |
@@ -99,7 +99,7 @@ plot
 		pngPath := '/tmp/erudite-plot-', plotId, DarkMode fileNameSuffix, '.png'.
 
 		pngPath asFileEntry exists ifFalse: [
-			| gpPath gpScript proc |
+			| gpPath gpScript |
 			gpScript := 'set term png \', String lf,
 				String tab, 'transparent truecolor', String lf,
 				'set output "', pngPath, '"', String lf,
@@ -108,9 +108,7 @@ plot
 
 			gpPath asFileEntry fileContents: gpScript.
 
-			proc := ThisOSProcess thisOSProcess command:
-				'gnuplot ', gpPath.
-			[proc isComplete] whileFalse: [(Delay forMilliseconds: 10) wait].
+			OSProcess waitForCommand: 'gnuplot ', gpPath.
 			
 			DarkMode isEnabled ifTrue: [
 				DarkMode convertLightImageToDarkImage: pngPath
@@ -1067,13 +1065,11 @@ accept: aVisitor
 
 	^ aVisitor visitMath: self! !
 
-!DarkMode class methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 21:20:54'!
+!DarkMode class methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 17:31:19'!
 convertLightImageToDarkImage: filePath
 
-	| proc |
-	proc := ThisOSProcess thisOSProcess command:
-		'convert -grayscale Rec709Luminance -negate ', filePath, ' ', filePath.
-	[proc isComplete] whileFalse: [(Delay forMilliseconds: 10) wait]! !
+	OSProcess waitForCommand:
+		'convert -grayscale Rec709Luminance -negate ', filePath, ' ', filePath! !
 
 !DarkMode class methodsFor: 'as yet unclassified' stamp: 'AS 6/12/2022 21:27:09'!
 fileNameSuffix
@@ -1094,7 +1090,7 @@ visitMath: aDocMath
 		nextPutAll: aDocMath formula;
 		nextPutAll: '$'! !
 
-!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/12/2022 21:26:05'!
+!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 17:28:33'!
 visitMath: aDocMath
 
 	| formulaId pngPath |
@@ -1105,13 +1101,12 @@ visitMath: aDocMath
 	pngPath := '/tmp/erudite-formula-', formulaId, DarkMode fileNameSuffix, '.png'.
 
 	(document imageAt: pngPath) isNil ifTrue: [
-		| gifPath proc |
+		| gifPath |
 		gifPath := '/tmp/erudite-formula-', formulaId, DarkMode fileNameSuffix, '.gif'.
-		proc := ThisOSProcess thisOSProcess command:
-			'mimetex -e ', gifPath,
-			' "', aDocMath formula, '"',
-			' && convert ', gifPath,' ', pngPath.
-		[proc isComplete] whileFalse: [(Delay forMilliseconds: 10) wait].
+		OSProcess waitForCommand:
+			'mimetex -e ', gifPath, ' "', aDocMath formula, '"'.
+		OSProcess waitForCommand:
+			'convert ', gifPath,' ', pngPath.
 		
 		DarkMode isEnabled ifTrue: [
 			DarkMode convertLightImageToDarkImage: pngPath
