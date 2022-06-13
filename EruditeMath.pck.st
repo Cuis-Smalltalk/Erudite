@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5171] on 13 June 2022 at 7:32:40 pm'!
+'From Cuis 6.0 [latest update: #5171] on 13 June 2022 at 7:55:20 pm'!
 'Description '!
-!provides: 'EruditeMath' 1 15!
+!provides: 'EruditeMath' 1 16!
 !requires: 'Erudite' 1 179 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -616,13 +616,20 @@ accept: aVisitor
 
 	^ aVisitor visitMath: self! !
 
-!DirectoryEntry class methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 19:31:21'!
+!DirectoryEntry class methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 19:55:00'!
 tempDirectory
 
-	FileIOAccessor default onUnix ifTrue: [ ^ '/tmp' asDirectoryEntry ].
-	FileIOAccessor default onWindows ifTrue: [ ^ 'C:\Windows\Temp' asDirectoryEntry ].
+	|thisOS|
 	
-	^ self notYetImplemented! !
+	thisOS _ ThisOSProcess thisOSProcess.
+	
+	^ thisOS class caseOf: {
+		[UnixProcess] -> [((thisOS environmentAt: 'TMPDIR')
+			ifNil: ['/tmp']) asDirectoryEntry].
+		[WindowsProcess] -> [(thisOS environmentAt: 'TEMP') asDirectoryEntry].
+		[MacProcess] -> [((thisOS environmentAt: 'TMPDIR')
+			ifNil: ['/tmp']) asDirectoryEntry].
+	}! !
 
 !Theme class methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 17:58:17'!
 darkModeString
@@ -634,6 +641,12 @@ isDark
 
 	" If the text color is light, assume we are in dark mode"
 	^ Theme current text luminance > 0.5! !
+
+!OSProcess class methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 18:03:48'!
+convertLightImageToDarkImage: filePath
+
+	self waitForCommand:
+		'convert -grayscale Rec709Luminance -negate ', filePath, ' ', filePath! !
 
 !LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'MM 6/12/2022 10:27:59'!
 visitMath: aDocMath
@@ -670,9 +683,3 @@ visitMath: aDocMath
 
 	^ (DocLink target: pngPath type: #image label: aDocMath formula)
 		accept: self.! !
-
-!OSProcess class methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 18:03:48'!
-convertLightImageToDarkImage: filePath
-
-	self waitForCommand:
-		'convert -grayscale Rec709Luminance -negate ', filePath, ' ', filePath! !
