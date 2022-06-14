@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5235] on 14 June 2022 at 6:43:20 pm'!
+'From Cuis 6.0 [latest update: #5235] on 14 June 2022 at 6:56:45 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 183!
+!provides: 'Erudite' 1 184!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -12465,12 +12465,11 @@ renderLink: aDocLink on: aStream
 									ifAbsent: [self error: 'Class not found: ', className asString].
 						self browse: class selector: nil]))! !
 
-!ImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:35:13'!
+!ImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:56:31'!
 render: aDocLink in: aDocument on: aStream
 
-	|filePath form imageMorph |
+	|form imageMorph |
 	
-	filePath _ aDocLink target withBlanksTrimmed.
 	form _ [aDocument getNodeData: aDocLink]
 				on: Error
 				do: [:e | ^aStream nextPut: e printString].
@@ -12483,8 +12482,7 @@ render: aDocLink in: aDocument on: aStream
 	imageMorph _ ImageMorph new
 					image: form.
 							
-	aStream nextPut: (Text streamContents: [:s | imageMorph printOn: s])
-	! !
+	aStream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
 
 !MessageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:35'!
 render: aDocLink in: aDocument on: aStream
