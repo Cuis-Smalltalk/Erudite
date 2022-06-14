@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5171] on 13 June 2022 at 11:16:35 pm'!
+'From Cuis 6.0 [latest update: #5171] on 14 June 2022 at 9:01:54 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 180!
+!provides: 'Erudite' 1 181!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -14150,7 +14150,7 @@ enableEditing: aBoolean
 expandRoot
 	scroller submorphs first toggleExpandedState ! !
 
-!TextModelMorph methodsFor: '*Erudite' stamp: 'MM 12/7/2018 12:55'!
+!TextModelMorph methodsFor: '*Erudite' stamp: 'AS 6/14/2022 21:00:53'!
 enableEditing: aBoolean
-	self textMorph enableEditing: aBoolean! !
+	self innerTextMorph enableEditing: aBoolean! !
 EruditeSystem initialize!
