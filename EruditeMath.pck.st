@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5171] on 14 June 2022 at 5:39:06 pm'!
+'From Cuis 6.0 [latest update: #5171] on 15 June 2022 at 12:01:36 pm'!
 'Description '!
-!provides: 'EruditeMath' 1 23!
+!provides: 'EruditeMath' 1 25!
 !requires: 'Erudite' 1 179 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -92,7 +92,7 @@ plot
 			script: res second;
 			yourself]! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/14/2022 17:38:09'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:59:42'!
 LatexMath
 ^(EruditeBookSection basicNew title: 'Latex Math'; document: ((EruditeDocument contents: '!!!! Latex Math
 
@@ -106,7 +106,7 @@ The formulas are converted to images and then displayed.
 
 Example:
 
-$x^2 + y^2$') images: ((Dictionary new) add: ('erudite-formula-ec88764d14d565e8c68aa2804ff42cfc08c65eeadark'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAVCAMAAADB9BioAAADAFBMVEUAAAAAAAD///9/f3/l
+$x^2 + y^2$') data: ((Dictionary new) add: ('erudite-formula-ec88764d14d565e8c68aa2804ff42cfc08c65eea'->((Dictionary new) add: (#dark->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAVCAMAAADB9BioAAADAFBMVEUAAAAAAAD///9/f3/l
 AAAVsBoDQ98A/////xTCAHgfHx8/Pz9fX1+fn5+/v7/f398HBwcPDw8XFxcnJycvLy83NzdH
 R0dPT09XV1dnZ2dvb293d3eHh4ePj4+Xl5enp6evr6+3t7fHx8fPz8/X19fn5+fv7+/39/cA
 AAAAMwAAZgAAmQAAzAAA/wAAADMAMzMAZjMAmTMAzDMA/zMAAGYAM2YAZmYAmWYAzGYA/2YA
@@ -125,16 +125,16 @@ vQAOAAAA1ElEQVR4XqWUwQ3DIAxFPY/vvjNF7h2JBVggE3S6XyAlOBAXt/XBkdDzE9gBGoMB
 MDnCAAWBAmRdb4FpzynGtcACgZrXgo9gtZ/kahs3sSen4ALq/ohP0MA8EJE8FLT5XKaDy+T0
 UgMZEmJx4a5eC/DQghPMtWWopLQwBKQEHUQ5TD/WRrZgw8FMYO8aElo3cMTz/e1Nq1mB87Gt
 Hqi9j/eC7XlNgrsbUJbEKZAUx1pBDDmxQ1C4PUzXuv5G7OhBgTfQdzHy4U8B+94rwyV2q+jX
-Z/AFawChgYiF4CIAAAAASUVORK5CYII=')); add: ('erudite-formula-ec88764d14d565e8c68aa2804ff42cfc08c65eealight'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAVCAYAAAD2KuiaAAABXklEQVR4XuVYQQ6EIAzkdb7A
+Z/AFawChgYiF4CIAAAAASUVORK5CYII=')); add: (#light->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAVCAYAAAD2KuiaAAABXklEQVR4XuVYQQ6EIAzkdb7A
 D/gBn+TdV3j37nu6GRM2ikVaCspmD40RYRhGOhUdETkyxLZt5Jz7Bu7JiFk67jiagNd13QGX
 ZdkBccU92ltZfIqjCXwYBur7/rTYcRwJ0YoAKY4mcL+luPZWBEhxfERxCcm3dkVxcABjgpYF
 OHKsYjhaE3xSgJBjtFygg+98jFSpySmDGgGOHLVYHMfLQywapQIuGb7NGLhl8VoB0HeaJrUA
 MY6ngX6xYe2UvJGTqsotrRXgbgzXfseRHegFkObTPM9kyWmtAJiPG8PxTnGMTiIxMvSDm4Y+
 Eau7sei6ju6eS42Wa09xLJ7PtT1As81FWGKzqFiqSgiQew4RpYDUE94SAPywzXPOIKz7A8hX
 AN9WMyVyBAj54etOUrUuWOFZmfsAqu0HWgFCzrGqkJ0Cb5zYLON9/v+lAOav0NZ+X0nECj3L
-kqI/J0Dpf5AfEL+5pSfJ82wAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+kqI/J0Dpf5AfEL+5pSfJ82wAAAAASUVORK5CYII=')); yourself)); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/14/2022 17:38:09'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:59:42'!
 NewMathBook
 ^(EruditeBookSection basicNew title: 'New Math Book'; document: ((EruditeDocument contents: '!!!! Creating a New Math Book
 
@@ -144,9 +144,9 @@ Then go to the book''s class in the Browser and add a [[[parser]]] method on the
 
 For example, this is what {EruditeMathManual class>>parser::method} looks like:
 
-{EruditeMathManual class>>parser::method}[embed]') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+{EruditeMathManual class>>parser::method}[embed]') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/14/2022 17:38:10'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:59:42'!
 Plots
 ^(EruditeBookSection basicNew title: 'Plots'; document: ((EruditeDocument contents: '!!!! Plots
 
@@ -164,7 +164,7 @@ Example:
 
 <plot>
 plot cos(x)
-</plot>') images: ((Dictionary new) add: ('erudite-plot-2147160b73b9abd116eea12a564b0bd1bd690aa6dark'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAABYC0lEQVR4XuWdC4xUZZq/O8YY
+</plot>') data: ((Dictionary new) add: ('erudite-plot-2147160b73b9abd116eea12a564b0bd1bd690aa6'->((Dictionary new) add: (#dark->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAABYC0lEQVR4XuWdC4xUZZq/O8YY
 FULIBNddQ4g6O4SgEgKjITgSWAk6HVnIQBjDMHhhQMUN4ooGlIxBJKwXRFTQEeUiDn86ooAt
 KyKgDCg0F7k00Nyam9k1m81kdtd1XZd1v//3G05LUV1VXVV9Lt/3PU/8In26qrrO+37ne3/n
 O+/3fjV8+PDhw4cPHz58+PDhw4cPHz58+PDhw4cPHz58+PDhw4cPHz58+PDhw4cPHz58+PDh
@@ -582,7 +582,7 @@ LYjuO92ii/GdaFZQfea3Ud+YwrcQH/74wYc/nvDh6xR3DbvNFKdbzutUXbs5MrCKdQ7nW49P
 tMz+w2j13nfR9jsT+Zbhk9dP+OMHH/54woevU/jw4cOHDx8+fPjw4cOHDx8+fPjw4cOHDx8+
 fPjw4cOHDx8+fPjw4cOHDx8+fPjw4cOHDx8+fPjw4cOHT6bw4cOHDx8+fPjw4cOHDx8+fPjw
 4cOHDx8+fPjw4cOHDx8+fPjw4cOHDx8+fPjw4cOHDx8+fPjw4cOHDx8+fPjw4cOHDx8+fPjw
-SZb/D6Rf50ZZfMFOAAAAAElFTkSuQmCC')); add: ('erudite-plot-2147160b73b9abd116eea12a564b0bd1bd690aa6light'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAABYI0lEQVR4XuWdDZhdVXX35+Gh
+SZb/D6Rf50ZZfMFOAAAAAElFTkSuQmCC')); add: (#light->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAABYI0lEQVR4XuWdDZhdVXX35+Gh
 lGJKqbVqLaKlGjHFGAUrL9oYlSJG1NTPGmOlqBGxRRSL1DevYKnFFDC1BWPkm4RvIYTwDSFg
 YkIIIZF8TGYmk5nJZDKTSSaTzGQymUzCeve/npHLzb0zd2buPWfv/bvP83smOXPPnXvW2mev
 /9l77bWrzKzK+PDhw4cPHz58+GDgG4EPHz58+PDhw4cvAPnw4cOHDx8+fPjwBSAfPnz48OHD
@@ -1000,15 +1000,15 @@ b5DoG/GE5Ga8JxkVVJv5QdI2vsu3ER9+/8GH35/wiUWnxGjY5UW23hEn5LxP1bXrEwOrWOcU
 fsPkkyyzfyRZvdeXbL9zPt82fPLaCb//4MPvT/gErVP4zuDDhw8fPnz48KEJUb4R+PDhw4cP
 Hz58+AKQDx8+fPjw4cOHD18A8uHDhw8fPnz48OELQD58+PDhw4cPHz58AciHD58YsSr+Tz58
 +PCJC74R+PDhw4cPHz58+AKQDx8+fPjw4cOHD18A8uHDhw8fPnz48OELQD58+PDhw4cPHz58
-AciHDx8+fPjw4cOHLwD58OHDhw8fPnz4+Mb/B2TUGLchNJmiAAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+AciHDx8+fPjw4cOHLwD58OHDhw8fPnz4+Mb/B2TUGLchNJmiAAAAAElFTkSuQmCC')); yourself)); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/14/2022 17:38:09'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:59:42'!
 SystemRequirements
 ^(EruditeBookSection basicNew title: 'System Requirements'; document: ((EruditeDocument contents: '!!!! System Requirements
 
-EruditeMath requires some external programs. Which external programs are required for a feature is documented in the feature''s section of this manual.') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+EruditeMath requires some external programs. Which external programs are required for a feature is documented in the feature''s section of this manual.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/14/2022 17:38:09'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:59:42'!
 initialize
     super initialize.
     title _ 'EruditeMath Manual'.
@@ -1039,10 +1039,109 @@ accept: aVisitor
 
 	^ aVisitor visitMath: self! !
 
+!DocMath methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:26:45'!
+data
+
+	| dataDict darkPngPath formulaId lightGifPath lightPngPath |
+	dataDict := Dictionary new.
+	formulaId := self dataKey.
+	
+	darkPngPath := DirectoryEntry tempDirectory //
+		(formulaId, Theme darkModeId, '.png').
+	lightGifPath := DirectoryEntry tempDirectory //
+		(formulaId, Theme lightModeId, '.gif').
+	lightPngPath := DirectoryEntry tempDirectory //
+		(formulaId, Theme lightModeId, '.png').
+
+	lightGifPath exists ifFalse: [
+		OSProcess waitForCommand:
+			'mimetex -e ', lightGifPath pathName, ' "', self formula, '"'
+	].
+
+	lightPngPath exists ifFalse: [
+		OSProcess waitForCommand:
+			'convert ', lightGifPath pathName,' ', lightPngPath pathName
+	].
+
+	dataDict at: Theme lightModeId put:
+		(EruditeForm fromFileNamed: lightPngPath pathName).
+
+	darkPngPath exists ifFalse: [
+		OSProcess convertLightImage: lightPngPath pathName
+			toDarkImage: darkPngPath pathName
+	].
+
+	dataDict at: Theme darkModeId put:
+		(EruditeForm fromFileNamed: darkPngPath pathName).
+	
+	^ dataDict! !
+
+!DocMath methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:24:53'!
+dataKey
+
+	^ 'erudite-formula-', (((SecureHashAlgorithm new)
+		initialize;
+		hashMessage: self formula)
+			printStringBase: 16) asLowercase! !
+
 !DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 21:30:31'!
 accept: aVisitor
 
 	^ aVisitor visitPlot: self! !
+
+!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:53:27'!
+data
+
+	| dataDict |
+	dataDict := Dictionary new.
+	
+	self putMorphicData: dataDict.
+	
+	^ dataDict! !
+
+!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 10:57:14'!
+dataKey
+
+	^ 'erudite-plot-', (((SecureHashAlgorithm new)
+		initialize;
+		hashMessage: self script)
+			printStringBase: 16) asLowercase! !
+
+!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:34:06'!
+putMorphicData: aDictionary
+
+	| darkImagePath gpPath lightImagePath plotId |
+	plotId := self dataKey.
+	
+	darkImagePath := DirectoryEntry tempDirectory //
+		(plotId, Theme darkModeId, '.png').
+	lightImagePath := DirectoryEntry tempDirectory //
+		(plotId, Theme lightModeId, '.png').
+	gpPath := (lightImagePath pathName, '.gp') asFileEntry.	
+
+	gpPath exists ifFalse: [
+		| gpScript |
+		gpScript := 'set term png \', String lf,
+			String tab, 'transparent truecolor', String lf,
+			'set output "', lightImagePath pathName, '"', String lf,
+			self script.
+		gpPath fileContents: gpScript
+	].
+
+	lightImagePath exists ifFalse: [
+		OSProcess waitForCommand: 'gnuplot ', gpPath pathName
+	].
+
+	aDictionary at: Theme lightModeId put:
+		(EruditeForm fromFileNamed: lightImagePath pathName).
+
+	darkImagePath exists ifFalse: [
+		OSProcess convertLightImage: lightImagePath pathName
+			toDarkImage: darkImagePath pathName
+	].
+
+	aDictionary at: Theme darkModeId put:
+		(EruditeForm fromFileNamed: darkImagePath pathName)! !
 
 !DocPlot methodsFor: 'accessing' stamp: 'AS 6/13/2022 21:40:10'!
 script
@@ -1101,25 +1200,22 @@ convertLightImage: lightImageFilePath toDarkImage: darkImageFilePath
 	self waitForCommand:
 		'convert -grayscale Rec709Luminance -negate ', lightImageFilePath, ' ', darkImageFilePath! !
 
-!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'MM 6/12/2022 10:27:59'!
+!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:38:06'!
 visitMath: aDocMath
 
-	^ stream
+	stream
 		nextPutAll: '$';
 		nextPutAll: aDocMath formula;
 		nextPutAll: '$'! !
 
-!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 23:09:07'!
+!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:48:47'!
 visitPlot: aDocPlot
 
 	| plotId texPath |
-	plotId := (((SecureHashAlgorithm new)
-		initialize;
-		hashMessage: aDocPlot script)
-			printStringBase: 16) asLowercase.
+	plotId := aDocPlot dataKey.
 
 	texPath := DirectoryEntry tempDirectory //
-		('erudite-plot-', plotId, '.tex').
+		(plotId, '.tex').
 
 	texPath exists ifFalse: [
 		| gpPath gpScript |
@@ -1128,7 +1224,7 @@ visitPlot: aDocPlot
 			aDocPlot script.
 		
 		gpPath := DirectoryEntry tempDirectory //
-			('erudite-plot-', plotId, '-tex.gp').
+			(plotId, '-latex.gp').
 		
 		gpPath fileContents: gpScript.
 		
@@ -1137,94 +1233,28 @@ visitPlot: aDocPlot
 
 	^ stream nextPutAll: texPath textContents! !
 
-!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/14/2022 16:21:25'!
+!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:49:29'!
 visitMath: aDocMath
 
-	| formulaId formulaKey |
-	formulaId := 'erudite-formula-', (((SecureHashAlgorithm new)
-		initialize;
-		hashMessage: aDocMath formula)
-			printStringBase: 16) asLowercase.
-	
-	formulaKey := formulaId, Theme currentDarkModeId.
-	
-	document imageAt: formulaKey ifAbsent: [
-		| darkPngPath lightGifPath lightPngPath |
-		darkPngPath := DirectoryEntry tempDirectory //
-			(formulaId, Theme darkModeId, '.png').
-		lightGifPath := DirectoryEntry tempDirectory //
-			(formulaId, Theme lightModeId, '.gif').
-		lightPngPath := DirectoryEntry tempDirectory //
-			(formulaId, Theme lightModeId, '.png').
-		
-		lightGifPath exists ifFalse: [
-			OSProcess waitForCommand:
-				'mimetex -e ', lightGifPath pathName, ' "', aDocMath formula, '"'
-		].
-		
-		lightPngPath exists ifFalse: [
-			OSProcess waitForCommand:
-				'convert ', lightGifPath pathName,' ', lightPngPath pathName
-		].
-		
-		document imageAt: formulaId, Theme lightModeId put:
-			(EruditeForm fromFileNamed: lightPngPath pathName).
-		
-		darkPngPath exists ifFalse: [
-			OSProcess convertLightImage: lightPngPath pathName
-				toDarkImage: darkPngPath pathName
-		].
-		
-		document imageAt: formulaId, Theme darkModeId put:
-			(EruditeForm fromFileNamed: darkPngPath pathName)
-	].
+	| dataDict form imageMorph |
+	dataDict := [document getNodeData: aDocMath]
+		on: Error
+		do: [:e | ^stream nextPut: e printString].
 
-	^ (DocLink target: formulaKey type: #image label: aDocMath formula)
-		accept: self.! !
+	form := dataDict at: Theme currentDarkModeId.
+	imageMorph := ImageMorph new image: form.
 
-!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/14/2022 16:24:27'!
+	stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
+
+!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:49:40'!
 visitPlot: aDocPlot
 
-	| plotId plotKey |
-	plotId := 'erudite-plot-', (((SecureHashAlgorithm new)
-		initialize;
-		hashMessage: aDocPlot script)
-			printStringBase: 16) asLowercase.
-	
-	plotKey := plotId, Theme currentDarkModeId.
-	
-	document imageAt: plotKey ifAbsent: [
-		| darkImagePath gpPath lightImagePath |
-		darkImagePath := DirectoryEntry tempDirectory //
-			(plotId, Theme darkModeId, '.png').
-		lightImagePath := DirectoryEntry tempDirectory //
-			(plotId, Theme lightModeId, '.png').
-		gpPath := (lightImagePath pathName, '.gp') asFileEntry.	
+	| dataDict form imageMorph |
+	dataDict := [document getNodeData: aDocPlot]
+		on: Error
+		do: [:e | ^stream nextPut: e printString].
 
-		gpPath exists ifFalse: [
-			| gpScript |
-			gpScript := 'set term png \', String lf,
-				String tab, 'transparent truecolor', String lf,
-				'set output "', lightImagePath pathName, '"', String lf,
-				aDocPlot script.
-			gpPath fileContents: gpScript
-		].
-		
-		lightImagePath exists ifFalse: [
-			OSProcess waitForCommand: 'gnuplot ', gpPath pathName
-		].
-		
-		document imageAt: plotId, Theme lightModeId put:
-			(EruditeForm fromFileNamed: lightImagePath pathName).
-		
-		darkImagePath exists ifFalse: [
-			OSProcess convertLightImage: lightImagePath pathName
-				toDarkImage: darkImagePath pathName
-		].
-		
-		document imageAt: plotId, Theme darkModeId put:
-			(EruditeForm fromFileNamed: darkImagePath pathName)
-	].
+	form := dataDict at: Theme currentDarkModeId.
+	imageMorph := ImageMorph new image: form.
 
-	^ (DocLink target: plotKey type: #image label: aDocPlot script)
-		accept: self.! !
+	stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
