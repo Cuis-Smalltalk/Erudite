@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5235] on 16 June 2022 at 8:38:00 am'!
+'From Cuis 6.0 [latest update: #5235] on 16 June 2022 at 9:43:23 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 187!
+!provides: 'Erudite' 1 188!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -12625,6 +12625,41 @@ worldMenuOptions
 	} asDictionary.
 	}`! !
 
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 6/16/2022 09:42:29'!
+listingsPackageConfiguration
+
+	"See: https://marianopeck.blog/2012/06/17/smalltalk-syntax-highlighting-for-latex/"
+	
+	^ '\usepackage{color}
+\usepackage{textcomp}
+\usepackage{listings}
+
+\lstnewenvironment{code}{%
+ \lstset{%
+ % frame=lines,
+ frame=single,
+ framerule=0pt,
+ mathescape=false
+ }%
+ \noindent%
+ \minipage{\linewidth}%
+}{%
+ \endminipage%
+}%
+\lstnewenvironment{codeWithLineNumbers}{%
+ \lstset{%
+ % frame=lines,
+ frame=single,
+ framerule=0pt,
+ mathescape=false,
+ numbers=left
+ }%
+ \noindent%
+ \minipage{\linewidth}%
+}{%
+ \endminipage%
+}%'! !
+
 !LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 1/19/2019 19:02:33'!
 render
 
@@ -12700,7 +12735,7 @@ renderSubsubsection: aBookSection
 	
 	! !
 
-!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 6/16/2022 08:36:37'!
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 6/16/2022 09:26:10'!
 renderWithTemplate: aBlock
 
 	stream nextPutAll: '\documentclass[11pt,pdflatex,makeidx]{scrbook}   % Book class in 11 points'; newLine.
@@ -12713,19 +12748,15 @@ renderWithTemplate: aBlock
 			nextPutAll: '\usepackage{hyperref}'; newLine.
 		
 	highlightSyntax 
-		ifTrue: [ stream nextPutAll: '\usepackage{minted}'; newLine]
-		ifFalse: [ stream nextPutAll: '\usepackage{listings}'; newLine].
+		ifTrue: [ stream nextPutAll: '\usepackage{minted}'; newLine].
 	
 	stream nextPutAll: '\usepackage{hyperref}'; newLine;
 			nextPutAll: '\usepackage{courier}'; newLine;
 			nextPutAll: '\hypersetup{colorlinks=true,linkcolor=blue}';newLine.
 			
-	highlightSyntax ifFalse: [
-		stream nextPutAll: '\lstloadlanguages{Smalltalk}'; newLine;
-				nextPutAll: '\lstset{frame=none,language=Smalltalk,basicstyle=\ttfamily\small,
-keywordstyle=\color{black}\bfseries,stringstyle=\ttfamily,showstringspaces=false,breaklines}'; newLine;
-				nextPutAll: '\lstnewenvironment{code}{}{}']
-	ifTrue: [stream nextPutAll: '\definecolor{bg}{rgb}{0.95,0.95,0.95}'; newLine].
+	highlightSyntax 
+		ifFalse: [	stream nextPutAll: self listingsPackageConfiguration; newLine]
+		ifTrue: [stream nextPutAll: '\definecolor{bg}{rgb}{0.95,0.95,0.95}'; newLine].
 	
 	afterPreamble ifNotNil: [stream nextPutAll: afterPreamble; newLine].
 	
@@ -12758,6 +12789,10 @@ beforePreamble: aString
 book: aBook
 
 	book _ aBook! !
+
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 6/16/2022 09:10:16'!
+highlightSyntax: aBoolean
+	highlightSyntax _ aBoolean! !
 
 !LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 16:21:07'!
 requestor
