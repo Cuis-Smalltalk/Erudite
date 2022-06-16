@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5235] on 14 June 2022 at 6:56:45 pm'!
+'From Cuis 6.0 [latest update: #5235] on 15 June 2022 at 10:05:19 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 184!
+!provides: 'Erudite' 1 186!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -347,6 +347,36 @@ Object subclass: #EruditeBookSection
 EruditeBookSection class
 	instanceVariableNames: ''!
 
+!classDefinition: #EruditeDocRenderer category: 'Erudite-Core'!
+Object subclass: #EruditeDocRenderer
+	instanceVariableNames: 'document stream requestor'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Core'!
+!classDefinition: 'EruditeDocRenderer class' category: 'Erudite-Core'!
+EruditeDocRenderer class
+	instanceVariableNames: ''!
+
+!classDefinition: #LatexEruditeDocRenderer category: 'Erudite-Latex'!
+EruditeDocRenderer subclass: #LatexEruditeDocRenderer
+	instanceVariableNames: 'highlightSyntax'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Latex'!
+!classDefinition: 'LatexEruditeDocRenderer class' category: 'Erudite-Latex'!
+LatexEruditeDocRenderer class
+	instanceVariableNames: ''!
+
+!classDefinition: #MorphicEruditeDocRenderer category: 'Erudite-Morphic'!
+EruditeDocRenderer subclass: #MorphicEruditeDocRenderer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Morphic'!
+!classDefinition: 'MorphicEruditeDocRenderer class' category: 'Erudite-Morphic'!
+MorphicEruditeDocRenderer class
+	instanceVariableNames: ''!
+
 !classDefinition: #EruditeDocument category: 'Erudite-Core'!
 Object subclass: #EruditeDocument
 	instanceVariableNames: 'contents parser data'
@@ -367,14 +397,14 @@ Object subclass: #EruditeSystem
 EruditeSystem class
 	instanceVariableNames: ''!
 
-!classDefinition: #LatexEruditeDocRenderer category: 'Erudite-Latex'!
-Object subclass: #LatexEruditeDocRenderer
+!classDefinition: #LatexEruditeBookRenderer category: 'Erudite-Latex'!
+Object subclass: #LatexEruditeBookRenderer
 	instanceVariableNames: 'stream requestor highlightSyntax book documentClass texFilePath'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Latex'!
-!classDefinition: 'LatexEruditeDocRenderer class' category: 'Erudite-Latex'!
-LatexEruditeDocRenderer class
+!classDefinition: 'LatexEruditeBookRenderer class' category: 'Erudite-Latex'!
+LatexEruditeBookRenderer class
 	instanceVariableNames: ''!
 
 !classDefinition: #DocLinkRenderer category: 'Erudite-Morphic'!
@@ -455,16 +485,6 @@ DocLinkRenderer subclass: #UrlDocLinkRenderer
 	category: 'Erudite-Morphic'!
 !classDefinition: 'UrlDocLinkRenderer class' category: 'Erudite-Morphic'!
 UrlDocLinkRenderer class
-	instanceVariableNames: ''!
-
-!classDefinition: #MorphicEruditeDocRenderer category: 'Erudite-Morphic'!
-Object subclass: #MorphicEruditeDocRenderer
-	instanceVariableNames: 'stream document requestor'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Erudite-Morphic'!
-!classDefinition: 'MorphicEruditeDocRenderer class' category: 'Erudite-Morphic'!
-MorphicEruditeDocRenderer class
 	instanceVariableNames: ''!
 
 !classDefinition: #DocNode category: 'Erudite-Parser'!
@@ -642,24 +662,6 @@ Test book:
 !EruditeBookSection commentStamp: '<historical>' prior: 0!
 A section of a Book.!
 
-!EruditeDocument commentStamp: '<historical>' prior: 0!
-An Erudite document. A piece of text meant to be formatted.!
-
-!LatexEruditeDocRenderer commentStamp: 'MM 3/6/2021 19:43:01' prior: 0!
-Renders a Book to a Latex file.
-
-Example:
-
-(LatexEruditeDocRenderer on: CuisManual new)
-	texFilePath: '/home/marian/src/Cuis/Erudite/CuisManual.tex';
-	render.
-	
-(LatexEruditeDocRenderer on: EruditeManual new)
-	texFilePath: '/home/marian/src/Cuis/Erudite/EruditeManual.tex';
-	render.
-
-Then process with pdflatex -shell-escape <file.tex>!
-
 !MorphicEruditeDocRenderer commentStamp: '<historical>' prior: 0!
 Renders a Document to a TextMorph.
 
@@ -675,6 +677,24 @@ Look at Object>>at:
 Properties are triggered via #triggerEvent:'.
 
 (MorphicEruditeDocRenderer on: erudite) render edit.!
+
+!EruditeDocument commentStamp: '<historical>' prior: 0!
+An Erudite document. A piece of text meant to be formatted.!
+
+!LatexEruditeBookRenderer commentStamp: '<historical>' prior: 0!
+Renders a Book to a Latex file.
+
+Example:
+
+(LatexEruditeBookRenderer on: CuisManual new)
+	texFilePath: '/home/marian/src/Cuis/Erudite/CuisManual.tex';
+	render.
+	
+(LatexEruditeBookRenderer on: EruditeManual new)
+	texFilePath: '/home/marian/src/Cuis/Erudite/EruditeManual.tex';
+	render.
+
+Then process with pdflatex -shell-escape <file.tex>!
 
 !EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 12/13/2018 16:17'!
 editing
@@ -1814,14 +1834,14 @@ explorerMenu
 	
 	^ menu! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 13:48:55'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:48:20'!
 exportToLatex
 	
 	| defaultFilePath |
 	
 	defaultFilePath _ DirectoryEntry currentDirectory / (model title, '.tex').
 	self request: 'Export to:' initialAnswer: defaultFilePath asString do: [:filePath |
-		(LatexEruditeDocRenderer on: model)
+		(LatexEruditeBookRenderer on: model)
 			texFilePath: filePath;
 			render.
 		self inform: 'Book exported']! !
@@ -11766,206 +11786,56 @@ title: aString document: aDocument
 		document: aDocument;
 		yourself! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:37:39'!
-data
-	^ data! !
+!EruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:37:13'!
+document
+	^ document! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:47'!
-data: aDictionary
+!EruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:36:56'!
+initialize: aDocument
 
-	data _ aDictionary! !
+	document _ aDocument! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:39:32'!
-getNodeData: aNode
+!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:58:28'!
+document: anObject
+	"Set the value of document"
 
-	self assert: aNode dataKey isNil not.
+	document := anObject! !
+
+!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:58:28'!
+requestor
+	"Answer the value of requestor"
+
+	^ requestor! !
+
+!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:58:28'!
+requestor: anObject
+	"Set the value of requestor"
+
+	requestor := anObject! !
+
+!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:58:28'!
+stream
+	"Answer the value of stream"
+
+	^ stream! !
+
+!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:58:28'!
+stream: anObject
+	"Set the value of stream"
+
+	stream := anObject! !
+
+!EruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:35:02'!
+on: aDocument
+
+	^ self new initialize: aDocument! !
+
+!EruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:35:26'!
+render: aDocument
 	
-	^ data at: aNode dataKey
-			ifAbsent: [ |nodeData|
-				nodeData _ aNode data.
-				data at: aNode dataKey put: nodeData.
-				nodeData]! !
+	^ (self on: aDocument) render! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:38:00'!
-images: aDictionary
-	"Deprecated."
-	data _ aDictionary! !
-
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:07:36'!
-initialize
-
-	images _ Dictionary new.
-	data _ Dictionary new.! !
-
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:00:30'!
-parsedContents
-
-	^ self parser parse: contents.! !
-
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:07'!
-storeOn: aStream
-
-	|usedData|
-	
-	"Extract the data that needs to be serialized."
-	
-	usedData _ Dictionary new.
-	
-	self parsedContents contents do: [:node |
-		node isString ifFalse: [
-			node dataKey isNil  ifFalse: [ |nodeData|
-				nodeData _ data at: node dataKey ifAbsent: [node data].
-				usedData at: node dataKey put: nodeData]]].
-
-	aStream nextPutAll: '((EruditeDocument contents: ';
-			nextPutAll: contents asString printString;
-			"nextPutAll: ') images: '; store: images;"
-			nextPutAll: ') data: '; store: usedData;
-			nextPutAll: '; yourself)'! !
-
-!EruditeDocument methodsFor: 'accessing' stamp: 'MM 11/29/2018 19:25'!
-contents
-	"Answer the value of contents"
-
-	^ contents! !
-
-!EruditeDocument methodsFor: 'accessing' stamp: 'MM 12/10/2018 21:38'!
-contents: anObject
-	"Set the value of contents"
-
-	contents _ anObject! !
-
-!EruditeDocument methodsFor: 'accessing' stamp: 'MM 6/11/2022 19:00:47'!
-parser
-	"Answer the value of parser"
-
-	^ parser ifNil: [EruditeMarkupParser new]! !
-
-!EruditeDocument methodsFor: 'accessing' stamp: 'MM 6/11/2022 18:59:58'!
-parser: anObject
-	"Set the value of parser"
-
-	parser := anObject! !
-
-!EruditeDocument class methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 23:33'!
-contents: aCollection
-	
-	^ self new contents: aCollection; yourself! !
-
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:56:41'!
-editBook
-	EruditeBook withBookSelectionDo: [ :book |
-		book edit ].! !
-
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:55:02'!
-eruditeWorldMenu
-	"Build the Erudite menu for the world."
-
-	^ (self menu: 'Erudite...')
-		addItemsFromDictionaries: `{
-			{
-				#label 			-> 		'New...'.
-				#selector 		-> 		#newBook.
-				#icon 			-> 		#newIcon.
-				#balloonText 	-> 		'Create a new book.'
-			} asDictionary.
-			{
-				#label 			-> 		'Read...'.
-				#selector 		-> 		#readBook.
-				#icon 			-> 		#openIcon.
-				#balloonText 	-> 		'Read a book.'
-			} asDictionary.
-			{
-				#label 			-> 		'Edit...'.
-				#selector 		-> 		#editBook.
-				#icon 			-> 		#textEditorIcon.
-				#balloonText 	-> 		'Edit a book.'
-			} asDictionary.
-			{
-				#label 			-> 		'Read all books'.
-				#selector 		-> 		#readAllBooks.
-				#icon 			-> 		#openIcon.
-				#balloonText 	-> 		'Read all books.'
-			} asDictionary.
-		}`! !
-
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 2/9/2022 11:40:20'!
-helpMenuOptions
-
-	^ `{
-		{
-				#itemGroup 	-> 		10.
-				#itemOrder 		-> 		30.
-				#label 			-> 		'Cuis Manual'.
-				#selector 		-> 		#open.
-				#object -> CuisManual.
-				#icon 			->	#helpIcon.
-				#balloonText 	-> 		'Read the Cuis Manual'
-			} asDictionary.
-		}` ! !
-
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 22:45:40'!
-initialize
-
-	Preferences addPreference: #eruditeBrowserClassComments 
-					category: 'erudite'  
-					default: true  
-					balloonHelp: 'Enabled/disable Erudite markup in browser class comments'.
-					
-	Preferences setPreference:  #tapAndHoldEmulatesButton2 toValue: false.
-					 
-	EruditeManual open! !
-
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:58:27'!
-menu: titleString
-	"Create a menu with the given title, ready for filling"
-
-	| menu |
-	(menu _ MenuMorph entitled: titleString) 
-		defaultTarget: self; 
-		addStayUpIcons.
-	^ menu! !
-
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:59:45'!
-newBook
-	| book title |
-	title _ FillInTheBlankMorph request: 'Book title:'.
-	title ifNotEmpty: [
-		book _ EruditeBook titled: title.
-		book edit ].! !
-
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 15:17:52'!
-openEruditeMenu
-	"Build and show the preferences menu for the world."
-
-	self eruditeWorldMenu popUpInWorld: self runningWorld! !
-
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:55:40'!
-readAllBooks
-
-	(EruditeCompositeBook
-		with: EruditeBook booksList) open.! !
-
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:59:53'!
-readBook
-	EruditeBook withBookSelectionDo: [ :book |
-		book open ].! !
-
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 15:15:17'!
-worldMenuOptions
-
-	^`{{
-		#itemGroup 		-> 		10.
-		#itemOrder 		-> 		50.
-		#label 			-> 		'Erudite...'.
-		#object             ->             EruditeSystem.
-		#selector 		-> 		#openEruditeMenu.
-		#icon 			-> 		#addressBookIcon.
-		#balloonText 	-> 		'Submenu to manage Erudite books'.
-	} asDictionary.
-	}`! !
-
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/20/2019 10:38:17'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 10:00:06'!
 escapeLatex: aString
 	
 	|escapedString|
@@ -11983,18 +11853,9 @@ escapeLatex: aString
 	escapedString _ escapedString copyReplaceAll: '
 ' with: '\leavevmode\\
 '.
-	^ escapedString
-	! !
+	^ escapedString! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:06:48'!
-initialize: aBook
-
-	book _ aBook.
-	stream _ WriteStream on: String new.
-	documentClass _ #book.
-	highlightSyntax _ true! !
-
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 10:04:04'!
 linkRendererFor: aLinkType
 
 	|handlerClassName|
@@ -12002,28 +11863,16 @@ linkRendererFor: aLinkType
 	handlerClassName _ aLinkType asString capitalized, 'DocLinkRenderer'.
 	^ Smalltalk at: handlerClassName asSymbol ifAbsent: ["self error: 'No link renderer for: ', aLinkType asString" nil]! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:02:33'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:51:25'!
 render
-
-	self renderWithTemplate: [
-		book sections do: [:aBookSection | 
-			self renderSection: aBookSection]].
 	
-	texFilePath fileContents: stream contents! !
+	document parsedContents contents do: [:node |
+		node isString ifTrue: [
+			stream nextPutAll: (self escapeLatex: node)]
+		ifFalse: [
+			node accept: self]]! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 17:02:11'!
-renderArticle
-
-	documentClass _ #article.
-	self render! !
-
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 17:01:59'!
-renderBook
-
-	documentClass _ #book.
-	self render! !
-
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:47:36'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:54:11'!
 renderCode: aDocCode
 
 	highlightSyntax 
@@ -12042,7 +11891,7 @@ renderCode: aDocCode
 		ifNotNil: [Compiler evaluate: aDocCode code notifying: requestor logged: false]]
 	on: Error do: [:error | error]"! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:54:28'!
 renderCodeDoIt: aDocCode
 
 	|text button textModel |
@@ -12064,7 +11913,7 @@ renderCodeDoIt: aDocCode
  	button morphExtent: 40@15.
 	stream nextPut: (Text withForm: button)."! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:54:36'!
 renderCodeDoItWithButton: aDocCode
 
 	stream nextPut: (Text string: (aDocCode action at: #button)
@@ -12074,7 +11923,7 @@ renderCodeDoItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false]})! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:54:46'!
 renderCodeEmbedIt: aDocCode
 
 	| evalString result |
@@ -12091,7 +11940,7 @@ renderCodeEmbedIt: aDocCode
 	
 	stream nextPut: (Text streamContents: [:s | result printOn: s])! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:55:14'!
 renderCodeExploreIt: aDocCode
 
 	|text button evalString textModel |
@@ -12111,7 +11960,7 @@ renderCodeExploreIt: aDocCode
 					BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) explore]}.
 	stream nextPut: button.! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:55:23'!
 renderCodeExploreItWithButton: aDocCode
 
 	stream nextPut: (Text string: (aDocCode action at: #button)
@@ -12121,7 +11970,7 @@ renderCodeExploreItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) explore]})! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:55:34'!
 renderCodeInspectIt: aDocCode
 
 	|text button evalString textModel |
@@ -12141,7 +11990,7 @@ renderCodeInspectIt: aDocCode
 					BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) inspect]}.
 	stream nextPut: button.! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:55:43'!
 renderCodeInspectItWithButton: aDocCode
 
 	stream nextPut: (Text string: (aDocCode action at: #button)
@@ -12151,7 +12000,7 @@ renderCodeInspectItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) inspect]})! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:55:54'!
 renderCodePrintIt: aDocCode
 
 	|text button evalString textModel |
@@ -12171,7 +12020,7 @@ renderCodePrintIt: aDocCode
 					BlockTextAction do: [:anObject | Transcript show: (Compiler evaluate: evalString notifying: anObject textProvider logged: false) printString]}.
 	stream nextPut: button.! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 16:21:07'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:04'!
 renderCodePrintItHere: aDocCode
 
 	|text evalString result textModel |
@@ -12196,112 +12045,14 @@ renderCodePrintItHere: aDocCode
 	stream nextPut: '==> ';
 			nextPut: (Text streamContents: [:s | result printOn: s]).! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 22:32:36'!
-renderDocument: aDocument
-	
-	|doc|
-	
-	doc _ EruditeMarkupParser parse: aDocument contents.
-	
-	doc contents do: [:node |
-		node isString ifTrue: [
-			stream nextPutAll: (self escapeLatex: node)]
-		ifFalse: [
-			node accept: self]]! !
-
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 17:00:55'!
-renderSection: aBookSection
-
-	documentClass caseOf: {
-		[#book] -> [stream nextPutAll: '\chapter{'].
-		[#article] -> [stream nextPutAll: '\section{'].
-	}.
-	stream nextPutAll: aBookSection title;
-			nextPutAll: '}'; newLine.
-			
-	self renderDocument: aBookSection document.
-	
-	aBookSection sections do: [:section |
-		self renderSubsection: section]! !
-
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 17:01:18'!
-renderSubsection: aBookSection
-
-	documentClass caseOf: {
-		[#book] -> [stream nextPutAll: '\section{'].
-		[#article] -> [stream nextPutAll: '\subsection{'].
-	}.
-	stream nextPutAll: aBookSection title;
-			nextPutAll: '}'; newLine.
-			
-	self renderDocument: aBookSection document.
-	
-	aBookSection sections do: [:section |
-		self renderSubsubsection: section]! !
-
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 17:00:26'!
-renderSubsubsection: aBookSection
-
-	documentClass caseOf: {
-		[#book] -> [stream nextPutAll: '\subsection{'].
-		[#article] -> [stream nextPutAll: '\subsubsection{'].
-	}.
-	stream nextPutAll: aBookSection title;
-			nextPutAll: '}'; newLine.
-			
-	self renderDocument: aBookSection document.
-	
-	! !
-
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 13:19:14'!
-renderWithTemplate: aBlock
-
-	stream nextPutAll: '\documentclass[11pt,pdflatex,makeidx]{scrbook}   % Book class in 11 points'; newLine;
-			nextPutAll: '\usepackage[margin=0.5in]{geometry}'; newLine;
-			nextPutAll: '\usepackage{color}'; newLine;
-			nextPutAll: '\usepackage{makeidx}'; newLine;
-			nextPutAll: '\usepackage{hyperref}'; newLine.
-		
-	highlightSyntax 
-		ifTrue: [ stream nextPutAll: '\usepackage{minted}'; newLine]
-		ifFalse: [ stream nextPutAll: '\usepackage{listings}'; newLine].
-	
-	stream nextPutAll: '\usepackage{hyperref}'; newLine;
-			nextPutAll: '\usepackage{courier}'; newLine;
-			nextPutAll: '\hypersetup{colorlinks=true,linkcolor=blue}';newLine.
-			
-	highlightSyntax ifFalse: [
-		stream nextPutAll: '\lstloadlanguages{Lisp}'; newLine;
-				nextPutAll: '\lstset{frame=none,language=Lisp,basicstyle=\ttfamily\small,
-keywordstyle=\color{black}\bfseries,stringstyle=\ttfamily,showstringspaces=false,breaklines}'; newLine;
-				nextPutAll: '\lstnewenvironment{code}{}{}']
-	ifTrue: [stream nextPutAll: '\definecolor{bg}{rgb}{0.95,0.95,0.95}'; newLine].
-	
-	stream nextPutAll: '\parindent0pt  \parskip10pt             % make block paragraphs'; newLine;
-			 nextPutAll: '\raggedright                            % do not right justify'; newLine;
-			nextPutAll: '% Note that book class by default is formatted to be printed back-to-back.'; newLine;
-			nextPutAll: '\makeindex'; newLine;
-			nextPutAll: '\begin{document}                        % End of preamble, start of text.'; newLine;
-			nextPutAll: '\title{\textbf '; nextPutAll: book title; nextPutAll: '}'; newLine;
-			nextPutAll: '\date{\today}                           %   Use current date.'; newLine;
-			nextPutAll: '\frontmatter                            % only in book class (roman page #s)'; newLine;
-			nextPutAll: '\maketitle                              % Print title page.'; newLine;
-			nextPutAll: '\tableofcontents                        % Print table of contents'; newLine;
-			nextPutAll: '\mainmatter                             % only in book class (arabic page #s)'; newLine;
-			nextPutAll: '\long\def\ignore#1{}'; newLine.
-			aBlock value.
-	stream "nextPutAll: '\chapter{Index}'; newLine;"  "No index for now..."
-			"nextPutAll: '\printindex'; newLine;"
-			nextPutAll: '\end{document}'! !
-
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 18:45:27'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:18'!
 visitActionLink: aDocLink
 
 	stream nextPutAll: '\underline{';
 			nextPutAll: aDocLink title;
 			nextPutAll: '}'! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 17:10:24'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:28'!
 visitCode: aDocCode
 
 	self renderCode: aDocCode
@@ -12322,7 +12073,7 @@ visitCode: aDocCode
 		[#printItWithButton] -> [self renderCodePrintItWithButton: aDocCode]
 	}."! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:40:58'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:37'!
 visitHeading: aEruditeHeading
 
 	aEruditeHeading level caseOf: {
@@ -12333,7 +12084,7 @@ visitHeading: aEruditeHeading
 	}.
 	stream nextPutAll: aEruditeHeading heading; nextPutAll: '}'; newLine; newLine! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:32:41'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:45'!
 visitLink: aDocLink
 	
 	"(self linkRendererFor: aDocLink type) ifNotNil: [:aLinkRenderer |
@@ -12348,7 +12099,7 @@ visitLink: aDocLink
 				nextPutAll: aDocLink target;
 				nextPutAll: '}']! !
 
-!LatexEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 18:50:37'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:55'!
 visitStyledText: aStyledText
 
 	aStyledText style caseOf: {
@@ -12363,282 +12114,34 @@ visitStyledText: aStyledText
 										nextPutAll: '\end{verbatim}'; newLine].
 	}! !
 
-!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 19:03:51'!
-book: aBook
+!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 10:00:58'!
+highlightSyntax
+	"Answer the value of highlightSyntax"
 
-	book _ aBook! !
+	^ highlightSyntax! !
 
-!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 16:21:07'!
-requestor
+!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 10:00:58'!
+highlightSyntax: anObject
+	"Set the value of highlightSyntax"
 
-	^ requestor! !
+	highlightSyntax := anObject! !
 
-!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 16:21:07'!
-requestor: anObject
+!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:52:18'!
+stream
+	"Answer the value of stream"
 
-	requestor _ anObject! !
+	^ stream! !
 
-!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 18:52:04'!
-texFilePath
+!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:52:18'!
+stream: anObject
+	"Set the value of stream"
 
-	^ texFilePath! !
+	stream := anObject! !
 
-!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 18:51:49'!
-texFilePath: aFilePath
-
-	texFilePath _ aFilePath! !
-
-!LatexEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:05:45'!
-on: aBook
-
-	^ self new initialize: aBook! !
-
-!LatexEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:05:57'!
-render: aBook
-	
-	^ (self on: aBook) render! !
-
-!LatexEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:06:11'!
-render: aBook notifying: anObject
-	
-	^ (self on: aBook)
-		requestor: anObject; 
-		render! !
-
-!DocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 22:58:57'!
-render: aLink in: aDocument on: aStream
-
-	^ self subclassResponsibility! !
-
-!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 15:22'!
-browse: aClass selector: aSymbol
-
-	| browser |
-	browser _ Browser new.
-	browser
-		setClass: aClass
-		selector: aSymbol.
-				
-	BrowserWindow
-			open: browser
-			label: 'System Browser' ! !
-
-!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:26:20'!
-embed: aDocLink on: aStream
-
-	|text class textModel |
-	
-	class _ Smalltalk at: aDocLink target asSymbol ifAbsent: [^nil].
-	
-	text _ Text string: class definition.
-	
-	textModel _ EruditeSmalltalkTextModel withText: text.
-	textModel formatAndStyle.
-							
-	aStream nextPut: textModel actualContents.
-	aStream nextPut: Character newLineCharacter asString.
-	
-	aStream nextPut: 
-		(Text string: '[browse]' 
-				attributes: {BlockTextAction do: [:x | 
-							self browse: class
-								selector: nil]. 
-							TextEmphasis underlined})! !
-
-!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:24'!
-render: aDocLink in: aDocument on: aStream
-
-	aDocLink optionAt: #embed ifPresent: [:val |
-		val ifTrue: [
-			^ self embed: aDocLink on: aStream]].
-	
-	self renderLink: aDocLink on: aStream! !
-
-!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 15:06:13'!
-renderLink: aDocLink on: aStream
-
-	aStream nextPut: (Text string: aDocLink labelOrTarget 
-				attribute: (BlockTextAction do: [:x | |class className|
-						className _ aDocLink target withBlanksTrimmed asSymbol.
-						class _ Smalltalk 
-									at: className
-									ifAbsent: [self error: 'Class not found: ', className asString].
-						self browse: class selector: nil]))! !
-
-!ImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:56:31'!
-render: aDocLink in: aDocument on: aStream
-
-	|form imageMorph |
-	
-	form _ [aDocument getNodeData: aDocLink]
-				on: Error
-				do: [:e | ^aStream nextPut: e printString].
-	
-	"Process image options performing options as messages."
-	aDocLink options keysAndValuesDo: [:key :value |
-		[form _ form perform: (key, ':') asSymbol with: (Compiler evaluate: value)]
-			on: Error do: [:e | aStream nextPut: e messageText asText]].
-	
-	imageMorph _ ImageMorph new
-					image: form.
-							
-	aStream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
-
-!MessageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:35'!
-render: aDocLink in: aDocument on: aStream
-
-	|action selector renderLink |
-	
-	selector _ aDocLink target withBlanksTrimmed asSymbol.
-	renderLink _ [:anAction | 
-		aStream nextPut: (Text string: selector printString
-				attributes: {BlockTextAction do: anAction})].
-	
-	aDocLink optionAt: #senders ifPresent: [:val |
-		action _ [:anObject | Smalltalk browseAllCallsOn: selector].
-		^ renderLink value: action].
-	
-	aDocLink optionAt: #implementors ifPresent: [:val |
-		action _ [:anObject | Smalltalk browseAllImplementorsOf: selector].
-		^ renderLink value: action].
-	
-	action _ [:anObject | Smalltalk browseAllImplementorsOf: selector].
-	renderLink value: action! !
-
-!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 15:52'!
-browse: aClass selector: aSymbol
-
-	| browser |
-	browser _ Browser new.
-	browser
-		setClass: aClass
-		selector: aSymbol.
-				
-	BrowserWindow
-			open: browser
-			label: 'System Browser' ! !
-
-!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:35:05'!
-embed: aDocLink on: aStream
-
-	|text methodReference textModel |
-	
-	methodReference _ self methodReferenceFor: aDocLink.
-	
-	methodReference ifNil: [^nil].
-	
-	text _ Text string: ([methodReference sourceCode] on: Error do: [:e | 'Method not found']).
-							
-	textModel _ EruditeSmalltalkTextModel withText: text.
-	textModel classOrMetaClass: methodReference actualClass;
-				formatAndStyle.
-	
-	aStream nextPut: (Text string: methodReference actualClass asString attribute: TextEmphasis bold).
-	aStream nextPut: '>>'.	
-	aStream nextPut: textModel actualContents.
-	aStream nextPut: Character newLineCharacter asString.
-	
-	aStream nextPut: 
-		(Text string: '[browse]' 
-				attributes: {BlockTextAction do: [:x | 
-							self browse: methodReference actualClass 
-								selector: methodReference selector]. 
-							TextEmphasis underlined})! !
-
-!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:47:00'!
-methodReferenceFor: aDocLink 
-
-	| classAndMethod class |
-	
-	classAndMethod _ aDocLink target subStrings: '>>'.
-	class _ [Compiler evaluate: classAndMethod first] on: Error do:[nil].
-	
-	classAndMethod size = 2 ifFalse: [^nil].
-	
-	^ MethodReference 
-		class: class
-		selector: classAndMethod second withBlanksTrimmed asSymbol! !
-
-!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:43'!
-render: aDocLink in: aDocument on: aStream
-
-	aDocLink optionAt: #embed ifPresent: [:val |
-		val ifTrue: [
-			^ self embed: aDocLink on: aStream]].
-	
-	self renderLink: aDocLink on: aStream! !
-
-!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:49:13'!
-renderLink: aDocLink on: aStream
-
-	|methodReference|
-	
-	methodReference _ self methodReferenceFor: aDocLink.
-
-	methodReference ifNotNil: [
-		aStream nextPut: 
-			(Text string: aDocLink labelOrTarget 
-					attribute: (BlockTextAction do: [:x | 
-							self browse: methodReference actualClass
-								selector: methodReference selector]))]
-				ifNil: [aStream nextPut: (Text string: aDocLink labelOrTarget)]! !
-
-!SectionDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:58'!
-render: aDocLink in: aDocument on: aStream
-
-	|bookTitle sectionTitle bookAndSection|
-	
-	bookAndSection _ aDocLink target subStrings: '#'.
-	bookAndSection size = 1 
-		ifTrue: [ "Book not specified"
-			sectionTitle _ bookAndSection first withBlanksTrimmed]
-	ifFalse: [ "Book specified"
-		bookTitle _ bookAndSection first withBlanksTrimmed.
-		sectionTitle _ bookAndSection second withBlanksTrimmed].
-
-	aStream nextPut: (Text string: aDocLink labelOrTarget withBlanksTrimmed 
-				attribute: (BlockTextAction do: [:aTextModel |
-					bookTitle ifNil: [
-						aTextModel triggerEvent: #gotoSection with: sectionTitle]
-					ifNotNil: [|book|
-						book _ EruditeBook bookNamed: bookTitle ifNone: [^nil].
-						book openInSection: sectionTitle]]))! !
-
-!SelectorDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:07:06'!
-render: aDocLink in: aDocument on: aStream
-
-	|action selector renderLink |
-	
-	selector _ aDocLink target withBlanksTrimmed asSymbol.
-	renderLink _ [:anAction | 
-		aStream nextPut: (Text string: selector printString
-				attributes: {BlockTextAction do: anAction})].
-	
-	aDocLink optionAt: #senders ifPresent: [:val |
-		action _ [:anObject | Smalltalk browseAllCallsOn: selector].
-		^ renderLink value: action].
-	
-	aDocLink optionAt: #implementors ifPresent: [:val |
-		action _ [:anObject | Smalltalk browseAllImplementorsOf: selector].
-		^ renderLink value: action].
-	
-	action _ [:anObject | Smalltalk browseAllImplementorsOf: selector].
-	renderLink value: action! !
-
-!UrlDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 16:38:52'!
-render: aDocLink in: aDocument on: aStream
-
-	|url |
-	
-	url _ aDocLink target withBlanksTrimmed.
-	
-	aStream nextPut: (Text string: aDocLink labelOrTarget
-				attributes: {EruditeTextURL url: url}).! !
-
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 23:28'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:35:53'!
 initialize: aDocument
 
-	document _ aDocument.
+	super initialize: aDocument.
 	stream _ WriteStream on: Array new.! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:40'!
@@ -12916,22 +12419,607 @@ example2
 	erudite _ SmalltalkEruditeParser parse: Object comment.
 	(MorphicEruditeDocRenderer on: erudite) render edit.! !
 
-!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 23:21'!
-on: aDocument
-
-	^ self new initialize: aDocument! !
-
-!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 15:58'!
-render: aDocument
-	
-	^ (self on: aDocument) render! !
-
 !MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 18:28'!
 render: aDocument notifying: anObject
 	
 	^ (self on: aDocument)
 		requestor: anObject; 
 		render! !
+
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:37:39'!
+data
+	^ data! !
+
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:47'!
+data: aDictionary
+
+	data _ aDictionary! !
+
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:39:32'!
+getNodeData: aNode
+
+	self assert: aNode dataKey isNil not.
+	
+	^ data at: aNode dataKey
+			ifAbsent: [ |nodeData|
+				nodeData _ aNode data.
+				data at: aNode dataKey put: nodeData.
+				nodeData]! !
+
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:38:00'!
+images: aDictionary
+	"Deprecated."
+	data _ aDictionary! !
+
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:07:36'!
+initialize
+
+	images _ Dictionary new.
+	data _ Dictionary new.! !
+
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:00:30'!
+parsedContents
+
+	^ self parser parse: contents.! !
+
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:07'!
+storeOn: aStream
+
+	|usedData|
+	
+	"Extract the data that needs to be serialized."
+	
+	usedData _ Dictionary new.
+	
+	self parsedContents contents do: [:node |
+		node isString ifFalse: [
+			node dataKey isNil  ifFalse: [ |nodeData|
+				nodeData _ data at: node dataKey ifAbsent: [node data].
+				usedData at: node dataKey put: nodeData]]].
+
+	aStream nextPutAll: '((EruditeDocument contents: ';
+			nextPutAll: contents asString printString;
+			"nextPutAll: ') images: '; store: images;"
+			nextPutAll: ') data: '; store: usedData;
+			nextPutAll: '; yourself)'! !
+
+!EruditeDocument methodsFor: 'accessing' stamp: 'MM 11/29/2018 19:25'!
+contents
+	"Answer the value of contents"
+
+	^ contents! !
+
+!EruditeDocument methodsFor: 'accessing' stamp: 'MM 12/10/2018 21:38'!
+contents: anObject
+	"Set the value of contents"
+
+	contents _ anObject! !
+
+!EruditeDocument methodsFor: 'accessing' stamp: 'MM 6/11/2022 19:00:47'!
+parser
+	"Answer the value of parser"
+
+	^ parser ifNil: [EruditeMarkupParser new]! !
+
+!EruditeDocument methodsFor: 'accessing' stamp: 'MM 6/11/2022 18:59:58'!
+parser: anObject
+	"Set the value of parser"
+
+	parser := anObject! !
+
+!EruditeDocument class methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 23:33'!
+contents: aCollection
+	
+	^ self new contents: aCollection; yourself! !
+
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:56:41'!
+editBook
+	EruditeBook withBookSelectionDo: [ :book |
+		book edit ].! !
+
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:55:02'!
+eruditeWorldMenu
+	"Build the Erudite menu for the world."
+
+	^ (self menu: 'Erudite...')
+		addItemsFromDictionaries: `{
+			{
+				#label 			-> 		'New...'.
+				#selector 		-> 		#newBook.
+				#icon 			-> 		#newIcon.
+				#balloonText 	-> 		'Create a new book.'
+			} asDictionary.
+			{
+				#label 			-> 		'Read...'.
+				#selector 		-> 		#readBook.
+				#icon 			-> 		#openIcon.
+				#balloonText 	-> 		'Read a book.'
+			} asDictionary.
+			{
+				#label 			-> 		'Edit...'.
+				#selector 		-> 		#editBook.
+				#icon 			-> 		#textEditorIcon.
+				#balloonText 	-> 		'Edit a book.'
+			} asDictionary.
+			{
+				#label 			-> 		'Read all books'.
+				#selector 		-> 		#readAllBooks.
+				#icon 			-> 		#openIcon.
+				#balloonText 	-> 		'Read all books.'
+			} asDictionary.
+		}`! !
+
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 2/9/2022 11:40:20'!
+helpMenuOptions
+
+	^ `{
+		{
+				#itemGroup 	-> 		10.
+				#itemOrder 		-> 		30.
+				#label 			-> 		'Cuis Manual'.
+				#selector 		-> 		#open.
+				#object -> CuisManual.
+				#icon 			->	#helpIcon.
+				#balloonText 	-> 		'Read the Cuis Manual'
+			} asDictionary.
+		}` ! !
+
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 22:45:40'!
+initialize
+
+	Preferences addPreference: #eruditeBrowserClassComments 
+					category: 'erudite'  
+					default: true  
+					balloonHelp: 'Enabled/disable Erudite markup in browser class comments'.
+					
+	Preferences setPreference:  #tapAndHoldEmulatesButton2 toValue: false.
+					 
+	EruditeManual open! !
+
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:58:27'!
+menu: titleString
+	"Create a menu with the given title, ready for filling"
+
+	| menu |
+	(menu _ MenuMorph entitled: titleString) 
+		defaultTarget: self; 
+		addStayUpIcons.
+	^ menu! !
+
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:59:45'!
+newBook
+	| book title |
+	title _ FillInTheBlankMorph request: 'Book title:'.
+	title ifNotEmpty: [
+		book _ EruditeBook titled: title.
+		book edit ].! !
+
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 15:17:52'!
+openEruditeMenu
+	"Build and show the preferences menu for the world."
+
+	self eruditeWorldMenu popUpInWorld: self runningWorld! !
+
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:55:40'!
+readAllBooks
+
+	(EruditeCompositeBook
+		with: EruditeBook booksList) open.! !
+
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:59:53'!
+readBook
+	EruditeBook withBookSelectionDo: [ :book |
+		book open ].! !
+
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 15:15:17'!
+worldMenuOptions
+
+	^`{{
+		#itemGroup 		-> 		10.
+		#itemOrder 		-> 		50.
+		#label 			-> 		'Erudite...'.
+		#object             ->             EruditeSystem.
+		#selector 		-> 		#openEruditeMenu.
+		#icon 			-> 		#addressBookIcon.
+		#balloonText 	-> 		'Submenu to manage Erudite books'.
+	} asDictionary.
+	}`! !
+
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 1/19/2019 19:02:33'!
+render
+
+	self renderWithTemplate: [
+		book sections do: [:aBookSection | 
+			self renderSection: aBookSection]].
+	
+	texFilePath fileContents: stream contents! !
+
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 1/19/2019 17:02:11'!
+renderArticle
+
+	documentClass _ #article.
+	self render! !
+
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 1/19/2019 17:01:59'!
+renderBook
+
+	documentClass _ #book.
+	self render! !
+
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 10:01:21'!
+renderDocument: aDocument
+
+	|renderer|
+	
+	renderer _ LatexEruditeDocRenderer on: aDocument.
+	renderer stream: stream; 
+			highlightSyntax: highlightSyntax.
+	renderer render! !
+
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 1/19/2019 17:00:55'!
+renderSection: aBookSection
+
+	documentClass caseOf: {
+		[#book] -> [stream nextPutAll: '\chapter{'].
+		[#article] -> [stream nextPutAll: '\section{'].
+	}.
+	stream nextPutAll: aBookSection title;
+			nextPutAll: '}'; newLine.
+			
+	self renderDocument: aBookSection document.
+	
+	aBookSection sections do: [:section |
+		self renderSubsection: section]! !
+
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 1/19/2019 17:01:18'!
+renderSubsection: aBookSection
+
+	documentClass caseOf: {
+		[#book] -> [stream nextPutAll: '\section{'].
+		[#article] -> [stream nextPutAll: '\subsection{'].
+	}.
+	stream nextPutAll: aBookSection title;
+			nextPutAll: '}'; newLine.
+			
+	self renderDocument: aBookSection document.
+	
+	aBookSection sections do: [:section |
+		self renderSubsubsection: section]! !
+
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 1/19/2019 17:00:26'!
+renderSubsubsection: aBookSection
+
+	documentClass caseOf: {
+		[#book] -> [stream nextPutAll: '\subsection{'].
+		[#article] -> [stream nextPutAll: '\subsubsection{'].
+	}.
+	stream nextPutAll: aBookSection title;
+			nextPutAll: '}'; newLine.
+			
+	self renderDocument: aBookSection document.
+	
+	! !
+
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 3/5/2021 13:19:14'!
+renderWithTemplate: aBlock
+
+	stream nextPutAll: '\documentclass[11pt,pdflatex,makeidx]{scrbook}   % Book class in 11 points'; newLine;
+			nextPutAll: '\usepackage[margin=0.5in]{geometry}'; newLine;
+			nextPutAll: '\usepackage{color}'; newLine;
+			nextPutAll: '\usepackage{makeidx}'; newLine;
+			nextPutAll: '\usepackage{hyperref}'; newLine.
+		
+	highlightSyntax 
+		ifTrue: [ stream nextPutAll: '\usepackage{minted}'; newLine]
+		ifFalse: [ stream nextPutAll: '\usepackage{listings}'; newLine].
+	
+	stream nextPutAll: '\usepackage{hyperref}'; newLine;
+			nextPutAll: '\usepackage{courier}'; newLine;
+			nextPutAll: '\hypersetup{colorlinks=true,linkcolor=blue}';newLine.
+			
+	highlightSyntax ifFalse: [
+		stream nextPutAll: '\lstloadlanguages{Lisp}'; newLine;
+				nextPutAll: '\lstset{frame=none,language=Lisp,basicstyle=\ttfamily\small,
+keywordstyle=\color{black}\bfseries,stringstyle=\ttfamily,showstringspaces=false,breaklines}'; newLine;
+				nextPutAll: '\lstnewenvironment{code}{}{}']
+	ifTrue: [stream nextPutAll: '\definecolor{bg}{rgb}{0.95,0.95,0.95}'; newLine].
+	
+	stream nextPutAll: '\parindent0pt  \parskip10pt             % make block paragraphs'; newLine;
+			 nextPutAll: '\raggedright                            % do not right justify'; newLine;
+			nextPutAll: '% Note that book class by default is formatted to be printed back-to-back.'; newLine;
+			nextPutAll: '\makeindex'; newLine;
+			nextPutAll: '\begin{document}                        % End of preamble, start of text.'; newLine;
+			nextPutAll: '\title{\textbf '; nextPutAll: book title; nextPutAll: '}'; newLine;
+			nextPutAll: '\date{\today}                           %   Use current date.'; newLine;
+			nextPutAll: '\frontmatter                            % only in book class (roman page #s)'; newLine;
+			nextPutAll: '\maketitle                              % Print title page.'; newLine;
+			nextPutAll: '\tableofcontents                        % Print table of contents'; newLine;
+			nextPutAll: '\mainmatter                             % only in book class (arabic page #s)'; newLine;
+			nextPutAll: '\long\def\ignore#1{}'; newLine.
+			aBlock value.
+	stream "nextPutAll: '\chapter{Index}'; newLine;"  "No index for now..."
+			"nextPutAll: '\printindex'; newLine;"
+			nextPutAll: '\end{document}'! !
+
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 19:03:51'!
+book: aBook
+
+	book _ aBook! !
+
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 16:21:07'!
+requestor
+
+	^ requestor! !
+
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 16:21:07'!
+requestor: anObject
+
+	requestor _ anObject! !
+
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 18:52:04'!
+texFilePath
+
+	^ texFilePath! !
+
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 18:51:49'!
+texFilePath: aFilePath
+
+	texFilePath _ aFilePath! !
+
+!LatexEruditeBookRenderer methodsFor: 'initialization' stamp: 'MM 1/19/2019 19:06:48'!
+initialize: aBook
+
+	book _ aBook.
+	stream _ WriteStream on: String new.
+	documentClass _ #book.
+	highlightSyntax _ true! !
+
+!LatexEruditeBookRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:05:45'!
+on: aBook
+
+	^ self new initialize: aBook! !
+
+!LatexEruditeBookRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:05:57'!
+render: aBook
+	
+	^ (self on: aBook) render! !
+
+!LatexEruditeBookRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:06:11'!
+render: aBook notifying: anObject
+	
+	^ (self on: aBook)
+		requestor: anObject; 
+		render! !
+
+!DocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 22:58:57'!
+render: aLink in: aDocument on: aStream
+
+	^ self subclassResponsibility! !
+
+!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 15:22'!
+browse: aClass selector: aSymbol
+
+	| browser |
+	browser _ Browser new.
+	browser
+		setClass: aClass
+		selector: aSymbol.
+				
+	BrowserWindow
+			open: browser
+			label: 'System Browser' ! !
+
+!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:26:20'!
+embed: aDocLink on: aStream
+
+	|text class textModel |
+	
+	class _ Smalltalk at: aDocLink target asSymbol ifAbsent: [^nil].
+	
+	text _ Text string: class definition.
+	
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.
+							
+	aStream nextPut: textModel actualContents.
+	aStream nextPut: Character newLineCharacter asString.
+	
+	aStream nextPut: 
+		(Text string: '[browse]' 
+				attributes: {BlockTextAction do: [:x | 
+							self browse: class
+								selector: nil]. 
+							TextEmphasis underlined})! !
+
+!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:24'!
+render: aDocLink in: aDocument on: aStream
+
+	aDocLink optionAt: #embed ifPresent: [:val |
+		val ifTrue: [
+			^ self embed: aDocLink on: aStream]].
+	
+	self renderLink: aDocLink on: aStream! !
+
+!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 15:06:13'!
+renderLink: aDocLink on: aStream
+
+	aStream nextPut: (Text string: aDocLink labelOrTarget 
+				attribute: (BlockTextAction do: [:x | |class className|
+						className _ aDocLink target withBlanksTrimmed asSymbol.
+						class _ Smalltalk 
+									at: className
+									ifAbsent: [self error: 'Class not found: ', className asString].
+						self browse: class selector: nil]))! !
+
+!ImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:56:31'!
+render: aDocLink in: aDocument on: aStream
+
+	|form imageMorph |
+	
+	form _ [aDocument getNodeData: aDocLink]
+				on: Error
+				do: [:e | ^aStream nextPut: e printString].
+	
+	"Process image options performing options as messages."
+	aDocLink options keysAndValuesDo: [:key :value |
+		[form _ form perform: (key, ':') asSymbol with: (Compiler evaluate: value)]
+			on: Error do: [:e | aStream nextPut: e messageText asText]].
+	
+	imageMorph _ ImageMorph new
+					image: form.
+							
+	aStream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
+
+!MessageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:35'!
+render: aDocLink in: aDocument on: aStream
+
+	|action selector renderLink |
+	
+	selector _ aDocLink target withBlanksTrimmed asSymbol.
+	renderLink _ [:anAction | 
+		aStream nextPut: (Text string: selector printString
+				attributes: {BlockTextAction do: anAction})].
+	
+	aDocLink optionAt: #senders ifPresent: [:val |
+		action _ [:anObject | Smalltalk browseAllCallsOn: selector].
+		^ renderLink value: action].
+	
+	aDocLink optionAt: #implementors ifPresent: [:val |
+		action _ [:anObject | Smalltalk browseAllImplementorsOf: selector].
+		^ renderLink value: action].
+	
+	action _ [:anObject | Smalltalk browseAllImplementorsOf: selector].
+	renderLink value: action! !
+
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 15:52'!
+browse: aClass selector: aSymbol
+
+	| browser |
+	browser _ Browser new.
+	browser
+		setClass: aClass
+		selector: aSymbol.
+				
+	BrowserWindow
+			open: browser
+			label: 'System Browser' ! !
+
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:35:05'!
+embed: aDocLink on: aStream
+
+	|text methodReference textModel |
+	
+	methodReference _ self methodReferenceFor: aDocLink.
+	
+	methodReference ifNil: [^nil].
+	
+	text _ Text string: ([methodReference sourceCode] on: Error do: [:e | 'Method not found']).
+							
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel classOrMetaClass: methodReference actualClass;
+				formatAndStyle.
+	
+	aStream nextPut: (Text string: methodReference actualClass asString attribute: TextEmphasis bold).
+	aStream nextPut: '>>'.	
+	aStream nextPut: textModel actualContents.
+	aStream nextPut: Character newLineCharacter asString.
+	
+	aStream nextPut: 
+		(Text string: '[browse]' 
+				attributes: {BlockTextAction do: [:x | 
+							self browse: methodReference actualClass 
+								selector: methodReference selector]. 
+							TextEmphasis underlined})! !
+
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:47:00'!
+methodReferenceFor: aDocLink 
+
+	| classAndMethod class |
+	
+	classAndMethod _ aDocLink target subStrings: '>>'.
+	class _ [Compiler evaluate: classAndMethod first] on: Error do:[nil].
+	
+	classAndMethod size = 2 ifFalse: [^nil].
+	
+	^ MethodReference 
+		class: class
+		selector: classAndMethod second withBlanksTrimmed asSymbol! !
+
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:43'!
+render: aDocLink in: aDocument on: aStream
+
+	aDocLink optionAt: #embed ifPresent: [:val |
+		val ifTrue: [
+			^ self embed: aDocLink on: aStream]].
+	
+	self renderLink: aDocLink on: aStream! !
+
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:49:13'!
+renderLink: aDocLink on: aStream
+
+	|methodReference|
+	
+	methodReference _ self methodReferenceFor: aDocLink.
+
+	methodReference ifNotNil: [
+		aStream nextPut: 
+			(Text string: aDocLink labelOrTarget 
+					attribute: (BlockTextAction do: [:x | 
+							self browse: methodReference actualClass
+								selector: methodReference selector]))]
+				ifNil: [aStream nextPut: (Text string: aDocLink labelOrTarget)]! !
+
+!SectionDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:58'!
+render: aDocLink in: aDocument on: aStream
+
+	|bookTitle sectionTitle bookAndSection|
+	
+	bookAndSection _ aDocLink target subStrings: '#'.
+	bookAndSection size = 1 
+		ifTrue: [ "Book not specified"
+			sectionTitle _ bookAndSection first withBlanksTrimmed]
+	ifFalse: [ "Book specified"
+		bookTitle _ bookAndSection first withBlanksTrimmed.
+		sectionTitle _ bookAndSection second withBlanksTrimmed].
+
+	aStream nextPut: (Text string: aDocLink labelOrTarget withBlanksTrimmed 
+				attribute: (BlockTextAction do: [:aTextModel |
+					bookTitle ifNil: [
+						aTextModel triggerEvent: #gotoSection with: sectionTitle]
+					ifNotNil: [|book|
+						book _ EruditeBook bookNamed: bookTitle ifNone: [^nil].
+						book openInSection: sectionTitle]]))! !
+
+!SelectorDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:07:06'!
+render: aDocLink in: aDocument on: aStream
+
+	|action selector renderLink |
+	
+	selector _ aDocLink target withBlanksTrimmed asSymbol.
+	renderLink _ [:anAction | 
+		aStream nextPut: (Text string: selector printString
+				attributes: {BlockTextAction do: anAction})].
+	
+	aDocLink optionAt: #senders ifPresent: [:val |
+		action _ [:anObject | Smalltalk browseAllCallsOn: selector].
+		^ renderLink value: action].
+	
+	aDocLink optionAt: #implementors ifPresent: [:val |
+		action _ [:anObject | Smalltalk browseAllImplementorsOf: selector].
+		^ renderLink value: action].
+	
+	action _ [:anObject | Smalltalk browseAllImplementorsOf: selector].
+	renderLink value: action! !
+
+!UrlDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 16:38:52'!
+render: aDocLink in: aDocument on: aStream
+
+	|url |
+	
+	url _ aDocLink target withBlanksTrimmed.
+	
+	aStream nextPut: (Text string: aDocLink labelOrTarget
+				attributes: {EruditeTextURL url: url}).! !
 
 !DocNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:13:02'!
 data
@@ -13284,7 +13372,7 @@ enableEditing: aBoolean
 expandRoot
 	scroller submorphs first toggleExpandedState ! !
 
-!TextModelMorph methodsFor: '*Erudite' stamp: 'MM 12/7/2018 12:55'!
+!TextModelMorph methodsFor: '*Erudite' stamp: 'MM 6/15/2022 09:43:47'!
 enableEditing: aBoolean
-	self textMorph enableEditing: aBoolean! !
+	self innerTextMorph enableEditing: aBoolean! !
 EruditeSystem initialize!
