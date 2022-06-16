@@ -1,59 +1,83 @@
-'From Cuis 6.0 [latest update: #5171] on 15 June 2022 at 12:01:36 pm'!
+'From Cuis 6.0 [latest update: #5171] on 16 June 2022 at 4:39:46 pm'!
 'Description '!
-!provides: 'EruditeMath' 1 25!
-!requires: 'Erudite' 1 179 nil!
+!provides: 'EruditeMath' 1 33!
+!requires: 'Erudite' 1 187 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
 SystemOrganization addCategory: 'EruditeMath'!
+SystemOrganization addCategory: 'EruditeMath-Parser'!
+SystemOrganization addCategory: 'EruditeMath-Books'!
+SystemOrganization addCategory: 'EruditeMath-Exceptions'!
+SystemOrganization addCategory: 'EruditeMath-Latex'!
 
 
-!classDefinition: #EruditeMathMarkupGrammar category: 'EruditeMath'!
+!classDefinition: #EnvironmentVariableNotDefinedError category: 'EruditeMath-Exceptions'!
+Error subclass: #EnvironmentVariableNotDefinedError
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeMath-Exceptions'!
+!classDefinition: 'EnvironmentVariableNotDefinedError class' category: 'EruditeMath-Exceptions'!
+EnvironmentVariableNotDefinedError class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeMathMarkupGrammar category: 'EruditeMath-Parser'!
 EruditeMarkupParser subclass: #EruditeMathMarkupGrammar
 	instanceVariableNames: 'plot math'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'EruditeMath'!
-!classDefinition: 'EruditeMathMarkupGrammar class' category: 'EruditeMath'!
+	category: 'EruditeMath-Parser'!
+!classDefinition: 'EruditeMathMarkupGrammar class' category: 'EruditeMath-Parser'!
 EruditeMathMarkupGrammar class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeMathMarkupParser category: 'EruditeMath'!
+!classDefinition: #EruditeMathMarkupParser category: 'EruditeMath-Parser'!
 EruditeMathMarkupGrammar subclass: #EruditeMathMarkupParser
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'EruditeMath'!
-!classDefinition: 'EruditeMathMarkupParser class' category: 'EruditeMath'!
+	category: 'EruditeMath-Parser'!
+!classDefinition: 'EruditeMathMarkupParser class' category: 'EruditeMath-Parser'!
 EruditeMathMarkupParser class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeMathManual category: 'EruditeMath'!
+!classDefinition: #EruditeMathManual category: 'EruditeMath-Books'!
 EruditeBook subclass: #EruditeMathManual
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'EruditeMath'!
-!classDefinition: 'EruditeMathManual class' category: 'EruditeMath'!
+	category: 'EruditeMath-Books'!
+!classDefinition: 'EruditeMathManual class' category: 'EruditeMath-Books'!
 EruditeMathManual class
 	instanceVariableNames: ''!
 
-!classDefinition: #DocMath category: 'EruditeMath'!
+!classDefinition: #LatexEruditeMathBookRenderer category: 'EruditeMath-Latex'!
+LatexEruditeBookRenderer subclass: #LatexEruditeMathBookRenderer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeMath-Latex'!
+!classDefinition: 'LatexEruditeMathBookRenderer class' category: 'EruditeMath-Latex'!
+LatexEruditeMathBookRenderer class
+	instanceVariableNames: ''!
+
+!classDefinition: #DocMath category: 'EruditeMath-Parser'!
 DocNode subclass: #DocMath
 	instanceVariableNames: 'formula'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'EruditeMath'!
-!classDefinition: 'DocMath class' category: 'EruditeMath'!
+	category: 'EruditeMath-Parser'!
+!classDefinition: 'DocMath class' category: 'EruditeMath-Parser'!
 DocMath class
 	instanceVariableNames: ''!
 
-!classDefinition: #DocPlot category: 'EruditeMath'!
+!classDefinition: #DocPlot category: 'EruditeMath-Parser'!
 DocNode subclass: #DocPlot
 	instanceVariableNames: 'script'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'EruditeMath'!
-!classDefinition: 'DocPlot class' category: 'EruditeMath'!
+	category: 'EruditeMath-Parser'!
+!classDefinition: 'DocPlot class' category: 'EruditeMath-Parser'!
 DocPlot class
 	instanceVariableNames: ''!
 
@@ -92,7 +116,11 @@ plot
 			script: res second;
 			yourself]! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:59:42'!
+!EruditeMathManual methodsFor: 'rendering' stamp: 'AS 6/16/2022 16:33:29'!
+latexRendererClass
+	^ LatexEruditeMathBookRenderer! !
+
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 16:39:40'!
 LatexMath
 ^(EruditeBookSection basicNew title: 'Latex Math'; document: ((EruditeDocument contents: '!!!! Latex Math
 
@@ -102,11 +130,13 @@ Latex math is enclosed between dollar signs:
 
 The formulas are converted to images and then displayed.
 
-**IMPORTANT: this feature requires** {https://www.mersenneforum.org/mimetex.html::url|mimeTeX} **and** {https://imagemagick.org::url|ImageMagick}**. If those are not installed, there will be an error.**
+!!!!!! Example
 
-Example:
+$x^2 + y^2$
 
-$x^2 + y^2$') data: ((Dictionary new) add: ('erudite-formula-ec88764d14d565e8c68aa2804ff42cfc08c65eea'->((Dictionary new) add: (#dark->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAVCAMAAADB9BioAAADAFBMVEUAAAAAAAD///9/f3/l
+!!!!!! Latex
+
+When exporting to Latex, the formula source is copied to the Latex document.') data: ((Dictionary new) add: ('erudite-formula-ec88764d14d565e8c68aa2804ff42cfc08c65eea'->((Dictionary new) add: (#dark->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAVCAMAAADB9BioAAADAFBMVEUAAAAAAAD///9/f3/l
 AAAVsBoDQ98A/////xTCAHgfHx8/Pz9fX1+fn5+/v7/f398HBwcPDw8XFxcnJycvLy83NzdH
 R0dPT09XV1dnZ2dvb293d3eHh4ePj4+Xl5enp6evr6+3t7fHx8fPz8/X19fn5+fv7+/39/cA
 AAAAMwAAZgAAmQAAzAAA/wAAADMAMzMAZjMAmTMAzDMA/zMAAGYAM2YAZmYAmWYAzGYA/2YA
@@ -134,11 +164,27 @@ Eau7sei6ju6eS42Wa09xLJ7PtT1As81FWGKzqFiqSgiQew4RpYDUE94SAPywzXPOIKz7A8hX
 AN9WMyVyBAj54etOUrUuWOFZmfsAqu0HWgFCzrGqkJ0Cb5zYLON9/v+lAOav0NZ+X0nECj3L
 kqI/J0Dpf5AfEL+5pSfJ82wAAAAASUVORK5CYII=')); yourself)); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:59:42'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 16:39:40'!
+NewEruditeMathBook
+^(EruditeBookSection basicNew title: 'New EruditeMath Book'; document: ((EruditeDocument contents: '!!!! Creating a New EruditeMath Book
+
+To create a new EruditeMath book, first create a regular new Erudite book and save it. Creating a book creates a class with a name similar to the name of the book.
+
+Next, open the Browser ([[[BrowserWindow openBrowser]]] doIt) and find the class of the book in the EruditeBooks category.
+
+Then, add a [[[parser]]] method on the class side that returns a new {EruditeMathMarkupParser::class} object. You can copy-paste the example from {EruditeMathManual class>>parser::method}:
+
+{EruditeMathManual class>>parser::method}[embed]
+
+Finally, add a [[[latexRendererClass]]] method on the instance side that returns {LatexEruditeMathBookRenderer::class}. You can copy-paste the example from {EruditeMathManual>>latexRendererClass::method}:
+
+{EruditeMathManual>>latexRendererClass::method}[embed]') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 13:25:09'!
 NewMathBook
 ^(EruditeBookSection basicNew title: 'New Math Book'; document: ((EruditeDocument contents: '!!!! Creating a New Math Book
 
-To create a new book with support for EruditeMath syntax, first create a regular new Erudite book and save it.
+To create a new EruditeMath book, first create a regular new Erudite book and save it.
 
 Then go to the book''s class in the Browser and add a [[[parser]]] method on the class side that returns a new {EruditeMathMarkupParser::class} object.
 
@@ -146,25 +192,27 @@ For example, this is what {EruditeMathManual class>>parser::method} looks like:
 
 {EruditeMathManual class>>parser::method}[embed]') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:59:42'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 16:39:41'!
 Plots
 ^(EruditeBookSection basicNew title: 'Plots'; document: ((EruditeDocument contents: '!!!! Plots
 
-Plotting with gnuplot is supported. Insert the gnuplot script between ```<plot></plot>``` tags:
+Plotting with gnuplot is supported. Insert the gnuplot script between <plot></plot> tags:
 
 ```<plot>
 plot cos(x)
 </plot>```
 
-**IMPORTANT: this feature requires** {http://www.gnuplot.info::url|gnuplot} **and** {https://imagemagick.org::url|ImageMagick}**. If those are not installed, there will be an error.**
+The plot is saved as a png file which is then inserted in the document as a regular image.
 
-A small preamble that sets the output to a png file is prepended to the script. The png file is then inserted in the document as a regular image.
-
-Example:
+!!!!!! Example
 
 <plot>
 plot cos(x)
-</plot>') data: ((Dictionary new) add: ('erudite-plot-2147160b73b9abd116eea12a564b0bd1bd690aa6'->((Dictionary new) add: (#dark->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAABYC0lEQVR4XuWdC4xUZZq/O8YY
+</plot>
+
+!!!!!! Latex
+
+When exporting to Latex, the plot source is copied into a gnuplot environment.') data: ((Dictionary new) add: ('erudite-plot-2147160b73b9abd116eea12a564b0bd1bd690aa6'->((Dictionary new) add: (#dark->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAABYC0lEQVR4XuWdC4xUZZq/O8YY
 FULIBNddQ4g6O4SgEgKjITgSWAk6HVnIQBjDMHhhQMUN4ooGlIxBJKwXRFTQEeUiDn86ooAt
 KyKgDCg0F7k00Nyam9k1m81kdtd1XZd1v//3G05LUV1VXVV9Lt/3PU/8In26qrrO+37ne3/n
 O+/3fjV8+PDhw4cPHz58+PDhw4cPHz58+PDhw4cPHz58+PDhw4cPHz58+PDhw4cPHz58+PDh
@@ -1002,18 +1050,49 @@ Hz58+AKQDx8+fPjw4cOHD18A8uHDhw8fPnz48OELQD58+PDhw4cPHz58AciHD58YsSr+Tz58
 +PCJC74R+PDhw4cPHz58+AKQDx8+fPjw4cOHD18A8uHDhw8fPnz48OELQD58+PDhw4cPHz58
 AciHDx8+fPjw4cOHLwD58OHDhw8fPnz4+Mb/B2TUGLchNJmiAAAAAElFTkSuQmCC')); yourself)); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:59:42'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 16:39:40'!
+Requirements
+^(EruditeBookSection basicNew title: 'Requirements'; document: ((EruditeDocument contents: '!!!! Requirements
+
+Reading EruditeMath books only requires that the EruditeMath package is installed. However, creating EruditeMath books additionally requires some external programs:
+
+- Latex math requires {https://imagemagick.org::url|ImageMagick} and {https://www.mersenneforum.org/mimetex.html::url|mimeTeX}
+- Plots require ImageMagick and {http://www.gnuplot.info ::url|gnuplot}
+
+Unless otherwise noted, the external programs should be on your OS''s executable path.
+
+!!!!!! Configuration of External Programs
+
+!!!!!!!! ImageMagick
+
+If the environment variable IMCONV is defined, EruditeMath will use it as ImageMagick''s convert command. The default command is ''convert''. **On Windows, IMCONV must be defined.**
+
+!!!!!!!! mimeTeX
+
+If the environment variable MIMETEX is defined, EruditeMath will use it as the mimeTeX command. The default command is ''mimetex''.
+
+!!!!!!!! gnuplot
+
+If the environment variable GNUPLOT is defined, EruditeMath will use it as the gnuplot command. The default command is ''gnuplot''.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 09:55:05'!
 SystemRequirements
 ^(EruditeBookSection basicNew title: 'System Requirements'; document: ((EruditeDocument contents: '!!!! System Requirements
 
-EruditeMath requires some external programs. Which external programs are required for a feature is documented in the feature''s section of this manual.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+EruditeMath requires some external programs. Which external programs are required for a feature is documented in the feature''s section of this manual.
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:59:42'!
+!!!!!! Windows
+
+On Windows, you need to tell EruditeMath where ImageMagick is located. Put the path to the ImageMagick directory in:
+
+{OSProcess class>>imageMagickPathWindows ::method}[embed]') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 16:39:40'!
 initialize
     super initialize.
     title _ 'EruditeMath Manual'.
-        self addSection: self SystemRequirements.
-        self addSection: self NewMathBook.
+        self addSection: self Requirements.
+        self addSection: self NewEruditeMathBook.
         self addSection: self LatexMath.
         self addSection: self Plots.
 ! !
@@ -1021,6 +1100,13 @@ initialize
 !EruditeMathManual class methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:33:43'!
 parser
 	^ EruditeMathMarkupParser new! !
+
+!LatexEruditeMathBookRenderer class methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 15:51:00'!
+on: aBook
+
+	^ (super on: aBook)
+		beforePreamble: '\usepackage{gnuplottex}';
+		yourself! !
 
 !DocMath methodsFor: 'accessing' stamp: 'MM 6/12/2022 10:11:51'!
 formula
@@ -1039,7 +1125,7 @@ accept: aVisitor
 
 	^ aVisitor visitMath: self! !
 
-!DocMath methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:26:45'!
+!DocMath methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 12:13:01'!
 data
 
 	| dataDict darkPngPath formulaId lightGifPath lightPngPath |
@@ -1054,13 +1140,11 @@ data
 		(formulaId, Theme lightModeId, '.png').
 
 	lightGifPath exists ifFalse: [
-		OSProcess waitForCommand:
-			'mimetex -e ', lightGifPath pathName, ' "', self formula, '"'
+		OSProcess mimetex: '-e ', lightGifPath pathName, ' "', self formula, '"'
 	].
 
 	lightPngPath exists ifFalse: [
-		OSProcess waitForCommand:
-			'convert ', lightGifPath pathName,' ', lightPngPath pathName
+		OSProcess imConvert: lightGifPath pathName,' ', lightPngPath pathName
 	].
 
 	dataDict at: Theme lightModeId put:
@@ -1089,7 +1173,7 @@ accept: aVisitor
 
 	^ aVisitor visitPlot: self! !
 
-!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:53:27'!
+!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 22:39:00'!
 data
 
 	| dataDict |
@@ -1107,7 +1191,7 @@ dataKey
 		hashMessage: self script)
 			printStringBase: 16) asLowercase! !
 
-!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:34:06'!
+!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 12:13:56'!
 putMorphicData: aDictionary
 
 	| darkImagePath gpPath lightImagePath plotId |
@@ -1123,13 +1207,13 @@ putMorphicData: aDictionary
 		| gpScript |
 		gpScript := 'set term png \', String lf,
 			String tab, 'transparent truecolor', String lf,
-			'set output "', lightImagePath pathName, '"', String lf,
+			'set output ''', lightImagePath pathName, '''', String lf,
 			self script.
 		gpPath fileContents: gpScript
 	].
 
 	lightImagePath exists ifFalse: [
-		OSProcess waitForCommand: 'gnuplot ', gpPath pathName
+		OSProcess gnuplot: gpPath pathName
 	].
 
 	aDictionary at: Theme lightModeId put:
@@ -1194,11 +1278,54 @@ lightModeId
 
 	^ #light! !
 
-!OSProcess class methodsFor: '*EruditeMath' stamp: 'AS 6/14/2022 08:53:45'!
+!OSProcess class methodsFor: '*EruditeMath' stamp: 'AS 6/16/2022 11:40:56'!
 convertLightImage: lightImageFilePath toDarkImage: darkImageFilePath
 
+	self imConvert: '-grayscale Rec709Luminance -channel RGB -negate "',
+		lightImageFilePath, '" "', darkImageFilePath, '"'! !
+
+!OSProcess class methodsFor: '*EruditeMath' stamp: 'AS 6/16/2022 11:39:49'!
+gnuplot: aString
+
 	self waitForCommand:
-		'convert -grayscale Rec709Luminance -negate ', lightImageFilePath, ' ', darkImageFilePath! !
+		(self gnuplotCommand, ' ', aString) withBlanksTrimmed! !
+
+!OSProcess class methodsFor: '*EruditeMath' stamp: 'AS 6/16/2022 11:39:36'!
+gnuplotCommand
+	
+	^ ThisOSProcess thisOSProcess environment
+		at: 'GNUPLOT' ifAbsent: ['gnuplot'].! !
+
+!OSProcess class methodsFor: '*EruditeMath' stamp: 'AS 6/16/2022 11:41:23'!
+imConvert: aString
+
+	self waitForCommand:
+		(self imConvertCommand, ' ', aString) withBlanksTrimmed! !
+
+!OSProcess class methodsFor: '*EruditeMath' stamp: 'AS 6/16/2022 12:16:18'!
+imConvertCommand
+	
+	| cmd |
+	cmd _ ThisOSProcess thisOSProcess environment
+		at: 'IMCONV' ifAbsent: [
+			ThisOSProcess thisOSProcess class = WindowsProcess
+				ifTrue: [EnvironmentVariableNotDefinedError signal]
+				ifFalse: ['convert']
+		].
+	
+	^ cmd! !
+
+!OSProcess class methodsFor: '*EruditeMath' stamp: 'AS 6/16/2022 11:39:00'!
+mimetex: aString
+
+	self waitForCommand:
+		(self mimetexCommand, ' ', aString) withBlanksTrimmed! !
+
+!OSProcess class methodsFor: '*EruditeMath' stamp: 'AS 6/16/2022 11:37:26'!
+mimetexCommand
+	
+	^ ThisOSProcess thisOSProcess environment
+		at: 'MIMETEX' ifAbsent: ['mimetex'].! !
 
 !LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:38:06'!
 visitMath: aDocMath
@@ -1208,30 +1335,13 @@ visitMath: aDocMath
 		nextPutAll: aDocMath formula;
 		nextPutAll: '$'! !
 
-!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:48:47'!
+!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/16/2022 09:21:53'!
 visitPlot: aDocPlot
 
-	| plotId texPath |
-	plotId := aDocPlot dataKey.
-
-	texPath := DirectoryEntry tempDirectory //
-		(plotId, '.tex').
-
-	texPath exists ifFalse: [
-		| gpPath gpScript |
-		gpScript := 'set term tex', String lf,
-			'set output "', texPath pathName, '"', String lf,
-			aDocPlot script.
-		
-		gpPath := DirectoryEntry tempDirectory //
-			(plotId, '-latex.gp').
-		
-		gpPath fileContents: gpScript.
-		
-		OSProcess waitForCommand: 'gnuplot ', gpPath pathName
-	].
-
-	^ stream nextPutAll: texPath textContents! !
+	stream
+		nextPutAll: '\begin{gnuplot}[terminal=cairolatex]', String lf;
+		nextPutAll: aDocPlot script withBlanksTrimmed, String lf;
+		nextPutAll: '\end{gnuplot}', String lf! !
 
 !MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:49:29'!
 visitMath: aDocMath
