@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5235] on 15 June 2022 at 10:05:19 am'!
+'From Cuis 6.0 [latest update: #5235] on 16 June 2022 at 8:38:00 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 186!
+!provides: 'Erudite' 1 187!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -399,7 +399,7 @@ EruditeSystem class
 
 !classDefinition: #LatexEruditeBookRenderer category: 'Erudite-Latex'!
 Object subclass: #LatexEruditeBookRenderer
-	instanceVariableNames: 'stream requestor highlightSyntax book documentClass texFilePath'
+	instanceVariableNames: 'stream requestor highlightSyntax book documentClass texFilePath beforePreamble afterPreamble'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Latex'!
@@ -12700,11 +12700,14 @@ renderSubsubsection: aBookSection
 	
 	! !
 
-!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 3/5/2021 13:19:14'!
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 6/16/2022 08:36:37'!
 renderWithTemplate: aBlock
 
-	stream nextPutAll: '\documentclass[11pt,pdflatex,makeidx]{scrbook}   % Book class in 11 points'; newLine;
-			nextPutAll: '\usepackage[margin=0.5in]{geometry}'; newLine;
+	stream nextPutAll: '\documentclass[11pt,pdflatex,makeidx]{scrbook}   % Book class in 11 points'; newLine.
+	
+	beforePreamble ifNotNil: [stream nextPutAll: beforePreamble; newLine].
+	
+	stream		nextPutAll: '\usepackage[margin=0.5in]{geometry}'; newLine;
 			nextPutAll: '\usepackage{color}'; newLine;
 			nextPutAll: '\usepackage{makeidx}'; newLine;
 			nextPutAll: '\usepackage{hyperref}'; newLine.
@@ -12718,11 +12721,13 @@ renderWithTemplate: aBlock
 			nextPutAll: '\hypersetup{colorlinks=true,linkcolor=blue}';newLine.
 			
 	highlightSyntax ifFalse: [
-		stream nextPutAll: '\lstloadlanguages{Lisp}'; newLine;
-				nextPutAll: '\lstset{frame=none,language=Lisp,basicstyle=\ttfamily\small,
+		stream nextPutAll: '\lstloadlanguages{Smalltalk}'; newLine;
+				nextPutAll: '\lstset{frame=none,language=Smalltalk,basicstyle=\ttfamily\small,
 keywordstyle=\color{black}\bfseries,stringstyle=\ttfamily,showstringspaces=false,breaklines}'; newLine;
 				nextPutAll: '\lstnewenvironment{code}{}{}']
 	ifTrue: [stream nextPutAll: '\definecolor{bg}{rgb}{0.95,0.95,0.95}'; newLine].
+	
+	afterPreamble ifNotNil: [stream nextPutAll: afterPreamble; newLine].
 	
 	stream nextPutAll: '\parindent0pt  \parskip10pt             % make block paragraphs'; newLine;
 			 nextPutAll: '\raggedright                            % do not right justify'; newLine;
@@ -12740,6 +12745,14 @@ keywordstyle=\color{black}\bfseries,stringstyle=\ttfamily,showstringspaces=false
 	stream "nextPutAll: '\chapter{Index}'; newLine;"  "No index for now..."
 			"nextPutAll: '\printindex'; newLine;"
 			nextPutAll: '\end{document}'! !
+
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 6/16/2022 08:37:15'!
+afterPreamble: aString
+	afterPreamble _ aString! !
+
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 6/16/2022 08:37:05'!
+beforePreamble: aString
+	beforePreamble _ aString! !
 
 !LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 19:03:51'!
 book: aBook
