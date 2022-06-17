@@ -1,9 +1,9 @@
-'From Cuis 6.0 [latest update: #5235] on 16 June 2022 at 11:06:03 pm'!
+'From Cuis 6.0 [latest update: #5235] on 17 June 2022 at 9:17:13 am'!
 'Description '!
-!provides: 'EruditeExtensions' 1 5!
+!provides: 'EruditeExtensions' 1 7!
 !requires: 'Erudite' 1 190 nil!
 !requires: 'OSProcess' 1 23 nil!
-!requires: 'MethodAdvisers' 1 13 nil!
+!requires: 'MethodAdvisers' 1 15 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: 'EruditeExtensions'!
@@ -85,11 +85,11 @@ install
 
 	self installGrammarExtension.! !
 
-!UMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:49:47'!
+!UMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2022 09:16:52'!
 installGrammarExtension
 
 	EruditeMarkupGrammar around: #markup
-		do: [:nextMethod |			nextMethod value / self umlParser]! !
+		do: [:receiver :nextMethod |			nextMethod value / self umlParser]! !
 
 !UMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:40:41'!
 umlGrammar

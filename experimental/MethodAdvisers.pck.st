@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5235] on 16 June 2022 at 10:09:17 pm'!
+'From Cuis 6.0 [latest update: #5235] on 17 June 2022 at 9:19:17 am'!
 'Description '!
-!provides: 'MethodAdvisers' 1 14!
+!provides: 'MethodAdvisers' 1 16!
 SystemOrganization addCategory: 'MethodAdvisers-Tests'!
 SystemOrganization addCategory: 'MethodAdvisers'!
 
@@ -15,14 +15,14 @@ TestCase subclass: #MethodAdvisersTests
 MethodAdvisersTests class
 	instanceVariableNames: ''!
 
-!classDefinition: #MethodAdviserSubject category: 'MethodAdvisers-Tests'!
-Object subclass: #MethodAdviserSubject
+!classDefinition: #MethodAdviserTestSubject category: 'MethodAdvisers-Tests'!
+Object subclass: #MethodAdviserTestSubject
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MethodAdvisers-Tests'!
-!classDefinition: 'MethodAdviserSubject class' category: 'MethodAdvisers-Tests'!
-MethodAdviserSubject class
+!classDefinition: 'MethodAdviserTestSubject class' category: 'MethodAdvisers-Tests'!
+MethodAdviserTestSubject class
 	instanceVariableNames: ''!
 
 !classDefinition: #AdvisedMethod category: 'MethodAdvisers'!
@@ -36,39 +36,39 @@ AdvisedMethod class
 	instanceVariableNames: ''!
 
 
-!AdvisedMethod commentStamp: 'MM 6/16/2022 22:09:07' prior: 0!
+!AdvisedMethod commentStamp: '<historical>' prior: 0!
 I use the Objects as Method Wrappers facility provided by the VM to wrap compiled methods.
 My entry point is my #run:with:in: method, which will be executed by the VM when I install myself in the target class's method dictionary.
 
 Examples:
 
-MethodAdviserSubject after: #test1 do: [Transcript show: 'After test1'].
+MethodAdviserTestSubject after: #test1 do: [:receiver | Transcript show: 'After test1'].
 
-MethodAdviserSubject new test1.
+MethodAdviserTestSubject new test1.
 
-MethodAdviserSubject removeAllAdvice .
+MethodAdviserTestSubject removeAllAdvice .
 
-MethodAdviserSubject new test1.
+MethodAdviserTestSubject new test1.
 
-MethodAdviserSubject after: #test1 do: [Transcript show: 'After test1'].
-MethodAdviserSubject after: #test1 do: [Transcript show: 'After test1 again'].
-MethodAdviserSubject new test1.
+MethodAdviserTestSubject after: #test1 do: [:receiver | Transcript show: 'After test1'].
+MethodAdviserTestSubject after: #test1 do: [:receiver | Transcript show: 'After test1 again'].
+MethodAdviserTestSubject new test1.
 
-MethodAdviserSubject removeAllAdvice .
+MethodAdviserTestSubject removeAllAdvice .
 
-MethodAdviserSubject before: #test1 do: [Transcript show: 'Before test1'].
-MethodAdviserSubject after: #test1 do: [Transcript show: 'After test1'].
-MethodAdviserSubject new test1.
+MethodAdviserTestSubject before: #test1 do: [:receiver | Transcript show: 'Before test1'].
+MethodAdviserTestSubject after: #test1 do: [:receiver | Transcript show: 'After test1'].
+MethodAdviserTestSubject new test1.
 
-MethodAdviserSubject removeAllAdvice .
-MethodAdviserSubject around: #test1 do: [:nextMethod |
+MethodAdviserTestSubject removeAllAdvice .
+MethodAdviserTestSubject around: #test1 do: [:receiver :nextMethod |
 	Transcript show: 'Start around'.
 	nextMethod value.
 	Transcript show: 'End around'.
 	'wrapped test1'].
-MethodAdviserSubject new test1!
+MethodAdviserTestSubject new test1!
 
-!MethodAdviserSubject methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:13:04'!
+!MethodAdviserTestSubject methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:13:04'!
 test1
 	Transcript show: 'test1'.
 	^ 'test1'! !
@@ -85,18 +85,20 @@ aroundDo: aBlock
 beforeDo: aBlock
 	before addFirst: aBlock! !
 
-!AdvisedMethod methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:06:51'!
+!AdvisedMethod methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2022 09:15:09'!
 doesNotUnderstand: aMessage
+
+	"Any message I don't understand is forwarded to the compiledMethod."
 		
 	^ aMessage sendTo: compiledMethod! !
 
-!AdvisedMethod methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:19:43'!
-evaluate: aroundList around: aBlock with: arguments
+!AdvisedMethod methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2022 09:13:43'!
+evaluate: aroundList around: aBlock with: arguments in: aReceiver
 
 	^ aroundList isEmpty 
 		ifTrue: [	aBlock value]
 		ifFalse: [	|args|
-			args _ arguments, {[self evaluate: aroundList allButFirst around: aBlock with: arguments]}.
+			args _ {aReceiver, [self evaluate: aroundList allButFirst around: aBlock with: arguments in: aReceiver]}, arguments.
 			aroundList first valueWithArguments: args]! !
 
 !AdvisedMethod methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 20:31:46'!
@@ -115,7 +117,7 @@ install
 		addSelectorSilently: compiledMethod selector
 		withMethod: self! !
 
-!AdvisedMethod methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 20:51:55'!
+!AdvisedMethod methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2022 09:19:08'!
 run: aSelector with: arguments in: aReceiver 
 
 	"Main entry point"
@@ -124,15 +126,16 @@ run: aSelector with: arguments in: aReceiver
 	
 	"Evaluate before blocks"
 	
-	before do: [:aBlock | aBlock valueWithArguments: arguments]. 
+	before do: [:aBlock | aBlock valueWithArguments: ({aReceiver}, arguments)]. 
 	
 	result _ self evaluate: around 
 				around: [	compiledMethod
 							valueWithReceiver: aReceiver
 							arguments: arguments]
-				with: arguments.
+				with: arguments
+				in: aReceiver.
 	
-	after do: [:aBlock | aBlock valueWithArguments: arguments].
+	after do: [:aBlock | aBlock valueWithArguments: ({aReceiver}, arguments)].
 	
 	^ result! !
 
