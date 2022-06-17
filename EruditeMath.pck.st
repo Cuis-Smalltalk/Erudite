@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5171] on 16 June 2022 at 4:39:46 pm'!
+'From Cuis 6.0 [latest update: #5171] on 16 June 2022 at 11:54:22 pm'!
 'Description '!
-!provides: 'EruditeMath' 1 33!
+!provides: 'EruditeMath' 1 35!
 !requires: 'Erudite' 1 187 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -120,7 +120,7 @@ plot
 latexRendererClass
 	^ LatexEruditeMathBookRenderer! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 16:39:40'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 23:44:38'!
 LatexMath
 ^(EruditeBookSection basicNew title: 'Latex Math'; document: ((EruditeDocument contents: '!!!! Latex Math
 
@@ -164,35 +164,15 @@ Eau7sei6ju6eS42Wa09xLJ7PtT1As81FWGKzqFiqSgiQew4RpYDUE94SAPywzXPOIKz7A8hX
 AN9WMyVyBAj54etOUrUuWOFZmfsAqu0HWgFCzrGqkJ0Cb5zYLON9/v+lAOav0NZ+X0nECj3L
 kqI/J0Dpf5AfEL+5pSfJ82wAAAAASUVORK5CYII=')); yourself)); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 16:39:40'!
-NewEruditeMathBook
-^(EruditeBookSection basicNew title: 'New EruditeMath Book'; document: ((EruditeDocument contents: '!!!! Creating a New EruditeMath Book
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 23:44:38'!
+NewBook
+^(EruditeBookSection basicNew title: 'New Book'; document: ((EruditeDocument contents: '!!!! Creating a New EruditeMath Book
 
-To create a new EruditeMath book, first create a regular new Erudite book and save it. Creating a book creates a class with a name similar to the name of the book.
+To create a new EruditeMath book, execute the following code:
 
-Next, open the Browser ([[[BrowserWindow openBrowser]]] doIt) and find the class of the book in the EruditeBooks category.
+[[[EruditeMathManual newBook]]] doIt') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-Then, add a [[[parser]]] method on the class side that returns a new {EruditeMathMarkupParser::class} object. You can copy-paste the example from {EruditeMathManual class>>parser::method}:
-
-{EruditeMathManual class>>parser::method}[embed]
-
-Finally, add a [[[latexRendererClass]]] method on the instance side that returns {LatexEruditeMathBookRenderer::class}. You can copy-paste the example from {EruditeMathManual>>latexRendererClass::method}:
-
-{EruditeMathManual>>latexRendererClass::method}[embed]') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
-
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 13:25:09'!
-NewMathBook
-^(EruditeBookSection basicNew title: 'New Math Book'; document: ((EruditeDocument contents: '!!!! Creating a New Math Book
-
-To create a new EruditeMath book, first create a regular new Erudite book and save it.
-
-Then go to the book''s class in the Browser and add a [[[parser]]] method on the class side that returns a new {EruditeMathMarkupParser::class} object.
-
-For example, this is what {EruditeMathManual class>>parser::method} looks like:
-
-{EruditeMathManual class>>parser::method}[embed]') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
-
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 16:39:41'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 23:44:38'!
 Plots
 ^(EruditeBookSection basicNew title: 'Plots'; document: ((EruditeDocument contents: '!!!! Plots
 
@@ -1050,7 +1030,7 @@ Hz58+AKQDx8+fPjw4cOHD18A8uHDhw8fPnz48OELQD58+PDhw4cPHz58AciHD58YsSr+Tz58
 +PCJC74R+PDhw4cPHz58+AKQDx8+fPjw4cOHD18A8uHDhw8fPnz48OELQD58+PDhw4cPHz58
 AciHDx8+fPjw4cOHLwD58OHDhw8fPnz4+Mb/B2TUGLchNJmiAAAAAElFTkSuQmCC')); yourself)); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 16:39:40'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 23:44:38'!
 Requirements
 ^(EruditeBookSection basicNew title: 'Requirements'; document: ((EruditeDocument contents: '!!!! Requirements
 
@@ -1075,27 +1055,41 @@ If the environment variable MIMETEX is defined, EruditeMath will use it as the m
 
 If the environment variable GNUPLOT is defined, EruditeMath will use it as the gnuplot command. The default command is ''gnuplot''.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 09:55:05'!
-SystemRequirements
-^(EruditeBookSection basicNew title: 'System Requirements'; document: ((EruditeDocument contents: '!!!! System Requirements
-
-EruditeMath requires some external programs. Which external programs are required for a feature is documented in the feature''s section of this manual.
-
-!!!!!! Windows
-
-On Windows, you need to tell EruditeMath where ImageMagick is located. Put the path to the ImageMagick directory in:
-
-{OSProcess class>>imageMagickPathWindows ::method}[embed]') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
-
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 16:39:40'!
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 23:44:38'!
 initialize
     super initialize.
     title _ 'EruditeMath Manual'.
         self addSection: self Requirements.
-        self addSection: self NewEruditeMathBook.
+        self addSection: self NewBook.
         self addSection: self LatexMath.
         self addSection: self Plots.
 ! !
+
+!EruditeMathManual class methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 23:48:01'!
+newBook
+	| title |
+	title _ FillInTheBlankMorph request: 'Book title:'.
+	title ifNotEmpty: [
+		| book bookClass latexRendererClass parser |
+		book _ EruditeBook titled: title.
+		bookClass _ book storeAsClass.
+		
+		latexRendererClass _ String streamContents: [:s |
+			s nextPutAll: 'latexRendererClass'; newLine;
+				nextPutAll: '    ^ LatexEruditeMathBookRenderer';
+				nextPutAll: '.'; newLine
+		].
+		bookClass compile: latexRendererClass.
+		
+		parser _ String streamContents: [:s |
+			s nextPutAll: 'parser'; newLine;
+				nextPutAll: '    ^ EruditeMathMarkupParser';
+				nextPutAll: '.'; newLine
+		].
+		bookClass class compile: parser.
+		
+		bookClass new initialize edit
+	]! !
 
 !EruditeMathManual class methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:33:43'!
 parser
