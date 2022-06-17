@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5171] on 16 June 2022 at 11:54:22 pm'!
+'From Cuis 6.0 [latest update: #5171] on 17 June 2022 at 9:59:59 am'!
 'Description '!
-!provides: 'EruditeMath' 1 35!
-!requires: 'Erudite' 1 187 nil!
+!provides: 'EruditeMath' 1 36!
+!requires: 'Erudite' 1 190 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
 SystemOrganization addCategory: 'EruditeMath'!
