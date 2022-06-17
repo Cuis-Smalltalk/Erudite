@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5171] on 17 June 2022 at 9:59:59 am'!
+'From Cuis 6.0 [latest update: #5171] on 17 June 2022 at 12:48:41 pm'!
 'Description '!
-!provides: 'EruditeMath' 1 36!
+!provides: 'EruditeMath' 1 37!
 !requires: 'Erudite' 1 190 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -1095,7 +1095,7 @@ newBook
 parser
 	^ EruditeMathMarkupParser new! !
 
-!LatexEruditeMathBookRenderer class methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 15:51:00'!
+!LatexEruditeMathBookRenderer class methodsFor: 'as yet unclassified' stamp: 'AS 6/17/2022 12:43:53'!
 on: aBook
 
 	^ (super on: aBook)
@@ -1329,11 +1329,12 @@ visitMath: aDocMath
 		nextPutAll: aDocMath formula;
 		nextPutAll: '$'! !
 
-!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/16/2022 09:21:53'!
+!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/17/2022 12:33:10'!
 visitPlot: aDocPlot
 
 	stream
 		nextPutAll: '\begin{gnuplot}[terminal=cairolatex]', String lf;
+		nextPutAll: 'set encoding utf8', String lf;
 		nextPutAll: aDocPlot script withBlanksTrimmed, String lf;
 		nextPutAll: '\end{gnuplot}', String lf! !
 
