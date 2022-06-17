@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5235] on 16 June 2022 at 9:58:40 am'!
+'From Cuis 6.0 [latest update: #5171] on 16 June 2022 at 4:39:32 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 189!
+!provides: 'Erudite' 1 190!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -1834,14 +1834,14 @@ explorerMenu
 	
 	^ menu! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:48:20'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 15:51:59'!
 exportToLatex
 	
 	| defaultFilePath |
 	
 	defaultFilePath _ DirectoryEntry currentDirectory / (model title, '.tex').
 	self request: 'Export to:' initialAnswer: defaultFilePath asString do: [:filePath |
-		(LatexEruditeBookRenderer on: model)
+		(model latexRendererClass on: model)
 			texFilePath: filePath;
 			render.
 		self inform: 'Book exported']! !
@@ -2839,9 +2839,9 @@ title: anObject
 
 	title _ anObject! !
 
-!EruditeBook methodsFor: 'rendering' stamp: 'MM 6/16/2022 09:58:33'!
+!EruditeBook methodsFor: 'rendering' stamp: 'AS 6/16/2022 15:53:22'!
 latexRendererClass
-	^ LatexEruditeDocRenderer ! !
+	^ LatexEruditeBookRenderer ! !
 
 !EruditeBook methodsFor: 'rendering' stamp: 'MM 6/12/2022 10:52:36'!
 morphicRendererClass
