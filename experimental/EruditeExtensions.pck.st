@@ -1,8 +1,11 @@
-'From Cuis 6.0 [latest update: #5235] on 16 June 2022 at 10:08:10 pm'!
+'From Cuis 6.0 [latest update: #5235] on 16 June 2022 at 11:06:03 pm'!
 'Description '!
-!provides: 'EruditeExtensions' 1 4!
+!provides: 'EruditeExtensions' 1 5!
 !requires: 'Erudite' 1 190 nil!
+!requires: 'OSProcess' 1 23 nil!
 !requires: 'MethodAdvisers' 1 13 nil!
+!requires: 'Cryptography-DigitalSignatures' 1 14 nil!
+!requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: 'EruditeExtensions'!
 
 
