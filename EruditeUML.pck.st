@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5234] on 12 June 2022 at 9:21:20 pm'!
+'From Cuis 6.0 [latest update: #5235] on 17 June 2022 at 4:03:09 pm'!
 'Description '!
-!provides: 'EruditeUML' 1 2!
+!provides: 'EruditeUML' 1 3!
 !requires: 'Erudite' 1 179 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -37,6 +37,16 @@ EruditeBook subclass: #EruditeUMLManual
 EruditeUMLManual class
 	instanceVariableNames: ''!
 
+!classDefinition: #EruditeUMLNode category: 'EruditeUML'!
+DocNode subclass: #EruditeUMLNode
+	instanceVariableNames: 'script'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeUML'!
+!classDefinition: 'EruditeUMLNode class' category: 'EruditeUML'!
+EruditeUMLNode class
+	instanceVariableNames: ''!
+
 
 !EruditeUMLMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 20:34:09'!
 markup
@@ -49,30 +59,11 @@ uml
 	'@enduml' asParser negate plus flatten,
 	'@enduml' asParser flatten) flatten! !
 
-!EruditeUMLMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 20:59:02'!
+!EruditeUMLMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2022 16:01:30'!
 uml
-	^ super uml ==> [:script |
-		| umlId pngPath |
-		
-		umlId := (((SecureHashAlgorithm new)
-			initialize;
-			hashMessage: script)
-				printStringBase: 16) asLowercase.
-		pngPath := '/tmp/erudite-uml-', umlId, '.png'.
+	^ super uml ==> [:script | EruditeUMLNode with: script]! !
 
-		pngPath asFileEntry exists ifFalse: [
-			| inputPath cmdStatus |
-			
-			inputPath := '/tmp/erudite-uml-', umlId, '.plantuml'.
-
-			inputPath asFileEntry fileContents: script.
-
-			cmdStatus _ OSProcess waitForCommand:				'plantuml ', inputPath.
-			cmdStatus succeeded ifFalse: [		self error: 'Error running PlantUML command']].
-
-		DocLink target: pngPath type: #image label: script	]! !
-
-!EruditeUMLManual methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 21:21:04'!
+!EruditeUMLManual methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2022 16:02:37'!
 About
 ^(EruditeBookSection basicNew title: 'About'; document: ((EruditeDocument contents: '!!!! EruditeUML
 
@@ -132,7 +123,7 @@ state Configuring {
   }
 
 }
-@enduml') images: ((Dictionary new) add: ('/tmp/erudite-uml-b71e9adfae0dfb0acca8f439774285f52670b840.png'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAY4AAAC/CAYAAADpVTvAAAAo0klEQVR4XuWdB3gU1frGA4g0
+@enduml') data: ((Dictionary new) add: ('b71e9adfae0dfb0acca8f439774285f52670b840'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAY4AAAC/CAYAAADpVTvAAAAo0klEQVR4XuWdB3gU1frGA4g0
 ESkCIqLCRRQVRUUUxCtFoiKEYrl6Ua5/sSKgcEV6UeGihA4iRaVDQkgTSECaQQIEktClR0oo
 CSUBQgJJeP/znTHLJtlkd8Nudmfe3/OcZ3ennJ3zzTfnndN9AH744YcffvhxHB9+E/DDDz/8
 8MMvHPzwww8//PALBz/88MMPP/zCwQ8//PDDD79w8MMPP/zwwy8c/PDDDz/88MMvHPy4imsX
@@ -326,7 +317,7 @@ kiZJW0JCgked2Iz25bc/v/2NBL8PJLheOOLj45UqhYSEqD8TpTJykDRIWiRNkrbExESPOq3Z
 7Mtvf377Gw1+H3DOBxwSDinGxMTEqD8RhZLijXeGQIeCpEHSImmStCUnJ8OTmM2+/Pbnt7/R
 4PcB53zAIeEQNZLIRZmkWCN/aOQgaZC0SJokbampqR51WrPZl9/+/PY3Gvw+kOp64ZBIRZHk
 D6QuTP7MyEHSIGmRNEnaMjIyPOq0ZrMvv/357W80+H0gw/XCwQ8//PDDDz/8wsEPP/zwww+/
-cPDDDz/88ON+/h9fE871Q2tVAAAAAABJRU5ErkJggg==')); add: ('/tmp/erudite-uml-dba2905531256f9ebf116f41123f91f40a6e51e9.png'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAASoAAADWCAYAAABmHc/5AAAiLUlEQVR4XuWdDVBU19nH+ZCI
+cPDDDz/88ON+/h9fE871Q2tVAAAAAABJRU5ErkJggg==')); add: ('dba2905531256f9ebf116f41123f91f40a6e51e9'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAASoAAADWCAYAAABmHc/5AAAiLUlEQVR4XuWdDVBU19nH+ZCI
 pg1EYxOrCCrWaqaQGkMkGhUx2jSWSMI774vDZMYpmbF+xIzVNsX4kQqZsX7HKCZmVFJJFIkE
 4meCmo4d2+KATWoQ0XxIgzGCKRhLBS3Py/+8727vLnA/2IW9u//fzBn27u4995xz7/O/z3nO
 ZZ8gEX744YcfexPEPwT88MOPXwtVyz+uy9cnyv22tDR8y3+G+aHD3+zWjJ3qChUq2ROU4Lfl
@@ -489,7 +480,7 @@ xJY35d2XN8vby36nspvaveTlvq4GgD9TMj9M+JvdmrHTICsDgJzwUDvkiEelUEC7F6Oc9vzw
 E+j4g90a2akloYI7VlZWpiqD8sFNs3tBO9FetBvtr6ur479y+aHCH+zWyE4tCRVUDpVA8eCe
 oWK7F7QT7UW70f7Gxkb+K5cfKvzBbo3s1JJQYWcoHSrCHBKV2r2gnWgv2o3237x5k//K5YcK
 f7BbIzsN4j+N/PDDj93hFyp++OGHX6j44YcffviFih9++Al4/hfm7vKTW7aKpgAAAABJRU5E
-rkJggg==')); add: ('/tmp/erudite-uml-e0d0496fd1642d336f1b3aa512c0cf9857421890.png'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAVgAAAIgCAYAAADA9XFxAABr4klEQVR4XuWdB3gUVReGEcQC
+rkJggg==')); add: ('e0d0496fd1642d336f1b3aa512c0cf9857421890'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAVgAAAIgCAYAAADA9XFxAABr4klEQVR4XuWdB3gUVReGEcQC
 igX4VRRBRUBBRBDpTYpKb6LSQZooIB0BpYhUqdKLCQkk2ZAQCBAIPUBCEgi9t9BCC70llHD+
 /S7ccTe9Zzff+zwHsrOzU+7MvHPmTMsiwg8//PDDT1qQhb8J+OGHH374BcsPP/zwwy9Yfvjh
 hx9++AXLDz/88MMvWH744YcffsHyY1c8fvxYtmzZIqNGjZIePXrIH3/8IQ4ODnLp0iX+xuGH
@@ -1003,7 +994,7 @@ P0PAVt/Tzx/8wR/8kVrPwYDn4Dv9HIzEvpo+0YLVt7WikKseO/j0GQK2+p5+/uAP/uCP1HoO
 Bjyn663wHzyYmOcPZ0nuVWL6GQIYEf9zBPiDP/gjMz8HA55LzpPbsvBfUMwPP/zwkzbwC5Yf
 fvjhJ434P9DVLhl897IDAAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeUMLManual methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 21:21:04'!
+!EruditeUMLManual methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2022 16:02:37'!
 initialize
     super initialize.
     title _ 'EruditeUMLManual'.
@@ -1013,3 +1004,43 @@ initialize
 !EruditeUMLManual class methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 20:43:53'!
 parser
 	^ EruditeUMLMarkupParser new! !
+
+!EruditeUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 22:01:45'!
+accept: aVisitor
+
+	^ aVisitor visitUML: self! !
+
+!EruditeUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:46:26'!
+data
+
+	|pngPath|
+	pngPath := '/tmp/erudite-uml-', self dataKey, '.png'.
+
+	pngPath asFileEntry exists ifFalse: [
+			| inputPath cmdStatus |
+			
+			inputPath := '/tmp/erudite-uml-', self dataKey, '.plantuml'.
+
+			inputPath asFileEntry fileContents: script.
+
+			cmdStatus _ OSProcess waitForCommand:				'plantuml ', inputPath.
+			cmdStatus succeeded ifFalse: [		self error: 'Error running PlantUML command']].
+	^ EruditeForm fromFileNamed: pngPath! !
+
+!EruditeUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:44:20'!
+dataKey
+
+	^ (((SecureHashAlgorithm new)
+			initialize;
+			hashMessage: script)
+				printStringBase: 16) asLowercase! !
+
+!EruditeUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:43:45'!
+initialize: plantUMLScript
+
+	script _ plantUMLScript! !
+
+!EruditeUMLNode class methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:43:27'!
+with: plantUMLScript
+
+	^ self new initialize: plantUMLScript! !
