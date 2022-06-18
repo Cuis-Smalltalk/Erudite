@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5235] on 18 June 2022 at 12:39:37 pm'!
+'From Cuis 6.0 [latest update: #5235] on 18 June 2022 at 3:19:02 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 191!
+!provides: 'Erudite' 1 192!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -12955,6 +12955,40 @@ browse: aClass selector: aSymbol
 			open: browser
 			label: 'System Browser' ! !
 
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:13:52'!
+document: aDocLink on: aStream
+
+	|methodReference textModel docString text indentation |
+	
+	methodReference _ self methodReferenceFor: aDocLink.
+	
+	methodReference ifNil: [^nil].
+	
+	indentation _ 6.
+	
+	docString _ methodReference compiledMethod methodNode comment first.
+	
+	text _ Text string: ([(methodReference sourceCode findTokens: Character newLineCharacter) first] on: Error do: [:e | 'Method not found']).
+							
+	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel classOrMetaClass: methodReference actualClass;
+				formatAndStyle.
+	
+	aStream nextPut: (Text string: methodReference actualClass asString attribute: TextEmphasis bold).
+	aStream nextPut: '>>'.	
+	aStream nextPut: textModel actualContents.
+	aStream nextPut: Character newLineCharacter asString.
+	(docString findTokens: Character newLineCharacter) do: [:docStringLine |
+		indentation timesRepeat: [aStream nextPut: Character space asString].
+		aStream nextPut: docStringLine;
+				nextPut: Character newLineCharacter asString].
+	aStream nextPut: 
+		(Text string: '[browse]' 
+				attributes: {BlockTextAction do: [:x | 
+							self browse: methodReference actualClass 
+								selector: methodReference selector]. 
+							TextEmphasis underlined})! !
+
 !MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:35:05'!
 embed: aDocLink on: aStream
 
@@ -12996,12 +13030,16 @@ methodReferenceFor: aDocLink
 		class: class
 		selector: classAndMethod second withBlanksTrimmed asSymbol! !
 
-!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:43'!
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:03:33'!
 render: aDocLink in: aDocument on: aStream
 
 	aDocLink optionAt: #embed ifPresent: [:val |
 		val ifTrue: [
 			^ self embed: aDocLink on: aStream]].
+	
+	aDocLink optionAt: #doc ifPresent: [:val |
+		val ifTrue: [
+			^ self document: aDocLink on: aStream]].
 	
 	self renderLink: aDocLink on: aStream! !
 
