@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5235] on 18 June 2022 at 3:34:09 pm'!
+'From Cuis 6.0 [latest update: #5235] on 18 June 2022 at 4:31:49 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 195!
+!provides: 'Erudite' 1 196!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -9307,7 +9307,7 @@ initialize
         self addSection: self Tools.
 ! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:34:02'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
 BookReaderAndEditor
 ^(EruditeBookSection basicNew title: 'Book reader and editor'; document: ((EruditeDocument contents: '!!!! Book reader and editor
 
@@ -10259,7 +10259,7 @@ H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
 BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:34:03'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
 Extensions
 ^(EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
 
@@ -10277,7 +10277,7 @@ This is implemented.
 
 TODO. Not implemented yet. ') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:34:03'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
 Extras
 ^(EruditeBookSection basicNew title: 'Extras'; document: ((EruditeDocument contents: '!!!! Extras
 
@@ -10289,7 +10289,7 @@ Also, a book on Morphic, the Cuis UI system:
 
 To install: [[[Feature require: ''MorphicBook'']]] doIt') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:34:03'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
 Implementation
 ^(EruditeBookSection basicNew title: 'Implementation'; document: ((EruditeDocument contents: '!!!! Implementation
 
@@ -10365,7 +10365,7 @@ There''s also the possibility of storing in a class method, but that''s not the 
 
 As you can see, it is done via the {storeOn: ::selector} method (it is indirectly call from {WriteStream>>store: ::method} method).') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:34:02'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:39'!
 Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Erudite Manual
 
@@ -10379,7 +10379,7 @@ Main documentation is realized via {EruditeBook::class|books}, a collection of d
 
 Books are read and edited via the {EruditeBookReaderMorph::class|reader} and {EruditeBookEditorMorph::class|editor} morphic applications.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:34:03'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
 LiterateProgramming
 ^(EruditeBookSection basicNew title: 'Literate Programming'; document: ((EruditeDocument contents: '!!!! Literate Programming
 
@@ -10413,7 +10413,7 @@ This misconception has led to claims that comment-extraction tools, such as the 
 
 Literate Programming can be realized by the creation of Erudite {EruditeBook::class|books}. In particular, via code embedding in its different forms. Contrary to other LP systems, there''s no need for a tangling and weaving phase; the document source is kept separately from the source code, Smalltalk code is referenced and embedded from the documentation. That means that in spite of documentation and code being separate, the referenced code is always up to date. Finally, the possibility of evaluating Smalltalk code from the documentation makes Erudite very unique compared to the other LP systems.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:34:02'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
 SyntaxReference
 ^(EruditeBookSection basicNew title: 'Syntax reference'; document: ((EruditeDocument contents: '!!!! Syntax reference
 
@@ -10423,7 +10423,7 @@ Text formatting, links to Smalltalk code, insertion of images, and code.') data:
         add: self SyntaxReferenceCode;
  yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:34:03'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
 SyntaxReferenceCode
 ^(EruditeBookSection basicNew title: 'Code'; document: ((EruditeDocument contents: '!!!!!! Code
 
@@ -10451,7 +10451,7 @@ Plain Smalltalk code: [[[Dictionary new at: #foo put: ''bar'']]].
 [[[ImageMorph new]]] embedIt
 ') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:34:03'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
 SyntaxReferenceImages
 ^(EruditeBookSection basicNew title: 'Images'; document: ((EruditeDocument contents: '!!!!!! Images
 
@@ -10924,7 +10924,7 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
 AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:34:02'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
 SyntaxReferenceLinks
 ^(EruditeBookSection basicNew title: 'Links'; document: ((EruditeDocument contents: '!!!!!! Links
 
@@ -10940,33 +10940,41 @@ Links to sections in the same book:
 
 **Syntax:** ```{sectionName::section|optional label}```
 
-Example: ```{Introduction::section}``` ==> {Introduction::section}
+__Example:__ ```{Introduction::section}``` ==> {Introduction::section}
 
 Links to sections in another book:
 
 **Syntax:** ```{bookName#sectionName::section|optional label}```
 
-Example: ```{EruditeManual#Syntax test::section}``` ==> {Erudite Manual#Syntax test::section}
+__Example:__ ```{EruditeManual#Syntax test::section}``` ==> {Erudite Manual#Syntax test::section}
 
 !!!!!!!! Selectors links
 
 **Syntax:** ```{selectorName::selector}```
 
-Example: ```{at:put: ::selector}``` => {at:put: ::selector}
+__Example:__ ```{at:put: ::selector}``` => {at:put: ::selector}
 
 !!!!!!!! Class links
 
 **Syntax:** ```{className::class|optional label}[options]```
 
-Example: ```{EruditeBook::class}``` => {EruditeBook::class}
+__Example:__ ```{EruditeBook::class}``` => {EruditeBook::class}
 
 **Options:**
    - //embed//: embed the class source code.
+   - //doc//: when doc is used in conjunction with embed, the class documentation is appended.
 
-Example: 
+__Example:__ 
+
 ```{EruditeBook::class}[embed]``` 
 => 
 {EruditeBook::class}[embed]
+
+__Example:__
+ 
+```{EruditeBook::class}[embed,doc]``` 
+=> 
+{EruditeBook::class}[embed,doc]
 
 !!!!!!!! Methods links
 
@@ -10979,11 +10987,13 @@ Example: ```{EruditeBook>>initialize: ::method}``` => {EruditeBook>>initialize: 
    - //doc//: documents the method. Displays the method signature and docstring. This is a good option for documenting an object''s api.
 
 __Embed example:__
+
 ```{EruditeBook>>initialize: ::method}[embed]```
 =>
 {EruditeBook>>initialize: ::method} [embed]
 
 __Doc example:__
+
 ```{EruditeBookSection>>document: ::method}[doc]```
 =>
 {EruditeBookSection>>document: ::method}[doc]
@@ -10997,7 +11007,7 @@ To reference class methods, use this syntax: ```{EruditeBook class>>open ::metho
 
 **Example:** ```{http://cuis-smalltalk.org::url|Cuis Smalltalk}``` => {http://cuis-smalltalk.org::url|Cuis Smalltalk}') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:34:02'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
 SyntaxReferenceTextFormatting
 ^(EruditeBookSection basicNew title: 'Text formatting'; document: ((EruditeDocument contents: '!!!!!! Headings
 
@@ -11025,7 +11035,7 @@ Text between double _: ```__underlined__``` => __underlined__
 
 To prevent text formatting, enclose the text in triple back quotes.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:34:03'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
 SyntaxTest
 ^(EruditeBookSection basicNew title: 'Syntax test'; document: ((EruditeDocument contents: '!!!! Syntax test
 
@@ -11547,7 +11557,7 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
 AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:34:02'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:39'!
 initialize
     super initialize.
     title _ 'Erudite Manual'.
@@ -12897,7 +12907,7 @@ browse: aClass selector: aSymbol
 			open: browser
 			label: 'System Browser' ! !
 
-!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:26:20'!
+!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:29:07'!
 embed: aDocLink on: aStream
 
 	|text class textModel |
@@ -12912,12 +12922,21 @@ embed: aDocLink on: aStream
 	aStream nextPut: textModel actualContents.
 	aStream nextPut: Character newLineCharacter asString.
 	
+	"If doc option is present, then first line of class documentation is displayed."
+	aDocLink optionAt: #doc ifPresent: [:val |
+		val ifTrue: [|commentFirstLine|
+			commentFirstLine _ (class comment findTokens: Character newLineCharacter) first.
+			aStream nextPut: commentFirstLine.
+			aStream nextPut: Character newLineCharacter asString]].
+	
 	aStream nextPut: 
 		(Text string: '[browse]' 
 				attributes: {BlockTextAction do: [:x | 
 							self browse: class
 								selector: nil]. 
-							TextEmphasis underlined})! !
+							TextEmphasis underlined}).
+							
+	! !
 
 !ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:24'!
 render: aDocLink in: aDocument on: aStream
