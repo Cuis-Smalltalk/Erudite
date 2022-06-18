@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5235] on 18 June 2022 at 3:19:02 pm'!
+'From Cuis 6.0 [latest update: #5235] on 18 June 2022 at 3:20:49 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 192!
+!provides: 'Erudite' 1 193!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -9295,7 +9295,7 @@ initialize
         self addSection: self Tools.
 ! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:11'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:20:45'!
 BookReaderAndEditor
 ^(EruditeBookSection basicNew title: 'Book reader and editor'; document: ((EruditeDocument contents: '!!!! Book reader and editor
 
@@ -10247,7 +10247,7 @@ H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
 BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:11'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:20:45'!
 Extensions
 ^(EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
 
@@ -10265,7 +10265,7 @@ This is implemented.
 
 TODO. Not implemented yet. ') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:11'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:20:45'!
 Extras
 ^(EruditeBookSection basicNew title: 'Extras'; document: ((EruditeDocument contents: '!!!! Extras
 
@@ -10277,7 +10277,7 @@ Also, a book on Morphic, the Cuis UI system:
 
 To install: [[[Feature require: ''MorphicBook'']]] doIt') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:11'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:20:45'!
 Implementation
 ^(EruditeBookSection basicNew title: 'Implementation'; document: ((EruditeDocument contents: '!!!! Implementation
 
@@ -10353,7 +10353,7 @@ There''s also the possibility of storing in a class method, but that''s not the 
 
 As you can see, it is done via the {storeOn: ::selector} method (it is indirectly call from {WriteStream>>store: ::method} method).') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:11'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:20:45'!
 Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Erudite Manual
 
@@ -10367,7 +10367,7 @@ Main documentation is realized via {EruditeBook::class|books}, a collection of d
 
 Books are read and edited via the {EruditeBookReaderMorph::class|reader} and {EruditeBookEditorMorph::class|editor} morphic applications.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:11'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:20:45'!
 LiterateProgramming
 ^(EruditeBookSection basicNew title: 'Literate Programming'; document: ((EruditeDocument contents: '!!!! Literate Programming
 
@@ -10401,7 +10401,7 @@ This misconception has led to claims that comment-extraction tools, such as the 
 
 Literate Programming can be realized by the creation of Erudite {EruditeBook::class|books}. In particular, via code embedding in its different forms. Contrary to other LP systems, there''s no need for a tangling and weaving phase; the document source is kept separately from the source code, Smalltalk code is referenced and embedded from the documentation. That means that in spite of documentation and code being separate, the referenced code is always up to date. Finally, the possibility of evaluating Smalltalk code from the documentation makes Erudite very unique compared to the other LP systems.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:11'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:20:45'!
 SyntaxReference
 ^(EruditeBookSection basicNew title: 'Syntax reference'; document: ((EruditeDocument contents: '!!!! Syntax reference
 
@@ -10477,11 +10477,17 @@ Example: ```{EruditeBook>>initialize: ::method}``` => {EruditeBook>>initialize: 
 
 **Options:**
    - //embed//: embed the method source code.
+   - //doc//: documents the method. Displays the method signature and docstring. This is a good option for documenting an object''s api.
 
-Example:
+Embed example:
 ```{EruditeBook>>initialize: ::method}[embed]```
 =>
 {EruditeBook>>initialize: ::method} [embed]
+
+Doc example:
+```{EruditeBookSection>>document: ::method}[doc]```
+=>
+{EruditeBookSection>>document: ::method}[doc]
 
 To reference class methods, use this syntax: ```{EruditeBook class>>open ::method}[embed]``` => 
 {EruditeBook class>>open ::method}[embed]
@@ -10989,7 +10995,7 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
 AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:11'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:20:45'!
 SyntaxTest
 ^(EruditeBookSection basicNew title: 'Syntax test'; document: ((EruditeDocument contents: '!!!! Syntax test
 
@@ -11511,7 +11517,7 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
 AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:11'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:20:45'!
 initialize
     super initialize.
     title _ 'Erudite Manual'.
