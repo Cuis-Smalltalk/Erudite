@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5235] on 17 June 2022 at 4:03:09 pm'!
+'From Cuis 6.0 [latest update: #5235] on 17 June 2022 at 10:46:30 pm'!
 'Description '!
-!provides: 'EruditeUML' 1 3!
+!provides: 'EruditeUML' 1 4!
 !requires: 'Erudite' 1 179 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -1044,3 +1044,17 @@ initialize: plantUMLScript
 with: plantUMLScript
 
 	^ self new initialize: plantUMLScript! !
+
+!MorphicEruditeDocRenderer methodsFor: '*EruditeUML' stamp: 'MM 6/16/2022 22:07:20'!
+visitUML: anUMLNode
+
+	|form imageMorph |
+	
+	form _ [document getNodeData: anUMLNode]
+				on: Error
+				do: [:e | ^ stream nextPut: e printString].
+	
+	imageMorph _ ImageMorph new
+					image: form.
+							
+	stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
