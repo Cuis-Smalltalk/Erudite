@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5235] on 18 June 2022 at 4:31:49 pm'!
+'From Cuis 6.0 [latest update: #5352] on 6 July 2022 at 6:55:15 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 196!
+!provides: 'Erudite' 1 198!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -395,7 +395,7 @@ Object subclass: #EruditeSystem
 	category: 'Erudite-Core'!
 !classDefinition: 'EruditeSystem class' category: 'Erudite-Core'!
 EruditeSystem class
-	instanceVariableNames: ''!
+	instanceVariableNames: 'Prefs'!
 
 !classDefinition: #LatexEruditeBookRenderer category: 'Erudite-Latex'!
 Object subclass: #LatexEruditeBookRenderer
@@ -1478,11 +1478,11 @@ contentsChanged
 correctFrom: aSmallInteger to: aSmallInteger2 with: aString 
 	! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 12:39:27'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'Install-Erudite 7/6/2022 06:36:25'!
 drawLabelOn: aCanvas
 
 	| x0 y0 f w availableW l |
-	f _ PreferenceNG at: #windowTitleFont.
+	f _ Preferences at: #windowTitleFont.
 	x0 _  f lineSpacing * 5 + borderWidth.
 	y0 _ borderWidth * 6 // 10.
 	availableW _ extent x - x0.
@@ -12614,15 +12614,19 @@ helpMenuOptions
 			} asDictionary.
 		}` ! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 22:45:40'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'as 7/6/2022 06:52:24'!
 initialize
 
-	Preferences addPreference: #eruditeBrowserClassComments 
-					category: 'erudite'  
-					default: true  
-					balloonHelp: 'Enabled/disable Erudite markup in browser class comments'.
-					
-	Preferences setPreference:  #tapAndHoldEmulatesButton2 toValue: false.
+	Prefs _ PreferenceSet new.
+
+	Prefs
+		name: #browserClassComments
+		description: 'Enabled/disable Erudite markup in browser class comments'
+		category: #erudite
+		type: nil  
+		value: true.
+
+	Preferences at: #tapAndHoldEmulatesButton2 put: false.
 					 
 	EruditeManual open! !
 
@@ -12674,6 +12678,10 @@ worldMenuOptions
 		#balloonText 	-> 		'Submenu to manage Erudite books'.
 	} asDictionary.
 	}`! !
+
+!EruditeSystem class methodsFor: 'accessing' stamp: 'as 7/6/2022 06:54:01'!
+preferences
+	^ Prefs! !
 
 !LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 6/16/2022 09:42:29'!
 listingsPackageConfiguration
