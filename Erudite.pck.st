@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5392] on 13 July 2022 at 11:58:14 am'!
+'From Cuis 6.0 [latest update: #5392] on 13 July 2022 at 12:19:57 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 201!
+!provides: 'Erudite' 1 202!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -1716,17 +1716,19 @@ saveBook
 	model store.
 	sourcesChanged _ false! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 23:04:04'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 7/13/2022 12:19:17'!
 saveBookAs
 
 	| title |
 	title _ FillInTheBlankMorph request: 'A name for the new book:'.
 	
-	title ifNotEmpty: [
-		|newBook|
+	title ifNotEmpty: [ |newBook newBookClass|
 		newBook _ model copy.
 		newBook title: title.
-		newBook store.
+		newBookClass _ newBook store.
+		"Copy some of the methods from the original book class"
+		newBookClass class copyAllCategoriesFrom: model class class.
+		model class hasComment ifTrue: [newBookClass comment: model class comment].
 		newBook edit.
 		model _ newBook.
 		currentSection _ nil.
@@ -2656,11 +2658,11 @@ selectorFromTitle: aString
 			s nextPutAll: part capitalized]]
 	! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 7/21/2020 22:40:40'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/13/2022 12:17:52'!
 store
 
 	"^ self storeOnMethod: self storageMethod"
-	self storeAsClass.
+	^ self storeAsClass.
 	! !
 
 !EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:35:59'!
