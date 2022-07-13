@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5392] on 13 July 2022 at 11:49:18 am'!
+'From Cuis 6.0 [latest update: #5392] on 13 July 2022 at 11:58:14 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 200!
+!provides: 'Erudite' 1 201!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -2610,9 +2610,10 @@ style: aString
 	
 	^ styler ranges! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 18:28:28'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/13/2022 11:55:28'!
 asMethodName: aString
-	^ aString asCamelCase uncapitalized select: [:char | char isAlphaNumeric ]! !
+	"Return a string that can be used in a method name."
+	^ aString asCamelCase select: [:char | char isAlphaNumeric ]! !
 
 !EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:52:09'!
 defaultNameForClass
@@ -2671,7 +2672,7 @@ storeAsClassNamed: className
 	^ self storeAsClassNamed: className category: (self defaultStorageCategory: className asSymbol)
 	! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 7/13/2022 11:45:52'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/13/2022 11:56:10'!
 storeAsClassNamed: className category: aCategory
 
 	|bookClass initialize|
@@ -2690,7 +2691,7 @@ storeAsClassNamed: className category: aCategory
 		
 		sections do: [:section |
 			s nextPutAll: '        self addSection: self section_'; 
-			  nextPutAll: section title asCamelCase; 
+			  nextPutAll: (self asMethodName: section title); 
 			  nextPutAll: '.'; newLine]].
 	
 	bookClass compile: initialize.
@@ -2729,7 +2730,7 @@ storeOnMethod: aMethodReference
 storeSection: aBookSection on: aClass
 	^ self storeSection: aBookSection on: aClass prefix: 'section_'! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 7/13/2022 11:47:19'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/13/2022 11:57:00'!
 storeSection: aBookSection on: aClass prefix: prefix
 
 	| source subsectionPrefix |
@@ -2737,7 +2738,7 @@ storeSection: aBookSection on: aClass prefix: prefix
 	subsectionPrefix _ prefix, aBookSection title asCamelCase, '_'.
 	
 	source _ String streamContents: [:s |
-		s nextPutAll: (prefix, aBookSection title asCamelCase); newLine.		
+		s nextPutAll: (prefix, (self asMethodName: aBookSection title)); newLine.		
 		s
 		nextPutAll: '^('; 
 	 	nextPutAll: aBookSection class name;
@@ -2747,7 +2748,7 @@ storeSection: aBookSection on: aClass prefix: prefix
 		nextPutAll: '; subsections: (OrderedCollection new'.
 		aBookSection subsections do: [:subSection |
 			s nextPutAll: '        add: self '; nextPutAll: subsectionPrefix; 
-		        nextPutAll: subSection title asCamelCase; nextPutAll: ';'	; newLine].
+		        nextPutAll: (self asMethodName: subSection title); nextPutAll: ';'	; newLine].
 		s nextPutAll: ' yourself)';
 		  nextPutAll: '; yourself)'].
 	
