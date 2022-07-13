@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5352] on 6 July 2022 at 6:55:15 am'!
+'From Cuis 6.0 [latest update: #5235] on 13 July 2022 at 11:15:21 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 198!
+!provides: 'Erudite' 1 199!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -11780,14 +11780,17 @@ parent
 
 	^ parent! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 6/11/2022 19:29:07'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 7/13/2022 11:13:24'!
 parent: anObject
 	"Set the value of parent"
 
 	parent _ anObject.
 	
 	"Initialize ourselves with parent data."
-	document parser: parent parser! !
+	document parser: parent parser.
+	
+	"Propagate our potentially new parser to our subsections"
+	subsections do: [:ss | ss parent: self]! !
 
 !EruditeBookSection methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:27'!
 subsections
