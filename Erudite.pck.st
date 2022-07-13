@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5235] on 13 July 2022 at 11:15:21 am'!
+'From Cuis 6.0 [latest update: #5392] on 13 July 2022 at 11:49:18 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 199!
+!provides: 'Erudite' 1 200!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -2671,7 +2671,7 @@ storeAsClassNamed: className
 	^ self storeAsClassNamed: className category: (self defaultStorageCategory: className asSymbol)
 	! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 7/21/2020 23:25:38'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/13/2022 11:45:52'!
 storeAsClassNamed: className category: aCategory
 
 	|bookClass initialize|
@@ -2689,7 +2689,9 @@ storeAsClassNamed: className category: aCategory
 		   nextPutAll: title printString; nextPutAll: '.'; newLine.
 		
 		sections do: [:section |
-			s nextPutAll: '        self addSection: self '; nextPutAll: section title asCamelCase; nextPutAll: '.'; newLine]].
+			s nextPutAll: '        self addSection: self section_'; 
+			  nextPutAll: section title asCamelCase; 
+			  nextPutAll: '.'; newLine]].
 	
 	bookClass compile: initialize.
 	
@@ -2723,19 +2725,19 @@ storeOnMethod: aMethodReference
 	
 	aMethodReference actualClass compile: source.! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 7/18/2020 17:58:37'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/13/2022 11:43:08'!
 storeSection: aBookSection on: aClass
-	^ self storeSection: aBookSection on: aClass prefix: ''! !
+	^ self storeSection: aBookSection on: aClass prefix: 'section_'! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 6/14/2022 17:48:27'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 7/13/2022 11:47:19'!
 storeSection: aBookSection on: aClass prefix: prefix
 
 	| source subsectionPrefix |
 	
-	subsectionPrefix _ prefix , ((self asMethodName: aBookSection title) capitalized).
+	subsectionPrefix _ prefix, aBookSection title asCamelCase, '_'.
 	
 	source _ String streamContents: [:s |
-		s nextPutAll: subsectionPrefix; newLine.		
+		s nextPutAll: (prefix, aBookSection title asCamelCase); newLine.		
 		s
 		nextPutAll: '^('; 
 	 	nextPutAll: aBookSection class name;
@@ -2745,13 +2747,13 @@ storeSection: aBookSection on: aClass prefix: prefix
 		nextPutAll: '; subsections: (OrderedCollection new'.
 		aBookSection subsections do: [:subSection |
 			s nextPutAll: '        add: self '; nextPutAll: subsectionPrefix; 
-		        nextPutAll: (self asMethodName: subSection title) capitalized; nextPutAll: ';'	; newLine].
+		        nextPutAll: subSection title asCamelCase; nextPutAll: ';'	; newLine].
 		s nextPutAll: ' yourself)';
 		  nextPutAll: '; yourself)'].
 	
 	aClass compile: source.
 	aBookSection subsections do: [:ss |
-		self storeSection: ss on: aClass prefix: (prefix, (self asMethodName: aBookSection title) capitalized)].! !
+		self storeSection: ss on: aClass prefix: subsectionPrefix].! !
 
 !EruditeBook methodsFor: 'accessing' stamp: 'MM 2/26/2022 19:09:16'!
 addSection: aBookSection
