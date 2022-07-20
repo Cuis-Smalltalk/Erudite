@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5171] on 17 June 2022 at 12:48:41 pm'!
+'From Cuis 6.0 [latest update: #5352] on 20 July 2022 at 7:29:06 am'!
 'Description '!
-!provides: 'EruditeMath' 1 37!
-!requires: 'Erudite' 1 190 nil!
+!provides: 'EruditeMath' 1 38!
+!requires: 'Erudite' 1 203 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
 SystemOrganization addCategory: 'EruditeMath'!
@@ -1230,21 +1230,6 @@ script
 script: aString
 
 	script _ aString! !
-
-!DirectoryEntry class methodsFor: '*EruditeMath' stamp: 'AS 6/13/2022 19:55:00'!
-tempDirectory
-
-	|thisOS|
-	
-	thisOS _ ThisOSProcess thisOSProcess.
-	
-	^ thisOS class caseOf: {
-		[UnixProcess] -> [((thisOS environmentAt: 'TMPDIR')
-			ifNil: ['/tmp']) asDirectoryEntry].
-		[WindowsProcess] -> [(thisOS environmentAt: 'TEMP') asDirectoryEntry].
-		[MacProcess] -> [((thisOS environmentAt: 'TMPDIR')
-			ifNil: ['/tmp']) asDirectoryEntry].
-	}! !
 
 !Theme class methodsFor: '*EruditeMath' stamp: 'AS 6/14/2022 08:38:31'!
 currentDarkModeId

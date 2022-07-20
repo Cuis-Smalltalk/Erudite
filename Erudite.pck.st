@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5392] on 13 July 2022 at 12:19:57 pm'!
+'From Cuis 6.0 [latest update: #5352] on 20 July 2022 at 7:28:32 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 202!
+!provides: 'Erudite' 1 203!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -13521,6 +13521,21 @@ selectionInterval
 !Browser methodsFor: '*Erudite' stamp: 'MM 12/13/2018 18:26'!
 text
 	^ ''! !
+
+!DirectoryEntry class methodsFor: '*Erudite' stamp: 'AS 6/13/2022 19:55:00'!
+tempDirectory
+
+	|thisOS|
+	
+	thisOS _ ThisOSProcess thisOSProcess.
+	
+	^ thisOS class caseOf: {
+		[UnixProcess] -> [((thisOS environmentAt: 'TMPDIR')
+			ifNil: ['/tmp']) asDirectoryEntry].
+		[WindowsProcess] -> [(thisOS environmentAt: 'TEMP') asDirectoryEntry].
+		[MacProcess] -> [((thisOS environmentAt: 'TMPDIR')
+			ifNil: ['/tmp']) asDirectoryEntry].
+	}! !
 
 !InnerTextMorph methodsFor: '*Erudite' stamp: 'MM 12/7/2018 12:59'!
 enableEditing: aBoolean

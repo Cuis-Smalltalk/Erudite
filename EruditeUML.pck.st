@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5235] on 17 June 2022 at 10:46:30 pm'!
+'From Cuis 6.0 [latest update: #5352] on 20 July 2022 at 7:32:17 am'!
 'Description '!
-!provides: 'EruditeUML' 1 4!
-!requires: 'Erudite' 1 179 nil!
+!provides: 'EruditeUML' 1 7!
+!requires: 'Erudite' 1 203 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
 SystemOrganization addCategory: 'EruditeUML'!
@@ -1010,22 +1010,22 @@ accept: aVisitor
 
 	^ aVisitor visitUML: self! !
 
-!EruditeUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:46:26'!
+!EruditeUMLNode methodsFor: 'as yet unclassified' stamp: 'AS 7/20/2022 07:14:28'!
 data
 
-	|pngPath|
-	pngPath := '/tmp/erudite-uml-', self dataKey, '.png'.
+	| inputPath pngPath|
+	inputPath := DirectoryEntry tempDirectory //
+		('erudite-uml-', self dataKey, '.plantuml').
+	inputPath exists ifFalse: [ inputPath fileContents: script ].
 
-	pngPath asFileEntry exists ifFalse: [
-			| inputPath cmdStatus |
-			
-			inputPath := '/tmp/erudite-uml-', self dataKey, '.plantuml'.
+	pngPath := DirectoryEntry tempDirectory //
+		('erudite-uml-', self dataKey, '.png').
+	pngPath exists ifFalse: [
+		| cmdStatus |
+		cmdStatus _ OSProcess plantuml: inputPath pathName.
+		cmdStatus succeeded ifFalse: [		self error: 'Error running PlantUML command']].
 
-			inputPath asFileEntry fileContents: script.
-
-			cmdStatus _ OSProcess waitForCommand:				'plantuml ', inputPath.
-			cmdStatus succeeded ifFalse: [		self error: 'Error running PlantUML command']].
-	^ EruditeForm fromFileNamed: pngPath! !
+	^ EruditeForm fromFileNamed: pngPath pathName! !
 
 !EruditeUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:44:20'!
 dataKey
@@ -1044,6 +1044,18 @@ initialize: plantUMLScript
 with: plantUMLScript
 
 	^ self new initialize: plantUMLScript! !
+
+!OSProcess class methodsFor: '*EruditeUML' stamp: 'AS 7/20/2022 07:11:39'!
+plantuml: aString
+
+	^ self waitForCommand:
+		(self plantumlCommand, ' ', aString) withBlanksTrimmed! !
+
+!OSProcess class methodsFor: '*EruditeUML' stamp: 'AS 7/20/2022 07:32:06'!
+plantumlCommand
+	
+	^ ThisOSProcess thisOSProcess environment
+		at: 'PLANTUML' ifAbsent: ['plantuml'].! !
 
 !MorphicEruditeDocRenderer methodsFor: '*EruditeUML' stamp: 'MM 6/16/2022 22:07:20'!
 visitUML: anUMLNode
