@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5352] on 20 July 2022 at 7:29:06 am'!
+'From Cuis 6.0 [latest update: #5400] on 24 July 2022 at 9:50:58 am'!
 'Description '!
-!provides: 'EruditeMath' 1 38!
+!provides: 'EruditeMath' 1 45!
 !requires: 'Erudite' 1 203 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -93,12 +93,12 @@ math
 	   ($$ asParser min: 1 max: 1) negate plus flatten,
 	   ($$ asParser min: 1 max: 1) flatten! !
 
-!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:13:00'!
+!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'AS 7/24/2022 09:00:14'!
 plot
 
-	^ '<plot>' asParser flatten,
-		'</plot>' asParser negate plus flatten,
-		'</plot>' asParser flatten! !
+	^ '@startplot' asParser flatten,
+		'@endplot' asParser negate plus flatten,
+		'@endplot' asParser flatten! !
 
 !EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:11:41'!
 math
@@ -120,8 +120,18 @@ plot
 latexRendererClass
 	^ LatexEruditeMathBookRenderer! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 23:44:38'!
-LatexMath
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 7/24/2022 09:50:48'!
+initialize
+    super initialize.
+    title _ 'EruditeMath Manual'.
+        self addSection: self section_Requirements.
+        self addSection: self section_NewBook.
+        self addSection: self section_LatexMath.
+        self addSection: self section_Plots.
+! !
+
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 7/24/2022 09:50:48'!
+section_LatexMath
 ^(EruditeBookSection basicNew title: 'Latex Math'; document: ((EruditeDocument contents: '!!!! Latex Math
 
 Latex math is enclosed between dollar signs:
@@ -164,31 +174,31 @@ Eau7sei6ju6eS42Wa09xLJ7PtT1As81FWGKzqFiqSgiQew4RpYDUE94SAPywzXPOIKz7A8hX
 AN9WMyVyBAj54etOUrUuWOFZmfsAqu0HWgFCzrGqkJ0Cb5zYLON9/v+lAOav0NZ+X0nECj3L
 kqI/J0Dpf5AfEL+5pSfJ82wAAAAASUVORK5CYII=')); yourself)); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 23:44:38'!
-NewBook
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 7/24/2022 09:50:48'!
+section_NewBook
 ^(EruditeBookSection basicNew title: 'New Book'; document: ((EruditeDocument contents: '!!!! Creating a New EruditeMath Book
 
 To create a new EruditeMath book, execute the following code:
 
 [[[EruditeMathManual newBook]]] doIt') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 23:44:38'!
-Plots
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 7/24/2022 09:50:49'!
+section_Plots
 ^(EruditeBookSection basicNew title: 'Plots'; document: ((EruditeDocument contents: '!!!! Plots
 
-Plotting with gnuplot is supported. Insert the gnuplot script between <plot></plot> tags:
+Plotting with gnuplot is supported. Insert the gnuplot script between ```@startplot and @endplot``` tags:
 
-```<plot>
+```@startplot
 plot cos(x)
-</plot>```
+@endplot```
 
-The plot is saved as a png file which is then inserted in the document as a regular image.
+The plot is saved as a png file which is then inserted in the document as a regular image. If the reader of the book has gnuplot installed, they can also launch an interactive gnuplot window by clicking on the //[interact]// button.
 
 !!!!!! Example
 
-<plot>
+@startplot
 plot cos(x)
-</plot>
+@endplot
 
 !!!!!! Latex
 
@@ -1030,8 +1040,8 @@ Hz58+AKQDx8+fPjw4cOHD18A8uHDhw8fPnz48OELQD58+PDhw4cPHz58AciHD58YsSr+Tz58
 +PCJC74R+PDhw4cPHz58+AKQDx8+fPjw4cOHD18A8uHDhw8fPnz48OELQD58+PDhw4cPHz58
 AciHDx8+fPjw4cOHLwD58OHDhw8fPnz4+Mb/B2TUGLchNJmiAAAAAElFTkSuQmCC')); yourself)); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 23:44:38'!
-Requirements
+!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 7/24/2022 09:50:48'!
+section_Requirements
 ^(EruditeBookSection basicNew title: 'Requirements'; document: ((EruditeDocument contents: '!!!! Requirements
 
 Reading EruditeMath books only requires that the EruditeMath package is installed. However, creating EruditeMath books additionally requires some external programs:
@@ -1054,16 +1064,6 @@ If the environment variable MIMETEX is defined, EruditeMath will use it as the m
 !!!!!!!! gnuplot
 
 If the environment variable GNUPLOT is defined, EruditeMath will use it as the gnuplot command. The default command is ''gnuplot''.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
-
-!EruditeMathManual methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 23:44:38'!
-initialize
-    super initialize.
-    title _ 'EruditeMath Manual'.
-        self addSection: self Requirements.
-        self addSection: self NewBook.
-        self addSection: self LatexMath.
-        self addSection: self Plots.
-! !
 
 !EruditeMathManual class methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 23:48:01'!
 newBook
@@ -1323,6 +1323,13 @@ visitPlot: aDocPlot
 		nextPutAll: aDocPlot script withBlanksTrimmed, String lf;
 		nextPutAll: '\end{gnuplot}', String lf! !
 
+!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 7/24/2022 09:44:21'!
+launchInteractivePlot: aDocPlot
+	| gpPath |
+	gpPath _ DirectoryEntry tempDirectory // (aDocPlot dataKey, '-interact.gp').
+	gpPath exists ifFalse: [ gpPath fileContents: aDocPlot script ].
+	OSProcess gnuplot: '-p ', gpPath pathName! !
+
 !MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:49:29'!
 visitMath: aDocMath
 
@@ -1336,15 +1343,30 @@ visitMath: aDocMath
 
 	stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
 
-!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:49:40'!
+!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 7/24/2022 09:48:35'!
 visitPlot: aDocPlot
 
-	| dataDict form imageMorph |
-	dataDict := [document getNodeData: aDocPlot]
-		on: Error
-		do: [:e | ^stream nextPut: e printString].
+	["Render the image"
+		| dataDict form imageMorph |
+		dataDict _ [document getNodeData: aDocPlot]
+			on: Error
+			do: [:e | ^stream nextPut: e printString].
 
-	form := dataDict at: Theme currentDarkModeId.
-	imageMorph := ImageMorph new image: form.
+		form _ dataDict at: Theme currentDarkModeId.
+		imageMorph _ ImageMorph new image: form.
 
-	stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
+		stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])
+	] value.
+
+	["Render the interaction button"
+		| button |
+		button _ Text
+			string: '[interact]'
+			attributes: {
+				TextEmphasis underlined.
+				BlockTextAction do: [:anObject |
+					self launchInteractivePlot: aDocPlot]
+			}.
+		stream nextPut: String lf.
+		stream nextPut: button
+	] value! !
