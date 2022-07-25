@@ -79,7 +79,7 @@ afterDo: aBlock
 
 !AdvisedMethod methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 19:53:58'!
 aroundDo: aBlock
-	around add: aBlock! !
+	around addFirst: aBlock! !
 
 !AdvisedMethod methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 20:33:43'!
 beforeDo: aBlock
