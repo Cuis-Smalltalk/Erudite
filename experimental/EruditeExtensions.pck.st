@@ -1,13 +1,23 @@
-'From Cuis 6.0 [latest update: #5235] on 17 June 2022 at 9:17:13 am'!
+'From Cuis 6.0 [latest update: #5399] on 25 July 2022 at 10:26:48 am'!
 'Description '!
-!provides: 'EruditeExtensions' 1 7!
+!provides: 'EruditeExtensions' 1 9!
 !requires: 'Erudite' 1 190 nil!
-!requires: 'OSProcess' 1 23 nil!
+!requires: 'Graphics-Files-Additional' 1 24 nil!
 !requires: 'MethodAdvisers' 1 15 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
-!requires: 'Graphics-Files-Additional' 1 24 nil!
+!requires: 'OSProcess' 1 23 nil!
 SystemOrganization addCategory: 'EruditeExtensions'!
 
+
+!classDefinition: #EruditeHTMLNode category: 'EruditeExtensions'!
+DocNode subclass: #EruditeHTMLNode
+	instanceVariableNames: 'script'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeExtensions'!
+!classDefinition: 'EruditeHTMLNode class' category: 'EruditeExtensions'!
+EruditeHTMLNode class
+	instanceVariableNames: ''!
 
 !classDefinition: #EruditeUMLNode category: 'EruditeExtensions'!
 DocNode subclass: #EruditeUMLNode
@@ -29,6 +39,16 @@ Object subclass: #EruditeExtension
 EruditeExtension class
 	instanceVariableNames: ''!
 
+!classDefinition: #HTMLEruditeExtension category: 'EruditeExtensions'!
+EruditeExtension subclass: #HTMLEruditeExtension
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeExtensions'!
+!classDefinition: 'HTMLEruditeExtension class' category: 'EruditeExtensions'!
+HTMLEruditeExtension class
+	instanceVariableNames: ''!
+
 !classDefinition: #UMLEruditeExtension category: 'EruditeExtensions'!
 EruditeExtension subclass: #UMLEruditeExtension
 	instanceVariableNames: ''
@@ -39,6 +59,46 @@ EruditeExtension subclass: #UMLEruditeExtension
 UMLEruditeExtension class
 	instanceVariableNames: ''!
 
+
+!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:19:27'!
+accept: aVisitor
+
+	^ aVisitor visitHTML: self! !
+
+!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:21:50'!
+data
+
+	|pngPath|
+	pngPath := '/tmp/erudite-html-', self dataKey, '.png'.
+
+	pngPath asFileEntry exists ifFalse: [
+			| inputPath cmdStatus |
+			
+			inputPath := '/tmp/erudite-html-', self dataKey, '.html'.
+
+			inputPath asFileEntry fileContents: script.
+
+			cmdStatus _ OSProcess waitForCommand:				'wkhtmltoimage ', inputPath, ' ', pngPath.
+			cmdStatus succeeded ifFalse: [		self error: 'Error running wkhtmltoimage command']].
+	^ EruditeForm fromFileNamed: pngPath! !
+
+!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:19:18'!
+dataKey
+
+	^ (((SecureHashAlgorithm new)
+			initialize;
+			hashMessage: script)
+				printStringBase: 16) asLowercase! !
+
+!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:22:03'!
+initialize: htmlScript
+
+	script _ htmlScript! !
+
+!EruditeHTMLNode class methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:26:23'!
+with: htmlScript
+
+	^ self new initialize: htmlScript! !
 
 !EruditeUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 22:01:45'!
 accept: aVisitor
@@ -80,6 +140,34 @@ with: plantUMLScript
 
 	^ self new initialize: plantUMLScript! !
 
+!HTMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:18:34'!
+htmlGrammar
+
+	^ ('<html>' asParser flatten,
+	'</html>' asParser negate plus flatten,
+	'</html>' asParser flatten) flatten! !
+
+!HTMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:26:36'!
+htmlParser
+
+	^ self htmlGrammar ==> [:script | 		EruditeHTMLNode with: script]! !
+
+!HTMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:17:52'!
+install
+
+	self installGrammarExtension.! !
+
+!HTMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:18:44'!
+installGrammarExtension
+
+	EruditeMarkupGrammar around: #markup
+		do: [:receiver :nextMethod |			nextMethod value / self htmlParser]! !
+
+!HTMLEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:17:52'!
+initialize
+
+	self new install! !
+
 !UMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:37:37'!
 install
 
@@ -108,6 +196,20 @@ initialize
 
 	self new install! !
 
+!MorphicEruditeDocRenderer methodsFor: '*EruditeExtensions' stamp: 'MM 7/25/2022 10:22:55'!
+visitHTML: anHTMLNode
+
+	|form imageMorph |
+	
+	form _ [document getNodeData: anHTMLNode]
+				on: Error
+				do: [:e | ^ stream nextPut: e printString].
+	
+	imageMorph _ ImageMorph new
+					image: form.
+							
+	stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
+
 !MorphicEruditeDocRenderer methodsFor: '*EruditeExtensions' stamp: 'MM 6/16/2022 22:07:20'!
 visitUML: anUMLNode
 
@@ -121,4 +223,5 @@ visitUML: anUMLNode
 					image: form.
 							
 	stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
+HTMLEruditeExtension initialize!
 UMLEruditeExtension initialize!
