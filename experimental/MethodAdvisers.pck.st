@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5235] on 17 June 2022 at 9:19:17 am'!
+'From Cuis 6.0 [latest update: #5399] on 25 July 2022 at 10:11:21 am'!
 'Description '!
-!provides: 'MethodAdvisers' 1 16!
+!provides: 'MethodAdvisers' 1 17!
 SystemOrganization addCategory: 'MethodAdvisers-Tests'!
 SystemOrganization addCategory: 'MethodAdvisers'!
 
@@ -92,13 +92,13 @@ doesNotUnderstand: aMessage
 		
 	^ aMessage sendTo: compiledMethod! !
 
-!AdvisedMethod methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2022 09:13:43'!
+!AdvisedMethod methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:10:36'!
 evaluate: aroundList around: aBlock with: arguments in: aReceiver
 
 	^ aroundList isEmpty 
 		ifTrue: [	aBlock value]
 		ifFalse: [	|args|
-			args _ {aReceiver, [self evaluate: aroundList allButFirst around: aBlock with: arguments in: aReceiver]}, arguments.
+			args _ (Array with: aReceiver with: [self evaluate: aroundList allButFirst around: aBlock with: arguments in: aReceiver]), arguments.
 			aroundList first valueWithArguments: args]! !
 
 !AdvisedMethod methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 20:31:46'!
