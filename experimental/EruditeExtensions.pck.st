@@ -1,25 +1,15 @@
-'From Cuis 6.0 [latest update: #5399] on 29 July 2022 at 4:39:15 pm'!
+'From Cuis 6.0 [latest update: #5399] on 29 July 2022 at 8:42:14 pm'!
 'Description '!
-!provides: 'EruditeExtensions' 1 33!
-!requires: 'Erudite' 1 190 nil!
-!requires: 'Graphics-Files-Additional' 1 24 nil!
+!provides: 'EruditeExtensions' 1 35!
 !requires: 'MethodAdvisers' 1 15 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
+!requires: 'AnimatedGIF' 1 1 nil!
+!requires: 'Erudite' 1 204 nil!
+!requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: 'EruditeExtensions'!
-SystemOrganization addCategory: 'EruditeExtensions-Exceptions'!
 SystemOrganization addCategory: 'EruditeExtensions-Books'!
 
-
-!classDefinition: #EnvironmentVariableNotDefinedError category: 'EruditeExtensions-Exceptions'!
-Error subclass: #EnvironmentVariableNotDefinedError
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'EruditeExtensions-Exceptions'!
-!classDefinition: 'EnvironmentVariableNotDefinedError class' category: 'EruditeExtensions-Exceptions'!
-EnvironmentVariableNotDefinedError class
-	instanceVariableNames: ''!
 
 !classDefinition: #EruditeExtensionsManual category: 'EruditeExtensions-Books'!
 EruditeBook subclass: #EruditeExtensionsManual
@@ -122,7 +112,7 @@ UMLEruditeExtension class
 	instanceVariableNames: ''!
 
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:44'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 20:40:49'!
 initialize
     super initialize.
     title _ 'EruditeExtensions Manual'.
@@ -134,13 +124,13 @@ initialize
         self addSection: self section_DarkMode.
 ! !
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:45'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 20:40:50'!
 section_DarkMode
 ^(EruditeBookSection basicNew title: 'Dark Mode'; document: ((EruditeDocument contents: '!!!! Dark Mode
 
 UML, HTML, Formulas, and Plots support a dark-mode style rendering when you are using a dark theme.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:44'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 20:40:50'!
 section_Formulas
 ^(EruditeBookSection basicNew title: 'Formulas'; document: ((EruditeDocument contents: '!!!! Formulas
 
@@ -152,16 +142,15 @@ The formulas follow Latex syntax. They are converted to images and then displaye
 
 !!!!!! Example
 
-$x^2 + y^2$') data: ((Dictionary new) add: ('erudite-formula-ec88764d14d565e8c68aa2804ff42cfc08c65eea'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAVCAYAAAD2KuiaAAABXklEQVR4XuVYQQ6EIAzkdb7A
-D/gBn+TdV3j37nu6GRM2ikVaCspmD40RYRhGOhUdETkyxLZt5Jz7Bu7JiFk67jiagNd13QGX
-ZdkBccU92ltZfIqjCXwYBur7/rTYcRwJ0YoAKY4mcL+luPZWBEhxfERxCcm3dkVxcABjgpYF
-OHKsYjhaE3xSgJBjtFygg+98jFSpySmDGgGOHLVYHMfLQywapQIuGb7NGLhl8VoB0HeaJrUA
-MY6ngX6xYe2UvJGTqsotrRXgbgzXfseRHegFkObTPM9kyWmtAJiPG8PxTnGMTiIxMvSDm4Y+
-Eau7sei6ju6eS42Wa09xLJ7PtT1As81FWGKzqFiqSgiQew4RpYDUE94SAPywzXPOIKz7A8hX
-AN9WMyVyBAj54etOUrUuWOFZmfsAqu0HWgFCzrGqkJ0Cb5zYLON9/v+lAOav0NZ+X0nECj3L
-kqI/J0Dpf5AfEL+5pSfJ82wAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+$x^2 + y^2$') data: ((Dictionary new) add: ('erudite-formula-ec88764d14d565e8c68aa2804ff42cfc08c65eea'->(EruditeForm fromBase64String:'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAVCAYAAAD2KuiaAAABNklEQVR4XuVYQRKDIAzs63yB
+H/ADPsm7r/Du3fdsGwecmqImQISOmWEckcZlJbvQV2osy4LPZWvuvqowwzjP85pwmqY1obvC
+9VcRphi7rkPbtrtEfd+DWi0EWGP0yyrUX0vcizHEuBBk0VWRLSgxvaBmAiIxygUnQmBwtygG
+MX7bBQ3wg1k7tZpIi0GkpalynWL0D2nSZBVOJTlTMJi8dgVgGAY1ARKM22S5d0q+CEtsWQK4
++A1iMYLXibSexnFEYk2rCHDvwxGeHBilQubVVKIVR+PQNA3OniuENtSvwZilnq01QLPM4w8O
+gUSomYDc55BdIqkmlCKA8NEyj93f/6g/JfIO4PuMS0JNAMdHuzuJa12elUMboBv0ACmYj1zh
+nyIJvK//RxJQyLXKksU160mTz/7/3htCis/YCG5x/AAAAABJRU5ErkJggg==')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:44'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 20:40:50'!
 section_HTML
 ^(EruditeBookSection basicNew title: 'HTML'; document: ((EruditeDocument contents: '!!!! HTML
 
@@ -220,7 +209,7 @@ OIDP5/P5fD6fz+fz+Xw+n8/n8/l8Pp/P5/P5fD6fz+fz+Xw+n8/n8/lYPp/P5/P5fD6fz+fz
 +Xw+n8/n8/l8Pp/P5/P5fD6fz+fz+Xw+n8/n8/l8Pp/P5/P5fD6fz+fz+Xw+n8/n8/l8Pp/P
 5/P5fD6fz+fz+Xw+n8/n8/ke2z8m5ebFDxKACgAAAABJRU5ErkJggg==')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:45'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 20:40:50'!
 section_Plots
 ^(EruditeBookSection basicNew title: 'Plots'; document: ((EruditeDocument contents: '!!!! Plots
 
@@ -651,7 +640,7 @@ hw8fPnz48AUgHz58YsSq+D/58OHDJy74RuDDhw8fPnz48OELQD58+PDhw4cPHz58AciHDx8+
 fPjw4cOHLwD58OHDhw8fPnz48AUgHz58+PDhw4cPH74A5MOHDx8+fPjw4eMb/x/BapCburAU
 yAAAAABJRU5ErkJggg==')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:44'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 20:40:49'!
 section_Requirements
 ^(EruditeBookSection basicNew title: 'Requirements'; document: ((EruditeDocument contents: '!!!! Requirements
 
@@ -659,7 +648,7 @@ Reading EruditeExtensions books only requires that the EruditeExtensions package
 
 - UML requires {https://plantuml.com::url|PlantUML}
 - HTML requires {https://wkhtmltopdf.org::url|wkhtmltopdf}
-- Formulas require {https://imagemagick.org::url|ImageMagick} and {https://www.mersenneforum.org/mimetex.html::url|mimeTeX}
+- Formulas require {https://www.mersenneforum.org/mimetex.html::url|mimeTeX}
 - Plots require ImageMagick and {http://www.gnuplot.info ::url|gnuplot}
 
 Unless otherwise noted, the external programs should be on your OS''s executable path.
@@ -674,10 +663,6 @@ If the environment variable PLANTUML is defined, EruditeExtensions will use it a
 
 If the environment variable WKHTMLTOIMAGE is defined, EruditeExtensions will use it as the wkhtmltoimage command. The default command is ''wkhtmltoimage''.
 
-!!!!!!!! ImageMagick
-
-If the environment variable IMCONV is defined, EruditeExtensions will use it as ImageMagick''s convert command. The default command is ''convert''. **On Windows, IMCONV must be defined.**
-
 !!!!!!!! mimeTeX
 
 If the environment variable MIMETEX is defined, EruditeExtensions will use it as the mimeTeX command. The default command is ''mimetex''.
@@ -686,7 +671,7 @@ If the environment variable MIMETEX is defined, EruditeExtensions will use it as
 
 If the environment variable GNUPLOT is defined, EruditeExtensions will use it as the gnuplot command. The default command is ''gnuplot''.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:44'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 20:40:49'!
 section_UML
 ^(EruditeBookSection basicNew title: 'UML'; document: ((EruditeDocument contents: '!!!! EruditeUML
 
@@ -1424,23 +1409,18 @@ accept: aVisitor
 
 	^ aVisitor visitFormula: self! !
 
-!EruditeFormulaNode methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 19:46:31'!
+!EruditeFormulaNode methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 20:19:15'!
 data
 
-	| formulaId pngPath |
+	| formulaId gifPath |
 	formulaId := self dataKey.
-	pngPath := DirectoryEntry tempDirectory // (formulaId, '.png').
+	gifPath := DirectoryEntry tempDirectory // (formulaId, '.gif').
 	
-	pngPath exists ifFalse: [
-		| gifPath |
-		gifPath := DirectoryEntry tempDirectory // (formulaId, '.gif').
-		gifPath exists ifFalse: [
-			OSProcess mimetex: '-e ', gifPath pathName, ' "', self formula, '"'
-		].
-		OSProcess imConvert: gifPath pathName,' ', pngPath pathName
+	gifPath exists ifFalse: [
+		OSProcess mimetex: '-e ', gifPath pathName, ' "', self formula, '"'
 	].
 
-	^ EruditeForm fromFileNamed: pngPath pathName! !
+	^ EruditeForm fromFileNamed: gifPath pathName! !
 
 !EruditeFormulaNode methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:12:57'!
 dataKey
@@ -1724,25 +1704,6 @@ gnuplotCommand
 	
 	^ ThisOSProcess thisOSProcess environment
 		at: 'GNUPLOT' ifAbsent: ['gnuplot'].! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 19:03:11'!
-imConvert: aString
-
-	^ self waitForCommand:
-		(self imConvertCommand, ' ', aString) withBlanksTrimmed! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/27/2022 00:12:09'!
-imConvertCommand
-	
-	| cmd |
-	cmd _ ThisOSProcess thisOSProcess environment
-		at: 'IMCONV' ifAbsent: [
-			ThisOSProcess thisOSProcess class = WindowsProcess
-				ifTrue: [EnvironmentVariableNotDefinedError signal]
-				ifFalse: ['convert']
-		].
-	
-	^ cmd! !
 
 !OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:19:01'!
 mimetex: aString
