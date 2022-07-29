@@ -1,11 +1,11 @@
-'From Cuis 6.0 [latest update: #5400] on 29 July 2022 at 4:30:04 pm'!
+'From Cuis 6.0 [latest update: #5399] on 29 July 2022 at 4:39:15 pm'!
 'Description '!
-!provides: 'EruditeExtensions' 1 32!
+!provides: 'EruditeExtensions' 1 33!
+!requires: 'Erudite' 1 190 nil!
+!requires: 'Graphics-Files-Additional' 1 24 nil!
 !requires: 'MethodAdvisers' 1 15 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
-!requires: 'Erudite' 1 190 nil!
-!requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: 'EruditeExtensions'!
 SystemOrganization addCategory: 'EruditeExtensions-Exceptions'!
 SystemOrganization addCategory: 'EruditeExtensions-Books'!
@@ -1712,13 +1712,6 @@ isDark
 
 	" If the text color is light, assume we are in dark mode"
 	^ Theme current text luminance > 0.5! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/27/2022 21:29:03'!
-convertLightImage: lightImagePath toDarkImage: darkImagePath
-	^ self imConvert:
-		lightImagePath pathName,
-		' -transparent White -colorspace Gray -channel RGB -negate -type GrayscaleAlpha png32:',
-		darkImagePath pathName! !
 
 !OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:31:54'!
 gnuplot: aString
