@@ -1,10 +1,10 @@
-'From Cuis 6.0 [latest update: #5400] on 27 July 2022 at 9:30:43 pm'!
+'From Cuis 6.0 [latest update: #5400] on 29 July 2022 at 4:30:04 pm'!
 'Description '!
-!provides: 'EruditeExtensions' 1 29!
-!requires: 'Erudite' 1 190 nil!
-!requires: 'OSProcess' 1 23 nil!
+!provides: 'EruditeExtensions' 1 32!
 !requires: 'MethodAdvisers' 1 15 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
+!requires: 'OSProcess' 1 23 nil!
+!requires: 'Erudite' 1 190 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: 'EruditeExtensions'!
 SystemOrganization addCategory: 'EruditeExtensions-Exceptions'!
@@ -122,7 +122,7 @@ UMLEruditeExtension class
 	instanceVariableNames: ''!
 
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/27/2022 19:25:51'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:44'!
 initialize
     super initialize.
     title _ 'EruditeExtensions Manual'.
@@ -134,13 +134,13 @@ initialize
         self addSection: self section_DarkMode.
 ! !
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/27/2022 19:25:51'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:45'!
 section_DarkMode
 ^(EruditeBookSection basicNew title: 'Dark Mode'; document: ((EruditeDocument contents: '!!!! Dark Mode
 
-UML, HTML, Formulas, and Plots support a dark-mode style rendering when you are using a dark theme. However, ImageMagick needs to be set up in order for that to work. See the Requirements section.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
+UML, HTML, Formulas, and Plots support a dark-mode style rendering when you are using a dark theme.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/27/2022 19:25:51'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:44'!
 section_Formulas
 ^(EruditeBookSection basicNew title: 'Formulas'; document: ((EruditeDocument contents: '!!!! Formulas
 
@@ -161,7 +161,7 @@ Eau7sei6ju6eS42Wa09xLJ7PtT1As81FWGKzqFiqSgiQew4RpYDUE94SAPywzXPOIKz7A8hX
 AN9WMyVyBAj54etOUrUuWOFZmfsAqu0HWgFCzrGqkJ0Cb5zYLON9/v+lAOav0NZ+X0nECj3L
 kqI/J0Dpf5AfEL+5pSfJ82wAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/27/2022 19:25:51'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:44'!
 section_HTML
 ^(EruditeBookSection basicNew title: 'HTML'; document: ((EruditeDocument contents: '!!!! HTML
 
@@ -220,7 +220,7 @@ OIDP5/P5fD6fz+fz+Xw+n8/n8/l8Pp/P5/P5fD6fz+fz+Xw+n8/n8/lYPp/P5/P5fD6fz+fz
 +Xw+n8/n8/l8Pp/P5/P5fD6fz+fz+Xw+n8/n8/l8Pp/P5/P5fD6fz+fz+Xw+n8/n8/l8Pp/P
 5/P5fD6fz+fz+Xw+n8/n8/ke2z8m5ebFDxKACgAAAABJRU5ErkJggg==')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/27/2022 19:25:51'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:45'!
 section_Plots
 ^(EruditeBookSection basicNew title: 'Plots'; document: ((EruditeDocument contents: '!!!! Plots
 
@@ -651,7 +651,7 @@ hw8fPnz48AUgHz58YsSq+D/58OHDJy74RuDDhw8fPnz48OELQD58+PDhw4cPHz58AciHDx8+
 fPjw4cOHLwD58OHDhw8fPnz48AUgHz58+PDhw4cPH74A5MOHDx8+fPjw4eMb/x/BapCburAU
 yAAAAABJRU5ErkJggg==')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/27/2022 19:25:51'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:44'!
 section_Requirements
 ^(EruditeBookSection basicNew title: 'Requirements'; document: ((EruditeDocument contents: '!!!! Requirements
 
@@ -686,7 +686,7 @@ If the environment variable MIMETEX is defined, EruditeExtensions will use it as
 
 If the environment variable GNUPLOT is defined, EruditeExtensions will use it as the gnuplot command. The default command is ''gnuplot''.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/27/2022 19:25:51'!
+!EruditeExtensionsManual methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 16:25:44'!
 section_UML
 ^(EruditeBookSection basicNew title: 'UML'; document: ((EruditeDocument contents: '!!!! EruditeUML
 
@@ -1787,31 +1787,18 @@ wkhtmltoimageCommand
 	^ ThisOSProcess thisOSProcess environment
 		at: 'WKHTMLTOIMAGE' ifAbsent: ['wkhtmltoimage'].! !
 
-!MorphicEruditeDocRenderer methodsFor: '*EruditeExtensions-private' stamp: 'AS 7/27/2022 14:56:38'!
+!MorphicEruditeDocRenderer methodsFor: '*EruditeExtensions-private' stamp: 'AS 7/29/2022 16:29:16'!
 applyDarkTheme: aForm
-	| darkImagePath imageId |
-	
-	imageId _ 'erudite-image-', (((SecureHashAlgorithm new)
-							initialize;
-							hashMessage: (PNGReadWriter bytesFor: aForm))
-								printStringBase: 16) asLowercase.
-	darkImagePath _ DirectoryEntry tempDirectory // (imageId, '-dark.png').
-	
-	darkImagePath exists ifFalse: [
-		| lightImagePath |
-		lightImagePath _ DirectoryEntry tempDirectory // (imageId, '-light.png').
-		lightImagePath exists ifFalse: [aForm writeFileNamed: lightImagePath pathName].
-		([OSProcess
-				convertLightImage: lightImagePath
-				toDarkImage: darkImagePath]
-					on: Error
-					do: [:e | ^ aForm])
-			succeeded ifFalse: [ ^ aForm ]
-	].
-
-	^ darkImagePath exists
-		ifFalse: [ aForm ]
-		ifTrue: [ EruditeForm fromFileNamed: darkImagePath pathName ]! !
+	| whiteBgForm |
+	whiteBgForm _ (Form extent: aForm extent depth: 32) fillWhite.
+	whiteBgForm
+		copy: whiteBgForm boundingBox
+		from: 0@0
+		in: aForm
+		rule: Form blend.
+		
+	^ (whiteBgForm asGrayForm reverse asFormOfDepth: 32)
+		mapColor: Color black to: Color transparent! !
 
 !MorphicEruditeDocRenderer methodsFor: '*EruditeExtensions-private' stamp: 'AS 7/27/2022 16:21:28'!
 launchInteractivePlot: aPlotNode
