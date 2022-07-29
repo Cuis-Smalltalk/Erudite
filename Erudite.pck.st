@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5352] on 20 July 2022 at 7:28:32 am'!
+'From Cuis 6.0 [latest update: #5399] on 29 July 2022 at 8:39:22 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 203!
+!provides: 'Erudite' 1 204!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -1203,10 +1203,15 @@ fromBase64String: aString
 
 	^ form as: EruditeForm! !
 
-!EruditeForm class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 20:16:30'!
+!EruditeForm class methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 20:36:06'!
 fromFileNamed: aString
 
-	^ (super fromFileNamed: aString) as: EruditeForm! !
+	| form |
+	form _ super fromFileNamed: aString.
+	form _ form class = ColorForm
+		ifTrue: [ form asFormOfDepth: 32 ]
+		ifFalse: [ form ].
+	^ form as: EruditeForm! !
 
 !InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:57'!
 initialize
