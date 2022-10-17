@@ -1,7 +1,8 @@
-'From Cuis 6.0 [latest update: #5494] on 17 October 2022 at 7:12:09 pm'!
+'From Cuis 6.0 [latest update: #5494] on 17 October 2022 at 8:20:48 pm'!
 'Description '!
-!provides: 'EruditeFilesBookStorer' 1 3!
+!provides: 'EruditeFilesBookStorer' 1 4!
 !requires: 'Erudite' 1 208 nil!
+!requires: 'YAXO' 1 20 nil!
 SystemOrganization addCategory: 'EruditeFilesBookStorer'!
 
 
@@ -39,12 +40,31 @@ storageDirectory: anObject
 
 	storageDirectory := anObject! !
 
-!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 18:29:16'!
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 20:13:24'!
+fileNameForSection: aBookSection
+
+	^ aBookSection parent ifNotNil: [:parent |
+		(self fileNameForSection: parent), '.', (self titleFileName: aBookSection title)]
+		ifNil: [self titleFileName: aBookSection title]! !
+
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 20:15:12'!
+fileNameForSectionWithExt: aBookSection
+
+	^ (self fileNameForSection: aBookSection), '.erd'! !
+
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 20:04:27'!
 store
 
-	self storeBookLayout.! !
+	self storeBookLayout.
+	self storeBookContents.! !
 
-!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 19:10:49'!
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 20:05:12'!
+storeBookContents
+
+	book sections do: [:section |
+		self storeSectionOnFile: section].! !
+
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 20:19:02'!
 storeBookLayout
 
 	| layoutFile writer doc bookElmt bookTitleElmt sectionsElmt |
@@ -68,17 +88,39 @@ storeBookLayout
 		bookElmt addElement: sectionsElmt.
 		
 		doc addElement: bookElmt.
-		doc printXMLOn: writer]
-		! !
+		doc printXMLOn: writer]! !
 
-!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 19:09:12'!
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 20:19:59'!
 storeSection: aBookSection on: anXMLElement
 
 	| sectionElmt |
 	
-	sectionElmt _ XMLElement named: 'Section' attributes: {'name' -> aBookSection title} asDictionary.
+	sectionElmt _ XMLElement 
+				named: 'Section' 
+				attributes: {
+					'title' -> aBookSection title.
+					'path' -> (self fileNameForSectionWithExt: aBookSection)
+					} asDictionary.
 	
 	aBookSection subsections do: [:subsection |
 		self storeSection: subsection on: sectionElmt].
 	
 	anXMLElement addElement: sectionElmt ! !
+
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 20:17:21'!
+storeSectionOnFile: aBookSection
+
+	|filename filepath|
+	
+	filename _ self fileNameForSectionWithExt: aBookSection.
+	
+	filepath _ self storageDirectory // filename.
+	
+	filepath fileContents: aBookSection document contents.
+	
+	aBookSection subsections do: [:subsection | self storeSectionOnFile: subsection] ! !
+
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 20:13:40'!
+titleFileName: aString
+
+	^ aString asCamelCase select: [:char | char isAlphaNumeric ]! !
