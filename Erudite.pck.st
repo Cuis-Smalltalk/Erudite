@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5494] on 17 October 2022 at 5:54:25 pm'!
+'From Cuis 6.0 [latest update: #5494] on 17 October 2022 at 10:18:54 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 208!
+!provides: 'Erudite' 1 210!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -289,7 +289,7 @@ SmalltalkEruditeStyler class
 
 !classDefinition: #EruditeBook category: 'Erudite-Core'!
 Object subclass: #EruditeBook
-	instanceVariableNames: 'title sections author'
+	instanceVariableNames: 'title sections author storer'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
@@ -2668,10 +2668,6 @@ storeOn: aStream
 	              nextPutAll: '; sections: '; store: sections;
 			   nextPutAll: '; updateParents; yourself)'! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 10/17/2022 17:40:58'!
-storer
-	^ self storerClass on: self! !
-
 !EruditeBook methodsFor: 'storage' stamp: 'MM 10/17/2022 17:36:50'!
 storerClass
 	^ EruditeClassBookStorer ! !
@@ -2748,6 +2744,14 @@ sections: anObject
 	"Set the value of sections"
 
 	sections _ anObject! !
+
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 10/17/2022 22:18:46'!
+storer
+	^ storer! !
+
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 10/17/2022 22:18:39'!
+storer: aBookStorer
+	storer _ aBookStorer! !
 
 !EruditeBook methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:28'!
 title

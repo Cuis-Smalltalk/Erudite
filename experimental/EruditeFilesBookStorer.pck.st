@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5494] on 17 October 2022 at 8:20:48 pm'!
+'From Cuis 6.0 [latest update: #5494] on 17 October 2022 at 10:51:15 pm'!
 'Description '!
-!provides: 'EruditeFilesBookStorer' 1 4!
+!provides: 'EruditeFilesBookStorer' 1 7!
 !requires: 'Erudite' 1 208 nil!
 !requires: 'YAXO' 1 20 nil!
 SystemOrganization addCategory: 'EruditeFilesBookStorer'!
@@ -17,7 +17,7 @@ EruditeFilesBookStorer class
 	instanceVariableNames: ''!
 
 
-!EruditeFilesBookStorer commentStamp: 'MM 10/17/2022 18:40:14' prior: 0!
+!EruditeFilesBookStorer commentStamp: 'MM 10/17/2022 22:17:30' prior: 0!
 Stores and loads Erudite books from files on disk.
 
 The main book description lives in an xml file, and the book contents in a separate file per section.
@@ -26,7 +26,11 @@ The main book description lives in an xml file, and the book contents in a separ
 
 (EruditeFilesBookStorer on: EruditeManual new)
 	storageDirectory: (DirectoryEntry smalltalkImageDirectory / 'EruditeManual');
-	store!
+	store.
+	
+EruditeFilesBookStorer new
+	storageDirectory: (DirectoryEntry smalltalkImageDirectory / 'EruditeManual');
+	load :: open!
 
 !EruditeFilesBookStorer methodsFor: 'accessing' stamp: 'MM 10/17/2022 18:28:47'!
 storageDirectory
@@ -51,6 +55,62 @@ fileNameForSection: aBookSection
 fileNameForSectionWithExt: aBookSection
 
 	^ (self fileNameForSection: aBookSection), '.erd'! !
+
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 22:36:58'!
+load
+
+	| doc bookFile |
+
+	book _ EruditeBook new
+			storer: self;
+			yourself	.
+	
+	bookFile _ storageDirectory // 'book.xml'.
+	
+	bookFile readStreamDo: [:fStream |	
+		doc _ XMLDOMParser parseDocumentFrom: fStream].
+	
+	book title: (doc firstTagNamed: #Title) contents first string.
+	
+	self loadBookSections: doc.
+			
+	^ book! !
+
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 22:38:50'!
+loadBookSections: doc
+
+	| sections |
+	
+	sections _ doc firstTagNamed: #Sections.
+	
+	sections elements do: [:section |
+		self loadSection: section].
+
+	! !
+
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 22:47:06'!
+loadSection: sectionElmt
+
+	^ self loadSection: sectionElmt into: book! !
+
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 22:47:26'!
+loadSection: sectionElmt into: aBookOrSection
+
+	| section filePath |
+	
+	filePath _ storageDirectory // (sectionElmt attributeAt: #path).
+	
+	section _ EruditeBookSection new
+			title: (sectionElmt attributeAt: #title);
+			contents: filePath fileContents;
+			yourself.
+			
+	sectionElmt elements do: [:subsectionElmt |
+		self loadSection: subsectionElmt into: section].
+	
+	aBookOrSection addSection: section.
+	
+	^ section! !
 
 !EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 20:04:27'!
 store
@@ -107,7 +167,7 @@ storeSection: aBookSection on: anXMLElement
 	
 	anXMLElement addElement: sectionElmt ! !
 
-!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 20:17:21'!
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 22:50:57'!
 storeSectionOnFile: aBookSection
 
 	|filename filepath|
@@ -116,7 +176,7 @@ storeSectionOnFile: aBookSection
 	
 	filepath _ self storageDirectory // filename.
 	
-	filepath fileContents: aBookSection document contents.
+	filepath fileContents: aBookSection document contents asString.
 	
 	aBookSection subsections do: [:subsection | self storeSectionOnFile: subsection] ! !
 
