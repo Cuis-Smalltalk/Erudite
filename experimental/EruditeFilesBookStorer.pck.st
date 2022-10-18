@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5494] on 17 October 2022 at 11:04:47 pm'!
+'From Cuis 6.0 [latest update: #5494] on 17 October 2022 at 11:47:03 pm'!
 'Description '!
-!provides: 'EruditeFilesBookStorer' 1 8!
+!provides: 'EruditeFilesBookStorer' 1 9!
 !requires: 'Erudite' 1 208 nil!
 !requires: 'YAXO' 1 20 nil!
 SystemOrganization addCategory: 'EruditeFilesBookStorer'!
@@ -44,11 +44,11 @@ storageDirectory: anObject
 
 	storageDirectory := anObject! !
 
-!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 23:04:09'!
+!EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 23:47:00'!
 fileNameForSection: aBookSection
 
 	^ (aBookSection parent isKindOf: EruditeBookSection)
-		ifTrue: [	(self fileNameForSection: aBookSection parent), '.', (self titleFileName: aBookSection title)]
+		ifTrue: [	(self fileNameForSection: aBookSection parent), '-', (self titleFileName: aBookSection title)]
 		ifFalse: [self titleFileName: aBookSection title]! !
 
 !EruditeFilesBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 20:15:12'!
