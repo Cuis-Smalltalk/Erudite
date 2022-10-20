@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5494] on 20 October 2022 at 4:56:26 pm'!
+'From Cuis 6.0 [latest update: #5494] on 20 October 2022 at 5:15:11 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 211!
+!provides: 'Erudite' 1 212!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -1887,13 +1887,13 @@ initialExtent
 
 	^ RealEstateAgent standardWindowExtent ! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/9/2018 21:21'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:14:48'!
 initialize
 
 	super initialize.
 	
 	viewSources _ true.
-	liveEditing _ true! !
+	liveEditing _ Preferences at: #eruditeLiveEditing! !
 
 !EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:27'!
 openBook
@@ -1931,6 +1931,14 @@ toggleViewSources
 	viewSources  _ viewSources not.
 	
 	sourceMorph visible: viewSources! !
+
+!EruditeBookEditorMorph class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:14:06'!
+initialize
+	Preferences name: #eruditeLiveEditing 
+			description: 'Visualized changes live in Erudite editor' 
+			category: #Erudite 
+			type: Boolean 
+			value: false! !
 
 !EruditeDocEditorWindow methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 17:01:29'!
 buildMorphicWindow
@@ -15898,4 +15906,5 @@ expandRoot
 !TextModelMorph methodsFor: '*Erudite' stamp: 'MM 6/15/2022 09:43:47'!
 enableEditing: aBoolean
 	self innerTextMorph enableEditing: aBoolean! !
+EruditeBookEditorMorph initialize!
 EruditeSystem initialize!
