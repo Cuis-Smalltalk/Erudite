@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5494] on 17 October 2022 at 10:18:54 pm'!
+'From Cuis 6.0 [latest update: #5494] on 20 October 2022 at 4:56:26 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 210!
+!provides: 'Erudite' 1 211!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -2745,9 +2745,9 @@ sections: anObject
 
 	sections _ anObject! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 10/17/2022 22:18:46'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 10/20/2022 16:55:59'!
 storer
-	^ storer! !
+	^ storer ifNil: [self storerClass on: self]! !
 
 !EruditeBook methodsFor: 'accessing' stamp: 'MM 10/17/2022 22:18:39'!
 storer: aBookStorer
