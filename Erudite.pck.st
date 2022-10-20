@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5494] on 20 October 2022 at 6:12:39 pm'!
+'From Cuis 6.0 [latest update: #5494] on 20 October 2022 at 6:30:28 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 213!
+!provides: 'Erudite' 1 214!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -14634,7 +14634,7 @@ visitLink: aDocLink
 				nextPutAll: aDocLink target;
 				nextPutAll: '}']! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:55'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 10/20/2022 18:30:12'!
 visitStyledText: aStyledText
 
 	aStyledText style caseOf: {
@@ -14644,6 +14644,9 @@ visitStyledText: aStyledText
 		[#italic] -> [stream nextPutAll: '\textit{';
 							    nextPutAll: aStyledText text;
 								nextPutAll: '}'].
+		[#underlined] -> [stream nextPutAll: '\underline{';
+							nextPutAll: aStyledText text;
+							nextPutAll: '}'].
 		[#unformatted] -> [stream nextPutAll: '\begin{verbatim}'; newLine;
 										nextPutAll: aStyledText text; newLine;
 										nextPutAll: '\end{verbatim}'; newLine].
