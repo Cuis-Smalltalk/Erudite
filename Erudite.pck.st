@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5494] on 20 October 2022 at 5:15:11 pm'!
+'From Cuis 6.0 [latest update: #5494] on 20 October 2022 at 6:12:39 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 212!
+!provides: 'Erudite' 1 213!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -335,6 +335,26 @@ EruditeBook subclass: #EruditeDynamicBook
 	category: 'Erudite-Core'!
 !classDefinition: 'EruditeDynamicBook class' category: 'Erudite-Core'!
 EruditeDynamicBook class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeBookExporter category: 'Erudite-Core'!
+Object subclass: #EruditeBookExporter
+	instanceVariableNames: 'book location'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Core'!
+!classDefinition: 'EruditeBookExporter class' category: 'Erudite-Core'!
+EruditeBookExporter class
+	instanceVariableNames: ''!
+
+!classDefinition: #LatexEruditeBookExporter category: 'Erudite-Latex'!
+EruditeBookExporter subclass: #LatexEruditeBookExporter
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Latex'!
+!classDefinition: 'LatexEruditeBookExporter class' category: 'Erudite-Latex'!
+LatexEruditeBookExporter class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeBookSection category: 'Erudite-Core'!
@@ -1854,10 +1874,10 @@ contentsChanged
 	super contentsChanged.
 	self changed: #sourceContents! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 13:43:58'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 18:12:29'!
 explorerMenu
 
-	|menu|
+	|menu exportSubmenu |
 	
 	menu _ super explorerMenu.
 	
@@ -1865,8 +1885,17 @@ explorerMenu
 	menu lastItem setIcon: Theme current switchIcon.
 	
 	menu addLine.
-	menu add: 'export to latex' action: #exportToLatex.
-	menu lastItem setIcon: Theme current saveIcon.
+	
+	"export menu"
+	
+	exportSubmenu _ MenuMorph new.
+	EruditeBookExporter subclassesDo: [:subclass |
+		exportSubmenu add: subclass exporterName 
+					target: self 
+					action: #exportWithClass:
+					argument: subclass].
+	
+	exportSubmenu _ menu add: 'export' subMenu: exportSubmenu.
 	
 	^ menu! !
 
@@ -1881,6 +1910,20 @@ exportToLatex
 			texFilePath: filePath;
 			render.
 		self inform: 'Book exported']! !
+
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 18:06:35'!
+exportWithClass: aExporterClass
+
+	| args exporter |
+	
+	args _ aExporterClass requestEditorArgumentsFor: model.
+	exporter _ aExporterClass on: model.
+	"Setup the exporter with the requested arguments."
+	args do: [:assoc |
+		exporter perform: assoc key with: assoc value].
+	"Export the book"
+	exporter export.
+	self inform: 'Book exported'.! !
 
 !EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 14:06:54'!
 initialExtent
@@ -13832,6 +13875,86 @@ store
 !EruditeDynamicBook class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 17:54:40'!
 titled: aString
 	^ self new initialize: aString! !
+
+!EruditeBookExporter methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:39:16'!
+export
+
+	^ self subclassResponsibility ! !
+
+!EruditeBookExporter methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 18:11:26'!
+initialize: aBook
+
+	book _ aBook! !
+
+!EruditeBookExporter methodsFor: 'accessing' stamp: 'MM 10/20/2022 17:37:57'!
+book
+	"Answer the value of book"
+
+	^ book! !
+
+!EruditeBookExporter methodsFor: 'accessing' stamp: 'MM 10/20/2022 17:37:57'!
+book: anObject
+	"Set the value of book"
+
+	book := anObject! !
+
+!EruditeBookExporter methodsFor: 'accessing' stamp: 'MM 10/20/2022 17:37:57'!
+location
+	"Answer the value of location"
+
+	^ location! !
+
+!EruditeBookExporter methodsFor: 'accessing' stamp: 'MM 10/20/2022 17:37:57'!
+location: anObject
+	"Set the value of location"
+
+	location := anObject! !
+
+!EruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:39:01'!
+export: aBook to: aLocation
+	
+	| exporter |
+	
+	exporter _ self on: aBook.
+	exporter location: aLocation.
+	exporter export.! !
+
+!EruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:42:58'!
+exporterName
+
+	^ self subclassResponsibility ! !
+
+!EruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 18:10:07'!
+on: aBook
+	^ self new initialize: aBook; yourself! !
+
+!EruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:52:41'!
+requestEditorArgumentsFor: aBook
+
+	^ self subclassResponsibility ! !
+
+!LatexEruditeBookExporter methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:42:31'!
+export
+
+	(book latexRendererClass on: book)
+			texFilePath: location;
+			render.! !
+
+!LatexEruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:43:26'!
+exporterName
+
+	^ 'LaTeX'! !
+
+!LatexEruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:51:47'!
+requestEditorArgumentsFor: aBook
+
+	"Request arguments for the exporter from the book editor tool."
+	
+	| defaultFilePath path |
+	
+	defaultFilePath _ DirectoryEntry currentDirectory / (aBook title, '.tex').
+	path _ self request: 'Export to:' initialAnswer: defaultFilePath asString.
+	^ {#location: -> path}! !
 
 !EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:52'!
 contents: aString

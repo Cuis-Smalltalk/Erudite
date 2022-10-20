@@ -1,9 +1,19 @@
-'From Cuis 6.0 [latest update: #5494] on 18 October 2022 at 1:37:46 pm'!
+'From Cuis 6.0 [latest update: #5494] on 20 October 2022 at 6:12:46 pm'!
 'Description HTML renderer for Erudite books.'!
-!provides: 'EruditeHTML' 1 7!
-!requires: 'Erudite' 1 211 nil!
+!provides: 'EruditeHTML' 1 8!
+!requires: 'Erudite' 1 213 nil!
 SystemOrganization addCategory: 'EruditeHTML'!
 
+
+!classDefinition: #HTMLEruditeBookExporter category: 'EruditeHTML'!
+EruditeBookExporter subclass: #HTMLEruditeBookExporter
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeHTML'!
+!classDefinition: 'HTMLEruditeBookExporter class' category: 'EruditeHTML'!
+HTMLEruditeBookExporter class
+	instanceVariableNames: ''!
 
 !classDefinition: #HTMLEruditeDocRenderer category: 'EruditeHTML'!
 Object subclass: #HTMLEruditeDocRenderer
@@ -28,6 +38,29 @@ Example:
 (HTMLEruditeDocRenderer on: EruditeManual new)
 	htmlFilePath: '/home/marian/src/Cuis/Erudite/EruditeManual.html';
 	render.!
+
+!HTMLEruditeBookExporter methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:54:24'!
+export
+
+	(HTMLEruditeDocRenderer on: book)
+			htmlFilePath: location;
+			render.! !
+
+!HTMLEruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:53:34'!
+exporterName
+
+	^ 'HTML'! !
+
+!HTMLEruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:55:07'!
+requestEditorArgumentsFor: aBook
+
+	"Request arguments for the exporter from the book editor tool."
+	
+	| defaultFilePath path |
+	
+	defaultFilePath _ DirectoryEntry currentDirectory / (aBook title, '.html').
+	path _ self request: 'Export to:' initialAnswer: defaultFilePath asString.
+	^ {#location: -> path}! !
 
 !HTMLEruditeDocRenderer methodsFor: 'rendering' stamp: 'KLG 3/25/2021 21:57:27'!
 render
@@ -508,33 +541,3 @@ characterToEntityMapping
 		($© copy)	
 	) collect: [ :pair |
 		pair first -> ('&', pair second, ';' )] :: asDictionary`! !
-
-!EruditeBookEditorMorph methodsFor: '*EruditeHTML' stamp: 'KLG 3/29/2021 18:19:50'!
-explorerMenu
-
-	|menu|
-	
-	menu _ super explorerMenu.
-	
-	menu add: 'toggle live editing' action: #toggleLiveEditing.
-	menu lastItem setIcon: Theme current switchIcon.
-	
-	menu addLine.
-	menu add: 'export to latex' action: #exportToLatex.
-	menu lastItem setIcon: Theme current saveIcon.
-	menu add: 'export to HTML' action: #exportToHTML.
-	menu lastItem setIcon: Theme current saveIcon.
-	
-	^ menu! !
-
-!EruditeBookEditorMorph methodsFor: '*EruditeHTML' stamp: 'KLG 3/29/2021 18:23:27'!
-exportToHTML
-	
-	| defaultFilePath |
-	
-	defaultFilePath _ DirectoryEntry currentDirectory / (model title, '.html').
-	self request: 'Export to:' initialAnswer: defaultFilePath asString do: [:filePath |
-		(HTMLEruditeDocRenderer on: model)
-			htmlFilePath: filePath;
-			render.
-		self inform: 'Book exported to HTML']! !
