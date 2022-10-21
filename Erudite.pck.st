@@ -14168,9 +14168,11 @@ asMethodName: aString
 	"Return a string that can be used in a method name."
 	^ aString asCamelCase select: [:char | char isAlphaNumeric ]! !
 
-!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:27:18'!
+!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/21/2022 19:06:45'!
 defaultNameForClass
-	^ book title asCamelCase capitalized asSymbol! !
+	^ (book title asCamelCase capitalized 
+		 select: [:char | char isAlphaNumeric ])
+		asSymbol! !
 
 !EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:39:44'!
 defaultStorageCategory: aClassName
