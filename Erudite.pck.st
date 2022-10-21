@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5494] on 21 October 2022 at 4:59:33 pm'!
+'From Cuis 6.0 [latest update: #5494] on 21 October 2022 at 5:04:26 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 216!
+!provides: 'Erudite' 1 217!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -1753,15 +1753,16 @@ removeSection
 			currentSection parent removeSection: currentSection.
 			self sectionsChanged; contentsChanged]]! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:02'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/21/2022 17:04:14'!
 renameSection
 
 	currentSection  ifNotNil: [ | title |
 		title _ FillInTheBlankMorph request: 'Section name: ' initialAnswer: currentSection title.
 			
-		title ifNotEmpty: [
-			currentSection title: title.
-			self sectionsChanged; contentsChanged]]
+		title ifNotNil: [
+			title ifNotEmpty: [
+				currentSection title: title.
+				self sectionsChanged; contentsChanged]]]
 		
 		! !
 
