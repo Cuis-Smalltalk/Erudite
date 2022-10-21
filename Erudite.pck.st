@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5494] on 20 October 2022 at 6:30:28 pm'!
+'From Cuis 6.0 [latest update: #5494] on 21 October 2022 at 4:59:33 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 214!
+!provides: 'Erudite' 1 216!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -2723,8 +2723,11 @@ storeOn: aStream
 storerClass
 	^ EruditeClassBookStorer ! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 2/26/2022 19:09:16'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 10/21/2022 16:57:37'!
 addSection: aBookSection
+
+	self assert: (sections anySatisfy: [:section | section title = aBookSection title]) not
+		description: 'Section with that title already exists'.
 
 	sections addLast: aBookSection.
 	aBookSection parent: self! !
@@ -14038,8 +14041,11 @@ updateParents
 		subsection parent: self.
 		subsection updateParents]! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 2/26/2022 19:10:22'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 10/21/2022 16:58:24'!
 addSection: aBookSection
+
+	self assert: (subsections anySatisfy: [:section | section title = aBookSection title]) not
+		description: 'Subsection with that title already exists'.
 
 	subsections addLast: aBookSection.
 	aBookSection parent: self! !
@@ -14216,12 +14222,12 @@ storeAsClassNamed: className category: aCategory
 storeSection: aBookSection on: aClass
 	^ self storeSection: aBookSection on: aClass prefix: 'section_'! !
 
-!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:29:17'!
+!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/21/2022 16:48:43'!
 storeSection: aBookSection on: aClass prefix: prefix
 
 	| source subsectionPrefix |
 	
-	subsectionPrefix _ prefix, aBookSection title asCamelCase, '_'.
+	subsectionPrefix _ prefix, (self asMethodName: aBookSection title), '_'.
 	
 	source _ String streamContents: [:s |
 		s nextPutAll: (prefix, (self asMethodName: aBookSection title)); newLine.		
