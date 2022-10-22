@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5494] on 22 October 2022 at 7:08:43 pm'!
+'From Cuis 6.0 [latest update: #5494] on 22 October 2022 at 7:21:54 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 223!
+!provides: 'Erudite' 1 224!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -2324,15 +2324,10 @@ codeAction
 	 ^ buttonCodeAction / 
 	   simpleCodeAction! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 18:35:47'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 19:17:43'!
 codeActions
 	"Return the collection of available code actions."
-	^ CodeActions ifNil: [CodeActions _ self initializeCodeActions]! !
-
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 19:03:22'!
-defaultCodeActions
-
-	^ {'doIt'. 'inspectIt'. 'exploreIt'. 'printItHere'. 'printIt'. 'embedIt'} asOrderedCollection! !
+	^ self class codeActions! !
 
 !EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:30'!
 erudite
@@ -2379,11 +2374,6 @@ heading: level
 headingCharacter
 
 	^ $!!! !
-
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 18:36:16'!
-initializeCodeActions
-
-	^ CodeActions _ self defaultCodeActions.! !
 
 !EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:05'!
 italic
@@ -2482,6 +2472,26 @@ addCodeAction: aString
 	"Adds an action to the list of code actions. This is meant for extensions."
 	(CodeActions includes: aString) ifTrue: [^self].
 	CodeActions add: aString! !
+
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 19:17:07'!
+codeActions
+	"Return the collection of available code actions."
+	^ CodeActions ifNil: [CodeActions _ self initializeCodeActions]! !
+
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 19:17:28'!
+defaultCodeActions
+
+	^ {'doIt'. 'inspectIt'. 'exploreIt'. 'printItHere'. 'printIt'. 'embedIt'} asOrderedCollection! !
+
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 19:18:06'!
+initialize
+
+	^ self initializeCodeActions! !
+
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 19:17:20'!
+initializeCodeActions
+
+	^ CodeActions _ self defaultCodeActions.! !
 
 !EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:17'!
 assignLinkOption
@@ -16109,4 +16119,5 @@ expandRoot
 enableEditing: aBoolean
 	self innerTextMorph enableEditing: aBoolean! !
 EruditeBookEditorMorph initialize!
+EruditeMarkupGrammar initialize!
 EruditeSystem initialize!
