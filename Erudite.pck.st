@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5494] on 21 October 2022 at 5:04:26 pm'!
+'From Cuis 6.0 [latest update: #5494] on 22 October 2022 at 10:33:44 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 217!
+!provides: 'Erudite' 1 218!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -175,6 +175,16 @@ TestCase subclass: #EruditeMarkupGrammarTest
 	category: 'Erudite-Test'!
 !classDefinition: 'EruditeMarkupGrammarTest class' category: 'Erudite-Test'!
 EruditeMarkupGrammarTest class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeMarkupParserTest category: 'Erudite-Test'!
+TestCase subclass: #EruditeMarkupParserTest
+	instanceVariableNames: 'parser'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Test'!
+!classDefinition: 'EruditeMarkupParserTest class' category: 'Erudite-Test'!
+EruditeMarkupParserTest class
 	instanceVariableNames: ''!
 
 !classDefinition: #SmalltalkEruditeGrammarTest category: 'Erudite-Test'!
@@ -2051,6 +2061,42 @@ testLink
 	self assert: (parser link end parse: '{target::type|label}[opt1=val1, opt2=val2]') isPetitFailure not.! !
 
 !EruditeMarkupGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 13:23'!
+testUnformatted
+
+	self assert: (parser unformatted parse: '```unformatted```') isPetitFailure not! !
+
+!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 10:22:23'!
+setUp
+
+	parser _ EruditeMarkupParser new.! !
+
+!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 10:22:12'!
+testBold
+
+	self assert: (parser bold parse: '**bold**') isPetitFailure not! !
+
+!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 10:22:12'!
+testItalic
+
+	self assert: (parser italic parse: '//italic//') isPetitFailure not! !
+
+!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 10:25:57'!
+testLink
+
+	|docLink|
+	
+	docLink _ parser link end parse: '{target::type}'.
+	self assert: (docLink isKindOf: DocLink).
+	self assert: (docLink type = #type).
+	self assert: (docLink target = 'target').
+	
+	self assert: (parser link end parse: '{target::type}') isPetitFailure not.
+	self assert: (parser link end parse: '{target::type|label}') isPetitFailure not.
+	self assert: (parser link end parse: '{target::type|label}[trueOpt]') isPetitFailure not.
+	self assert: (parser link end parse: '{target::type|label}[!!falseOpt]') isPetitFailure not.
+	self assert: (parser link end parse: '{target::type|label}[opt1=val1, opt2=val2]') isPetitFailure not.! !
+
+!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 10:22:12'!
 testUnformatted
 
 	self assert: (parser unformatted parse: '```unformatted```') isPetitFailure not! !
@@ -14416,7 +14462,7 @@ render
 		ifFalse: [
 			node accept: self]]! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:54:11'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 10/22/2022 10:33:05'!
 renderCode: aDocCode
 
 	highlightSyntax 
@@ -14430,10 +14476,11 @@ renderCode: aDocCode
 		ifFalse: [stream newLine;nextPutAll: '\end{code}'; newLine].
 	
 	"Besides rendering the code, try to evaluate it, since there may be variable assignments."
+	"All errors are ignored, since this a 'dead' code section."
 	"[requestor 
 		ifNil: [Compiler evaluate: aDocCode code for: self logged: false]
 		ifNotNil: [Compiler evaluate: aDocCode code notifying: requestor logged: false]]
-	on: Error do: [:error | error]"! !
+	on: Exception do: [:ex | Transcript show: ex messageText]"! !
 
 !LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:54:28'!
 renderCodeDoIt: aDocCode
@@ -14712,7 +14759,7 @@ render
 	
 	^ stream contents inject: '' into: [:x :y | x, y]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 19:06:59'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 10:32:14'!
 renderCode: aDocCode
 
 	|text textModel|
@@ -14725,10 +14772,11 @@ renderCode: aDocCode
 	stream nextPut: textModel actualContents.
 	
 	"Besides rendering the code, try to evaluate it, since there may be variable assignments."
+	"All errors are ignored, since this a 'dead' code section."
 	[requestor 
 		ifNil: [Compiler evaluate: aDocCode code for: self logged: false]
 		ifNotNil: [Compiler evaluate: aDocCode code notifying: requestor logged: false]]
-	on: Error do: [:error | error].! !
+	on: Exception do: [:ex | Transcript show: ex messageText].! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:27:04'!
 renderCodeDoIt: aDocCode
