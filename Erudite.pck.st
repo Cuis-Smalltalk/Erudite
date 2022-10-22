@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5494] on 22 October 2022 at 11:08:13 am'!
+'From Cuis 6.0 [latest update: #5494] on 22 October 2022 at 7:08:43 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 219!
+!provides: 'Erudite' 1 223!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -240,7 +240,7 @@ SHTextStylerClassComment class
 !classDefinition: #EruditeMarkupGrammar category: 'Erudite-Parser'!
 PPCompositeParser subclass: #EruditeMarkupGrammar
 	instanceVariableNames: 'heading4 heading3 heading2 heading1 heading markup unformatted erudite codeAction code bold italic plainText linkOptions linkOptionsList linkOption falseLinkOption trueLinkOption assignLinkOption link buttonCodeAction simpleCodeAction underlined'
-	classVariableNames: ''
+	classVariableNames: 'CodeActions'
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
 !classDefinition: 'EruditeMarkupGrammar class' category: 'Erudite-Parser'!
@@ -2324,6 +2324,16 @@ codeAction
 	 ^ buttonCodeAction / 
 	   simpleCodeAction! !
 
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 18:35:47'!
+codeActions
+	"Return the collection of available code actions."
+	^ CodeActions ifNil: [CodeActions _ self initializeCodeActions]! !
+
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 19:03:22'!
+defaultCodeActions
+
+	^ {'doIt'. 'inspectIt'. 'exploreIt'. 'printItHere'. 'printIt'. 'embedIt'} asOrderedCollection! !
+
 !EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:30'!
 erudite
 	
@@ -2369,6 +2379,11 @@ heading: level
 headingCharacter
 
 	^ $!!! !
+
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 18:36:16'!
+initializeCodeActions
+
+	^ CodeActions _ self defaultCodeActions.! !
 
 !EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:05'!
 italic
@@ -2420,15 +2435,17 @@ plainText
 
 	^ markup negate plus flatten! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 15:43'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 18:47:49'!
 simpleCodeAction
 
-	^ 'doIt' asParser /
-	   'inspectIt' asParser /
-	   'exploreIt' asParser /
-	   'printItHere' asParser /
-	   'printIt' asParser /
-	   'embedIt' asParser! !
+	| actionParser |
+	
+	actionParser _ nil asParser not.
+
+	self codeActions do: [:action |
+		actionParser _ actionParser / action asParser].
+	
+	^ actionParser! !
 
 !EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 15:43'!
 start
@@ -2458,6 +2475,13 @@ unformatted
 withButtonAction: aString
 
 	^ aString asParser, ':' asParser, $. asParser negate plus flatten, $. asParser! !
+
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 18:59:31'!
+addCodeAction: aString
+
+	"Adds an action to the list of code actions. This is meant for extensions."
+	(CodeActions includes: aString) ifTrue: [^self].
+	CodeActions add: aString! !
 
 !EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:17'!
 assignLinkOption
@@ -14937,24 +14961,19 @@ visitActionLink: aDocLink
 
 	stream nextPut: (Text string: aDocLink title attributes: {BlockTextAction do: [:x | aDocLink action value]. TextEmphasis underlined})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 15:42'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 18:50:11'!
 visitCode: aDocCode
 
+	| codeActionSelector |
+
+	"If there's no action, just render the code."
 	aDocCode action ifNil: [
 		^ self renderCode: aDocCode].
-						
-	(aDocCode action at: #action) caseOf: {
-		[#doIt] -> [self renderCodeDoIt: aDocCode].
-		[#exploreIt] -> [self renderCodeExploreIt: aDocCode].
-		[#inspectIt] -> [self renderCodeInspectIt: aDocCode].
-		[#printIt] -> [self renderCodePrintIt: aDocCode].
-		[#printItHere] -> [self renderCodePrintItHere: aDocCode].
-		[#embedIt] -> [self renderCodeEmbedIt: aDocCode].
-		[#doItWithButton] -> [self renderCodeDoItWithButton: aDocCode].
-		[#exploreItWithButton] -> [self renderCodeExploreItWithButton: aDocCode].
-		[#inspectItWithButton] -> [self renderCodeInspectItWithButton: aDocCode].
-		[#printItWithButton] -> [self renderCodePrintItWithButton: aDocCode]
-	}.! !
+	
+	"If there's an action, call the rendering method, #renderCode<action>:"
+	codeActionSelector _ ('renderCode', ((aDocCode action at: #action) capitalized), ':') asSymbol.
+	
+	self perform: codeActionSelector with: aDocCode! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'jmv 6/11/2020 16:33:17'!
 visitHeading: aEruditeHeading
