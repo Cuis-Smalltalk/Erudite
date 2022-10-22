@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5494] on 22 October 2022 at 10:51:27 am'!
+'From Cuis 6.0 [latest update: #5494] on 22 October 2022 at 10:33:44 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 219!
+!provides: 'Erudite' 1 218!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -14759,7 +14759,7 @@ render
 	
 	^ stream contents inject: '' into: [:x :y | x, y]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 10:50:29'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 10:32:14'!
 renderCode: aDocCode
 
 	|text textModel|
@@ -14776,9 +14776,7 @@ renderCode: aDocCode
 	[requestor 
 		ifNil: [Compiler evaluate: aDocCode code for: self logged: false]
 		ifNotNil: [Compiler evaluate: aDocCode code notifying: requestor logged: false]]
-	on: Error do: [:ex | Transcript show: ex messageText]
-	on: ParserNotification do: [:ex | Transcript show: ex messageText.
-								ex exit]! !
+	on: Exception do: [:ex | Transcript show: ex messageText].! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:27:04'!
 renderCodeDoIt: aDocCode
