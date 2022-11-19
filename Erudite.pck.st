@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5494] on 22 October 2022 at 7:21:54 pm'!
+'From Cuis 6.0 [latest update: #5556] on 19 November 2022 at 6:21:41 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 224!
+!provides: 'Erudite' 1 225!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -806,6 +806,11 @@ initWith: aTextProvider
 	editing _ true.
 	sourceGetter _ nil.! !
 
+!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 18:20:30'!
+isDirty
+
+	^undoRedoCommands position isZero not.! !
+
 !EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:46'!
 refetch
 	"Answer true if actualContents was actually fetched."
@@ -1336,6 +1341,16 @@ textProvider: aTextProvider textGetter: textGetter textSetter: textSetter select
 	answer model: newModel.
 	^answer! !
 
+!EruditeDocEditorMorph class methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 18:19:04'!
+textProvider: aTextProvider textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter
+	| newModel answer |
+	answer _ self new.
+	newModel _ EruditePluggableTextModel on: aTextProvider.
+	newModel textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter.
+	aTextProvider addDependent: newModel.
+	answer model: newModel.
+	^answer! !
+
 !EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 15:11'!
 acceptsContentsOnChange
 	^ false! !
@@ -1345,6 +1360,16 @@ innerMorphClass
 	^ InnerEruditeDocMorph.! !
 
 !EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 15:49:04'!
+textProvider: aTextProvider textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter
+	| newModel answer |
+	answer _ self new.
+	newModel _ EruditePluggableTextModel on: aTextProvider.
+	newModel textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter.
+	aTextProvider addDependent: newModel.
+	answer model: newModel.
+	^answer! !
+
+!EruditeDocViewerMorph class methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 18:18:08'!
 textProvider: aTextProvider textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter
 	| newModel answer |
 	answer _ self new.
@@ -5021,7 +5046,7 @@ Smalltalk organizes instance behaviors using classes. A class is an object which
 
 The System Browser, in short the Browser, is a tool to rule all the classes in Cuis-Smalltalk. It is both a tool to explore the classes (system or user ones) and to write new classes and methods. 
 
-To access the tool ...World menu  Open...  Browser... 
+To access the tool ...World menu ^ Open... ^ Browser... 
 
 {/home/marian/src/Cuis/Erudite/system-browser.png ::image}
 
