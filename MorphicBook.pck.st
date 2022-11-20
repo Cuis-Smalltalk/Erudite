@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5091] on 6 March 2022 at 10:38:40 pm'!
+'From Cuis 6.0 [latest update: #5556] on 20 November 2022 at 11:19:27 am'!
 'Description Book on Morphic GUI system.'!
-!provides: 'MorphicBook' 1 35!
+!provides: 'MorphicBook' 1 36!
 !requires: 'Erudite' 1 133 nil!
 !requires: 'Dice' 1 0 nil!
 SystemOrganization addCategory: 'MorphicBook'!
@@ -591,7 +591,7 @@ Here we explain how Morphic is implemented in Cuis') images: ((Dictionary new));
         add: self MorphicInCuisDragDrop;
  yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 3/6/2022 22:38:32'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 11/20/2022 11:11:02'!
 MorphicInCuisDragDrop
 ^(EruditeBookSection basicNew title: 'Drag & Drop'; document: ((EruditeDocument contents: '!!!! Understanding Drag and Drop Mechanics
 
@@ -611,7 +611,7 @@ You can take a look at the code via the UI-Tools package and use of a code or me
 
 [[[
 (FeatureRequirement name: ''UI-Tools'') isAlreadySatisfied 
-	ifFalse: [(self confirm: ''I need to load VectorGraphics and UI-Tools to show this chapter. Proceed?'')
+	ifFalse: [(self confirm: ''I need to load UI-Tools to show this chapter. Proceed?'')
 		ifTrue: [Feature require: ''UI-Tools'']].
 ]]]
 
@@ -719,9 +719,15 @@ The Drag and Drop mechanics are complex, but implement a sophisticated system to
 
 Hopefully this introduction has given enough clues to do what interests you!!') images: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 3/6/2022 22:38:32'!
+!MorphicBook methodsFor: 'as yet unclassified' stamp: 'MM 11/20/2022 11:18:57'!
 MorphicInCuisLayout
 ^(EruditeBookSection basicNew title: 'Layout'; document: ((EruditeDocument contents: '!!!! Layout
+
+[[[
+(FeatureRequirement name: ''UI-Base-Morphs'') isAlreadySatisfied 
+	ifFalse: [(self confirm: ''I need to load UI-Base-Morphs to show this chapter. Proceed?'')
+		ifTrue: [Feature require: ''UI-Base-Morphs'']].
+]]]
 
 !!!!!! The basics
 
