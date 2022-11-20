@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5556] on 19 November 2022 at 6:21:41 pm'!
+'From Cuis 6.0 [latest update: #5556] on 20 November 2022 at 12:02:27 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 225!
+!provides: 'Erudite' 1 226!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -836,10 +836,10 @@ classOrMetaClass: aClass
 
 	styler classOrMetaClass: aClass! !
 
-!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/16/2018 11:01:33'!
+!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:43:15'!
 formatAndStyle
 
-	self formatAndStyleIfNeededWith: styler! !
+	self formatAndStyleIfNeededWith: styler.! !
 
 !EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/16/2018 11:02:06'!
 initialize
@@ -14791,6 +14791,11 @@ stream: anObject
 
 	stream := anObject! !
 
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:46:46'!
+codeBackgroundColor
+
+	^ Preferences at: #eruditeCodeBackgroundColor! !
+
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:35:53'!
 initialize: aDocument
 
@@ -14818,7 +14823,7 @@ render
 	
 	^ stream contents inject: '' into: [:x :y | x, y]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 11:06:23'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:56:51'!
 renderCode: aDocCode
 
 	|text textModel|
@@ -14826,7 +14831,10 @@ renderCode: aDocCode
 	text _ Text string: aDocCode code.
 	
 	textModel _ EruditeSmalltalkTextModel withText: text.
-	textModel formatAndStyle.
+	textModel formatAndStyle.	
+	
+	self codeBackgroundColor ifNotNil: [:color |
+		textModel actualContents addAttribute: (TextBackgroundColor color: color)].
 	
 	stream nextPut: textModel actualContents.
 	
@@ -14837,7 +14845,7 @@ renderCode: aDocCode
 		ifNotNil: [Compiler evaluate: aDocCode code notifying: requestor logged: false]]
 	on: Error do: [:ex | Transcript show: ex messageText].! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:27:04'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:57:05'!
 renderCodeDoIt: aDocCode
 
 	|text button textModel |
@@ -14846,6 +14854,9 @@ renderCodeDoIt: aDocCode
 							
 	textModel _ EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.
+	
+	self codeBackgroundColor ifNotNil: [:color |
+		textModel actualContents addAttribute: (TextBackgroundColor color: color)].
 		
 	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
@@ -14886,7 +14897,7 @@ renderCodeEmbedIt: aDocCode
 	
 	stream nextPut: (Text streamContents: [:s | result printOn: s])! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:27:16'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:57:19'!
 renderCodeExploreIt: aDocCode
 
 	|text button evalString textModel |
@@ -14897,6 +14908,9 @@ renderCodeExploreIt: aDocCode
 							
 	textModel _ EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.
+	
+	self codeBackgroundColor ifNotNil: [:color |
+		textModel actualContents addAttribute: (TextBackgroundColor color: color)].
 		
 	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
@@ -14916,7 +14930,7 @@ renderCodeExploreItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) explore]})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:27:27'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:57:27'!
 renderCodeInspectIt: aDocCode
 
 	|text button evalString textModel |
@@ -14927,6 +14941,9 @@ renderCodeInspectIt: aDocCode
 							
 	textModel _ EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.
+	
+	self codeBackgroundColor ifNotNil: [:color |
+		textModel actualContents addAttribute: (TextBackgroundColor color: color)].
 		
 	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
@@ -14946,7 +14963,7 @@ renderCodeInspectItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) inspect]})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:27:38'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:57:36'!
 renderCodePrintIt: aDocCode
 
 	|text button evalString textModel |
@@ -14957,6 +14974,9 @@ renderCodePrintIt: aDocCode
 							
 	textModel _ EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.
+	
+	self codeBackgroundColor ifNotNil: [:color |
+		textModel actualContents addAttribute: (TextBackgroundColor color: color)].
 		
 	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
@@ -14966,7 +14986,7 @@ renderCodePrintIt: aDocCode
 					BlockTextAction do: [:anObject | Transcript show: (Compiler evaluate: evalString notifying: anObject textProvider logged: false) printString]}.
 	stream nextPut: button.! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:28:32'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:57:42'!
 renderCodePrintItHere: aDocCode
 
 	|text evalString result textModel |
@@ -14977,6 +14997,9 @@ renderCodePrintItHere: aDocCode
 							
 	textModel _ EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.
+	
+	self codeBackgroundColor ifNotNil: [:color |
+		textModel actualContents addAttribute: (TextBackgroundColor color: color)].
 		
 	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
@@ -15068,6 +15091,15 @@ example2
 	| erudite |
 	erudite _ SmalltalkEruditeParser parse: Object comment.
 	(MorphicEruditeDocRenderer on: erudite) render edit.! !
+
+!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/20/2022 00:02:14'!
+initialize
+
+	Preferences name: #eruditeCodeBackgroundColor 
+			description: 'Background color for code'
+			category: #erudite 
+			type: Color 
+			value: Color veryVeryLightGray.! !
 
 !MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 18:28'!
 render: aDocument notifying: anObject
@@ -16145,4 +16177,5 @@ enableEditing: aBoolean
 	self innerTextMorph enableEditing: aBoolean! !
 EruditeBookEditorMorph initialize!
 EruditeMarkupGrammar initialize!
+MorphicEruditeDocRenderer initialize!
 EruditeSystem initialize!
