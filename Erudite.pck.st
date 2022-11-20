@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5556] on 20 November 2022 at 12:02:27 am'!
+'From Cuis 6.0 [latest update: #5556] on 20 November 2022 at 11:01:51 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 226!
+!provides: 'Erudite' 1 227!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -14791,10 +14791,10 @@ stream: anObject
 
 	stream := anObject! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:46:46'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/20/2022 10:53:58'!
 codeBackgroundColor
 
-	^ Preferences at: #eruditeCodeBackgroundColor! !
+	^ self class codeBackgroundColor! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:35:53'!
 initialize: aDocument
@@ -15073,6 +15073,11 @@ requestor
 requestor: anObject
 
 	requestor _ anObject! !
+
+!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/20/2022 10:53:28'!
+codeBackgroundColor
+
+	^ Preferences at: #eruditeCodeBackgroundColor! !
 
 !MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:30'!
 example1
@@ -15547,7 +15552,7 @@ browse: aClass selector: aSymbol
 			open: browser
 			label: 'System Browser' ! !
 
-!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:29:07'!
+!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/20/2022 10:56:12'!
 embed: aDocLink on: aStream
 
 	|text class textModel |
@@ -15558,6 +15563,9 @@ embed: aDocLink on: aStream
 	
 	textModel _ EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.
+	
+	MorphicEruditeDocRenderer codeBackgroundColor ifNotNil: [:color |
+		textModel actualContents addAttribute: (TextBackgroundColor color: color)].
 							
 	aStream nextPut: textModel actualContents.
 	aStream nextPut: Character newLineCharacter asString.
@@ -15685,7 +15693,7 @@ document: aDocLink on: aStream
 								selector: methodReference selector]. 
 							TextEmphasis underlined})! !
 
-!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 09:35:05'!
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/20/2022 10:57:23'!
 embed: aDocLink on: aStream
 
 	|text methodReference textModel |
@@ -15699,6 +15707,9 @@ embed: aDocLink on: aStream
 	textModel _ EruditeSmalltalkTextModel withText: text.
 	textModel classOrMetaClass: methodReference actualClass;
 				formatAndStyle.
+				
+	MorphicEruditeDocRenderer codeBackgroundColor ifNotNil: [:color |
+		textModel actualContents addAttribute: (TextBackgroundColor color: color)].
 	
 	aStream nextPut: (Text string: methodReference actualClass asString attribute: TextEmphasis bold).
 	aStream nextPut: '>>'.	
