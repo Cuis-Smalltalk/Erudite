@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5556] on 20 November 2022 at 11:01:51 am'!
+'From Cuis 6.0 [latest update: #5557] on 23 November 2022 at 3:01:10 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 227!
+!provides: 'Erudite' 1 228!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -1331,16 +1331,6 @@ initialize
 innerMorphClass
 	^ InnerEruditeDocMorph.! !
 
-!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 15:48:54'!
-textProvider: aTextProvider textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter
-	| newModel answer |
-	answer _ self new.
-	newModel _ EruditePluggableTextModel on: aTextProvider.
-	newModel textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter.
-	aTextProvider addDependent: newModel.
-	answer model: newModel.
-	^answer! !
-
 !EruditeDocEditorMorph class methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 18:19:04'!
 textProvider: aTextProvider textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter
 	| newModel answer |
@@ -1358,16 +1348,6 @@ acceptsContentsOnChange
 !EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:30'!
 innerMorphClass
 	^ InnerEruditeDocMorph.! !
-
-!EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 15:49:04'!
-textProvider: aTextProvider textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter
-	| newModel answer |
-	answer _ self new.
-	newModel _ EruditePluggableTextModel on: aTextProvider.
-	newModel textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter.
-	aTextProvider addDependent: newModel.
-	answer model: newModel.
-	^answer! !
 
 !EruditeDocViewerMorph class methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 18:18:08'!
 textProvider: aTextProvider textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter
