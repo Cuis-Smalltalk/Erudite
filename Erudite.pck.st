@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5557] on 23 November 2022 at 3:01:10 pm'!
+'From Cuis 6.0 [latest update: #5557] on 24 November 2022 at 4:25:41 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 228!
+!provides: 'Erudite' 1 231!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -639,7 +639,12 @@ EruditeDynamicTestBook class
 
 
 !EruditeDocEditor commentStamp: '<historical>' prior: 0!
-Tap and hold emulates button2 preference has to be false in order for clicking on links to work properly (avoid opening a context menu).!
+Special TextEditor for Erudite.
+
+Provides special menus and editing actions.
+
+Note:
+- Tap and hold emulates button2 preference has to be false in order for clicking on links to work properly (avoid opening a context menu).!
 
 !EruditeBookReaderMorph commentStamp: 'MM 3/5/2021 17:31:49' prior: 0!
 !!!!!! EruditeBookReaderMorph
@@ -1292,6 +1297,16 @@ keyStroke: aKeyboardEvent
 	owner acceptsContentsOnChange ifTrue: [
 		self hasUnacceptedEdits  ifTrue: [
 			self acceptContents]]! !
+
+!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 11/23/2022 20:34:57'!
+setFont: aFont
+
+	hasUnacceptedEdits
+		ifTrue: [ model basicActualContents: model actualContents ]
+		ifFalse: [ model refetch ].
+	editor defaultFont: aFont.
+	editor inspect.
+	self updateFromTextComposition.! !
 
 !InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:59'!
 toggleEditing
@@ -14776,6 +14791,18 @@ codeBackgroundColor
 
 	^ self class codeBackgroundColor! !
 
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 15:50:58'!
+createFormButton: aForm action: aBlock balloonText: balloonText
+
+	| button |
+	
+	button _ ImageMorph new image: aForm; yourself.
+	button setBalloonText: balloonText.
+	button setProperty: #handlesMouseDown: toValue: true.
+	button setProperty: #'mouseButton1Down:localPosition:' toValue: [:keyEvent :pos | aBlock value].
+	
+	^ button! !
+
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:35:53'!
 initialize: aDocument
 
@@ -14825,7 +14852,7 @@ renderCode: aDocCode
 		ifNotNil: [Compiler evaluate: aDocCode code notifying: requestor logged: false]]
 	on: Error do: [:ex | Transcript show: ex messageText].! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:57:05'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 15:55:01'!
 renderCodeDoIt: aDocCode
 
 	|text button textModel |
@@ -14841,10 +14868,17 @@ renderCodeDoIt: aDocCode
 	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
 	
-	button _ Text string: '[doIt]' attributes: 
+	self useIconButtons 
+		ifTrue: [
+			button _ self createFormButton: Theme current doItIcon 
+						action: [ Compiler evaluate: aDocCode code notifying: nil logged: false ]
+						balloonText: 'do it'. 
+			stream nextPut: (Text streamContents: [:s | button printOn: s])]
+		ifFalse: [
+			button _ Text string: '[doIt]' attributes: 
 					{TextEmphasis underlined. 
 						BlockTextAction do: [:anObject | Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false]}.
-	stream nextPut: button.
+			stream nextPut: button].
 	
 	"button _ PluggableButtonMorph model: nil action: #doIt label: 'DoIt'.
  	button morphExtent: 40@15.
@@ -14877,7 +14911,7 @@ renderCodeEmbedIt: aDocCode
 	
 	stream nextPut: (Text streamContents: [:s | result printOn: s])! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:57:19'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 16:06:13'!
 renderCodeExploreIt: aDocCode
 
 	|text button evalString textModel |
@@ -14895,10 +14929,17 @@ renderCodeExploreIt: aDocCode
 	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
 	
-	button _ Text string: '[exploreIt]' 
-		attributes: {TextEmphasis underlined. 
-					BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) explore]}.
-	stream nextPut: button.! !
+	self useIconButtons 
+		ifTrue: [
+			button _ self createFormButton: Theme current exploreIcon 
+						action: [ (Compiler evaluate: aDocCode code notifying: nil logged: false) explore ]
+						balloonText: 'explore it'. 
+			stream nextPut: (Text streamContents: [:s | button printOn: s])]
+		ifFalse: [
+			button _ Text string: '[exploreIt]' 
+					attributes: {TextEmphasis underlined. 
+								BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) explore]}.
+			stream nextPut: button]! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 17:27'!
 renderCodeExploreItWithButton: aDocCode
@@ -14910,7 +14951,7 @@ renderCodeExploreItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) explore]})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:57:27'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 16:10:03'!
 renderCodeInspectIt: aDocCode
 
 	|text button evalString textModel |
@@ -14928,10 +14969,17 @@ renderCodeInspectIt: aDocCode
 	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
 	
-	button _ Text string: '[inspectIt]' 
-		attributes: {TextEmphasis underlined. 
+	self useIconButtons 
+		ifTrue: [
+			button _ self createFormButton: Theme current inspectIcon 
+						action: [ (Compiler evaluate: aDocCode code notifying: nil logged: false) inspect ]
+						balloonText: 'inspect it'. 
+			stream nextPut: (Text streamContents: [:s | button printOn: s])]
+		ifFalse: [
+			button _ Text string: '[inspectIt]' 
+					attributes: {TextEmphasis underlined. 
 					BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) inspect]}.
-	stream nextPut: button.! !
+			stream nextPut: button].! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 17:25'!
 renderCodeInspectItWithButton: aDocCode
@@ -14943,7 +14991,7 @@ renderCodeInspectItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) inspect]})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:57:36'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 16:11:10'!
 renderCodePrintIt: aDocCode
 
 	|text button evalString textModel |
@@ -14961,10 +15009,17 @@ renderCodePrintIt: aDocCode
 	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
 	
-	button _ Text string: '[printIt]' 
-		attributes: {TextEmphasis underlined. 
-					BlockTextAction do: [:anObject | Transcript show: (Compiler evaluate: evalString notifying: anObject textProvider logged: false) printString]}.
-	stream nextPut: button.! !
+	self useIconButtons 
+		ifTrue: [
+			button _ self createFormButton: Theme current printIcon 
+						action: [ Transcript show: (Compiler evaluate: aDocCode code notifying: nil logged: false) printString ]
+						balloonText: 'print it (on transcript)'. 
+			stream nextPut: (Text streamContents: [:s | button printOn: s])]
+		ifFalse: [
+			button _ Text string: '[printIt]' 
+					attributes: {TextEmphasis underlined. 
+						BlockTextAction do: [:anObject | Transcript show: (Compiler evaluate: evalString notifying: anObject textProvider logged: false) printString]}.
+			stream nextPut: button]! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:57:42'!
 renderCodePrintItHere: aDocCode
@@ -14993,6 +15048,10 @@ renderCodePrintItHere: aDocCode
 	
 	stream nextPut: '==> ';
 			nextPut: (Text streamContents: [:s | result printOn: s]).! !
+
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 15:48:01'!
+useIconButtons
+	^ Preferences at: #eruditeUseIconButtons! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 14:11'!
 visitActionLink: aDocLink
@@ -15077,14 +15136,20 @@ example2
 	erudite _ SmalltalkEruditeParser parse: Object comment.
 	(MorphicEruditeDocRenderer on: erudite) render edit.! !
 
-!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/20/2022 00:02:14'!
+!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 15:48:36'!
 initialize
 
 	Preferences name: #eruditeCodeBackgroundColor 
 			description: 'Background color for code'
 			category: #erudite 
 			type: Color 
-			value: Color veryVeryLightGray.! !
+			value: Color veryVeryLightGray.
+			
+	Preferences name: #eruditeUseIconButtons 
+			description: 'Use icon buttons'
+			category: #erudite 
+			type: Boolean 
+			value: true.! !
 
 !MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 18:28'!
 render: aDocument notifying: anObject
@@ -15532,7 +15597,7 @@ browse: aClass selector: aSymbol
 			open: browser
 			label: 'System Browser' ! !
 
-!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/20/2022 10:56:12'!
+!ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 16:24:20'!
 embed: aDocLink on: aStream
 
 	|text class textModel |
@@ -15557,14 +15622,19 @@ embed: aDocLink on: aStream
 			aStream nextPut: commentFirstLine.
 			aStream nextPut: Character newLineCharacter asString]].
 	
-	aStream nextPut: 
-		(Text string: '[browse]' 
-				attributes: {BlockTextAction do: [:x | 
-							self browse: class
-								selector: nil]. 
-							TextEmphasis underlined}).
-							
-	! !
+	(Preferences at: #eruditeUseIconButtons) 
+		ifTrue: [ |button|
+			button _ ImageMorph new image: (Theme current editFindReplaceIcon ); yourself.
+			button setBalloonText: 'browse it'.
+			button setProperty: #handlesMouseDown: toValue: true.
+			button setProperty: #'mouseButton1Down:localPosition:' toValue: [:keyEvent :pos | 
+				self browse: class			selector: nil].
+			aStream nextPut: (Text streamContents: [:s | button printOn: s])]
+		ifFalse: [
+			aStream nextPut: 
+				(Text string: '[browse]' 
+					attributes: {BlockTextAction do: [:x | 	self browse: class			selector: nil]. 
+								TextEmphasis underlined})]! !
 
 !ClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:24'!
 render: aDocLink in: aDocument on: aStream
@@ -15673,7 +15743,7 @@ document: aDocLink on: aStream
 								selector: methodReference selector]. 
 							TextEmphasis underlined})! !
 
-!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/20/2022 10:57:23'!
+!MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 16:24:02'!
 embed: aDocLink on: aStream
 
 	|text methodReference textModel |
@@ -15696,12 +15766,22 @@ embed: aDocLink on: aStream
 	aStream nextPut: textModel actualContents.
 	aStream nextPut: Character newLineCharacter asString.
 	
-	aStream nextPut: 
-		(Text string: '[browse]' 
-				attributes: {BlockTextAction do: [:x | 
-							self browse: methodReference actualClass 
-								selector: methodReference selector]. 
-							TextEmphasis underlined})! !
+	(Preferences at: #eruditeUseIconButtons) 
+		ifTrue: [ |button|
+			button _ ImageMorph new image: (Theme current editFindReplaceIcon ); yourself.
+			button setBalloonText: 'browse it'.
+			button setProperty: #handlesMouseDown: toValue: true.
+			button setProperty: #'mouseButton1Down:localPosition:' toValue: [:keyEvent :pos | 
+			self browse: methodReference actualClass 
+				selector: methodReference selector].
+			aStream nextPut: (Text streamContents: [:s | button printOn: s])]
+		ifFalse: [
+			aStream nextPut: 
+				(Text string: '[browse]' 
+						attributes: {BlockTextAction do: [:x | 
+									self browse: methodReference actualClass 
+										selector: methodReference selector]. 
+									TextEmphasis underlined})]! !
 
 !MethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:47:00'!
 methodReferenceFor: aDocLink 
