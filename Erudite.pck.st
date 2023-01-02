@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5557] on 24 November 2022 at 4:25:41 pm'!
+'From Cuis 6.0 [latest update: #5610] on 2 January 2023 at 9:07:57 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 231!
+!provides: 'Erudite' 1 232!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -1450,18 +1450,19 @@ text
 	"Needed for bindings handling."
 	^ ''! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 11:35'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/2/2023 09:07:13'!
 addSection
 
 	| title |
 	
 	title _ FillInTheBlankMorph request: 'Section name: '.
 	
-	title ifNotEmpty: [
-		currentSection 
-			ifNotNil: [currentSection addSection: title contents: '']
-			ifNil: [model addSection: title contents: ''].
-		self sectionsChanged]	! !
+	title ifNotNil: [
+		title ifNotEmpty: [
+			currentSection 
+				ifNotNil: [currentSection addSection: title contents: '']
+				ifNil: [model addSection: title contents: ''].
+			self sectionsChanged]	]! !
 
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 11:36'!
 bookIsUnsaved
