@@ -2,7 +2,7 @@
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 233!
+!provides: 'Erudite' 1 234!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -826,7 +826,7 @@ refetch
 			^false ]
 		ifNotNil: [
 			self actualContents: (Text
-				initialFont: Preferences standardCodeFont
+				initialFont: (Preferences at: #standardCodeFont)
 				stringOrText: self getActualContents).
 			self changed: #refetched.
 			^true ]! !
