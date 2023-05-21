@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5646] on 22 January 2023 at 2:20:19 pm'!
+'From Cuis 6.0 [latest update: #5802] on 21 May 2023 at 12:13:10 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 234!
+!provides: 'Erudite' 1 235!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -841,10 +841,9 @@ classOrMetaClass: aClass
 
 	styler classOrMetaClass: aClass! !
 
-!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:43:15'!
+!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 5/21/2023 12:11:11'!
 formatAndStyle
-
-	self formatAndStyleIfNeededWith: styler.! !
+	self convertAndStyleIfNeededWith: styler.! !
 
 !EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/16/2018 11:02:06'!
 initialize
