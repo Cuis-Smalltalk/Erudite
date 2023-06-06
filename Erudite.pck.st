@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5802] on 21 May 2023 at 12:13:10 pm'!
+'From Cuis 6.0 [latest update: #5832] on 6 June 2023 at 11:31:48 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 235!
+!provides: 'Erudite' 1 236!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -1802,23 +1802,26 @@ saveBook
 	model store.
 	sourcesChanged _ false! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 7/13/2022 12:19:17'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 11:31:05'!
 saveBookAs
 
-	| title |
-	title _ FillInTheBlankMorph request: 'A name for the new book:'.
+	| title  newBook newBookClass|
+	title := FillInTheBlankMorph request: 'A name for the new book:'.
 	
-	title ifNotEmpty: [ |newBook newBookClass|
-		newBook _ model copy.
-		newBook title: title.
-		newBookClass _ newBook store.
-		"Copy some of the methods from the original book class"
-		newBookClass class copyAllCategoriesFrom: model class class.
-		model class hasComment ifTrue: [newBookClass comment: model class comment].
-		newBook edit.
-		model _ newBook.
-		currentSection _ nil.
-		self sectionsChanged ; contentsChanged ]! !
+	title ifNil: [^ self].
+	
+	title ifEmpty: [^ self].
+		
+	newBook := model copy.
+	newBook title: title.
+	newBookClass := newBook store.
+	"Copy some of the methods from the original book class"
+	newBookClass class copyAllCategoriesFrom: model class class.
+	model class hasComment ifTrue: [newBookClass comment: model class comment].
+	newBook edit.
+	model := newBook.
+	currentSection := nil.
+	self sectionsChanged ; contentsChanged! !
 
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 17:44'!
 sectionsChanged
