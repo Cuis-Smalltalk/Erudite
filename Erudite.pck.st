@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5832] on 6 June 2023 at 11:31:48 am'!
+'From Cuis 6.0 [latest update: #5832] on 6 June 2023 at 2:10:00 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 236!
+!provides: 'Erudite' 1 237!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -21181,14 +21181,14 @@ render
 	
 	^ stream contents inject: '' into: [:x :y | x, y]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:56:51'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:04:00'!
 renderCode: aDocCode
 
 	|text textModel|
 	
-	text _ Text string: aDocCode code.
+	text := Text string: aDocCode code.
 	
-	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel := EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.	
 	
 	self codeBackgroundColor ifNotNil: [:color |
@@ -21203,14 +21203,14 @@ renderCode: aDocCode
 		ifNotNil: [Compiler evaluate: aDocCode code notifying: requestor logged: false]]
 	on: Error do: [:ex | Transcript show: ex messageText].! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 15:55:01'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:04:22'!
 renderCodeDoIt: aDocCode
 
 	|text button textModel |
 	
-	text _ Text string: aDocCode code.							.
+	text := Text string: aDocCode code.							.
 							
-	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel := EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.
 	
 	self codeBackgroundColor ifNotNil: [:color |
@@ -21221,12 +21221,12 @@ renderCodeDoIt: aDocCode
 	
 	self useIconButtons 
 		ifTrue: [
-			button _ self createFormButton: Theme current doItIcon 
-						action: [ Compiler evaluate: aDocCode code notifying: nil logged: false ]
+			button := self createFormButton: Theme current doItIcon 
+						action: [ Compiler evaluate: aDocCode code notifying: requestor logged: false ]
 						balloonText: 'do it'. 
 			stream nextPut: (Text streamContents: [:s | button printOn: s])]
 		ifFalse: [
-			button _ Text string: '[doIt]' attributes: 
+			button := Text string: '[doIt]' attributes: 
 					{TextEmphasis underlined. 
 						BlockTextAction do: [:anObject | Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false]}.
 			stream nextPut: button].
@@ -21235,7 +21235,7 @@ renderCodeDoIt: aDocCode
  	button morphExtent: 40@15.
 	stream nextPut: (Text withForm: button)."! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 17:24'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:07:06'!
 renderCodeDoItWithButton: aDocCode
 
 	stream nextPut: (Text string: (aDocCode action at: #button)
@@ -21243,7 +21243,7 @@ renderCodeDoItWithButton: aDocCode
 							{TextColor magenta.
 							TextEmphasis italic.
 							TextEmphasis underlined .
-							BlockTextAction do: [:anObject | Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false]})! !
+							BlockTextAction do: [:anObject | Compiler evaluate: aDocCode code notifying: requestor logged: false]})! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 18:36'!
 renderCodeEmbedIt: aDocCode
@@ -21262,16 +21262,16 @@ renderCodeEmbedIt: aDocCode
 	
 	stream nextPut: (Text streamContents: [:s | result printOn: s])! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 16:06:13'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:05:51'!
 renderCodeExploreIt: aDocCode
 
 	|text button evalString textModel |
 	
-	evalString _ aDocCode code.
+	evalString := aDocCode code.
 	
-	text _ Text string: aDocCode code.							.
+	text := Text string: aDocCode code.							.
 							
-	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel := EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.
 	
 	self codeBackgroundColor ifNotNil: [:color |
@@ -21282,17 +21282,17 @@ renderCodeExploreIt: aDocCode
 	
 	self useIconButtons 
 		ifTrue: [
-			button _ self createFormButton: Theme current exploreIcon 
-						action: [ (Compiler evaluate: aDocCode code notifying: nil logged: false) explore ]
+			button := self createFormButton: Theme current exploreIcon 
+						action: [ (Compiler evaluate: aDocCode code notifying: requestor logged: false) explore ]
 						balloonText: 'explore it'. 
 			stream nextPut: (Text streamContents: [:s | button printOn: s])]
 		ifFalse: [
-			button _ Text string: '[exploreIt]' 
+			button := Text string: '[exploreIt]' 
 					attributes: {TextEmphasis underlined. 
 								BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) explore]}.
 			stream nextPut: button]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 17:27'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:07:33'!
 renderCodeExploreItWithButton: aDocCode
 
 	stream nextPut: (Text string: (aDocCode action at: #button)
@@ -21300,18 +21300,18 @@ renderCodeExploreItWithButton: aDocCode
 							{TextColor magenta.
 							TextEmphasis italic.
 							TextEmphasis underlined .
-							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) explore]})! !
+							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: requestor logged: false) explore]})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 16:10:03'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:07:50'!
 renderCodeInspectIt: aDocCode
 
 	|text button evalString textModel |
 	
-	evalString _ aDocCode code.
+	evalString := aDocCode code.
 	
-	text _ Text string: aDocCode code.							.
+	text := Text string: aDocCode code.							.
 							
-	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel := EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.
 	
 	self codeBackgroundColor ifNotNil: [:color |
@@ -21322,17 +21322,17 @@ renderCodeInspectIt: aDocCode
 	
 	self useIconButtons 
 		ifTrue: [
-			button _ self createFormButton: Theme current inspectIcon 
-						action: [ (Compiler evaluate: aDocCode code notifying: nil logged: false) inspect ]
+			button := self createFormButton: Theme current inspectIcon 
+						action: [ (Compiler evaluate: aDocCode code notifying: requestor logged: false) inspect ]
 						balloonText: 'inspect it'. 
 			stream nextPut: (Text streamContents: [:s | button printOn: s])]
 		ifFalse: [
-			button _ Text string: '[inspectIt]' 
+			button := Text string: '[inspectIt]' 
 					attributes: {TextEmphasis underlined. 
-					BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) inspect]}.
+					BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: requestor logged: false) inspect]}.
 			stream nextPut: button].! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 17:25'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:07:59'!
 renderCodeInspectItWithButton: aDocCode
 
 	stream nextPut: (Text string: (aDocCode action at: #button)
@@ -21340,18 +21340,18 @@ renderCodeInspectItWithButton: aDocCode
 							{TextColor magenta.
 							TextEmphasis italic.
 							TextEmphasis underlined .
-							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) inspect]})! !
+							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: requestor logged: false) inspect]})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 16:11:10'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:08:12'!
 renderCodePrintIt: aDocCode
 
 	|text button evalString textModel |
 	
-	evalString _ aDocCode code.
+	evalString := aDocCode code.
 	
-	text _ Text string: aDocCode code.							.
+	text := Text string: aDocCode code.							.
 							
-	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel := EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.
 	
 	self codeBackgroundColor ifNotNil: [:color |
@@ -21362,14 +21362,14 @@ renderCodePrintIt: aDocCode
 	
 	self useIconButtons 
 		ifTrue: [
-			button _ self createFormButton: Theme current printIcon 
-						action: [ Transcript show: (Compiler evaluate: aDocCode code notifying: nil logged: false) printString ]
+			button := self createFormButton: Theme current printIcon 
+						action: [ Transcript show: (Compiler evaluate: aDocCode code notifying: requestor logged: false) printString ]
 						balloonText: 'print it (on transcript)'. 
 			stream nextPut: (Text streamContents: [:s | button printOn: s])]
 		ifFalse: [
-			button _ Text string: '[printIt]' 
+			button := Text string: '[printIt]' 
 					attributes: {TextEmphasis underlined. 
-						BlockTextAction do: [:anObject | Transcript show: (Compiler evaluate: evalString notifying: anObject textProvider logged: false) printString]}.
+						BlockTextAction do: [:anObject | Transcript show: (Compiler evaluate: evalString notifying: requestor logged: false) printString]}.
 			stream nextPut: button]! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:57:42'!
