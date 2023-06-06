@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5832] on 6 June 2023 at 2:10:00 pm'!
+'From Cuis 6.0 [latest update: #5832] on 6 June 2023 at 7:57:17 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 237!
+!provides: 'Erudite' 1 238!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -1617,12 +1617,12 @@ exploreVariables
 
 	bindings explore! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 19:11:00'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 19:56:57'!
 explorerMenu
 
 	|menu|
 	
-	menu _ MenuMorph new defaultTarget: self.
+	menu := MenuMorph new defaultTarget: self.
 	menu add: 'add section' action: #addSection.
 	menu lastItem setIcon: Theme current newIcon.
 	menu addLine.
@@ -1631,8 +1631,10 @@ explorerMenu
 	menu add: 'remove section' action: #removeSection.
 	menu lastItem setIcon: Theme current deleteIcon.
 	menu addLine.
+	menu add: 'move top' action: #moveSectionTop.
 	menu add: 'move up' action: #moveSectionUp.
 	menu add: 'move down' action: #moveSectionDown.
+	menu add: 'move bottom' action: #moveSectionBottom.
 	menu addLine;
 		add: 'toggle view sources' action: #toggleViewSources.
 	menu lastItem setIcon: Theme current switchIcon.
@@ -1731,6 +1733,16 @@ mouseDownOnHelpHandle: anEvent
 	
 	EruditeManual open! !
 
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 19:56:20'!
+moveSectionBottom
+
+	currentSection ifNotNil: [
+		|parent |
+		parent := currentSection parent.
+		parent sections remove: currentSection.
+		parent sections addLast: currentSection.
+		self sectionsChanged]! !
+
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 17:52'!
 moveSectionDown
 
@@ -1740,6 +1752,16 @@ moveSectionDown
 		after _ parent sections after: currentSection ifNone: [^ nil]. 
 		parent sections remove: currentSection.
 		parent sections add: currentSection after: after.
+		self sectionsChanged]! !
+
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 19:56:08'!
+moveSectionTop
+
+	currentSection ifNotNil: [
+		|parent |
+		parent := currentSection parent.
+		parent sections remove: currentSection.
+		parent sections addFirst: currentSection.
 		self sectionsChanged]! !
 
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 17:51'!
