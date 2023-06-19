@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5832] on 6 June 2023 at 7:57:17 pm'!
+'From Cuis 6.0 [latest update: #5867] on 19 June 2023 at 2:24:14 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 238!
+!provides: 'Erudite' 1 239!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -159,7 +159,7 @@ EruditeDocEditorWindow class
 
 !classDefinition: #EruditeBookSectionExplorerWrapper category: 'Erudite-Core'!
 ListItemWrapper subclass: #EruditeBookSectionExplorerWrapper
-	instanceVariableNames: 'section'
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
@@ -857,10 +857,10 @@ shouldStyle: text with: aTextStyler
 
 	^ true! !
 
-!EruditeBookExplorer methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:29'!
+!EruditeBookExplorer methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2023 14:22:43'!
 explorerList
 	^ book sections collect: [ :bookSection |
-		EruditeBookSectionExplorerWrapper on: bookSection ].! !
+		EruditeBookSectionExplorerWrapper with: bookSection ].! !
 
 !EruditeBookExplorer methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 19:57'!
 initialize: aBook
@@ -1684,22 +1684,11 @@ gotoPreviousSection
 		currentSection previousSection ifNotNil: [:aSection |
 			self gotoSection: aSection]]! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 00:20'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2023 14:23:49'!
 gotoSection: aSection
-
-	|highlightMorph|
-
-	currentSection _ aSection.
 	
-	self contentsChanged.
-	
-	highlightMorph _ explorerMorph scroller
-		findDeepSubmorphThat: [:aMorph | 
-			(aMorph complexContents respondsTo: #section) and: [aMorph complexContents section == aSection]]
-		ifAbsent: [nil].
-		
-	highlightMorph ifNotNil: [explorerMorph setSelectedMorph: highlightMorph ]
-		 ! !
+	currentSection := aSection.
+	explorer noteNewSelection: (EruditeBookSectionExplorerWrapper with: aSection)! !
 
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 12:07:11'!
 gotoSectionNamed: aString
@@ -2049,37 +2038,41 @@ buildMorphicWindow
 		
 	self layoutMorph addMorphUseAll: sourceMorph.! !
 
-!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 14:09'!
+!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2023 14:22:33'!
 asString
 	
-	^ section title! !
+	^ self section title! !
 
-!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:29'!
+!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2023 14:22:52'!
 contents
-	^ section subsections collect: [ :bookSection |
-		EruditeBookSectionExplorerWrapper on: bookSection ].! !
+	^ self section subsections collect: [ :bookSection |
+		EruditeBookSectionExplorerWrapper with: bookSection ].! !
 
-!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:59'!
-initialize: aBookSection
+!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2023 14:22:19'!
+isAncestorOf: aSection
+	
+	^ self isSection: self item ancestorOf: aSection! !
 
-	section _ aBookSection! !
+!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2023 13:55:59'!
+isSection: aSection ancestorOf: otherSection
 
-!EruditeBookSectionExplorerWrapper methodsFor: 'accessing' stamp: 'MM 11/30/2018 14:16'!
+	otherSection parent == aSection 
+		ifTrue: [^ true].
+		
+	^ aSection subsections anySatisfy: [:subsection |
+		self isSection: subsection ancestorOf: otherSection]! !
+
+!EruditeBookSectionExplorerWrapper methodsFor: 'accessing' stamp: 'MM 6/19/2023 14:21:54'!
 section
 	"Answer the value of section"
 
-	^ section! !
+	^ self item! !
 
-!EruditeBookSectionExplorerWrapper methodsFor: 'accessing' stamp: 'MM 11/30/2018 14:16'!
+!EruditeBookSectionExplorerWrapper methodsFor: 'accessing' stamp: 'MM 6/19/2023 14:22:01'!
 section: anObject
 	"Set the value of section"
 
-	section _ anObject! !
-
-!EruditeBookSectionExplorerWrapper class methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:58'!
-on: aBookSection
-
-	^ self new initialize: aBookSection! !
+	item := anObject! !
 
 !EruditeMarkupGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 13:21'!
 setUp
