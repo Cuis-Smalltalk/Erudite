@@ -2552,7 +2552,7 @@ code
 
 	^ super code ==> [:res | |source action|
 		source _ res second.
-		action _ (res checkedAt: 4) ifNotNil: [:a | a second].
+		action _ (res at: 4) ifNotNil: [:a | a second].
 		DocCode code: source action: action]! !
 
 !EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:44:08'!
