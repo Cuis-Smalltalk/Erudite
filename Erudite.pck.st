@@ -2,7 +2,7 @@
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 239!
+!provides: 'Erudite' 1 240!
 !requires: 'Cuis-Base' 50 4854 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -21448,7 +21448,8 @@ visitHeading: aEruditeHeading
 	stream nextPut: (Text string: aEruditeHeading heading attributes: 
 							{TextColor blue.
 							TextEmphasis bold.
-							TextFontFamilyAndSize familyName: FontFamily defaultFamilyName pointSize: (pointSizes at: aEruditeHeading level)})! !
+							TextFontFamily familyName: FontFamily defaultFamilyName.
+						TextFontSize pointSize: (pointSizes at: aEruditeHeading level)})! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 22:57:31'!
 visitLink: aDocLink
