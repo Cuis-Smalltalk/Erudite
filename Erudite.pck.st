@@ -2,11 +2,10 @@
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 240!
-!requires: 'Cuis-Base' 50 4854 nil!
+!provides: 'Erudite' 1 241!
+!requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
-!requires: 'SqueakCompatibility' 1 29 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
 SystemOrganization addCategory: 'Erudite-Books'!
 SystemOrganization addCategory: 'Erudite-Core'!
