@@ -1,638 +1,638 @@
-'From Cuis 6.0 [latest update: #5867] on 19 June 2023 at 2:24:14 pm'!
+'From Cuis7.1 [latest update: #6409] on 26 May 2024 at 10:58:32 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 241!
+!provides: 'Erudite' 1 242!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
 !requires: 'Graphics-Files-Additional' 1 22 nil!
-SystemOrganization addCategory: 'Erudite-Books'!
-SystemOrganization addCategory: 'Erudite-Core'!
-SystemOrganization addCategory: 'Erudite-Latex'!
-SystemOrganization addCategory: 'Erudite-Morphic'!
-SystemOrganization addCategory: 'Erudite-Parser'!
-SystemOrganization addCategory: 'Erudite-Test'!
-SystemOrganization addCategory: 'Erudite'!
+SystemOrganization addCategory: #'Erudite-Books'!
+SystemOrganization addCategory: #'Erudite-Core'!
+SystemOrganization addCategory: #'Erudite-Latex'!
+SystemOrganization addCategory: #'Erudite-Morphic'!
+SystemOrganization addCategory: #'Erudite-Parser'!
+SystemOrganization addCategory: #'Erudite-Test'!
+SystemOrganization addCategory: #Erudite!
 
 
-!classDefinition: #EruditePluggableTextModel category: 'Erudite-Morphic'!
+!classDefinition: #EruditePluggableTextModel category: #'Erudite-Morphic'!
 PluggableTextModel subclass: #EruditePluggableTextModel
 	instanceVariableNames: 'editing sourceGetter'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'EruditePluggableTextModel class' category: 'Erudite-Morphic'!
+!classDefinition: 'EruditePluggableTextModel class' category: #'Erudite-Morphic'!
 EruditePluggableTextModel class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeSmalltalkTextModel category: 'Erudite-Morphic'!
+!classDefinition: #EruditeSmalltalkTextModel category: #'Erudite-Morphic'!
 TextModel subclass: #EruditeSmalltalkTextModel
 	instanceVariableNames: 'styler'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'EruditeSmalltalkTextModel class' category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeSmalltalkTextModel class' category: #'Erudite-Morphic'!
 EruditeSmalltalkTextModel class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeBookExplorer category: 'Erudite-Morphic'!
+!classDefinition: #EruditeBookExplorer category: #'Erudite-Morphic'!
 AbstractHierarchicalList subclass: #EruditeBookExplorer
 	instanceVariableNames: 'book'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'EruditeBookExplorer class' category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeBookExplorer class' category: #'Erudite-Morphic'!
 EruditeBookExplorer class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeDocEditor category: 'Erudite-Morphic'!
+!classDefinition: #EruditeDocEditor category: #'Erudite-Morphic'!
 TextEditor subclass: #EruditeDocEditor
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'EruditeDocEditor class' category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeDocEditor class' category: #'Erudite-Morphic'!
 EruditeDocEditor class
 	instanceVariableNames: 'menu2'!
 
-!classDefinition: #EruditeTextURL category: 'Erudite-Morphic'!
+!classDefinition: #EruditeTextURL category: #'Erudite-Morphic'!
 TextURL subclass: #EruditeTextURL
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'EruditeTextURL class' category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeTextURL class' category: #'Erudite-Morphic'!
 EruditeTextURL class
 	instanceVariableNames: ''!
 
-!classDefinition: #BlockTextAction category: 'Erudite-Morphic'!
+!classDefinition: #BlockTextAction category: #'Erudite-Morphic'!
 TextAction subclass: #BlockTextAction
 	instanceVariableNames: 'block'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'BlockTextAction class' category: 'Erudite-Morphic'!
+!classDefinition: 'BlockTextAction class' category: #'Erudite-Morphic'!
 BlockTextAction class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeForm category: 'Erudite-Morphic'!
+!classDefinition: #EruditeForm category: #'Erudite-Morphic'!
 Form subclass: #EruditeForm
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'EruditeForm class' category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeForm class' category: #'Erudite-Morphic'!
 EruditeForm class
 	instanceVariableNames: ''!
 
-!classDefinition: #InnerEruditeDocMorph category: 'Erudite-Morphic'!
+!classDefinition: #InnerEruditeDocMorph category: #'Erudite-Morphic'!
 InnerTextMorph subclass: #InnerEruditeDocMorph
 	instanceVariableNames: 'editing'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'InnerEruditeDocMorph class' category: 'Erudite-Morphic'!
+!classDefinition: 'InnerEruditeDocMorph class' category: #'Erudite-Morphic'!
 InnerEruditeDocMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeDocEditorMorph category: 'Erudite-Morphic'!
+!classDefinition: #EruditeDocEditorMorph category: #'Erudite-Morphic'!
 TextModelMorph subclass: #EruditeDocEditorMorph
 	instanceVariableNames: 'acceptContentsOnChange'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'EruditeDocEditorMorph class' category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeDocEditorMorph class' category: #'Erudite-Morphic'!
 EruditeDocEditorMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeDocViewerMorph category: 'Erudite-Morphic'!
+!classDefinition: #EruditeDocViewerMorph category: #'Erudite-Morphic'!
 TextModelMorph subclass: #EruditeDocViewerMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'EruditeDocViewerMorph class' category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeDocViewerMorph class' category: #'Erudite-Morphic'!
 EruditeDocViewerMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeClassCommentMorph category: 'Erudite-Morphic'!
+!classDefinition: #EruditeClassCommentMorph category: #'Erudite-Morphic'!
 EruditeDocViewerMorph subclass: #EruditeClassCommentMorph
 	instanceVariableNames: 'separator code separatorHeight proportionalHeight'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'EruditeClassCommentMorph class' category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeClassCommentMorph class' category: #'Erudite-Morphic'!
 EruditeClassCommentMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeBookReaderMorph category: 'Erudite-Morphic'!
+!classDefinition: #EruditeBookReaderMorph category: #'Erudite-Morphic'!
 SystemWindow subclass: #EruditeBookReaderMorph
 	instanceVariableNames: 'explorerMorph eruditeViewerMorph explorer currentSection viewSources styledDocuments sourcesChanged bindings'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'EruditeBookReaderMorph class' category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeBookReaderMorph class' category: #'Erudite-Morphic'!
 EruditeBookReaderMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeBookEditorMorph category: 'Erudite-Morphic'!
+!classDefinition: #EruditeBookEditorMorph category: #'Erudite-Morphic'!
 EruditeBookReaderMorph subclass: #EruditeBookEditorMorph
 	instanceVariableNames: 'sourceMorph liveEditing'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'EruditeBookEditorMorph class' category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeBookEditorMorph class' category: #'Erudite-Morphic'!
 EruditeBookEditorMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeDocEditorWindow category: 'Erudite-Morphic'!
+!classDefinition: #EruditeDocEditorWindow category: #'Erudite-Morphic'!
 SystemWindow subclass: #EruditeDocEditorWindow
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'EruditeDocEditorWindow class' category: 'Erudite-Morphic'!
+!classDefinition: 'EruditeDocEditorWindow class' category: #'Erudite-Morphic'!
 EruditeDocEditorWindow class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeBookSectionExplorerWrapper category: 'Erudite-Core'!
+!classDefinition: #EruditeBookSectionExplorerWrapper category: #'Erudite-Core'!
 ListItemWrapper subclass: #EruditeBookSectionExplorerWrapper
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
-!classDefinition: 'EruditeBookSectionExplorerWrapper class' category: 'Erudite-Core'!
+!classDefinition: 'EruditeBookSectionExplorerWrapper class' category: #'Erudite-Core'!
 EruditeBookSectionExplorerWrapper class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeMarkupGrammarTest category: 'Erudite-Test'!
+!classDefinition: #EruditeMarkupGrammarTest category: #'Erudite-Test'!
 TestCase subclass: #EruditeMarkupGrammarTest
 	instanceVariableNames: 'parser'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Test'!
-!classDefinition: 'EruditeMarkupGrammarTest class' category: 'Erudite-Test'!
+!classDefinition: 'EruditeMarkupGrammarTest class' category: #'Erudite-Test'!
 EruditeMarkupGrammarTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeMarkupParserTest category: 'Erudite-Test'!
+!classDefinition: #EruditeMarkupParserTest category: #'Erudite-Test'!
 TestCase subclass: #EruditeMarkupParserTest
 	instanceVariableNames: 'parser'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Test'!
-!classDefinition: 'EruditeMarkupParserTest class' category: 'Erudite-Test'!
+!classDefinition: 'EruditeMarkupParserTest class' category: #'Erudite-Test'!
 EruditeMarkupParserTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #SmalltalkEruditeGrammarTest category: 'Erudite-Test'!
+!classDefinition: #SmalltalkEruditeGrammarTest category: #'Erudite-Test'!
 TestCase subclass: #SmalltalkEruditeGrammarTest
 	instanceVariableNames: 'parser'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Test'!
-!classDefinition: 'SmalltalkEruditeGrammarTest class' category: 'Erudite-Test'!
+!classDefinition: 'SmalltalkEruditeGrammarTest class' category: #'Erudite-Test'!
 SmalltalkEruditeGrammarTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeMarkupAutoCompleter category: 'Erudite-Parser'!
+!classDefinition: #EruditeMarkupAutoCompleter category: #'Erudite-Parser'!
 AutoCompleter subclass: #EruditeMarkupAutoCompleter
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'EruditeMarkupAutoCompleter class' category: 'Erudite-Parser'!
+!classDefinition: 'EruditeMarkupAutoCompleter class' category: #'Erudite-Parser'!
 EruditeMarkupAutoCompleter class
 	instanceVariableNames: ''!
 
-!classDefinition: #ClassMethodCommentTextStyler category: 'Erudite-Parser'!
+!classDefinition: #ClassMethodCommentTextStyler category: #'Erudite-Parser'!
 SHTextStylerST80 subclass: #ClassMethodCommentTextStyler
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'ClassMethodCommentTextStyler class' category: 'Erudite-Parser'!
+!classDefinition: 'ClassMethodCommentTextStyler class' category: #'Erudite-Parser'!
 ClassMethodCommentTextStyler class
 	instanceVariableNames: ''!
 
-!classDefinition: #ClassCommentTextStyler category: 'Erudite-Parser'!
+!classDefinition: #ClassCommentTextStyler category: #'Erudite-Parser'!
 SHTextStyler subclass: #ClassCommentTextStyler
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'ClassCommentTextStyler class' category: 'Erudite-Parser'!
+!classDefinition: 'ClassCommentTextStyler class' category: #'Erudite-Parser'!
 ClassCommentTextStyler class
 	instanceVariableNames: ''!
 
-!classDefinition: #SHTextStylerClassComment category: 'Erudite-Parser'!
+!classDefinition: #SHTextStylerClassComment category: #'Erudite-Parser'!
 SHTextStyler subclass: #SHTextStylerClassComment
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'SHTextStylerClassComment class' category: 'Erudite-Parser'!
+!classDefinition: 'SHTextStylerClassComment class' category: #'Erudite-Parser'!
 SHTextStylerClassComment class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeMarkupGrammar category: 'Erudite-Parser'!
+!classDefinition: #EruditeMarkupGrammar category: #'Erudite-Parser'!
 PPCompositeParser subclass: #EruditeMarkupGrammar
 	instanceVariableNames: 'heading4 heading3 heading2 heading1 heading markup unformatted erudite codeAction code bold italic plainText linkOptions linkOptionsList linkOption falseLinkOption trueLinkOption assignLinkOption link buttonCodeAction simpleCodeAction underlined'
 	classVariableNames: 'CodeActions'
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'EruditeMarkupGrammar class' category: 'Erudite-Parser'!
+!classDefinition: 'EruditeMarkupGrammar class' category: #'Erudite-Parser'!
 EruditeMarkupGrammar class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeMarkupParser category: 'Erudite-Parser'!
+!classDefinition: #EruditeMarkupParser category: #'Erudite-Parser'!
 EruditeMarkupGrammar subclass: #EruditeMarkupParser
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'EruditeMarkupParser class' category: 'Erudite-Parser'!
+!classDefinition: 'EruditeMarkupParser class' category: #'Erudite-Parser'!
 EruditeMarkupParser class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeMarkupTextStyler category: 'Erudite-Parser'!
+!classDefinition: #EruditeMarkupTextStyler category: #'Erudite-Parser'!
 EruditeMarkupGrammar subclass: #EruditeMarkupTextStyler
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'EruditeMarkupTextStyler class' category: 'Erudite-Parser'!
+!classDefinition: 'EruditeMarkupTextStyler class' category: #'Erudite-Parser'!
 EruditeMarkupTextStyler class
 	instanceVariableNames: ''!
 
-!classDefinition: #SmalltalkEruditeGrammar category: 'Erudite-Parser'!
+!classDefinition: #SmalltalkEruditeGrammar category: #'Erudite-Parser'!
 PPCompositeParser subclass: #SmalltalkEruditeGrammar
 	instanceVariableNames: 'smalltalkClass smalltalkClassMethod smalltalkClassMethodName smalltalkSelector text erudite smalltalkClassName'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'SmalltalkEruditeGrammar class' category: 'Erudite-Parser'!
+!classDefinition: 'SmalltalkEruditeGrammar class' category: #'Erudite-Parser'!
 SmalltalkEruditeGrammar class
 	instanceVariableNames: ''!
 
-!classDefinition: #SmalltalkEruditeParser category: 'Erudite-Parser'!
+!classDefinition: #SmalltalkEruditeParser category: #'Erudite-Parser'!
 SmalltalkEruditeGrammar subclass: #SmalltalkEruditeParser
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'SmalltalkEruditeParser class' category: 'Erudite-Parser'!
+!classDefinition: 'SmalltalkEruditeParser class' category: #'Erudite-Parser'!
 SmalltalkEruditeParser class
 	instanceVariableNames: ''!
 
-!classDefinition: #SmalltalkEruditeStyler category: 'Erudite-Parser'!
+!classDefinition: #SmalltalkEruditeStyler category: #'Erudite-Parser'!
 SmalltalkEruditeGrammar subclass: #SmalltalkEruditeStyler
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'SmalltalkEruditeStyler class' category: 'Erudite-Parser'!
+!classDefinition: 'SmalltalkEruditeStyler class' category: #'Erudite-Parser'!
 SmalltalkEruditeStyler class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeBook category: 'Erudite-Core'!
+!classDefinition: #EruditeBook category: #'Erudite-Core'!
 Object subclass: #EruditeBook
 	instanceVariableNames: 'title sections author storer'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
-!classDefinition: 'EruditeBook class' category: 'Erudite-Core'!
+!classDefinition: 'EruditeBook class' category: #'Erudite-Core'!
 EruditeBook class
 	instanceVariableNames: ''!
 
-!classDefinition: #CuisManual category: 'Erudite-Books'!
+!classDefinition: #CuisManual category: #'Erudite-Books'!
 EruditeBook subclass: #CuisManual
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Books'!
-!classDefinition: 'CuisManual class' category: 'Erudite-Books'!
+!classDefinition: 'CuisManual class' category: #'Erudite-Books'!
 CuisManual class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeManual category: 'Erudite-Books'!
+!classDefinition: #EruditeManual category: #'Erudite-Books'!
 EruditeBook subclass: #EruditeManual
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Books'!
-!classDefinition: 'EruditeManual class' category: 'Erudite-Books'!
+!classDefinition: 'EruditeManual class' category: #'Erudite-Books'!
 EruditeManual class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeCompositeBook category: 'Erudite-Core'!
+!classDefinition: #EruditeCompositeBook category: #'Erudite-Core'!
 EruditeBook subclass: #EruditeCompositeBook
 	instanceVariableNames: 'books'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
-!classDefinition: 'EruditeCompositeBook class' category: 'Erudite-Core'!
+!classDefinition: 'EruditeCompositeBook class' category: #'Erudite-Core'!
 EruditeCompositeBook class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeDynamicBook category: 'Erudite-Core'!
+!classDefinition: #EruditeDynamicBook category: #'Erudite-Core'!
 EruditeBook subclass: #EruditeDynamicBook
 	instanceVariableNames: 'collectedMethods'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
-!classDefinition: 'EruditeDynamicBook class' category: 'Erudite-Core'!
+!classDefinition: 'EruditeDynamicBook class' category: #'Erudite-Core'!
 EruditeDynamicBook class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeBookExporter category: 'Erudite-Core'!
+!classDefinition: #EruditeBookExporter category: #'Erudite-Core'!
 Object subclass: #EruditeBookExporter
 	instanceVariableNames: 'book location'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
-!classDefinition: 'EruditeBookExporter class' category: 'Erudite-Core'!
+!classDefinition: 'EruditeBookExporter class' category: #'Erudite-Core'!
 EruditeBookExporter class
 	instanceVariableNames: ''!
 
-!classDefinition: #LatexEruditeBookExporter category: 'Erudite-Latex'!
+!classDefinition: #LatexEruditeBookExporter category: #'Erudite-Latex'!
 EruditeBookExporter subclass: #LatexEruditeBookExporter
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Latex'!
-!classDefinition: 'LatexEruditeBookExporter class' category: 'Erudite-Latex'!
+!classDefinition: 'LatexEruditeBookExporter class' category: #'Erudite-Latex'!
 LatexEruditeBookExporter class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeBookSection category: 'Erudite-Core'!
+!classDefinition: #EruditeBookSection category: #'Erudite-Core'!
 Object subclass: #EruditeBookSection
 	instanceVariableNames: 'title parent subsections document'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
-!classDefinition: 'EruditeBookSection class' category: 'Erudite-Core'!
+!classDefinition: 'EruditeBookSection class' category: #'Erudite-Core'!
 EruditeBookSection class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeBookStorer category: 'Erudite-Core'!
+!classDefinition: #EruditeBookStorer category: #'Erudite-Core'!
 Object subclass: #EruditeBookStorer
 	instanceVariableNames: 'book'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
-!classDefinition: 'EruditeBookStorer class' category: 'Erudite-Core'!
+!classDefinition: 'EruditeBookStorer class' category: #'Erudite-Core'!
 EruditeBookStorer class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeClassBookStorer category: 'Erudite-Core'!
+!classDefinition: #EruditeClassBookStorer category: #'Erudite-Core'!
 EruditeBookStorer subclass: #EruditeClassBookStorer
 	instanceVariableNames: 'storageClassName'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
-!classDefinition: 'EruditeClassBookStorer class' category: 'Erudite-Core'!
+!classDefinition: 'EruditeClassBookStorer class' category: #'Erudite-Core'!
 EruditeClassBookStorer class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeMethodBookStorer category: 'Erudite-Core'!
+!classDefinition: #EruditeMethodBookStorer category: #'Erudite-Core'!
 EruditeBookStorer subclass: #EruditeMethodBookStorer
 	instanceVariableNames: 'methodReference storageClass storageMethod'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
-!classDefinition: 'EruditeMethodBookStorer class' category: 'Erudite-Core'!
+!classDefinition: 'EruditeMethodBookStorer class' category: #'Erudite-Core'!
 EruditeMethodBookStorer class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeDocRenderer category: 'Erudite-Core'!
+!classDefinition: #EruditeDocRenderer category: #'Erudite-Core'!
 Object subclass: #EruditeDocRenderer
 	instanceVariableNames: 'document stream requestor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
-!classDefinition: 'EruditeDocRenderer class' category: 'Erudite-Core'!
+!classDefinition: 'EruditeDocRenderer class' category: #'Erudite-Core'!
 EruditeDocRenderer class
 	instanceVariableNames: ''!
 
-!classDefinition: #LatexEruditeDocRenderer category: 'Erudite-Latex'!
+!classDefinition: #LatexEruditeDocRenderer category: #'Erudite-Latex'!
 EruditeDocRenderer subclass: #LatexEruditeDocRenderer
 	instanceVariableNames: 'highlightSyntax'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Latex'!
-!classDefinition: 'LatexEruditeDocRenderer class' category: 'Erudite-Latex'!
+!classDefinition: 'LatexEruditeDocRenderer class' category: #'Erudite-Latex'!
 LatexEruditeDocRenderer class
 	instanceVariableNames: ''!
 
-!classDefinition: #MorphicEruditeDocRenderer category: 'Erudite-Morphic'!
+!classDefinition: #MorphicEruditeDocRenderer category: #'Erudite-Morphic'!
 EruditeDocRenderer subclass: #MorphicEruditeDocRenderer
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'MorphicEruditeDocRenderer class' category: 'Erudite-Morphic'!
+!classDefinition: 'MorphicEruditeDocRenderer class' category: #'Erudite-Morphic'!
 MorphicEruditeDocRenderer class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeDocument category: 'Erudite-Core'!
+!classDefinition: #EruditeDocument category: #'Erudite-Core'!
 Object subclass: #EruditeDocument
 	instanceVariableNames: 'contents parser data'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
-!classDefinition: 'EruditeDocument class' category: 'Erudite-Core'!
+!classDefinition: 'EruditeDocument class' category: #'Erudite-Core'!
 EruditeDocument class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeSystem category: 'Erudite-Core'!
+!classDefinition: #EruditeSystem category: #'Erudite-Core'!
 Object subclass: #EruditeSystem
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Core'!
-!classDefinition: 'EruditeSystem class' category: 'Erudite-Core'!
+!classDefinition: 'EruditeSystem class' category: #'Erudite-Core'!
 EruditeSystem class
 	instanceVariableNames: 'Prefs'!
 
-!classDefinition: #LatexEruditeBookRenderer category: 'Erudite-Latex'!
+!classDefinition: #LatexEruditeBookRenderer category: #'Erudite-Latex'!
 Object subclass: #LatexEruditeBookRenderer
 	instanceVariableNames: 'stream requestor highlightSyntax book documentClass texFilePath beforePreamble afterPreamble'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Latex'!
-!classDefinition: 'LatexEruditeBookRenderer class' category: 'Erudite-Latex'!
+!classDefinition: 'LatexEruditeBookRenderer class' category: #'Erudite-Latex'!
 LatexEruditeBookRenderer class
 	instanceVariableNames: ''!
 
-!classDefinition: #DocLinkRenderer category: 'Erudite-Morphic'!
+!classDefinition: #DocLinkRenderer category: #'Erudite-Morphic'!
 Object subclass: #DocLinkRenderer
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'DocLinkRenderer class' category: 'Erudite-Morphic'!
+!classDefinition: 'DocLinkRenderer class' category: #'Erudite-Morphic'!
 DocLinkRenderer class
 	instanceVariableNames: ''!
 
-!classDefinition: #ClassDocLinkRenderer category: 'Erudite-Morphic'!
+!classDefinition: #ClassDocLinkRenderer category: #'Erudite-Morphic'!
 DocLinkRenderer subclass: #ClassDocLinkRenderer
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'ClassDocLinkRenderer class' category: 'Erudite-Morphic'!
+!classDefinition: 'ClassDocLinkRenderer class' category: #'Erudite-Morphic'!
 ClassDocLinkRenderer class
 	instanceVariableNames: ''!
 
-!classDefinition: #ImageDocLinkRenderer category: 'Erudite-Morphic'!
+!classDefinition: #ImageDocLinkRenderer category: #'Erudite-Morphic'!
 DocLinkRenderer subclass: #ImageDocLinkRenderer
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'ImageDocLinkRenderer class' category: 'Erudite-Morphic'!
+!classDefinition: 'ImageDocLinkRenderer class' category: #'Erudite-Morphic'!
 ImageDocLinkRenderer class
 	instanceVariableNames: ''!
 
-!classDefinition: #MessageDocLinkRenderer category: 'Erudite-Morphic'!
+!classDefinition: #MessageDocLinkRenderer category: #'Erudite-Morphic'!
 DocLinkRenderer subclass: #MessageDocLinkRenderer
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'MessageDocLinkRenderer class' category: 'Erudite-Morphic'!
+!classDefinition: 'MessageDocLinkRenderer class' category: #'Erudite-Morphic'!
 MessageDocLinkRenderer class
 	instanceVariableNames: ''!
 
-!classDefinition: #MethodDocLinkRenderer category: 'Erudite-Morphic'!
+!classDefinition: #MethodDocLinkRenderer category: #'Erudite-Morphic'!
 DocLinkRenderer subclass: #MethodDocLinkRenderer
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'MethodDocLinkRenderer class' category: 'Erudite-Morphic'!
+!classDefinition: 'MethodDocLinkRenderer class' category: #'Erudite-Morphic'!
 MethodDocLinkRenderer class
 	instanceVariableNames: ''!
 
-!classDefinition: #SectionDocLinkRenderer category: 'Erudite-Morphic'!
+!classDefinition: #SectionDocLinkRenderer category: #'Erudite-Morphic'!
 DocLinkRenderer subclass: #SectionDocLinkRenderer
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'SectionDocLinkRenderer class' category: 'Erudite-Morphic'!
+!classDefinition: 'SectionDocLinkRenderer class' category: #'Erudite-Morphic'!
 SectionDocLinkRenderer class
 	instanceVariableNames: ''!
 
-!classDefinition: #SelectorDocLinkRenderer category: 'Erudite-Morphic'!
+!classDefinition: #SelectorDocLinkRenderer category: #'Erudite-Morphic'!
 DocLinkRenderer subclass: #SelectorDocLinkRenderer
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'SelectorDocLinkRenderer class' category: 'Erudite-Morphic'!
+!classDefinition: 'SelectorDocLinkRenderer class' category: #'Erudite-Morphic'!
 SelectorDocLinkRenderer class
 	instanceVariableNames: ''!
 
-!classDefinition: #UrlDocLinkRenderer category: 'Erudite-Morphic'!
+!classDefinition: #UrlDocLinkRenderer category: #'Erudite-Morphic'!
 DocLinkRenderer subclass: #UrlDocLinkRenderer
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Morphic'!
-!classDefinition: 'UrlDocLinkRenderer class' category: 'Erudite-Morphic'!
+!classDefinition: 'UrlDocLinkRenderer class' category: #'Erudite-Morphic'!
 UrlDocLinkRenderer class
 	instanceVariableNames: ''!
 
-!classDefinition: #DocNode category: 'Erudite-Parser'!
+!classDefinition: #DocNode category: #'Erudite-Parser'!
 Object subclass: #DocNode
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'DocNode class' category: 'Erudite-Parser'!
+!classDefinition: 'DocNode class' category: #'Erudite-Parser'!
 DocNode class
 	instanceVariableNames: ''!
 
-!classDefinition: #DocActionLink category: 'Erudite-Parser'!
+!classDefinition: #DocActionLink category: #'Erudite-Parser'!
 DocNode subclass: #DocActionLink
 	instanceVariableNames: 'title action'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'DocActionLink class' category: 'Erudite-Parser'!
+!classDefinition: 'DocActionLink class' category: #'Erudite-Parser'!
 DocActionLink class
 	instanceVariableNames: ''!
 
-!classDefinition: #DocCode category: 'Erudite-Parser'!
+!classDefinition: #DocCode category: #'Erudite-Parser'!
 DocNode subclass: #DocCode
 	instanceVariableNames: 'code action'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'DocCode class' category: 'Erudite-Parser'!
+!classDefinition: 'DocCode class' category: #'Erudite-Parser'!
 DocCode class
 	instanceVariableNames: ''!
 
-!classDefinition: #DocHeading category: 'Erudite-Parser'!
+!classDefinition: #DocHeading category: #'Erudite-Parser'!
 DocNode subclass: #DocHeading
 	instanceVariableNames: 'heading level'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'DocHeading class' category: 'Erudite-Parser'!
+!classDefinition: 'DocHeading class' category: #'Erudite-Parser'!
 DocHeading class
 	instanceVariableNames: ''!
 
-!classDefinition: #DocLink category: 'Erudite-Parser'!
+!classDefinition: #DocLink category: #'Erudite-Parser'!
 DocNode subclass: #DocLink
 	instanceVariableNames: 'target type label options'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'DocLink class' category: 'Erudite-Parser'!
+!classDefinition: 'DocLink class' category: #'Erudite-Parser'!
 DocLink class
 	instanceVariableNames: ''!
 
-!classDefinition: #DocList category: 'Erudite-Parser'!
+!classDefinition: #DocList category: #'Erudite-Parser'!
 DocNode subclass: #DocList
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'DocList class' category: 'Erudite-Parser'!
+!classDefinition: 'DocList class' category: #'Erudite-Parser'!
 DocList class
 	instanceVariableNames: ''!
 
-!classDefinition: #DocUnformatted category: 'Erudite-Parser'!
+!classDefinition: #DocUnformatted category: #'Erudite-Parser'!
 DocNode subclass: #DocUnformatted
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'DocUnformatted class' category: 'Erudite-Parser'!
+!classDefinition: 'DocUnformatted class' category: #'Erudite-Parser'!
 DocUnformatted class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeStyledText category: 'Erudite-Parser'!
+!classDefinition: #EruditeStyledText category: #'Erudite-Parser'!
 DocNode subclass: #EruditeStyledText
 	instanceVariableNames: 'text style'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
-!classDefinition: 'EruditeStyledText class' category: 'Erudite-Parser'!
+!classDefinition: 'EruditeStyledText class' category: #'Erudite-Parser'!
 EruditeStyledText class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeDynamicTestBook category: 'Erudite-Test'!
+!classDefinition: #EruditeDynamicTestBook category: #'Erudite-Test'!
 Object subclass: #EruditeDynamicTestBook
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Test'!
-!classDefinition: 'EruditeDynamicTestBook class' category: 'Erudite-Test'!
+!classDefinition: 'EruditeDynamicTestBook class' category: #'Erudite-Test'!
 EruditeDynamicTestBook class
 	instanceVariableNames: ''!
 
@@ -1467,35 +1467,35 @@ bookIsUnsaved
 
 	^ sourcesChanged! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'jmv 6/8/2020 10:53:58'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 5/26/2024 15:24:14'!
 buildMorphicWindow
 	| leftColumn previousButton nextButton navRow |
 	layoutMorph beRow.
-	leftColumn _ LayoutMorph newColumn.
-	explorer _ EruditeBookExplorer on: model.
+	leftColumn := LayoutMorph newColumn.
+	explorer := EruditeBookExplorer on: model.
 	explorer addDependent: self.
-	explorerMorph _ HierarchicalListMorph
-		model: explorer
+	explorerMorph := (HierarchicalListMorph
+		withModel: explorer
 		listGetter: #explorerList
 		indexGetter: #getCurrentSelection
-		indexSetter: #noteNewSelection:
-		mainView: self
-		menuGetter: #explorerMenu
-		keystrokeAction: #explorerKey:from:.
+		indexSetter: #noteNewSelection:)
+			mainView: self
+			menuGetter: #explorerMenu
+			keystrokeAction: #explorerKey:from:.
 	explorerMorph
 		autoDeselect: true;
 		color: Color white.
 	
 	leftColumn addMorphUseAll: explorerMorph.
-	previousButton _ PluggableButtonMorph
+	previousButton := PluggableButtonMorph
 		model: self
 		action: #gotoPreviousSection.
 	previousButton icon: (Theme current fetch: #('16x16' 'actions' 'go-previous' )).
-	nextButton _ PluggableButtonMorph
+	nextButton := PluggableButtonMorph
 		model: self
 		action: #gotoNextSection.
 	nextButton icon: (Theme current fetch: #('16x16' 'actions' 'go-next' )).
-	navRow _ LayoutMorph newRow.
+	navRow := LayoutMorph newRow.
 	navRow addMorph: previousButton.
 	"proportionalWidth: 0.5"
 	navRow addMorph: nextButton.
@@ -1508,7 +1508,7 @@ buildMorphicWindow
 		addMorph: leftColumn
 		proportionalWidth: 0.25.
 	layoutMorph addAdjusterMorph.
-	eruditeViewerMorph _ EruditeDocViewerMorph
+	eruditeViewerMorph := EruditeDocViewerMorph
 		textProvider: self
 		textGetter: #contents
 		textSetter: #contents:notifying:.
