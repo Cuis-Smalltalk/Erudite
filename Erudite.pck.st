@@ -2023,7 +2023,7 @@ toggleViewSources
 initialize
 	Preferences name: #eruditeLiveEditing 
 			description: 'Visualized changes live in Erudite editor' 
-			category: #Erudite 
+			category: #'Erudite'
 			type: Boolean 
 			value: false! !
 
@@ -21507,13 +21507,13 @@ initialize
 
 	Preferences name: #eruditeCodeBackgroundColor 
 			description: 'Background color for code'
-			category: #erudite 
+			category: #'Erudite'
 			type: Color 
 			value: Color veryVeryLightGray.
 			
 	Preferences name: #eruditeUseIconButtons 
 			description: 'Use icon buttons'
-			category: #erudite 
+			category: #'Erudite'
 			type: Boolean 
 			value: true.! !
 
