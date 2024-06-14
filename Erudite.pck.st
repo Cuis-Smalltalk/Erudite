@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6409] on 26 May 2024 at 10:58:32 am'!
+'From Cuis7.1 [latest update: #6464] on 14 June 2024 at 2:06:40 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 242!
+!provides: 'Erudite' 1 246!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -238,8 +238,8 @@ SHTextStylerClassComment class
 
 !classDefinition: #EruditeMarkupGrammar category: #'Erudite-Parser'!
 PPCompositeParser subclass: #EruditeMarkupGrammar
-	instanceVariableNames: 'heading4 heading3 heading2 heading1 heading markup unformatted erudite codeAction code bold italic plainText linkOptions linkOptionsList linkOption falseLinkOption trueLinkOption assignLinkOption link buttonCodeAction simpleCodeAction underlined'
-	classVariableNames: 'CodeActions'
+	instanceVariableNames: 'heading4 heading3 heading2 heading1 heading markup unformatted erudite codeAction code bold italic plainText linkOptions linkOptionsList linkOption falseLinkOption trueLinkOption assignLinkOption link buttonCodeAction simpleCodeAction underlined xml xmlAttribute markupExtension'
+	classVariableNames: 'CodeActions MarkupExtensions'
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
 !classDefinition: 'EruditeMarkupGrammar class' category: #'Erudite-Parser'!
@@ -604,6 +604,16 @@ DocNode subclass: #DocList
 	category: 'Erudite-Parser'!
 !classDefinition: 'DocList class' category: #'Erudite-Parser'!
 DocList class
+	instanceVariableNames: ''!
+
+!classDefinition: #DocTaggedElement category: #'Erudite-Parser'!
+DocNode subclass: #DocTaggedElement
+	instanceVariableNames: 'tag attributes contents'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Parser'!
+!classDefinition: 'DocTaggedElement class' category: #'Erudite-Parser'!
+DocTaggedElement class
 	instanceVariableNames: ''!
 
 !classDefinition: #DocUnformatted category: #'Erudite-Parser'!
@@ -2452,10 +2462,21 @@ linkOptionsList
 	^ linkOption, 
 		($, asParser trim, linkOption) star! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:29:41'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 12:18:07'!
 markup
 
-	^ heading / code / bold / italic / underlined / unformatted / link! !
+	^ markupExtension / heading / code / bold / italic / underlined / unformatted / link! !
+
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 12:27:30'!
+markupExtension
+
+	|extensions|
+	
+	extensions := self class markupExtensions.
+	
+	^ extensions 
+		ifEmpty: [	PPFailingParser message: 'No extension at point']
+		ifNotEmpty: [ 			PPChoiceParser withAll:  (extensions collect: [:ext | ext markupParser])]! !
 
 !EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:30'!
 plainText
@@ -2503,6 +2524,38 @@ withButtonAction: aString
 
 	^ aString asParser, ':' asParser, $. asParser negate plus flatten, $. asParser! !
 
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 11:26:18'!
+xml
+
+	"A generic element. Extension point."
+	
+	|tag endTag|
+	
+	endTag := [:aStream | |p|
+		p := $< asParser, $/ asParser, 				tag asParser, 				$> asParser.
+		p parseOn: aStream] asParser.
+	
+	^ $< asParser,
+	      	(#word asParser plus flatten >=> [:stream :cont | 
+			tag := cont value.
+			tag]) bind,
+		(#blank asParser star, xmlAttribute) star bind,
+		$> asParser,
+		endTag negate plus flatten bind,
+		endTag
+		
+		
+		! !
+
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 11:24:12'!
+xmlAttribute
+
+	^ #word asParser plus flatten bind,
+	    $= asParser,
+	    $" asParser,
+	    $" asParser negate star flatten bind,
+	    $" asParser! !
+
 !EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 18:59:31'!
 addCodeAction: aString
 
@@ -2529,6 +2582,15 @@ initialize
 initializeCodeActions
 
 	^ CodeActions _ self defaultCodeActions.! !
+
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 12:26:28'!
+markupExtensions
+
+	^ MarkupExtensions ifNil: [MarkupExtensions := Set new]! !
+
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:03:22'!
+registerMarkupExtension: extensionClass
+	self markupExtensions add: extensionClass! !
 
 !EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:17'!
 assignLinkOption
@@ -2647,6 +2709,11 @@ underlined
 unformatted
 	
 	^ super unformatted ==> [:res | EruditeStyledText text: res second style: #unformatted]! !
+
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2024 10:42:00'!
+xml
+
+	^ super xml ~=> [:tag :attributes :contents | DocTaggedElement tag: tag attributes: attributes contents: contents]! !
 
 !SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 11:11'!
 erudite
@@ -22479,6 +22546,55 @@ type: anObject
 target: anObject type: aSymbol label: aString
 
 	^ self new initialize: anObject type: aSymbol label: aString! !
+
+!DocTaggedElement methodsFor: 'accessing' stamp: 'MM 6/12/2024 10:33:32'!
+attributes
+	"Answer the value of attributes"
+
+	^ attributes! !
+
+!DocTaggedElement methodsFor: 'accessing' stamp: 'MM 6/12/2024 10:33:32'!
+attributes: anObject
+	"Set the value of attributes"
+
+	attributes := anObject! !
+
+!DocTaggedElement methodsFor: 'accessing' stamp: 'MM 6/12/2024 10:33:32'!
+contents
+	"Answer the value of contents"
+
+	^ contents! !
+
+!DocTaggedElement methodsFor: 'accessing' stamp: 'MM 6/12/2024 10:33:32'!
+contents: anObject
+	"Set the value of contents"
+
+	contents := anObject! !
+
+!DocTaggedElement methodsFor: 'accessing' stamp: 'MM 6/12/2024 10:33:32'!
+tag
+	"Answer the value of tag"
+
+	^ tag! !
+
+!DocTaggedElement methodsFor: 'accessing' stamp: 'MM 6/12/2024 10:33:32'!
+tag: anObject
+	"Set the value of tag"
+
+	tag := anObject! !
+
+!DocTaggedElement methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2024 10:35:22'!
+initialize: aTag attributes: anArray contents: contentsString
+
+	tag := aTag.
+	attributes := anArray.
+	contents := contentsString! !
+
+!DocTaggedElement class methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2024 10:34:21'!
+tag: tag attributes: attributes contents: contents
+
+	^ self new
+		initialize: tag attributes: attributes contents: contents! !
 
 !EruditeStyledText methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:09'!
 accept: aVisitor

@@ -1,114 +1,113 @@
-'From Cuis 6.0 [latest update: #5399] on 29 July 2022 at 8:42:14 pm'!
+'From Cuis7.1 [latest update: #6464] on 14 June 2024 at 2:10:50 pm'!
 'Description '!
-!provides: 'EruditeExtensions' 1 35!
-!requires: 'MethodAdvisers' 1 15 nil!
+!provides: 'EruditeExtensions' 1 37!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
-!requires: 'OSProcess' 1 23 nil!
 !requires: 'AnimatedGIF' 1 1 nil!
-!requires: 'Erudite' 1 204 nil!
+!requires: 'OSProcess' 1 23 nil!
+!requires: 'Erudite' 1 246 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
-SystemOrganization addCategory: 'EruditeExtensions'!
-SystemOrganization addCategory: 'EruditeExtensions-Books'!
+SystemOrganization addCategory: #EruditeExtensions!
+SystemOrganization addCategory: #'EruditeExtensions-Books'!
 
 
-!classDefinition: #EruditeExtensionsManual category: 'EruditeExtensions-Books'!
+!classDefinition: #EruditeExtensionsManual category: #'EruditeExtensions-Books'!
 EruditeBook subclass: #EruditeExtensionsManual
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeExtensions-Books'!
-!classDefinition: 'EruditeExtensionsManual class' category: 'EruditeExtensions-Books'!
+!classDefinition: 'EruditeExtensionsManual class' category: #'EruditeExtensions-Books'!
 EruditeExtensionsManual class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeFormulaNode category: 'EruditeExtensions'!
+!classDefinition: #EruditeFormulaNode category: #EruditeExtensions!
 DocNode subclass: #EruditeFormulaNode
 	instanceVariableNames: 'formula'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeExtensions'!
-!classDefinition: 'EruditeFormulaNode class' category: 'EruditeExtensions'!
+!classDefinition: 'EruditeFormulaNode class' category: #EruditeExtensions!
 EruditeFormulaNode class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeHTMLNode category: 'EruditeExtensions'!
+!classDefinition: #EruditeHTMLNode category: #EruditeExtensions!
 DocNode subclass: #EruditeHTMLNode
 	instanceVariableNames: 'script'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeExtensions'!
-!classDefinition: 'EruditeHTMLNode class' category: 'EruditeExtensions'!
+!classDefinition: 'EruditeHTMLNode class' category: #EruditeExtensions!
 EruditeHTMLNode class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditePlotNode category: 'EruditeExtensions'!
+!classDefinition: #EruditePlotNode category: #EruditeExtensions!
 DocNode subclass: #EruditePlotNode
 	instanceVariableNames: 'script'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeExtensions'!
-!classDefinition: 'EruditePlotNode class' category: 'EruditeExtensions'!
+!classDefinition: 'EruditePlotNode class' category: #EruditeExtensions!
 EruditePlotNode class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeUMLNode category: 'EruditeExtensions'!
+!classDefinition: #EruditeUMLNode category: #EruditeExtensions!
 DocNode subclass: #EruditeUMLNode
 	instanceVariableNames: 'script'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeExtensions'!
-!classDefinition: 'EruditeUMLNode class' category: 'EruditeExtensions'!
+!classDefinition: 'EruditeUMLNode class' category: #EruditeExtensions!
 EruditeUMLNode class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeExtension category: 'EruditeExtensions'!
+!classDefinition: #EruditeExtension category: #EruditeExtensions!
 Object subclass: #EruditeExtension
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeExtensions'!
-!classDefinition: 'EruditeExtension class' category: 'EruditeExtensions'!
+!classDefinition: 'EruditeExtension class' category: #EruditeExtensions!
 EruditeExtension class
 	instanceVariableNames: ''!
 
-!classDefinition: #FormulaEruditeExtension category: 'EruditeExtensions'!
+!classDefinition: #FormulaEruditeExtension category: #EruditeExtensions!
 EruditeExtension subclass: #FormulaEruditeExtension
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeExtensions'!
-!classDefinition: 'FormulaEruditeExtension class' category: 'EruditeExtensions'!
+!classDefinition: 'FormulaEruditeExtension class' category: #EruditeExtensions!
 FormulaEruditeExtension class
 	instanceVariableNames: ''!
 
-!classDefinition: #HTMLEruditeExtension category: 'EruditeExtensions'!
+!classDefinition: #GNUPlotEruditeExtension category: #EruditeExtensions!
+EruditeExtension subclass: #GNUPlotEruditeExtension
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeExtensions'!
+!classDefinition: 'GNUPlotEruditeExtension class' category: #EruditeExtensions!
+GNUPlotEruditeExtension class
+	instanceVariableNames: ''!
+
+!classDefinition: #HTMLEruditeExtension category: #EruditeExtensions!
 EruditeExtension subclass: #HTMLEruditeExtension
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeExtensions'!
-!classDefinition: 'HTMLEruditeExtension class' category: 'EruditeExtensions'!
+!classDefinition: 'HTMLEruditeExtension class' category: #EruditeExtensions!
 HTMLEruditeExtension class
 	instanceVariableNames: ''!
 
-!classDefinition: #PlotEruditeExtension category: 'EruditeExtensions'!
-EruditeExtension subclass: #PlotEruditeExtension
+!classDefinition: #PlantUMLEruditeExtension category: #EruditeExtensions!
+EruditeExtension subclass: #PlantUMLEruditeExtension
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeExtensions'!
-!classDefinition: 'PlotEruditeExtension class' category: 'EruditeExtensions'!
-PlotEruditeExtension class
-	instanceVariableNames: ''!
-
-!classDefinition: #UMLEruditeExtension category: 'EruditeExtensions'!
-EruditeExtension subclass: #UMLEruditeExtension
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'EruditeExtensions'!
-!classDefinition: 'UMLEruditeExtension class' category: 'EruditeExtensions'!
-UMLEruditeExtension class
+!classDefinition: 'PlantUMLEruditeExtension class' category: #EruditeExtensions!
+PlantUMLEruditeExtension class
 	instanceVariableNames: ''!
 
 
@@ -1569,177 +1568,90 @@ with: plantUMLScript
 
 	^ self new initialize: plantUMLScript! !
 
-!FormulaEruditeExtension methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:07:48'!
+!EruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 12:27:45'!
+markupParser
+
+	^ self subclassResponsibility ! !
+
+!FormulaEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 12:22:48'!
 formulaGrammar
 
 	^ ($$ asParser min: 1 max: 1) flatten,
 	   ($$ asParser min: 1 max: 1) negate plus flatten,
 	   ($$ asParser min: 1 max: 1) flatten! !
 
-!FormulaEruditeExtension methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:09:17'!
-formulaParser
+!FormulaEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:03:37'!
+initialize
+
+	EruditeMarkupGrammar registerMarkupExtension: self.! !
+
+!FormulaEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 12:28:13'!
+markupParser
 
 	^ self formulaGrammar ==> [:res |
 		(EruditeFormulaNode new)
 			formula: res second;
 			yourself]! !
 
-!FormulaEruditeExtension methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:10:53'!
-install
-
-	self installGrammarExtension.! !
-
-!FormulaEruditeExtension methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:10:40'!
-installGrammarExtension
-
-	EruditeMarkupGrammar around: #markup
-		do: [:receiver :nextMethod |			nextMethod value / self formulaParser]! !
-
-!FormulaEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:06:34'!
+!GNUPlotEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:03:22'!
 initialize
 
-	self new install! !
+	EruditeMarkupGrammar registerMarkupExtension: self! !
 
-!HTMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:18:34'!
-htmlGrammar
-
-	^ ('<html>' asParser flatten,
-	'</html>' asParser negate plus flatten,
-	'</html>' asParser flatten) flatten! !
-
-!HTMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:26:36'!
-htmlParser
-
-	^ self htmlGrammar ==> [:script | 		EruditeHTMLNode with: script]! !
-
-!HTMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:17:52'!
-install
-
-	self installGrammarExtension.! !
-
-!HTMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:18:44'!
-installGrammarExtension
-
-	EruditeMarkupGrammar around: #markup
-		do: [:receiver :nextMethod |			nextMethod value / self htmlParser]! !
-
-!HTMLEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:17:52'!
-initialize
-
-	self new install! !
-
-!PlotEruditeExtension methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:30:05'!
-install
-
-	self installGrammarExtension.! !
-
-!PlotEruditeExtension methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:29:48'!
-installGrammarExtension
-
-	EruditeMarkupGrammar around: #markup
-		do: [:receiver :nextMethod |			nextMethod value / self plotParser]! !
-
-!PlotEruditeExtension methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:28:56'!
-plotGrammar
-
-	^ '@startplot' asParser flatten,
-		'@endplot' asParser negate plus flatten,
-		'@endplot' asParser flatten! !
-
-!PlotEruditeExtension methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:29:27'!
-plotParser
+!GNUPlotEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:03:55'!
+markupParser
 
 	^ self plotGrammar ==> [:res |
 		(EruditePlotNode new)
 			script: res second;
 			yourself]! !
 
-!PlotEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:30:18'!
+!GNUPlotEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:02:20'!
+plotGrammar
+
+	^ '@startplot' asParser flatten,
+		'@endplot' asParser negate plus flatten,
+		'@endplot' asParser flatten! !
+
+!HTMLEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 13:57:25'!
+htmlGrammar
+
+	^ ('<html>' asParser flatten,
+	'</html>' asParser negate plus flatten,
+	'</html>' asParser flatten) flatten! !
+
+!HTMLEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:03:43'!
 initialize
 
-	self new install! !
+	EruditeMarkupGrammar registerMarkupExtension: self! !
 
-!UMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:37:37'!
-install
+!HTMLEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 13:58:02'!
+markupParser
 
-	self installGrammarExtension.! !
+	^ self htmlGrammar ==> [:script | 		EruditeHTMLNode with: script]! !
 
-!UMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2022 09:16:52'!
-installGrammarExtension
+!PlantUMLEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:05:45'!
+initialize
 
-	EruditeMarkupGrammar around: #markup
-		do: [:receiver :nextMethod |			nextMethod value / self umlParser]! !
+	EruditeMarkupGrammar registerMarkupExtension: self! !
 
-!UMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:40:41'!
+!PlantUMLEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:05:29'!
+markupParser
+
+	^ self umlGrammar ==> [:script | 		EruditeUMLNode with: script]! !
+
+!PlantUMLEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:05:16'!
 umlGrammar
 
 	^ ('@startuml' asParser flatten,
 	'@enduml' asParser negate plus flatten,
 	'@enduml' asParser flatten) flatten! !
 
-!UMLEruditeExtension methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:52:51'!
-umlParser
-
-	^ self umlGrammar ==> [:script | 		EruditeUMLNode with: script]! !
-
-!UMLEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:37:24'!
-initialize
-
-	self new install! !
-
 !Theme class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:22:59'!
 isDark
 
 	" If the text color is light, assume we are in dark mode"
 	^ Theme current text luminance > 0.5! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:31:54'!
-gnuplot: aString
-
-	self waitForCommand:
-		(self gnuplotCommand, ' ', aString) withBlanksTrimmed! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:31:49'!
-gnuplotCommand
-	
-	^ ThisOSProcess thisOSProcess environment
-		at: 'GNUPLOT' ifAbsent: ['gnuplot'].! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:19:01'!
-mimetex: aString
-
-	self waitForCommand:
-		(self mimetexCommand, ' ', aString) withBlanksTrimmed! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:18:54'!
-mimetexCommand
-	
-	^ ThisOSProcess thisOSProcess environment
-		at: 'MIMETEX' ifAbsent: ['mimetex']! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 11:49:15'!
-plantuml: aString
-
-	^ self waitForCommand:
-		(self plantumlCommand, ' ', aString) withBlanksTrimmed! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 11:49:08'!
-plantumlCommand
-	
-	^ ThisOSProcess thisOSProcess environment
-		at: 'PLANTUML' ifAbsent: ['plantuml'].! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 11:49:49'!
-wkhtmltoimage: aString
-
-	^ self waitForCommand:
-		(self wkhtmltoimageCommand, ' ', aString) withBlanksTrimmed! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 11:50:12'!
-wkhtmltoimageCommand
-	
-	^ ThisOSProcess thisOSProcess environment
-		at: 'WKHTMLTOIMAGE' ifAbsent: ['wkhtmltoimage'].! !
 
 !MorphicEruditeDocRenderer methodsFor: '*EruditeExtensions-private' stamp: 'AS 7/29/2022 16:29:16'!
 applyDarkTheme: aForm
@@ -1823,7 +1735,55 @@ visitPlot: aPlotNode
 visitUML: anUMLNode
 
 	self renderTextImage: anUMLNode! !
+
+!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:31:54'!
+gnuplot: aString
+
+	self waitForCommand:
+		(self gnuplotCommand, ' ', aString) withBlanksTrimmed! !
+
+!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:31:49'!
+gnuplotCommand
+	
+	^ ThisOSProcess thisOSProcess environment
+		at: 'GNUPLOT' ifAbsent: ['gnuplot'].! !
+
+!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:19:01'!
+mimetex: aString
+
+	self waitForCommand:
+		(self mimetexCommand, ' ', aString) withBlanksTrimmed! !
+
+!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:18:54'!
+mimetexCommand
+	
+	^ ThisOSProcess thisOSProcess environment
+		at: 'MIMETEX' ifAbsent: ['mimetex']! !
+
+!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 11:49:15'!
+plantuml: aString
+
+	^ self waitForCommand:
+		(self plantumlCommand, ' ', aString) withBlanksTrimmed! !
+
+!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 11:49:08'!
+plantumlCommand
+	
+	^ ThisOSProcess thisOSProcess environment
+		at: 'PLANTUML' ifAbsent: ['plantuml'].! !
+
+!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 11:49:49'!
+wkhtmltoimage: aString
+
+	^ self waitForCommand:
+		(self wkhtmltoimageCommand, ' ', aString) withBlanksTrimmed! !
+
+!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 11:50:12'!
+wkhtmltoimageCommand
+	
+	^ ThisOSProcess thisOSProcess environment
+		at: 'WKHTMLTOIMAGE' ifAbsent: ['wkhtmltoimage'].! !
 FormulaEruditeExtension initialize!
+GNUPlotEruditeExtension initialize!
 HTMLEruditeExtension initialize!
-PlotEruditeExtension initialize!
-UMLEruditeExtension initialize!
+PlantUMLEruditeExtension initialize!
