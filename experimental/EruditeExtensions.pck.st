@@ -1,11 +1,11 @@
-'From Cuis7.1 [latest update: #6464] on 14 June 2024 at 2:10:50 pm'!
+'From Cuis7.1 [latest update: #6469] on 14 June 2024 at 7:20:22 pm'!
 'Description '!
-!provides: 'EruditeExtensions' 1 37!
-!requires: 'Cryptography-DigitalSignatures' 1 14 nil!
-!requires: 'AnimatedGIF' 1 1 nil!
-!requires: 'OSProcess' 1 23 nil!
+!provides: 'EruditeExtensions' 1 39!
 !requires: 'Erudite' 1 246 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
+!requires: 'AnimatedGIF' 1 1 nil!
+!requires: 'Cryptography-DigitalSignatures' 1 14 nil!
+!requires: 'OSProcess' 1 23 nil!
 SystemOrganization addCategory: #EruditeExtensions!
 SystemOrganization addCategory: #'EruditeExtensions-Books'!
 
@@ -30,6 +30,16 @@ DocNode subclass: #EruditeFormulaNode
 EruditeFormulaNode class
 	instanceVariableNames: ''!
 
+!classDefinition: #EruditeGNUPlotNode category: #EruditeExtensions!
+DocNode subclass: #EruditeGNUPlotNode
+	instanceVariableNames: 'script'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeExtensions'!
+!classDefinition: 'EruditeGNUPlotNode class' category: #EruditeExtensions!
+EruditeGNUPlotNode class
+	instanceVariableNames: ''!
+
 !classDefinition: #EruditeHTMLNode category: #EruditeExtensions!
 DocNode subclass: #EruditeHTMLNode
 	instanceVariableNames: 'script'
@@ -40,24 +50,14 @@ DocNode subclass: #EruditeHTMLNode
 EruditeHTMLNode class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditePlotNode category: #EruditeExtensions!
-DocNode subclass: #EruditePlotNode
+!classDefinition: #EruditePlantUMLNode category: #EruditeExtensions!
+DocNode subclass: #EruditePlantUMLNode
 	instanceVariableNames: 'script'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeExtensions'!
-!classDefinition: 'EruditePlotNode class' category: #EruditeExtensions!
-EruditePlotNode class
-	instanceVariableNames: ''!
-
-!classDefinition: #EruditeUMLNode category: #EruditeExtensions!
-DocNode subclass: #EruditeUMLNode
-	instanceVariableNames: 'script'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'EruditeExtensions'!
-!classDefinition: 'EruditeUMLNode class' category: #EruditeExtensions!
-EruditeUMLNode class
+!classDefinition: 'EruditePlantUMLNode class' category: #EruditeExtensions!
+EruditePlantUMLNode class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeExtension category: #EruditeExtensions!
@@ -1408,7 +1408,7 @@ accept: aVisitor
 
 	^ aVisitor visitFormula: self! !
 
-!EruditeFormulaNode methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 20:19:15'!
+!EruditeFormulaNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:07:00'!
 data
 
 	| formulaId gifPath |
@@ -1416,7 +1416,7 @@ data
 	gifPath := DirectoryEntry tempDirectory // (formulaId, '.gif').
 	
 	gifPath exists ifFalse: [
-		OSProcess mimetex: '-e ', gifPath pathName, ' "', self formula, '"'
+		self mimetex: '-e ', gifPath pathName, ' "', self formula, '"'
 	].
 
 	^ EruditeForm fromFileNamed: gifPath pathName! !
@@ -1428,6 +1428,18 @@ dataKey
 		initialize;
 		hashMessage: self formula)
 			printStringBase: 16) asLowercase! !
+
+!EruditeFormulaNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:06:51'!
+mimetex: aString
+
+	OSProcess waitForCommand:
+		(self mimetexCommand, ' ', aString) withBlanksTrimmed! !
+
+!EruditeFormulaNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:05:53'!
+mimetexCommand
+	
+	^ OSProcess thisOSProcess environment
+		at: 'MIMETEX' ifAbsent: ['mimetex']! !
 
 !EruditeFormulaNode methodsFor: 'accessing' stamp: 'AS 7/26/2022 13:11:33'!
 formula
@@ -1441,52 +1453,12 @@ formula: anObject
 
 	formula := anObject! !
 
-!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:19:27'!
-accept: aVisitor
-
-	^ aVisitor visitHTML: self! !
-
-!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 19:57:03'!
-data
-
-	| inputPath pngPath|
-	inputPath := DirectoryEntry tempDirectory //
-		('erudite-html-', self dataKey, '.html').
-	inputPath exists ifFalse: [ inputPath fileContents: script ].
-
-	pngPath := DirectoryEntry tempDirectory //
-		('erudite-html-', self dataKey, '.png').
-	pngPath exists ifFalse: [
-		| cmdStatus |
-		cmdStatus _ OSProcess wkhtmltoimage: '--transparent ', inputPath pathName, ' ', pngPath pathName.
-		cmdStatus succeeded ifFalse: [		self error: 'Error running wkhtmltoimage command']].
-
-	^ EruditeForm fromFileNamed: pngPath pathName! !
-
-!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:19:18'!
-dataKey
-
-	^ (((SecureHashAlgorithm new)
-			initialize;
-			hashMessage: script)
-				printStringBase: 16) asLowercase! !
-
-!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:22:03'!
-initialize: htmlScript
-
-	script _ htmlScript! !
-
-!EruditeHTMLNode class methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:26:23'!
-with: htmlScript
-
-	^ self new initialize: htmlScript! !
-
-!EruditePlotNode methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:27:06'!
+!EruditeGNUPlotNode methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:27:06'!
 accept: aVisitor
 
 	^ aVisitor visitPlot: self! !
 
-!EruditePlotNode methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 19:51:07'!
+!EruditeGNUPlotNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:18:34'!
 data
 
 	| plotId pngPath |
@@ -1505,12 +1477,12 @@ data
 			gpPath fileContents: gpScript
 		].
 
-		OSProcess gnuplot: gpPath pathName
+		self gnuplot: gpPath pathName
 	].
 
 	^ EruditeForm fromFileNamed: pngPath pathName! !
 
-!EruditePlotNode methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:26:51'!
+!EruditeGNUPlotNode methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 13:26:51'!
 dataKey
 
 	^ 'erudite-plot-', (((SecureHashAlgorithm new)
@@ -1518,22 +1490,86 @@ dataKey
 		hashMessage: self script)
 			printStringBase: 16) asLowercase! !
 
-!EruditePlotNode methodsFor: 'accessing' stamp: 'AS 7/26/2022 13:26:33'!
+!EruditeGNUPlotNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:11:30'!
+gnuplot: aString
+
+	OSProcess waitForCommand:
+		(self gnuplotCommand, ' ', aString) withBlanksTrimmed! !
+
+!EruditeGNUPlotNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:11:48'!
+gnuplotCommand
+	
+	^ OSProcess thisOSProcess environment
+		at: 'GNUPLOT' ifAbsent: ['gnuplot'].! !
+
+!EruditeGNUPlotNode methodsFor: 'accessing' stamp: 'AS 7/26/2022 13:26:33'!
 script
 
 	^ script! !
 
-!EruditePlotNode methodsFor: 'accessing' stamp: 'AS 7/26/2022 13:26:39'!
+!EruditeGNUPlotNode methodsFor: 'accessing' stamp: 'AS 7/26/2022 13:26:39'!
 script: aString
 
 	script _ aString! !
 
-!EruditeUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 22:01:45'!
+!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:19:27'!
+accept: aVisitor
+
+	^ aVisitor visitHTML: self! !
+
+!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:08:28'!
+data
+
+	| inputPath pngPath|
+	inputPath := DirectoryEntry tempDirectory //
+		('erudite-html-', self dataKey, '.html').
+	inputPath exists ifFalse: [ inputPath fileContents: script ].
+
+	pngPath := DirectoryEntry tempDirectory //
+		('erudite-html-', self dataKey, '.png').
+	pngPath exists ifFalse: [
+		| cmdStatus |
+		cmdStatus := self wkhtmltoimage: '--transparent ', inputPath pathName, ' ', pngPath pathName.
+		cmdStatus succeeded ifFalse: [		self error: 'Error running wkhtmltoimage command']].
+
+	^ EruditeForm fromFileNamed: pngPath pathName! !
+
+!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:19:18'!
+dataKey
+
+	^ (((SecureHashAlgorithm new)
+			initialize;
+			hashMessage: script)
+				printStringBase: 16) asLowercase! !
+
+!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:22:03'!
+initialize: htmlScript
+
+	script _ htmlScript! !
+
+!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:07:54'!
+wkhtmltoimage: aString
+
+	^ OSProcess waitForCommand:
+		(self wkhtmltoimageCommand, ' ', aString) withBlanksTrimmed! !
+
+!EruditeHTMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:08:10'!
+wkhtmltoimageCommand
+	
+	^ OSProcess thisOSProcess environment
+		at: 'WKHTMLTOIMAGE' ifAbsent: ['wkhtmltoimage'].! !
+
+!EruditeHTMLNode class methodsFor: 'as yet unclassified' stamp: 'MM 7/25/2022 10:26:23'!
+with: htmlScript
+
+	^ self new initialize: htmlScript! !
+
+!EruditePlantUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 22:01:45'!
 accept: aVisitor
 
 	^ aVisitor visitUML: self! !
 
-!EruditeUMLNode methodsFor: 'as yet unclassified' stamp: 'AS 7/26/2022 11:51:45'!
+!EruditePlantUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:16:14'!
 data
 
 	| inputPath pngPath|
@@ -1545,12 +1581,12 @@ data
 		('erudite-uml-', self dataKey, '.png').
 	pngPath exists ifFalse: [
 		| cmdStatus |
-		cmdStatus _ OSProcess plantuml: inputPath pathName.
+		cmdStatus := self plantuml: inputPath pathName.
 		cmdStatus succeeded ifFalse: [		self error: 'Error running PlantUML command']].
 
 	^ EruditeForm fromFileNamed: pngPath pathName! !
 
-!EruditeUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:44:20'!
+!EruditePlantUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:44:20'!
 dataKey
 
 	^ (((SecureHashAlgorithm new)
@@ -1558,12 +1594,24 @@ dataKey
 			hashMessage: script)
 				printStringBase: 16) asLowercase! !
 
-!EruditeUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:43:45'!
+!EruditePlantUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:43:45'!
 initialize: plantUMLScript
 
 	script _ plantUMLScript! !
 
-!EruditeUMLNode class methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:43:27'!
+!EruditePlantUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:09:05'!
+plantuml: aString
+
+	^ OSProcess waitForCommand:
+		(self plantumlCommand, ' ', aString) withBlanksTrimmed! !
+
+!EruditePlantUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:09:20'!
+plantumlCommand
+	
+	^ OSProcess thisOSProcess environment
+		at: 'PLANTUML' ifAbsent: ['plantuml'].! !
+
+!EruditePlantUMLNode class methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:43:27'!
 with: plantUMLScript
 
 	^ self new initialize: plantUMLScript! !
@@ -1598,11 +1646,11 @@ initialize
 
 	EruditeMarkupGrammar registerMarkupExtension: self! !
 
-!GNUPlotEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:03:55'!
+!GNUPlotEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:10:21'!
 markupParser
 
 	^ self plotGrammar ==> [:res |
-		(EruditePlotNode new)
+		(EruditeGNUPlotNode new)
 			script: res second;
 			yourself]! !
 
@@ -1635,10 +1683,10 @@ initialize
 
 	EruditeMarkupGrammar registerMarkupExtension: self! !
 
-!PlantUMLEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:05:29'!
+!PlantUMLEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 19:10:57'!
 markupParser
 
-	^ self umlGrammar ==> [:script | 		EruditeUMLNode with: script]! !
+	^ self umlGrammar ==> [:script | 		EruditePlantUMLNode with: script]! !
 
 !PlantUMLEruditeExtension class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:05:16'!
 umlGrammar
@@ -1666,12 +1714,12 @@ applyDarkTheme: aForm
 	^ (whiteBgForm asGrayForm reverse asFormOfDepth: 32)
 		mapColor: Color black to: Color transparent! !
 
-!MorphicEruditeDocRenderer methodsFor: '*EruditeExtensions-private' stamp: 'AS 7/27/2022 16:21:28'!
+!MorphicEruditeDocRenderer methodsFor: '*EruditeExtensions-private' stamp: 'MM 6/14/2024 19:18:57'!
 launchInteractivePlot: aPlotNode
 	| gpPath |
-	gpPath _ DirectoryEntry tempDirectory // (aPlotNode dataKey, '-interact.gp').
+	gpPath := DirectoryEntry tempDirectory // (aPlotNode dataKey, '-interact.gp').
 	gpPath exists ifFalse: [ gpPath fileContents: aPlotNode script ].
-	OSProcess gnuplot: '-p ', gpPath pathName! !
+	aPlotNode gnuplot: '-p ', gpPath pathName! !
 
 !MorphicEruditeDocRenderer methodsFor: '*EruditeExtensions-private' stamp: 'AS 7/27/2022 19:12:36'!
 plotInteractButton: aPlotNode
@@ -1735,54 +1783,6 @@ visitPlot: aPlotNode
 visitUML: anUMLNode
 
 	self renderTextImage: anUMLNode! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:31:54'!
-gnuplot: aString
-
-	self waitForCommand:
-		(self gnuplotCommand, ' ', aString) withBlanksTrimmed! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:31:49'!
-gnuplotCommand
-	
-	^ ThisOSProcess thisOSProcess environment
-		at: 'GNUPLOT' ifAbsent: ['gnuplot'].! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:19:01'!
-mimetex: aString
-
-	self waitForCommand:
-		(self mimetexCommand, ' ', aString) withBlanksTrimmed! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 13:18:54'!
-mimetexCommand
-	
-	^ ThisOSProcess thisOSProcess environment
-		at: 'MIMETEX' ifAbsent: ['mimetex']! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 11:49:15'!
-plantuml: aString
-
-	^ self waitForCommand:
-		(self plantumlCommand, ' ', aString) withBlanksTrimmed! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 11:49:08'!
-plantumlCommand
-	
-	^ ThisOSProcess thisOSProcess environment
-		at: 'PLANTUML' ifAbsent: ['plantuml'].! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 11:49:49'!
-wkhtmltoimage: aString
-
-	^ self waitForCommand:
-		(self wkhtmltoimageCommand, ' ', aString) withBlanksTrimmed! !
-
-!OSProcess class methodsFor: '*EruditeExtensions' stamp: 'AS 7/26/2022 11:50:12'!
-wkhtmltoimageCommand
-	
-	^ ThisOSProcess thisOSProcess environment
-		at: 'WKHTMLTOIMAGE' ifAbsent: ['wkhtmltoimage'].! !
 FormulaEruditeExtension initialize!
 GNUPlotEruditeExtension initialize!
 HTMLEruditeExtension initialize!
