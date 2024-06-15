@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 7:55:20 pm'!
+'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 7:57:36 pm'!
 'Description '!
-!provides: 'EruditeXMLBook' 1 7!
+!provides: 'EruditeXMLBook' 1 8!
 !requires: 'Erudite' 1 252 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #EruditeXMLBook!
@@ -388,11 +388,11 @@ new
 
 	^ self basicNew initialize! !
 
-!MorphicEruditeDocRenderer methodsFor: '*EruditeXMLBook' stamp: 'MM 6/15/2024 19:51:03'!
+!MorphicEruditeDocRenderer methodsFor: '*EruditeXMLBook' stamp: 'MM 6/15/2024 19:57:23'!
 visitParagraph: aParagraph
 
-	stream nextPut: Character cr asString.
-	stream nextPut: Character cr asString.
+	stream nextPut: Character newLineCharacter asString.
+	stream nextPut: Character newLineCharacter asString.
 	
 	aParagraph contents do: [:elem |
 		elem accept: self].
