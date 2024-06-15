@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 2:27:53 pm'!
+'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 7:54:02 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 250!
+!provides: 'Erudite' 1 252!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -598,12 +598,22 @@ EruditeDocLink class
 
 !classDefinition: #EruditeDocList category: #'Erudite-Parser'!
 EruditeDocNode subclass: #EruditeDocList
-	instanceVariableNames: ''
+	instanceVariableNames: 'items listType'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
 !classDefinition: 'EruditeDocList class' category: #'Erudite-Parser'!
 EruditeDocList class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeDocListItem category: #'Erudite-Parser'!
+EruditeDocNode subclass: #EruditeDocListItem
+	instanceVariableNames: 'contents'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Parser'!
+!classDefinition: 'EruditeDocListItem class' category: #'Erudite-Parser'!
+EruditeDocListItem class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeDocTaggedElement category: #'Erudite-Parser'!
@@ -741,7 +751,7 @@ Renders a Document to a TextMorph.
 
 Example:
 
-| erudite |
+| document |
 
 erudite _ 
 SmalltalkEruditeParser parse: 'This is an Object.
@@ -750,7 +760,7 @@ Look at Object>>at:
 
 Properties are triggered via #triggerEvent:'.
 
-(MorphicEruditeDocRenderer on: erudite) render edit.!
+(MorphicEruditeDocRenderer on: document) render edit.!
 
 !EruditeDocument commentStamp: '<historical>' prior: 0!
 An Erudite document. A piece of text meant to be formatted.!
@@ -21566,6 +21576,15 @@ visitLink: aDocLink
 	(self linkRendererFor: aDocLink type) 
 		render: aDocLink in: document on: stream! !
 
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 19:53:13'!
+visitList: aListNode
+
+	aListNode items do: [:item |
+		item contents do: [:elem |
+			stream nextPut: '* '.
+			elem accept: self.
+			stream nextPut: Character cr asString.]]! !
+
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:30:48'!
 visitStyledText: aStyledText
 
@@ -22353,6 +22372,11 @@ render: aDocLink in: aDocument on: aStream
 	aStream nextPut: (Text string: aDocLink labelOrTarget
 				attributes: {EruditeTextURL url: url}).! !
 
+!EruditeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 19:31:20'!
+accept: aVisitor
+
+	^ self subclassResponsibility ! !
+
 !EruditeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:13:02'!
 data
 	^ nil! !
@@ -22589,6 +22613,62 @@ type: anObject
 target: anObject type: aSymbol label: aString
 
 	^ self new initialize: anObject type: aSymbol label: aString! !
+
+!EruditeDocList methodsFor: 'accessing' stamp: 'MM 6/15/2024 17:58:02'!
+items
+	"Answer the value of items"
+
+	^ items! !
+
+!EruditeDocList methodsFor: 'accessing' stamp: 'MM 6/15/2024 17:58:02'!
+items: anObject
+	"Set the value of items"
+
+	items := anObject! !
+
+!EruditeDocList methodsFor: 'accessing' stamp: 'MM 6/15/2024 17:58:02'!
+listType
+	"Answer the value of listType"
+
+	^ listType! !
+
+!EruditeDocList methodsFor: 'accessing' stamp: 'MM 6/15/2024 17:58:02'!
+listType: anObject
+	"Set the value of listType"
+
+	listType := anObject! !
+
+!EruditeDocList methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 19:32:04'!
+accept: aVisitor
+
+	^ aVisitor visitList: self! !
+
+!EruditeDocList methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 17:58:23'!
+initialize
+
+	super initialize.
+	
+	items := OrderedCollection new.
+	listType := #unordered! !
+
+!EruditeDocListItem methodsFor: 'accessing' stamp: 'MM 6/15/2024 18:05:16'!
+contents
+	"Answer the value of contents"
+
+	^ contents! !
+
+!EruditeDocListItem methodsFor: 'accessing' stamp: 'MM 6/15/2024 18:05:16'!
+contents: anObject
+	"Set the value of contents"
+
+	contents := anObject! !
+
+!EruditeDocListItem methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 18:05:32'!
+initialize
+
+	super initialize.
+	
+	contents := OrderedCollection new! !
 
 !EruditeDocTaggedElement methodsFor: 'accessing' stamp: 'MM 6/12/2024 10:33:32'!
 attributes
