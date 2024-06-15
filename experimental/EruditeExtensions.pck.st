@@ -1,11 +1,11 @@
-'From Cuis7.1 [latest update: #6469] on 14 June 2024 at 7:20:22 pm'!
+'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 2:32:59 pm'!
 'Description '!
-!provides: 'EruditeExtensions' 1 39!
-!requires: 'Erudite' 1 246 nil!
-!requires: 'Graphics-Files-Additional' 1 24 nil!
+!provides: 'EruditeExtensions' 1 40!
 !requires: 'AnimatedGIF' 1 1 nil!
-!requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
+!requires: 'Erudite' 1 250 nil!
+!requires: 'Cryptography-DigitalSignatures' 1 14 nil!
+!requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: #EruditeExtensions!
 SystemOrganization addCategory: #'EruditeExtensions-Books'!
 
@@ -21,7 +21,7 @@ EruditeExtensionsManual class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeFormulaNode category: #EruditeExtensions!
-DocNode subclass: #EruditeFormulaNode
+EruditeDocNode subclass: #EruditeFormulaNode
 	instanceVariableNames: 'formula'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -31,7 +31,7 @@ EruditeFormulaNode class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeGNUPlotNode category: #EruditeExtensions!
-DocNode subclass: #EruditeGNUPlotNode
+EruditeDocNode subclass: #EruditeGNUPlotNode
 	instanceVariableNames: 'script'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -41,7 +41,7 @@ EruditeGNUPlotNode class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeHTMLNode category: #EruditeExtensions!
-DocNode subclass: #EruditeHTMLNode
+EruditeDocNode subclass: #EruditeHTMLNode
 	instanceVariableNames: 'script'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -51,7 +51,7 @@ EruditeHTMLNode class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditePlantUMLNode category: #EruditeExtensions!
-DocNode subclass: #EruditePlantUMLNode
+EruditeDocNode subclass: #EruditePlantUMLNode
 	instanceVariableNames: 'script'
 	classVariableNames: ''
 	poolDictionaries: ''
