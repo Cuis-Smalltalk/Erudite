@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 7:57:36 pm'!
+'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 10:23:06 pm'!
 'Description '!
-!provides: 'EruditeXMLBook' 1 8!
+!provides: 'EruditeXMLBook' 1 9!
 !requires: 'Erudite' 1 252 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #EruditeXMLBook!
@@ -44,6 +44,26 @@ Object subclass: #EruditeXMLElementParser
 	category: 'EruditeXMLBook'!
 !classDefinition: 'EruditeXMLElementParser class' category: #EruditeXMLBook!
 EruditeXMLElementParser class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeXMLClassParser category: #EruditeXMLBook!
+EruditeXMLElementParser subclass: #EruditeXMLClassParser
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeXMLBook'!
+!classDefinition: 'EruditeXMLClassParser class' category: #EruditeXMLBook!
+EruditeXMLClassParser class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeXMLDoItParser category: #EruditeXMLBook!
+EruditeXMLElementParser subclass: #EruditeXMLDoItParser
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeXMLBook'!
+!classDefinition: 'EruditeXMLDoItParser class' category: #EruditeXMLBook!
+EruditeXMLDoItParser class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeXMLH1Parser category: #EruditeXMLBook!
@@ -190,6 +210,32 @@ parse: anXMLElement using: aParser
 tag
 
 	^ self subclassResponsibility ! !
+
+!EruditeXMLClassParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:14:08'!
+parse: anXMLElement using: aParser
+
+	|className|
+	
+	className := anXMLElement contents first string.
+	^ EruditeDocLink target: className
+						type: #class
+						label: className! !
+
+!EruditeXMLClassParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:11:49'!
+tag
+	^ 'class'! !
+
+!EruditeXMLDoItParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:21:50'!
+parse: anXMLElement using: aParser
+
+	|code|
+	
+	code := anXMLElement contents first string.
+	^ EruditeDocCode code: code action: (Dictionary newFromPairs: #(action doIt))! !
+
+!EruditeXMLDoItParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:16:48'!
+tag
+	^ 'doit'! !
 
 !EruditeXMLH1Parser class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 19:46:28'!
 parse: anXMLElement using: aParser
