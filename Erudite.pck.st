@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 7:59:24 pm'!
+'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 10:59:33 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 253!
+!provides: 'Erudite' 1 254!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -638,7 +638,7 @@ EruditeDocUnformatted class
 
 !classDefinition: #EruditeStyledText category: #'Erudite-Parser'!
 EruditeDocNode subclass: #EruditeStyledText
-	instanceVariableNames: 'text style'
+	instanceVariableNames: 'text styles'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
@@ -2608,10 +2608,10 @@ assignLinkOption
 	^ super assignLinkOption ==> [:res | 
 		res first asSymbol -> res third withBlanksTrimmed ]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:07'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:58:02'!
 bold
 
-	^ super bold ==> [:res | EruditeStyledText text: res second style: #bold]! !
+	^ super bold ==> [:res | EruditeStyledText text: res second styles: #(bold)]! !
 
 !EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 12:35'!
 buttonCodeAction
@@ -2665,10 +2665,10 @@ heading4
 			heading: res second withBlanksTrimmed
 			level: 4 ].! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:08'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:47:23'!
 italic
 
-	^ super italic ==> [:res | EruditeStyledText text: res second style: #italic]! !
+	^ super italic ==> [:res | EruditeStyledText text: res second styles: #(italic)]! !
 
 !EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:12:31'!
 link
@@ -2710,15 +2710,15 @@ trueLinkOption
 	^ super trueLinkOption ==> [:res |
 		res asSymbol -> true]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:30:03'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:47:31'!
 underlined
 
-	^ super underlined ==> [:res | EruditeStyledText text: res second style: #underlined]! !
+	^ super underlined ==> [:res | EruditeStyledText text: res second styles: #(underlined)]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:33'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:47:40'!
 unformatted
 	
-	^ super unformatted ==> [:res | EruditeStyledText text: res second style: #unformatted]! !
+	^ super unformatted ==> [:res | EruditeStyledText text: res second styles: #(unformatted)]! !
 
 !EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:15:19'!
 xml
@@ -21585,18 +21585,21 @@ visitList: aListNode
 			elem accept: self.
 			stream nextPut: Character newLineCharacter asString.]]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:30:48'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:55:57'!
 visitStyledText: aStyledText
 
-	|emphasis|
-	emphasis _ aStyledText style caseOf: {
-		[#bold] -> [TextEmphasis bold].
-		[#italic] -> [TextEmphasis italic].
-		[#underlined] -> [TextEmphasis underlined ].
-		[#unformatted] -> [^ stream nextPut: aStyledText text].
-	}.
+	| attributes |
 	
-	stream nextPut: (Text string: aStyledText text attribute: emphasis)! !
+	attributes := aStyledText styles collect: [:style |
+		style caseOf: {
+			[#bold] -> [TextEmphasis bold].
+			[#italic] -> [TextEmphasis italic].
+			[#underlined] -> [TextEmphasis underlined ].
+			[#unformatted] -> [^ stream nextPut: aStyledText text]
+		}].
+	
+	
+	stream nextPut: (Text string: aStyledText text attributes: attributes)! !
 
 !MorphicEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 12/11/2018 18:27'!
 requestor
@@ -22724,23 +22727,23 @@ accept: aVisitor
 
 	^ aVisitor visitStyledText: self! !
 
-!EruditeStyledText methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:07'!
-initialize: aString style: aSymbol
+!EruditeStyledText methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:46:34'!
+initialize: aString styles: anArray
 
-	text _ aString.
-	style _ aSymbol! !
+	text := aString.
+	styles := anArray! !
 
-!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 12/1/2018 12:11'!
-style
-	"Answer the value of style"
+!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 6/15/2024 22:46:58'!
+styles
+	"Answer the value of styles"
 
-	^ style! !
+	^ styles! !
 
-!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 12/1/2018 12:11'!
-style: anObject
-	"Set the value of style"
+!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 6/15/2024 22:46:58'!
+styles: anObject
+	"Set the value of styles"
 
-	style _ anObject! !
+	styles := anObject! !
 
 !EruditeStyledText methodsFor: 'accessing' stamp: 'MM 12/1/2018 12:11'!
 text
@@ -22754,10 +22757,10 @@ text: anObject
 
 	text _ anObject! !
 
-!EruditeStyledText class methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:07'!
-text: aString style: aSymbol
+!EruditeStyledText class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:46:10'!
+text: aString styles: styles
 
-	^ self new initialize: aString style: aSymbol! !
+	^ self new initialize: aString styles: styles! !
 
 !EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 19:11:04'!
 chapter1
