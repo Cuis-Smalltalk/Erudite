@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 10:59:33 pm'!
+'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 11:12:07 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 254!
+!provides: 'Erudite' 1 255!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -21585,19 +21585,21 @@ visitList: aListNode
 			elem accept: self.
 			stream nextPut: Character newLineCharacter asString.]]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:55:57'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 23:10:43'!
 visitStyledText: aStyledText
 
 	| attributes |
 	
 	attributes := aStyledText styles collect: [:style |
-		style caseOf: {
-			[#bold] -> [TextEmphasis bold].
-			[#italic] -> [TextEmphasis italic].
-			[#underlined] -> [TextEmphasis underlined ].
-			[#unformatted] -> [^ stream nextPut: aStyledText text]
-		}].
-	
+		(style isKindOf: TextAttribute)
+			ifTrue: [style]
+			ifFalse: [
+				style caseOf: {
+					[#bold] -> [TextEmphasis bold].
+					[#italic] -> [TextEmphasis italic].
+					[#underlined] -> [TextEmphasis underlined ].
+					[#unformatted] -> [^ stream nextPut: aStyledText text]
+				} otherwise: [self error: 'Invalid style']]].	
 	
 	stream nextPut: (Text string: aStyledText text attributes: attributes)! !
 
@@ -22727,11 +22729,11 @@ accept: aVisitor
 
 	^ aVisitor visitStyledText: self! !
 
-!EruditeStyledText methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:46:34'!
+!EruditeStyledText methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 23:07:39'!
 initialize: aString styles: anArray
 
 	text := aString.
-	styles := anArray! !
+	self styles: anArray! !
 
 !EruditeStyledText methodsFor: 'accessing' stamp: 'MM 6/15/2024 22:46:58'!
 styles
@@ -22739,10 +22741,12 @@ styles
 
 	^ styles! !
 
-!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 6/15/2024 22:46:58'!
+!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 6/15/2024 23:08:32'!
 styles: anObject
 	"Set the value of styles"
 
+	self assert: anObject isCollection.
+	self assert: (anObject allSatisfy: [:el | el isSymbol or: [el isKindOf: TextAttribute]]).
 	styles := anObject! !
 
 !EruditeStyledText methodsFor: 'accessing' stamp: 'MM 12/1/2018 12:11'!
