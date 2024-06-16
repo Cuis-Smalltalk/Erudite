@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 10:23:06 pm'!
+'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 11:12:18 pm'!
 'Description '!
-!provides: 'EruditeXMLBook' 1 9!
-!requires: 'Erudite' 1 252 nil!
+!provides: 'EruditeXMLBook' 1 11!
+!requires: 'Erudite' 1 255 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #EruditeXMLBook!
 
@@ -148,7 +148,18 @@ xml  '<h1>Title</h1>
 </p>'.
 
 doc  EruditeXMLParser parse: xml.
-(MorphicEruditeDocRenderer on: doc) render edit.!
+(MorphicEruditeDocRenderer on: doc) render edit.
+
+---------------
+
+(XMLEruditeBook titled: 'My book') edit!
+
+!XMLEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:55:36'!
+initialize
+
+	super initialize.
+	
+	title := 'xml book'! !
 
 !XMLEruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 15:59:28'!
 parser
@@ -434,10 +445,10 @@ new
 
 	^ self basicNew initialize! !
 
-!MorphicEruditeDocRenderer methodsFor: '*EruditeXMLBook' stamp: 'MM 6/15/2024 19:57:23'!
+!MorphicEruditeDocRenderer methodsFor: '*EruditeXMLBook' stamp: 'MM 6/15/2024 22:30:51'!
 visitParagraph: aParagraph
 
-	stream nextPut: Character newLineCharacter asString.
+	"stream nextPut: Character newLineCharacter asString."
 	stream nextPut: Character newLineCharacter asString.
 	
 	aParagraph contents do: [:elem |
