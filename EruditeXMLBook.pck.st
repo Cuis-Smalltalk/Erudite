@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 11:12:18 pm'!
+'From Cuis7.1 [latest update: #6469] on 18 June 2024 at 12:40:17 am'!
 'Description '!
-!provides: 'EruditeXMLBook' 1 11!
+!provides: 'EruditeXMLBook' 1 12!
 !requires: 'Erudite' 1 255 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #EruditeXMLBook!
@@ -154,13 +154,6 @@ doc  EruditeXMLParser parse: xml.
 
 (XMLEruditeBook titled: 'My book') edit!
 
-!XMLEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:55:36'!
-initialize
-
-	super initialize.
-	
-	title := 'xml book'! !
-
 !XMLEruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 15:59:28'!
 parser
 
@@ -248,11 +241,13 @@ parse: anXMLElement using: aParser
 tag
 	^ 'doit'! !
 
-!EruditeXMLH1Parser class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 19:46:28'!
+!EruditeXMLH1Parser class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 00:39:02'!
 parse: anXMLElement using: aParser
 
 	^ EruditeDocHeading 
-		heading: anXMLElement contents first string
+		heading: (String streamContents: [:s |
+			           s nextPutAll: anXMLElement contents first string;
+					nextPut: Character newLineCharacter ])
 		level: 1! !
 
 !EruditeXMLH1Parser class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 16:42:04'!
