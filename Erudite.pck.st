@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6469] on 15 June 2024 at 11:12:07 pm'!
+'From Cuis7.1 [latest update: #6469] on 17 June 2024 at 9:54:16 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 255!
+!provides: 'Erudite' 1 256!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -3063,11 +3063,15 @@ bookNamed: aString ifNone: aBlock
 	
 	^ self booksList detect: [:aBook | aBook title = aString] ifNone: aBlock! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 17:53:21'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2024 21:53:26'!
 booksList
 
+	"To build the list of books, consider EruditeBook subclasses instances that have a title."
+	
 	^ (self booksListInMethods, (EruditeBook subclasses collect: [:cls | cls new]))
-		select: [:book | ({EruditeCompositeBook.EruditeDynamicBook} includes: book class) not]! !
+		select: [:book | ({EruditeCompositeBook.EruditeDynamicBook} 
+							includes: book class) not 
+							and: [book title isNil not]]! !
 
 !EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 22:42:00'!
 booksListInMethods
