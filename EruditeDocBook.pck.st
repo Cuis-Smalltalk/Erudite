@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6469] on 18 June 2024 at 9:32:14 pm'!
+'From Cuis7.1 [latest update: #6469] on 19 June 2024 at 8:38:30 am'!
 'Description '!
-!provides: 'EruditeDocBook' 1 0!
+!provides: 'EruditeDocBook' 1 1!
 SystemOrganization addCategory: #EruditeDocBook!
 
 
@@ -12,36 +12,6 @@ EruditeBook subclass: #DocBookEruditeBook
 	category: 'EruditeDocBook'!
 !classDefinition: 'DocBookEruditeBook class' category: #EruditeDocBook!
 DocBookEruditeBook class
-	instanceVariableNames: ''!
-
-!classDefinition: #EruditeDocBookElementParser category: #EruditeDocBook!
-Object subclass: #EruditeDocBookElementParser
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'EruditeDocBook'!
-!classDefinition: 'EruditeDocBookElementParser class' category: #EruditeDocBook!
-EruditeDocBookElementParser class
-	instanceVariableNames: ''!
-
-!classDefinition: #EruditeDocBookParaParser category: #EruditeDocBook!
-EruditeDocBookElementParser subclass: #EruditeDocBookParaParser
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'EruditeDocBook'!
-!classDefinition: 'EruditeDocBookParaParser class' category: #EruditeDocBook!
-EruditeDocBookParaParser class
-	instanceVariableNames: ''!
-
-!classDefinition: #EruditeDocBookSectionParser category: #EruditeDocBook!
-EruditeDocBookElementParser subclass: #EruditeDocBookSectionParser
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'EruditeDocBook'!
-!classDefinition: 'EruditeDocBookSectionParser class' category: #EruditeDocBook!
-EruditeDocBookSectionParser class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeDocBookParser category: #EruditeDocBook!
@@ -58,61 +28,10 @@ EruditeDocBookParser class
 !DocBookEruditeBook commentStamp: 'MM 6/18/2024 21:15:44' prior: 0!
 (DocBookEruditeBook titled: 'My book') edit!
 
-!EruditeDocBookSectionParser commentStamp: 'MM 6/18/2024 21:11:29' prior: 0!
-See: https://tdg.docbook.org/tdg/5.2/section!
-
 !DocBookEruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:05:58'!
 parser
 
 	^ EruditeDocBookParser new! !
-
-!EruditeDocBookElementParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:07:19'!
-parse: anXMLElement using: aParser
-
-	^ self subclassResponsibility ! !
-
-!EruditeDocBookElementParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:07:28'!
-tag
-
-	^ self subclassResponsibility ! !
-
-!EruditeDocBookParaParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:22:11'!
-parse: anXMLElement using: aParser
-
-	| paragraph |
-	
-	paragraph := EruditeParagraphNode new.
-	
-	anXMLElement childrenDo: [:xmlElem |
-		(aParser parseElement: xmlElem) ifNotNil: [:parsedElem |
-			paragraph contents add: parsedElem]].
-	
-	^ paragraph! !
-
-!EruditeDocBookParaParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:09:18'!
-tag
-
-	^ 'para'! !
-
-!EruditeDocBookSectionParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:22:43'!
-parse: anXMLElement using: aParser
-
-	| paragraph |
-	
-	aParser sectionLevel: aParser sectionLevel + 1.
-	
-	paragraph := EruditeParagraphNode new.
-	
-	anXMLElement childrenDo: [:xmlElem |
-		(aParser parseElement: xmlElem) ifNotNil: [:parsedElem |
-			paragraph contents add: parsedElem]].
-	
-	^ paragraph! !
-
-!EruditeDocBookSectionParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:07:46'!
-tag
-
-	^ 'section'! !
 
 !EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:18:21'!
 initialize
@@ -151,7 +70,7 @@ parse: aString
 	
 	^ doc! !
 
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:17:10'!
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:34:06'!
 parseElement: anXMLElement
 
 	|tag|
@@ -161,27 +80,56 @@ parseElement: anXMLElement
 	
 	tag := anXMLElement tag.
 	
-	^ (self parserFor: tag) ifNotNil: [:parser |
-		parser parse: anXMLElement
-				using: self]! !
+	^ (self parserFor: tag) ifNotNil: [:selector |
+		self perform: selector with: anXMLElement]! !
 
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:05:25'!
-parserAt: xmlTag
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:34:42'!
+parsePara: anXMLElement
 
-	^ self parsers 
-			detect: [:parserClass | parserClass tag sameAs: xmlTag]
-			ifNone: [Transcript show: '[EruditeDocBookParser WARNING] - Ignoring element. No parser for: ', xmlTag; cr.
+	| paragraph |
+	
+	paragraph := EruditeParagraphNode new.
+	
+	anXMLElement childrenDo: [:xmlElem |
+		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
+			paragraph contents add: parsedElem]].
+	
+	^ paragraph! !
+
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:35:29'!
+parseSection: anXMLElement
+
+	| paragraph |
+	
+	self sectionLevel: self sectionLevel + 1.
+	
+	paragraph := EruditeParagraphNode new.
+	
+	anXMLElement childrenDo: [:xmlElem |
+		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
+			paragraph contents add: parsedElem]].
+	
+	^ paragraph! !
+
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:38:03'!
+parseTitle: anXMLElement
+
+	^ EruditeDocHeading 
+		heading: (String streamContents: [:s |
+			           s nextPutAll: anXMLElement contents first string;
+					nextPut: Character newLineCharacter ])
+		level: self sectionLevel ! !
+
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:31:17'!
+parserFor: xmlTag
+
+	| parserSelector |
+	
+	parserSelector := ('parse', xmlTag capitalized, ':') asSymbol.
+	^ (self respondsTo: parserSelector) 
+		ifTrue: [parserSelector]
+		ifFalse: [Transcript show: '[EruditeDocBookParser WARNING] - Ignoring element. No parser for: ', xmlTag; cr.
 				nil]! !
-
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 20:58:46'!
-parserFor: tag
-
-	^ self parserAt:tag! !
-
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 20:58:46'!
-parsers
-
-	^ self class parsers! !
 
 !EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:14:52'!
 sectionLevel
@@ -197,8 +145,3 @@ sectionLevel: aNumber
 parse: aString
 
 	^ self new parse: aString! !
-
-!EruditeDocBookParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:02:37'!
-parsers
-
-	^ EruditeDocBookElementParser subclasses! !
