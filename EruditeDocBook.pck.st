@@ -1,6 +1,11 @@
-'From Cuis7.1 [latest update: #6469] on 19 June 2024 at 8:38:30 am'!
-'Description '!
-!provides: 'EruditeDocBook' 1 1!
+'From Cuis7.1 [latest update: #6469] on 19 June 2024 at 9:01:31 am'!
+'Description DocBook support for Erudite.
+
+DocBook validation: https://wiki.archlinux.org/title/DocBook
+DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
+!provides: 'EruditeDocBook' 1 3!
+!requires: 'Erudite' 1 256 nil!
+!requires: 'EruditeXMLBook' 1 13 nil!
 SystemOrganization addCategory: #EruditeDocBook!
 
 
@@ -70,6 +75,19 @@ parse: aString
 	
 	^ doc! !
 
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:58:08'!
+parseChapter: anXMLElement
+
+	| paragraph |
+	
+	paragraph := EruditeParagraphNode new.
+	
+	anXMLElement childrenDo: [:xmlElem |
+		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
+			paragraph contents add: parsedElem]].
+	
+	^ paragraph! !
+
 !EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:34:06'!
 parseElement: anXMLElement
 
@@ -96,7 +114,7 @@ parsePara: anXMLElement
 	
 	^ paragraph! !
 
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:35:29'!
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:57:44'!
 parseSection: anXMLElement
 
 	| paragraph |
@@ -108,6 +126,8 @@ parseSection: anXMLElement
 	anXMLElement childrenDo: [:xmlElem |
 		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
 			paragraph contents add: parsedElem]].
+	
+	self sectionLevel: self sectionLevel - 1.
 	
 	^ paragraph! !
 
