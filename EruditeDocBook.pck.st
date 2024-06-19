@@ -1,9 +1,9 @@
-'From Cuis7.1 [latest update: #6469] on 19 June 2024 at 9:50:54 am'!
+'From Cuis7.1 [latest update: #6487] on 19 June 2024 at 5:15:28 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 5!
+!provides: 'EruditeDocBook' 1 6!
 !requires: 'Erudite' 1 256 nil!
 !requires: 'EruditeXMLBook' 1 13 nil!
 !requires: 'YAXO' 1 27 nil!
@@ -12,12 +12,22 @@ SystemOrganization addCategory: #EruditeDocBook!
 
 !classDefinition: #DocBookEruditeBook category: #EruditeDocBook!
 EruditeBook subclass: #DocBookEruditeBook
-	instanceVariableNames: ''
+	instanceVariableNames: 'file'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeDocBook'!
 !classDefinition: 'DocBookEruditeBook class' category: #EruditeDocBook!
 DocBookEruditeBook class
+	instanceVariableNames: ''!
+
+!classDefinition: #DocBookEruditeBookStorer category: #EruditeDocBook!
+EruditeBookStorer subclass: #DocBookEruditeBookStorer
+	instanceVariableNames: 'file'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeDocBook'!
+!classDefinition: 'DocBookEruditeBookStorer class' category: #EruditeDocBook!
+DocBookEruditeBookStorer class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeDocBookParser category: #EruditeDocBook!
@@ -34,10 +44,57 @@ EruditeDocBookParser class
 !DocBookEruditeBook commentStamp: 'MM 6/18/2024 21:15:44' prior: 0!
 (DocBookEruditeBook titled: 'My book') edit!
 
+!DocBookEruditeBookStorer commentStamp: 'MM 6/19/2024 17:07:07' prior: 0!
+| bookFile |
+
+bookFile  (CodePackage installedPackages at: 'EruditeDocBook') fullFileName asFileEntry parent // 'DocBook/defguide5/src/guide.xml'.
+
+DocBookEruditeBook new
+	file: bookFile;
+	load;
+	edit!
+
+!DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 14:51:14'!
+storerClass
+
+	^ DocBookEruditeBookStorer ! !
+
+!DocBookEruditeBook methodsFor: 'accessing' stamp: 'MM 6/19/2024 14:51:43'!
+file
+	"Answer the value of file"
+
+	^ file! !
+
+!DocBookEruditeBook methodsFor: 'accessing' stamp: 'MM 6/19/2024 14:51:43'!
+file: anObject
+	"Set the value of file"
+
+	file := anObject! !
+
 !DocBookEruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:05:58'!
 parser
 
 	^ EruditeDocBookParser new! !
+
+!DocBookEruditeBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 17:14:25'!
+load
+
+	| xml loadedBook |
+	
+	loadedBook := DocBookEruditeBook new
+					file: book file;
+					yourself.
+	xml := XMLDOMParser parseDocumentFrom: book file readStream.
+	xml tagsNamed: #title do: [:elem | loadedBook title: elem contentString].
+	xml tagsNamed: #xi:include do: [:elem | | chapterFilePath chapterXML chapterTitle |
+		chapterFilePath := book file parent // (elem attributeAt: #href).
+		chapterXML := XMLDOMParser parseDocumentFrom: chapterFilePath readStream.
+		chapterTitle := chapterXML firstTagNamed: #title.
+		chapterTitle ifNotNil: [
+			loadedBook addSection: chapterTitle contentString contents: chapterFilePath textContents]].
+	
+	^ loadedBook
+	! !
 
 !EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:18:21'!
 initialize
