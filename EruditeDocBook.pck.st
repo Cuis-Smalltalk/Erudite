@@ -1,11 +1,12 @@
-'From Cuis7.1 [latest update: #6469] on 19 June 2024 at 9:01:31 am'!
+'From Cuis7.1 [latest update: #6469] on 19 June 2024 at 9:50:54 am'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 3!
+!provides: 'EruditeDocBook' 1 5!
 !requires: 'Erudite' 1 256 nil!
 !requires: 'EruditeXMLBook' 1 13 nil!
+!requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #EruditeDocBook!
 
 
@@ -75,70 +76,17 @@ parse: aString
 	
 	^ doc! !
 
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:58:08'!
-parseChapter: anXMLElement
-
-	| paragraph |
-	
-	paragraph := EruditeParagraphNode new.
-	
-	anXMLElement childrenDo: [:xmlElem |
-		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
-			paragraph contents add: parsedElem]].
-	
-	^ paragraph! !
-
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:34:06'!
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 09:48:29'!
 parseElement: anXMLElement
-
-	|tag|
 	
 	(anXMLElement isKindOf: XMLStringNode) ifTrue:[
 		^ EruditeDocString contents: anXMLElement string].
 	
-	tag := anXMLElement tag.
+	(anXMLElement isKindOf: XMLElement)
+		ifFalse: [^EruditeDocString contents: ''].
 	
-	^ (self parserFor: tag) ifNotNil: [:selector |
+	^ (self parserFor: anXMLElement tag) ifNotNil: [:selector |
 		self perform: selector with: anXMLElement]! !
-
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:34:42'!
-parsePara: anXMLElement
-
-	| paragraph |
-	
-	paragraph := EruditeParagraphNode new.
-	
-	anXMLElement childrenDo: [:xmlElem |
-		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
-			paragraph contents add: parsedElem]].
-	
-	^ paragraph! !
-
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:57:44'!
-parseSection: anXMLElement
-
-	| paragraph |
-	
-	self sectionLevel: self sectionLevel + 1.
-	
-	paragraph := EruditeParagraphNode new.
-	
-	anXMLElement childrenDo: [:xmlElem |
-		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
-			paragraph contents add: parsedElem]].
-	
-	self sectionLevel: self sectionLevel - 1.
-	
-	^ paragraph! !
-
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:38:03'!
-parseTitle: anXMLElement
-
-	^ EruditeDocHeading 
-		heading: (String streamContents: [:s |
-			           s nextPutAll: anXMLElement contents first string;
-					nextPut: Character newLineCharacter ])
-		level: self sectionLevel ! !
 
 !EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:31:17'!
 parserFor: xmlTag
@@ -160,6 +108,97 @@ sectionLevel
 sectionLevel: aNumber
 
 	sectionLevel := aNumber! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 09:07:52'!
+parseAbstract: anXMLElement
+
+	| paragraph |
+	
+	paragraph := EruditeParagraphNode new.
+	
+	anXMLElement childrenDo: [:xmlElem |
+		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
+			paragraph contents add: parsedElem]].
+	
+	^ paragraph! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 09:04:27'!
+parseAppendix: anXMLElement
+
+	| paragraph |
+	
+	paragraph := EruditeParagraphNode new.
+	
+	anXMLElement childrenDo: [:xmlElem |
+		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
+			paragraph contents add: parsedElem]].
+	
+	^ paragraph! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:58:08'!
+parseChapter: anXMLElement
+
+	| paragraph |
+	
+	paragraph := EruditeParagraphNode new.
+	
+	anXMLElement childrenDo: [:xmlElem |
+		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
+			paragraph contents add: parsedElem]].
+	
+	^ paragraph! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:34:42'!
+parsePara: anXMLElement
+
+	| paragraph |
+	
+	paragraph := EruditeParagraphNode new.
+	
+	anXMLElement childrenDo: [:xmlElem |
+		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
+			paragraph contents add: parsedElem]].
+	
+	^ paragraph! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 09:43:22'!
+parsePreface: anXMLElement
+
+	| paragraph |
+	
+	paragraph := EruditeParagraphNode new.
+	
+	anXMLElement childrenDo: [:xmlElem |
+		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
+			paragraph contents add: parsedElem]].
+	
+	^ paragraph! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:57:44'!
+parseSection: anXMLElement
+
+	| paragraph |
+	
+	self sectionLevel: self sectionLevel + 1.
+	
+	paragraph := EruditeParagraphNode new.
+	
+	anXMLElement childrenDo: [:xmlElem |
+		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
+			paragraph contents add: parsedElem]].
+	
+	self sectionLevel: self sectionLevel - 1.
+	
+	^ paragraph! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:38:03'!
+parseTitle: anXMLElement
+
+	^ EruditeDocHeading 
+		heading: (String streamContents: [:s |
+			           s nextPutAll: anXMLElement contents first string;
+					nextPut: Character newLineCharacter ])
+		level: self sectionLevel ! !
 
 !EruditeDocBookParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 20:58:46'!
 parse: aString
