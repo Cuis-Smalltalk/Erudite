@@ -1,9 +1,9 @@
-'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 12:17:58 pm'!
+'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 12:24:25 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 8!
+!provides: 'EruditeDocBook' 1 9!
 !requires: 'Erudite' 1 259 nil!
 !requires: 'EruditeXMLBook' 1 13 nil!
 !requires: 'YAXO' 1 27 nil!
@@ -244,15 +244,13 @@ parsePreface: anXMLElement
 	
 	^ paragraph! !
 
-!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 12:17:08'!
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 12:23:11'!
 parseProgramlisting: anXMLElement
 
-	^ (EruditeDocCode code: 
-	      (String streamContents: [:s | 
-			s newLine; newLine;
-			   nextPutAll: anXMLElement contentString]))
-		sourceLanguage: nil;
-		yourself
+	^ EruditeParagraphNode 
+	      contents: (Array with: ((EruditeDocCode code: anXMLElement contentString)
+								sourceLanguage: nil;
+								yourself))
 	
 ! !
 
