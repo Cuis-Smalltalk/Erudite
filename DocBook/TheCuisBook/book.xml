@@ -1,0 +1,16 @@
+<book xmlns='http://docbook.org/ns/docbook'
+      xmlns:xi='http://www.w3.org/2001/XInclude'
+      xml:id="docbook">
+  <xi:include href="ch00.xml"/>
+  <xi:include href="ch01.xml"/>
+  <xi:include href="ch02.xml"/>
+  <xi:include href="ch03.xml"/>
+  <xi:include href="ch04.xml"/>
+  <xi:include href="ch05.xml"/>
+  <xi:include href="ch06.xml"/>
+  <xi:include href="ch07.xml"/>
+  <xi:include href="ch08.xml"/>
+  <xi:include href="ch09.xml"/>
+  <xi:include href="ch10.xml"/>
+  <xi:include href="ch11.xml"/>  
+</book>

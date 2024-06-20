@@ -1,0 +1,714 @@
+<appendix label="" id="Solutions-to-the-Exercises">
+<title>Solutions to the Exercises</title>
+
+
+
+
+<!-- Preface -->
+
+<sect1 label="" id="Preface-_0028Solutions_0029">
+<title>Preface</title>
+<bridgehead renderas="sect2"><link linkend="exerciseExample">exerciseExample</link></bridgehead>
+<para>In the seventies, four versions were developed: Smalltalk-71,
+Smalltalk-72, Smalltalk-76 and Smalltalk-80.
+</para>
+<!-- Chapter 1 -->
+</sect1>
+<sect1 label="" id="Smallltalk-Philosophy-_0028Solutions_0029">
+<title>Smallltalk Philosophy</title>
+<bridgehead renderas="sect2"><link linkend="exePlacement">exePlacement</link></bridgehead>
+<anchor id="E_002dimg1"/>
+<inlinemediaobject><imageobject><imagedata fileref="E-img1.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<bridgehead renderas="sect2"><link linkend="concatenateUppercase">concatenateUppercase</link></bridgehead>
+<screen>Transcript show: 'Hello ', 'my beloved ' asUppercase, 'friend'
+</screen>
+
+<bridgehead renderas="sect2"><link linkend="inverseSum">inverseSum</link></bridgehead>
+<screen>1 + (1/2) + (1/3) + (1/4)
+&#8658; 25/12 
+</screen>
+<bridgehead renderas="sect2"><link linkend="capWordNumber">capWordNumber</link></bridgehead>
+<para>Several messages can be sent one after the other:
+</para><screen>Transcript show: 2020 printStringWords capitalized 
+</screen>
+<!-- Chapter 2 -->
+</sect1>
+<sect1 label="" id="The-Message-Way-of-Life-_0028Solutions_0029">
+<title>The Message Way of Life</title>
+<bridgehead renderas="sect2"><link linkend="helloBelle">helloBelle</link></bridgehead>
+<screen>'Hello' 
+   at: 1 put: $B;
+   at: 2 put: $e;
+   at: 3 put: $l;
+   at: 4 put: $l;
+   at: 5 put: $e;
+   yourself
+</screen>
+<bridgehead renderas="sect2"><link linkend="squaredSum">squaredSum</link></bridgehead>
+<screen>1 + (1/2) squared + (1/3) squared + (1/4) squared
+&#8658;  205 / 144
+</screen>
+<bridgehead renderas="sect2"><link linkend="stringArith">stringArith</link></bridgehead>
+<para>From a System Browser, do from the left panel to the
+right ...<option>Kernel-Text</option> &#8594; <literal>CharacterSequence</literal>
+&#8594; <literal>arithmetic</literal>... the count of methods in the last
+right panel is 6: <literal>*</literal>, <literal>+</literal>, <literal>-</literal>, <literal>/</literal>,
+<literal>//</literal> and <literal>\\</literal>.
+</para>
+<para>An alternative is to search for a class with a keyboard shortcut:
+<userinput>Ctrl-Space</userinput> from the Cuis-Smalltalk environment or <userinput>Ctrl-f</userinput> from the
+class category of the <firstterm>Browser</firstterm>.
+</para>
+<!-- Chapter 3 -->
+</sect1>
+<sect1 label="" id="Class-_002d_002d-model-of-Communicating-Entities-_0028Solutions_0029">
+<title>Class, model of Communicating Entities</title>
+<bridgehead renderas="sect2"><link linkend="floatInfo">floatInfo</link></bridgehead>
+<para>When the <literal>Float</literal> is selected, the wide text pane prints: &#8220;class
+definition for Float &#176; 92 instance methods &#176;
+34 class methods &#176; 1280 total lines of code&#8221;
+</para>
+<bridgehead renderas="sect2"><link linkend="cosTable">cosTable</link></bridgehead>
+<screen>0 to: Float twoPi by: 1/10 do: [:i |
+   Transcript show: i cos; cr]
+</screen>
+<bridgehead renderas="sect2"><link linkend="multiplyBy1024">multiplyBy1024</link></bridgehead>
+<para>1024 is not a random number. It is 2<superscript>10</superscript> then written in base 2 :
+10000000000, it is also <literal>1 &lt;&lt; 10</literal>:
+</para>
+<screen>2^10 &#8658; 1024
+1024 printStringBase: 2 &#8658; '10000000000'
+1 &lt;&lt; 10 &#8658; 1024 
+</screen>
+<para>Therefore, to multiply an integer by 1024, we shift left of 10 its digits:
+</para>
+<screen>360 &lt;&lt; 10 &#8658; 368640 
+360 * 1024 &#8658; 368640 
+</screen>
+<bridgehead renderas="sect2"><link linkend="exeFloatPrecision">exeFloatPrecision</link></bridgehead>
+<screen>5.2 + 0.9  - 6.1
+&#8658; 8.881784197001252e-16
+
+5.2 + 0.7 + 0.11
+&#8658; 6.010000000000001
+
+1.2 * 3  - 3.6
+&#8658; -4.440892098500626e-16
+</screen>
+<bridgehead renderas="sect2"><link linkend="exeZeroDivide">exeZeroDivide</link></bridgehead>
+<para>The system returns the error <literal>ZeroDivide</literal>, division by zero.
+</para>
+<bridgehead renderas="sect2"><link linkend="exeFractionPrecision">exeFractionPrecision</link></bridgehead>
+<screen>(52/10) + (9/10)  - (61/10)
+&#8658; 0
+
+(52/10) + (7/10)  + (11/100)
+&#8658; 601/100 soit 6.01
+
+(12/10) * 3  - (36/10)
+&#8658; 0
+</screen>
+<bridgehead renderas="sect2"><link linkend="selectApples">selectApples</link></bridgehead>
+<para>There are different options, with slightly different results:
+</para><screen>'There are 12 apples' select: [:i |i isLetter].
+&#8658; 'Thereareapples' 
+</screen>
+<para>Not really satisfying. So another option:
+</para><screen>'There are 12 apples' select: [:i |i isDigit not].
+&#8658; 'There are  apples'
+</screen>
+<para>Or even a shorter option with the <literal>#reject:</literal> message:
+</para><screen>'There are 12 apples' reject: [:i |i isDigit].
+&#8658; 'There are  apples' 
+</screen>
+<bridgehead renderas="sect2"><link linkend="formatString">formatString</link></bridgehead>
+<para>In <literal>String</literal>, search for the method category <option>format</option>, there
+you find the <literal>format:</literal> method:
+</para><screen>'Joe bought {1} apples and {2} oranges' format: #(5 4)
+&#8658;  'Joe bought 5 apples and 4 oranges' 
+</screen>
+
+
+<bridgehead renderas="sect2"><link linkend="spacewarVar">spacewarVar</link></bridgehead>
+<para>The <literal>SpaceWar</literal>, <literal>CentralStar</literal> and <literal>SpaceShip</literal>
+definitions with their added instance variable should look like:
+</para><screen>Object subclass: #SpaceWar
+   instanceVariableNames: 'centralStar ships torpedoes'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+
+Object subclass: #CentralStar
+   instanceVariableNames: 'mass'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+
+Object subclass: #SpaceShip
+   instanceVariableNames: 'position heading velocity
+      fuel torpedoes mass acceleration'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+</screen>
+<bridgehead renderas="sect2"><link linkend="spaceShipGetters">spaceShipGetters</link></bridgehead>
+<screen>SpaceShip&gt;&gt;position
+   ^ position
+
+SpaceShip&gt;&gt;velocity
+   ^ position
+
+SpaceShip&gt;&gt;mass
+   ^ mass
+</screen>
+<bridgehead renderas="sect2"><link linkend="spaceShipSetters">spaceShipSetters</link></bridgehead>
+<screen>SpaceShip&gt;&gt;position: aPoint
+   position := aPoint
+
+SpaceShip&gt;&gt;velocity: aPoint
+   velocity := aPoint
+
+Torpedo&gt;&gt;heading: aFloat
+   heading := aFloat
+</screen>
+<bridgehead renderas="sect2"><link linkend="shipHeading">shipHeading</link></bridgehead>
+<screen>SpaceShip&gt;&gt;left
+&quot;Rotate the ship to its left&quot;
+   heading := heading + 0.1
+
+SpaceShip&gt;&gt;right
+&quot;Rotate the ship to its right&quot;
+   heading := heading - 0.1
+</screen>
+<bridgehead renderas="sect2"><link linkend="shipAcceleration">shipAcceleration</link></bridgehead>
+<screen>SpaceShip&gt;&gt;push
+&quot;Init an acceleration boost&quot;
+   acceleration := 10
+
+SpaceShip&gt;&gt;unpush
+&quot;Stop the acceleration boost&quot;
+   acceleration := 0
+</screen>
+
+<bridgehead renderas="sect2"><link linkend="initCentralStar">initCentralStar</link></bridgehead>
+<screen>CentralStar&gt;&gt;initialize
+   super initialize.
+   mass := 8000.
+</screen>
+
+<!-- Chapter 4 -->
+</sect1>
+<sect1 label="" id="The-Collection-Way-of-Life-_0028Solutions_0029">
+<title>The Collection Way of Life</title>
+<bridgehead renderas="sect2"><link linkend="cutString">cutString</link></bridgehead>
+<para>Open the protocol browser on the class <literal>String</literal>, search for the
+method <literal>allButFirst:</literal> implemented in
+<literal>SequenceableCollection</literal>. Read its comment in its source code.
+</para><screen>'Hello My Friend' allButFirst: 6
+&#8658; 'My Friend'
+</screen>
+<bridgehead renderas="sect2"><link linkend="exeNegativeIntegers">exeNegativeIntegers</link></bridgehead>
+<screen>(-80 to: 50) asArray
+</screen>
+<bridgehead renderas="sect2"><link linkend="holeSet">holeSet</link></bridgehead>
+<screen>(1 to: 100) difference: (25 to: 75)
+&#8658; #(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21
+22 23 24 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91
+92 93 94 95 96 97 98 99 100) 
+</screen>
+<bridgehead renderas="sect2"><link linkend="oddNumbers">oddNumbers</link></bridgehead>
+<screen>(-20 to: 45) select: [:z | z odd]
+</screen>
+<bridgehead renderas="sect2"><link linkend="qtyPrime200">qtyPrime200</link></bridgehead>
+<screen>((101 to: 200) select: [:n | n isPrime]) size
+&#8658; 21 
+</screen>
+<bridgehead renderas="sect2"><link linkend="multiples7">multiples7</link></bridgehead>
+<screen>(1 to: 100) select:[:n | n isDivisibleBy: 7]
+&#8658; #(7 14 21 28 35 42 49 56 63 70 77 84 91 98) 
+</screen>
+<bridgehead renderas="sect2"><link linkend="oddNonPrime">oddNonPrime</link></bridgehead>
+<para>This solution, based on set operations and multiple use of the
+<literal>#select:</literal> message, is mostly compatible with the knowledge
+acquired at this point of the book.
+</para><screen>| primeNumbers nonPrimeNumbers |
+primeNumbers := (1 to: 100) select: [:n | n isPrime].
+nonPrimeNumbers := (1 to: 100) difference: primeNumbers.
+nonPrimeNumbers select: [:n | n odd]
+&#8658; #(1 9 15 21 25 27 33 35 39 45 49 51 55 57 63 65 69 75
+77 81 85 87 91 93 95 99) 
+</screen>
+<para>A shorter solution with logical operations we have not discussed so
+far:
+</para><screen>(1 to: 100) select:[:n | n isPrime not and: [n odd]]
+</screen>
+<bridgehead renderas="sect2"><link linkend="decodeCipher">decodeCipher</link></bridgehead>
+<screen>'Zpv!bsf!b!cptt' collect: [:c |
+   (c asciiValue - 1) asCharacter]
+&#8658; 'You are a boss' 
+</screen>
+<bridgehead renderas="sect2"><link linkend="alphabetCipher">alphabetCipher</link></bridgehead>
+<screen>($A to: $Z) collect: [:c |
+   (c asciiValue - 65 + 3 \\ 26 + 65) asCharacter]
+</screen>
+<para>Each character from A to Z is referenced by the <literal>c</literal> block
+parameter and converted to its Ascii
+value<footnote><para><ulink url="https://en.wikipedia.org/wiki/ASCII">https://en.wikipedia.org/wiki/ASCII</ulink></para></footnote>:
+<literal>c asciiValue</literal>. It is shifted of 65, so the A character
+counts as 0 and Z as 25 in the alphabet list. To apply the Caesar
+cipher, we send the message <literal>+ 3</literal> to the previous result.
+</para>
+<para>We are almost good, only the characters X, Y, Z will overflow the
+alphabet, indeed these characters will be ciphered as 26, 27, 28. To
+fix that we send <literal>\\ 26</literal> to the previous result, it is an
+old trick of programming: the reminder of the Euclidean division by 26
+frames the value between 0 and 25<footnote><para>It generalizes to the
+mathematics field of modular arithmetic,
+<ulink url="https://www.wikiwand.com/en/Modular_arithmetic">https://www.wikiwand.com/en/Modular_arithmetic</ulink></para></footnote>.
+</para>
+<para>Finally we shift back of 65 before converting from the Ascii value to
+the character.
+</para>
+
+<bridgehead renderas="sect2"><link linkend="encodeCaesar">encodeCaesar</link></bridgehead>
+<para>In the solution of <link linkend="alphabetCipher">alphabetCipher</link>, we just need to replace the
+characters interval with a string:
+</para><screen>'SMALLTALKEXPRESSION' collect: [:c |
+   (c asciiValue - 65 + 3 \\ 26 + 65) asCharacter]
+&#8658; 'VPDOOWDONHASUHVVLRQ' 
+</screen>
+<bridgehead renderas="sect2"><link linkend="decodeCaesar">decodeCaesar</link></bridgehead>
+<screen>  'DOHDMDFWDHVW' collect: [:c |
+    (c asciiValue - 65 - 3 \\ 26 + 65) asCharacter]
+&#8658; 'ALEAJACTAEST'
+</screen>
+<bridgehead renderas="sect2"><link linkend="collFirst">collFirst</link></bridgehead>
+<para>The appropriate message is <literal>#first:</literal>, defined in the parent
+class <literal>SequenceableCollection</literal>. You need to use the protocol or
+hierarchy browser on <literal>Array</literal> to discover it:
+</para>
+<screen>array1 first: 2
+&#8658; #(2 'Apple') 
+</screen>
+<bridgehead renderas="sect2"><link linkend="fillArray">fillArray</link></bridgehead>
+<para>You could simply do a thumb:
+</para>
+<screen>array1 at: 1 put: 'kiwi'.
+array1 at: 2 put: 'kiwi'.
+array1 at: 3 put: 'kiwi'.
+array1 at: 4 put: 'kiwi'.
+</screen>
+<para>Or even a bit less thumb:
+</para>
+<screen>1 to: array1 size do: [:index |
+   array1 at: index put: 'kiwi']
+</screen>
+<para>But if you search for carefully the <literal>Array</literal> protocol, you can
+just do:
+</para>
+<screen>array1 atAllPut: 'kiwi'.
+</screen>
+<bridgehead renderas="sect2"><link linkend="addAfter">addAfter</link></bridgehead>
+<para>In the <literal>OrderedCollection</literal> protocol search for the method
+<literal>add:after:</literal>.
+</para><screen>coll1 := {2 . 'Apple' . 2@1 . 1/3 } asOrderedCollection .		
+coll1 add: 'Orange' after: 'Apple'; yourself.
+&#8658;  an OrderedCollection(2 'Apple' 'Orange' 2@1 1/3) 
+</screen>
+<bridgehead renderas="sect2"><link linkend="setLetters">setLetters</link></bridgehead>
+<screen>Set  new
+   addAll: 'buenos d&#237;as';
+   addAll: 'bonjour';
+   yourself.
+&#8658;  a Set($e $j $o $a $u $b $  $&#237; $r $d $n $s) 
+</screen>
+<bridgehead renderas="sect2"><link linkend="nameColor">nameColor</link></bridgehead>
+<screen>colors keysDo: [:key |
+   colors at: key put: key asString capitalized].
+colors
+&#8658; a Dictionary(#blue-&gt;'Blue' #green-&gt;'Green' #red-&gt;'Red'
+#yellow-&gt;'Yellow' ) 
+</screen>
+<bridgehead renderas="sect2"><link linkend="initActorsCollections">initActorsCollections</link></bridgehead>
+<para>When the game starts there is no fired torpedoes, therefore
+<literal>torpedoes</literal> is an empty <literal>OrderedCollection</literal>,
+instantiated with the <literal>#new</literal> class message.
+</para>
+<para>In the other hand, the <literal>ships</literal> is an <literal>Array</literal>
+containing only two elements, the player ships. We use the
+<literal>#with:with</literal> class message to instantiate and populate the array
+with two ships created in the argument message.
+</para>
+<para>For the readability, we split the code in several lines with the
+appropriate indentation.
+</para>
+<screen>   torpedoes := OrderedCollection new.
+   ships := Array 
+      with: SpaceShip new
+      with: SpaceShip new.
+</screen>
+<bridgehead renderas="sect2"><link linkend="updateShipsTorpedoes">updateShipsTorpedoes</link></bridgehead>
+<screen>SpaceWar&gt;&gt;stepAt: msSinceLast
+  ships do: [:each | each update: msSinceLast / 1000 ].
+  ships do: [:each | each unpush ].
+  torpedoes do: [:each | each update: msSinceLast / 1000 ].
+</screen>
+
+
+<!-- Chapter 5 -->
+</sect1>
+<sect1 label="" id="Control-Flow-Messaging-_0028Solutions_0029">
+<title>Control Flow Messaging</title>
+<bridgehead renderas="sect2"><link linkend="blockDivisor">blockDivisor</link></bridgehead>
+<screen>| divisors |
+divisors := [:x | (1 to: x) select: [:d | x \\ d = 0] ].
+divisors value: 60.
+&#8658; #(1 2 3 4 5 6 10 12 15 20 30 60)
+divisors value: 45
+&#8658; #(1 3 5 9 15 45)
+</screen>
+<bridgehead renderas="sect2"><link linkend="implementingAndOr">implementingAndOr</link></bridgehead>
+<para>Check the implementations in <literal>Boolean</literal>, <literal>True</literal> and
+<literal>False</literal>.
+</para>
+<bridgehead renderas="sect2"><link linkend="categorizeTeleport">categorizeTeleport</link></bridgehead>
+<para>Once the method is edited and saved, in the <command>Method</command> pane select
+its name <command>teleport:</command> then do ...right click
+&#8594; <command>more...</command> &#8594; <command>change category...</command> &#8594;
+<command>events</command>...
+</para>
+<bridgehead renderas="sect2"><link linkend="categorizeControls">categorizeControls</link></bridgehead>
+<para>In the <command>Method</command> pane, select one uncategorized control method,
+then do ...right click &#8594; <command>more...</command>
+&#8594; <command>change category</command> &#8594; <command>new...</command> key-in
+<command>control</command>.
+</para>
+<para>To categorized the remaining uncategorized control methods, repeat but
+select <command>control</command> at the last step as this category now exists.
+</para>
+<bridgehead renderas="sect2"><link linkend="shipCollision">shipCollision</link></bridgehead>
+<para>We do not need an iterator to detect a collision between two
+ships. However we use an iterator to take action on each ship when a
+collision is detected.
+</para><screen>SpaceWar&gt;&gt;collisionsShips
+| positionA position B |
+   positionA := ships first morphPosition.
+   positionB := ships second  morphPosition.
+   (positionA dist: positionB) &lt; 25 ifTrue: [
+      ships do: [:each |
+         each flashWith: Color red.
+         self teleport: each]
+   ]
+</screen>
+<para>Local variables only used to ease the code source formatting in
+printed book.
+</para>
+<bridgehead renderas="sect2"><link linkend="torpedoSunCollision">torpedoSunCollision</link></bridgehead>
+<para>You just need to pick the appropriate code snippets from the
+referenced exercise and examples.
+</para><screen>SpaceWar&gt;&gt;collisionsTorpedoesStar
+| position |
+   position := centralStar morphPosition.
+   torpedoes do: [:each | 
+      (each morphPosition dist: position) &lt; 8 ifTrue: [
+         each flashWith: Color orange.
+         self destroyTorpedo: each]]
+</screen>
+
+<!-- Chapter 6 -->
+</sect1>
+<sect1 label="" id="Visual-with-Morph-_0028Solutions_0029">
+<title>Visual with Morph</title>
+
+<bridgehead renderas="sect2"><link linkend="allActorsMorph">allActorsMorph</link></bridgehead>
+<para>Just replace all <literal>Object</literal> occurrences with <literal>PlacedMorph</literal>:
+</para>
+<screen>PlacedMorph subclass: #SpaceWar
+   instanceVariableNames: 'centralStar ships torpedoes'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+
+PlacedMorph subclass: #CentralStar
+   instanceVariableNames: 'mass'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+
+PlacedMorph subclass: #SpaceShip
+   instanceVariableNames: 'name position heading velocity
+      fuel torpedoes mass acceleration'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+</screen>
+
+<bridgehead renderas="sect2"><link linkend="refactoryShipTorpedo">refactoryShipTorpedo</link></bridgehead>
+
+<screen>Mobile subclass: #SpaceShip
+   instanceVariableNames: 'name fuel torpedoes'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+
+Mobile subclass: #Torpedo
+   instanceVariableNames: 'lifeSpan'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+</screen>
+
+<!-- Chapter 7 -->
+</sect1>
+<sect1 label="" id="The-Fundamentals-of-Morph-_0028Solutions_0029">
+<title>The Fundamentals of Morph</title>
+
+<bridgehead renderas="sect2"><link linkend="exeCrossMorph">exeCrossMorph</link></bridgehead>
+<para>The <literal>drawOn:</literal> method is modified to draw two distinct,
+unconnected lines:
+</para>
+<screen>LineExampleMorph&gt;&gt;drawOn: aCanvas
+   aCanvas strokeWidth: 20 color: Color green do: [
+      aCanvas
+         moveTo: 0 @ 0;
+         lineTo: 200 @ 200;
+         moveTo: 200 @ 0;
+         lineTo: 0 @ 200 ]
+</screen>
+<para>Learn how the <literal>#moveTo:</literal> message moves the pencil to a given
+position with the pen up, then the <literal>#lineTo:</literal> asks the pencil to
+draw from that previous position to this new position.
+</para>
+<bridgehead renderas="sect2"><link linkend="exeRectMorph">exeRectMorph</link></bridgehead>
+<para>We create a <literal>RectangleExampleMorph</literal>, subclass of
+<literal>PlacedMorph</literal>:
+</para><screen>PlacedMorph subclass: #RectangleExampleMorph
+   instanceVariableNames: 'fillColor'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Morphic-Learning'
+</screen><para>Then its necessary methods to initialize and to draw the morph:
+</para><screen>initialize
+   super initialize .
+   fillColor := Color random alpha: 0.5
+
+drawOn: aCanvas
+   aCanvas
+      strokeWidth: 1
+      color: Color blue
+      fillColor: fillColor
+      do: [
+         aCanvas moveTo: 0 @ 0;
+            lineTo: 200 @ 0;
+            lineTo: 200 @ 100;
+            lineTo: 0 @ 100;
+            lineTo: 0 @ 0]
+</screen>
+<anchor id="E_002dexeRectMorph"/>
+<inlinemediaobject><imageobject><imagedata fileref="E-exeRectMorph.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+
+<bridgehead renderas="sect2"><link linkend="exeFancyClock">exeFancyClock</link></bridgehead>
+<para>Among the clock parts (submorphs) we only need to modify the drawing
+of the <literal>ClockSecondHandMorph</literal> class. The disc is surrounded with a
+thin red line and filled in yellow.
+</para><screen>ClockSecondHandMorph&gt;&gt;drawOn: aCanvas
+   aCanvas strokeWidth: 1.5 color: Color red do: [
+      aCanvas
+         moveTo: 0 @ 0;
+         lineTo: 85 @ 0 ].
+   aCanvas ellipseCenter: 0 @ -70 radius: 3 @ 3 
+      borderWidth: 1 
+      borderColor: Color red fillColor: Color yellow
+</screen>
+<bridgehead renderas="sect2"><link linkend="exeGasExhaust">exeGasExhaust</link></bridgehead>
+<para>On top of the <literal>drawOn:</literal> method, we also want the acceleration
+variable to take a range of values between 0 and 50.
+</para>
+<screen>SpaceShip&gt;&gt;push
+&quot;Init an accelaration boost&quot;
+   fuel isZero ifTrue: [^ self].
+   fuel := fuel - 1.
+   acceleration := (acceleration + 10) min: 50
+</screen>
+<screen>SpaceShip&gt;&gt;unpush
+&quot;Stop the accelaration boost&quot;
+   acceleration := acceleration - 5 max: 0
+</screen>
+<screen>drawOn: canvas
+../..
+&quot;Draw gas exhaust&quot;
+   acceleration ifNotZero: [
+      canvas
+         line: c
+         to: 0&#160;acceleration
+         width: 1 + acceleration / 8
+         color: Color orange].
+</screen>
+
+<bridgehead renderas="sect2"><link linkend="exeTorpedoExtent">exeTorpedoExtent</link></bridgehead>
+<para>The width of the torpedo is 4 pixels and its height 8 pixels:
+</para><screen>Torpedo&gt;&gt;morphExtent
+   ^ `4 @ 8`
+</screen>
+<bridgehead renderas="sect2"><link linkend="exeTorpedoDrawing">exeTorpedoDrawing</link></bridgehead>
+<para>The <literal>Torpedo</literal>&#8217;s <literal>drawOn:</literal> method is very similar to the
+one in <literal>SpaceShip</literal> class:
+</para><screen>Torpedo&gt;&gt;drawOn: canvas
+   | a b c |
+   a := 0 @ -4.
+   b := -2 @ 4.
+   c := 2 @ 4.
+   canvas line: a to: b width: 2 color: color.
+   canvas line: c to: b width: 2 color: color.
+   canvas line: a to: c width: 2 color: color.
+</screen>
+<bridgehead renderas="sect2"><link linkend="exeSpaceShipClassSideDiagram">exeSpaceShipClassSideDiagram</link></bridgehead>
+<para>We use a local variable because we use two times the vertices, one to
+draw the ship and a second time to draw the gas exhaust.
+</para><screen>SpaceShip&gt;&gt;drawOn: canvas
+   | vertices  |
+   vertices := self class vertices.
+   canvas line: vertices first to: vertices second width: 2 color: color.
+   canvas line: vertices second to: vertices third width: 2 color: color.
+   canvas line: vertices third to: vertices fourth width: 2 color: color.
+   canvas line: vertices fourth to: vertices first width: 2 color: color.
+   &quot;Draw gas exhaust&quot;
+   acceleration ifNotZero: [
+      canvas line: vertices third to: 0@35 width: 1 color: Color gray]
+</screen>
+<bridgehead renderas="sect2"><link linkend="exeDrawMobile">exeDrawMobile</link></bridgehead>
+<para>You need both to iterate each vertex of the <literal>vertices</literal> array
+and access the subsequent vertex by index. The arithmetic reminder
+operation <literal>#\\</literal> is needed to keep the index in the boundary of the
+collection.
+</para>
+<para>When <literal>size</literal> is 4 (Space ship diagram), the argument
+<literal>(i \\ size + 1)</literal> takes alternatively the following values:
+</para>
+<itemizedlist>
+<listitem><para><emphasis role="bold">i = 1</emphasis> =&gt; 1 \\ 4 + 1 = 1 + 1 = <emphasis role="bold">2</emphasis>
+</para>
+</listitem><listitem><para><emphasis role="bold">i = 2</emphasis> =&gt; 2 \\ 4 + 1 = 2 + 1 = <emphasis role="bold">3</emphasis>
+</para>
+</listitem><listitem><para><emphasis role="bold">i = 3</emphasis> =&gt; 3 \\ 4 + 1 = 3 + 1 = <emphasis role="bold">4</emphasis>
+</para>
+</listitem><listitem><para><emphasis role="bold">i = 4</emphasis> =&gt; 4 \\ 4 + 1 = 0 + 1 = <emphasis role="bold">1</emphasis>
+</para>
+</listitem></itemizedlist>
+<screen>Mobile&gt;&gt;drawOn: canvas polygon: vertices
+   | size |
+   size := vertices size.
+   vertices withIndexDo: [: aPoint :i |
+      canvas
+         line: aPoint
+         to: ( vertices at: (i  \\ size + 1) )
+         width: 2
+         color: color]
+</screen>
+<bridgehead renderas="sect2"><link linkend="exeAccurateDetection">exeAccurateDetection</link></bridgehead>
+<para>Just replace each morph position distance approach with the
+intersection detection between the morphs&#8217; display bounds:
+</para>
+<screen>SpaceWar&gt;&gt;collisionsShips
+   (ships first collides: ships second)
+   ../..
+
+SpaceWar&gt;&gt;collisionsShipsTorpedoes
+   ships do: [:aShip | 
+      torpedoes do: [:aTorpedo |
+         (aShip collides: aTorpedo)
+   ../..
+
+SpaceWar&gt;&gt;collisionsTorpedoesStar
+   torpedoes do: [:each | 
+      (each collides: centralStar)
+   ../..
+</screen>
+
+<!-- Chapter 8 -->
+</sect1>
+<sect1 label="" id="Events-_0028Solutions_0029">
+<title>Events</title>
+
+<bridgehead renderas="sect2"><link linkend="handleMouseOver">handleMouseOver</link></bridgehead>
+<para>The method <literal>handlesMouseOver:</literal>, implemented in the
+<literal>SpaceWar</literal> morph class, returns true so the game play is
+informed of mouse over events in dedicated methods.
+</para><screen>SpaceWar&gt;&gt;handlesMouseOver: event
+   ^ true
+</screen>
+<bridgehead renderas="sect2"><link linkend="mouseEnter">mouseEnter</link></bridgehead>
+<para>You need to browse the <literal>Morph&gt;&gt;handlesMouseOver:</literal> method and
+read the comment. It writes about a <literal>#mouseEnter:</literal> message; we
+implement the matching method in <literal>SpaceWar</literal> class with the
+behaviors previously described:
+</para><screen>SpaceWar&gt;&gt;mouseEnter: event
+   event hand newKeyboardFocus: self.	
+   self startStepping
+</screen>
+<bridgehead renderas="sect2"><link linkend="mouseLeave">mouseLeave</link></bridgehead>
+<para>The message <literal>#mouseLeave:</literal> is sent to our <literal>SpaceWar</literal> instance
+each time the mouse cursor move out (leaves) of the game
+play. Therefore we add the homonym method to the <literal>SpaceWar</literal>
+class:
+</para><screen>SpaceWar&gt;&gt;mouseLeave: event
+   event hand releaseKeyboardFocus: self.
+   self stopStepping
+</screen>
+<bridgehead renderas="sect2"><link linkend="keyboardEvent">keyboardEvent</link></bridgehead>
+<para>The <literal>#handlesKeyboard</literal> message is sent to a morph to know if it
+wants to receive keyboard event. The morph responds true to this
+message to state its interest on keyboard event. We implement the
+method in the <literal>SpaceWar</literal> class:
+</para><screen>SpaceWar&gt;&gt;handlesKeyboard
+   ^ true
+</screen>
+<bridgehead renderas="sect2"><link linkend="secondShipControl">secondShipControl</link></bridgehead>
+<para>We designate the characters as <literal>$w $a $s $d</literal>. We append the
+code below to the method <literal>SpaceWar&gt;&gt;keyStroke:</literal>
+</para><screen>key = $w ifTrue: [^ ships second push].
+key = $d ifTrue: [^ ships second right].
+key = $a ifTrue: [^ ships second left].
+key = $s ifTrue: [^ ships second fireTorpedo]
+</screen>
+<!-- Chapter 9 -->
+</sect1>
+<sect1 label="" id="Code-Management-_0028Solutions_0029">
+<title>Code Management</title>
+
+<bridgehead renderas="sect2"><link linkend="twoCategoriesOnePackage">twoCategoriesOnePackage</link></bridgehead>
+<orderedlist numeration="arabic">
+<listitem><para>In the System Browser, create two class categories: in its
+  most left pane menu select <command>add item... (a)</command> and key in one
+  category name at a time.
+</para>
+</listitem><listitem><para>Create two classes, in each category: <literal>TheCuisBook</literal>
+  subclass of <literal>Object</literal> and <literal>TheBookMorph</literal> subclass of
+  <literal>PlacedMorph</literal>.
+</para>
+<para>The two operations above are doable in one shot. Select any existing
+  category and key in the class definition with the category name:
+</para>
+<screen>PlacedMorph subclass: #TheBookMorph
+   instanceVariableNames: ''
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: '<emphasis role="bold">TheCuisBook-Views</emphasis>'
+</screen>
+<para>Once you save the class definition, the <literal>TheBookMorph</literal> class is
+   created &#8211; obviously &#8211; but also the <command>TheCuisBook-Views</command>
+   category!
+</para>
+</listitem><listitem><para>Go to the Installed Packages tool ...World menu
+   &#8594; <command>Open...</command> &#8594; <command>Installed Packages</command>...,
+   press the <command>new</command> button and key in <command>TheCuisBook</command>.
+</para>
+</listitem><listitem><para>Press the <command>save</command> button, you are done!
+</para>
+</listitem></orderedlist><!-- List of examples -->
+</sect1>
+</appendix>

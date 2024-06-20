@@ -1,0 +1,482 @@
+<chapter label="" id="Beginnings">
+<title>Beginnings</title>
+
+<blockquote><attribution>Alan Kay</attribution>
+<para>The computer is simply an instrument whose music is ideas.
+</para></blockquote>
+
+
+
+<para>Before getting into the details of how to use the Cuis-Smalltalk language and
+tools to build software, we need to understand the point of view,
+assumptions and intentions that shape how Cuis-Smalltalk is meant to be
+used. We can call this the Smalltalk philosophy of programming.
+</para>
+
+<sect1 label="" id="Historical-Context">
+<title>Historical Context</title>
+
+<para>One major idea in software is that programming is merely giving a
+computer a set of instructions to solve some problem.  In this point
+of view, the only value of software is to achieve a result, and therefore, a piece
+of software is only as interesting as having that problem solved.
+Furthermore, as programming is not interesting by itself, it
+is left to a professional guild with a specialized technical knowledge of how to
+write software, and the rest of the world just ignores it.
+</para>
+<para>Our focus is on one thread in the history of powerful ideas which give
+a different lens through which to explore software development.
+The historical development of these ideas differs from 
+the <emphasis>just solve a problem</emphasis> view. We think this is worth
+revisiting. 
+</para>
+<para>The first clear vision of an automated information processor to augment
+our collective memory, to find and share knowledge &#8211; indeed to transform the 
+data explosion into an information explosion, and then into a knowledge and 
+understanding explosion &#8211; was called Memex and described in the Vannevar Bush 
+essay &#8220;As We May Think&#8221; in 1945
+<footnote><para><ulink url="https://en.wikipedia.org/wiki/As_We_May_Think">https://en.wikipedia.org/wiki/As_We_May_Think</ulink></para></footnote>.
+Bush&#8217;s description of the possibility of developing a Memex processing system
+to help individuals access, evolve and capture knowledge 
+for our collective benefit
+inspired many later thinkers and inventors in the development
+of personal computers, networks, hypertext, search engines, and
+knowledge repositories such as Wikipedia
+<footnote><para>Notable early milestones in this line of
+development were Ivan Sutherland&#8217;s Sketchpad (1963), the RAND tablet
+(1964), and Doug Engelbart&#8217;s NLS (&quot;oN-Line System&quot;) (1968). Later
+developments include Ted Nelson&#8217;s Xanadu, the Apple Macintosh, the
+World Wide Web, smartphones and tablet computers.</para></footnote>.
+</para>
+<para>As computational machinery evolved from large, single program at a time mainframes,
+into timesharing mainframes, and into minicomputers, another area of 
+insight was developing with models of how humans learn 
+<footnote><para>Early notables
+here are J. Piaget, J. Brunner, O. K. Moore, and S. Papert.</para></footnote>.
+People began to talk of <firstterm>human-computer symbiosis</firstterm>.
+Alan Kay
+conceived the idea that computer software and computer programming
+could become a new medium for expressing thoughts and knowledge. The
+ability to express ideas in this new medium would be the new
+literacy. Every person should learn to read and write in this new
+digital medium, and would have available their own dynamic book, a <firstterm>Dynabook</firstterm>
+<footnote><para>&#8220;A personal computer for children of all ages&#8221;(1972) <ulink url="http://www.vpri.org/pdf/hc_pers_comp_for_children.pdf">http://www.vpri.org/pdf/hc_pers_comp_for_children.pdf</ulink></para></footnote>
+<footnote><para>&#8220;Personal Dynamic Media&#8221;(1977) <ulink url="http://www.vpri.org/pdf/m1977001_dynamedia.pdf">http://www.vpri.org/pdf/m1977001_dynamedia.pdf</ulink></para></footnote>
+to accomplish this.
+</para>
+<para>Very readable accounts of historic developments are Alan Kay&#8217;s papers
+&#8220;The Early History of Smalltalk&#8221; <footnote><para><ulink url="http://worrydream.com/EarlyHistoryOfSmalltalk">http://worrydream.com/EarlyHistoryOfSmalltalk</ulink></para></footnote> and 
+&#8220;What is a Dynabook?&#8221; <footnote><para><ulink url="http://www.vpri.org/pdf/hc_what_Is_a_dynabook.pdf">http://www.vpri.org/pdf/hc_what_Is_a_dynabook.pdf</ulink></para></footnote>
+in which he notes <emphasis>The best way to predict the future is to invent it</emphasis>.
+Realizing the Dynabook vision required significant advances and
+mutually supporting development of
+hardware and software. The original development took place at the
+Xerox PARC research center in the 1970&#8217;s. The first <emphasis>interim
+Dynabook</emphasis> hardware was the Xerox Alto, generally considered the first
+personal computer. The software system was Smalltalk. The design of both
+was guided by the objectives of making <emphasis>Personal Dynamic Media</emphasis>
+and the Dynabook real. The final version of Smalltalk built at Xerox
+was Smalltalk-80.
+</para>
+<para>Given the relatively weak capabilities of computer hardware at that
+time, implementing this vision presented real challenges, and much
+creativity was called for.  Today, smartphones, tablets and laptops do
+have the hardware capabilities a Dynabook requires. However, the same
+advance hasn&#8217;t happened for the medium of personal software. 
+</para>
+<para>In 1981 Dan Ingalls, one of the early Smalltalk inventors, wrote in his
+article &#8220;Design Principles Behind Smalltalk&#8221;
+<footnote><para><ulink url="http://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html">http://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html</ulink></para></footnote>
+a number of principles that still guide us today. Among these:
+</para><blockquote><para><emphasis role="bold">Personal Mastery.</emphasis> If a system is to serve the creative
+spirit, it must be entirely comprehensible to a single individual.
+</para>
+<para><emphasis role="bold">Reactive Principle.</emphasis> Every component accessible to the user
+should be able to present itself in a meaningful way for observation
+and manipulation.
+</para></blockquote>
+<para>With the commercialization of software, the trend has been to give people
+&#8220;shrink wrapped&#8221; applications which are sealed off and written
+by professional software developers. One may customize an
+application by changing &#8220;user settings&#8221;, but there is no way
+to see into or change deep capabilities.
+</para>
+<para>In keeping with the ideal of personal media literacy,
+we believe that everyone should have full access to the software that
+runs our systems.  Understanding and exploring computer systems
+requires writing software in ways that can be read and shared.
+</para>
+<para>The thinking change in problem solving can shift from <emphasis>What can I
+do here with what I am presented?</emphasis> to asking <emphasis>What tools do I
+need to be successful here?</emphasis> and then building them to be ever more
+successful.
+</para>
+<para>This way of thinking about software systems is important to us.
+</para>
+<para>For this reason, Cuis is a <emphasis>kernel</emphasis> Smalltalk system which is still rather
+close to Smalltalk-80. 
+The Cuis-Smalltalk goal is to be a small, coherent Smalltalk
+development environment that, with study, is
+comprehensible to a single person.
+</para>
+<para>As we experiment with and evolve Cuis, this goal is carried out by removing everything
+possible from the base system which is not essential, and by having a
+composition strategy which allows one to write or add any features as 
+needed.  As one gains understanding of the software kernel or core, one only
+has to read and learn from each additional feature at a time to understand the whole.
+</para>
+<para>Modern, open software environments are highly complex.
+Cuis is an attempt to remain oriented and able to discover
+patterns without being lost in a large wealth of possibilities
+which one does not completely grasp.
+</para>
+<para>It is said that one understands the world by building it.  Developing fluency and depth in
+a new medium takes time and practice.
+</para>
+<para>We invite you to become fluent and look forward to sharing with us what you have built.
+</para>
+<para>First, however, we must start with some of the mechanics.
+</para>
+<para>As the saying goes &#8220;A journey of a thousand miles begins with a single step&#8221;
+<footnote><para><ulink url="https://en.wikipedia.org/wiki/A_journey_of_a_thousand_miles_begins_with_a_single_step">https://en.wikipedia.org/wiki/A_journey_of_a_thousand_miles_begins_with_a_single_step</ulink></para></footnote>.
+</para>
+<para>Let&#8217;s step forward together.
+</para></sect1>
+<sect1 label="" id="Installing-and-configuring-Cuis_002dSmalltalk">
+<title>Installing and configuring Cuis-Smalltalk</title>
+<para>Cuis-Smalltalk is an environment and a programming language executed on an
+idealized virtual computer. It is based on two major components:
+the Smalltalk <firstterm>virtual machine</firstterm> conceptualizing this virtual
+computer and an <firstterm>image</firstterm> representing the state of this computer.
+</para>
+<para>The virtual machine is an executable program running on a dedicated
+host (GNU/Linux, Mac OS X, Windows, etc.). It is called the <firstterm>Open
+Smalltalk Virtual Machine</firstterm>, or Squeak <acronym>VM</acronym> in short. There are
+different flavors of <acronym>VM</acronym>, for various combinations of Operating
+System and CPU architecture. Therefore, one <acronym>VM</acronym> compiled
+for Windows on Intel architecture will not work in Linux on
+ARM architecture. You need the specific <acronym>VM</acronym> compiled for
+the combination of Operating System and CPU architecture
+your computer is based on.
+</para>
+<para>The <emphasis>image</emphasis> is a regular file feeding the <acronym>VM</acronym> with all the objects
+defining the state of the virtual computer. These objects are
+classes, methods, instances of those classes as numbers, strings,
+windows, debuggers &#8211; whatever existed when the state of the virtual
+computer was saved. An <firstterm>image file</firstterm> saved on a given Operating System
+and CPU architecture <emphasis role="bold">will run identically on another system</emphasis> 
+requiring only a compatible <acronym>VM</acronym> to be used.
+</para>
+<para>The <acronym>VM</acronym> allows an image to be restarted with windows in the same locations
+between different operating systems and different CPU architectures
+without recompilation.  This is what <firstterm>portability</firstterm> means to us.
+</para>
+<para>What makes Cuis-Smalltalk special is the living entities in the image: its
+class population and arrangement, how the classes inherit from each
+other. The class count is typically less than 700.
+</para>
+<para>To get you started easily, we encourage you to install
+<ulink url="https://sites.google.com/view/cuis-university/descargas">Cuis-University</ulink><footnote><para><ulink url="https://sites.google.com/view/cuis-university/descargas">https://sites.google.com/view/cuis-university/descargas</ulink></para></footnote>. Here
+you will find bundles for GNU/Linux, Mac OS X and Windows on Intel
+architecture. These bundles come with the dedicated <acronym>VM</acronym> and a recent
+image of Cuis-Smalltalk; as well packages ready to be installed to make your
+life easier when you experience the examples and exercises of the
+book. By the time you read this book, Cuis-Smalltalk will likely have evolved
+to a newer version.  What you learn here should, however, be
+easily transferable.
+</para>
+<para>To get Cuis-Smalltalk running on your computer, extract the bundle and
+execute the run script on Windows/Linux &#8211; <filename>run.bat</filename> or
+<filename>run.sh</filename> &#8211; on OS X launch the Squeak application. Once you get
+Cuis-Smalltalk running, read the information displayed on the windows. When
+you are done, you can close these windows and adjust Cuis-Smalltalk to your
+preferences.
+</para>
+<para>The Cuis University distribution should work for most common platforms,
+but there are always more platform variants than we can test for.
+<emphasis role="bold">If you have a problem</emphasis>, here are two sources of information.  If you
+do <emphasis>not</emphasis> have a problem, you can ignore these for now.
+</para><itemizedlist><listitem><para>Current installation instructions at the GitHub Cuis Repository:
+<ulink url="https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev#setting-up-cuis-in-your-machine">https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev#setting-up-cuis-in-your-machine</ulink>
+</para></listitem><listitem><para>Ask us on the Cuis email group
+<ulink url="https://lists.cuis.st/mailman/listinfo/cuis-dev">https://lists.cuis.st/mailman/listinfo/cuis-dev</ulink>
+</para></listitem></itemizedlist>
+<sect2 label="">
+<title>Editing your preferences</title>
+<para>Once you read the information on the default windows, the next thing
+you want to do is to adjust visual properties to fit your preferences
+and needs. To do so, access the World menu
+...Background click &#8594; <command>Preferences...</command>
+then select the pin on the top right of the menu to make it
+permanent. Here you have the most important options: the choice for
+the <emphasis role="bold">font size</emphasis>, the <emphasis role="bold">themes</emphasis> whenever your prefer light
+or dark colouring. There are other preferences you can explore by
+yourself. Once you are done, do ...World menu &#8594;
+<command>Save</command>... to make your preferences permanent. In this book, we
+keep the default Cuis-Smalltalk theme, we suggest you do the same so your
+environment reflects the book screenshots.
+</para>
+<anchor id="ch01_002dPreferences"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-Preferences.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+</sect2>
+<sect2 label="">
+<title>Fun with window placement</title>
+<indexterm role="cp"><primary>tools</primary><secondary>workspace</secondary></indexterm><para>The first tool to discover is the <firstterm>Workspace</firstterm> tool. It is a kind
+of text editor to key in Smalltalk code you can execute
+immediately. Do ...World menu &#8594;
+<command>Open...</command> &#8594; <command>Workspace</command>...
+</para>
+<para>Now we will ask Cuis-Smalltalk to change the window&#8217;s placement: click the blue icon
+(top left) to access the window&#8217;s options menu and experiment with the white
+area to place the Workspace window at the half left of the Cuis-Smalltalk
+environment.
+</para>
+<anchor id="ch01_002dimg1a"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-img1a.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>The <command>resize...</command> option offers even more freedom to place the
+window. Try the following exercise:
+</para>
+<anchor id="exePlacement"/>
+<para><emphasis>Use the
+<command>resize...</command> option to place the Workspace centered in the Cuis-Smalltalk
+environment.</emphasis>
+</para>
+
+
+</sect2>
+</sect1>
+<sect1 label="" id="Writing-your-first-scripts">
+<title>Writing your first scripts</title>
+<para>In this section you will learn how to write simple scripts in the
+Workspace to get a taste and feel for Smalltalk code. The
+examples are associated with small exercises to experiment with and
+accompanied with solutions in the appendix. We intentionally kept the
+details of the syntax out of this section.
+</para>
+<para>In a Workspace, the usual <emphasis>Hello World!</emphasis> program can be written
+in Smalltalk:
+</para>
+<anchor id="hello"/>
+<screen>Transcript show: 'Hello World!'
+</screen>
+
+<indexterm role="cp"><primary>tools</primary><secondary>transcript</secondary></indexterm><para>To execute this code, select it with the mouse and over it do
+...right mouse click &#8594; <command>Do it (d)</command>...
+You may now see nothing happen! Indeed to see the output, you need a
+<firstterm>Transcript</firstterm> window to be visible.  The <literal>Transcript</literal> is a
+place where a programmer can send information to the user as we are
+doing here. Do ...World menu &#8594; <command>Open...</command>
+&#8594; <command>Transcript</command>... and execute the code again.
+</para>
+<anchor id="ch01_002dimg2"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-img2.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>The workspace code has three parts:
+</para>
+<itemizedlist>
+<listitem><para>the string literal <literal>'Hello World!'</literal>  
+</para>
+</listitem><listitem><para>the message <literal>#show:</literal> with its argument <literal>'Hello World!'</literal>
+</para>
+</listitem><listitem><para>the class <literal>Transcript</literal> receiving the message <literal>#show:</literal> with its argument
+</para>
+</listitem></itemizedlist>
+<indexterm role="cp"><primary>shortcut</primary><see>keyboard shortcut</see></indexterm>
+<indexterm role="cp"><primary>keyboard shortcut</primary><secondary>select all code (<userinput>Ctrl-a</userinput>)</secondary></indexterm><indexterm role="cp"><primary>keyboard shortcut</primary><secondary>executing code (<userinput>Ctrl-d</userinput>)</secondary></indexterm><para>The action of printing takes place in the class
+<literal>Transcript</literal>. The code execution is also invoked with keyboard
+shortcuts <userinput>Ctrl-a</userinput> (<emphasis>select <emphasis role="bold">A</emphasis>ll</emphasis>) then <userinput>Ctrl-d</userinput>
+(<emphasis><emphasis role="bold">D</emphasis>o it</emphasis>).
+</para>
+<anchor id="hello2"/>
+<screen>Transcript show: 'Hello World!'.
+Transcript newLine.
+Transcript show: 'I am Cuising'
+</screen>
+
+<para>In this three line script, observe how the lines are separated by a
+dot &#8220;.&#8221;. This dot (or period) is a line separator so it is not needed in the
+third line nor in a one line script. The message <literal>#newLine</literal> has no
+argument.
+</para>
+<indexterm role="cp"><primary>string</primary></indexterm>
+<para>A <firstterm>String</firstterm> is the way text is represented in a programming
+language, it is a collection of characters. We already met string with
+our first script, it is enclosed in single quotes: <literal>'hello
+world!'</literal>. We capitalize it with the <literal>#capitalized</literal> message:
+</para>
+<indexterm role="cp"><primary>string</primary><secondary><literal>capitalized</literal></secondary></indexterm><screen>Transcript show: 'hello world!' capitalized
+&#8658; 'Hello world!' 
+</screen>
+<indexterm role="cp"><primary>string</primary><secondary><literal>asUppercase</literal></secondary></indexterm><para>To convert all the characters to capitals use the <literal>#asUppercase</literal> message:
+</para>
+<screen>Transcript show: 'hello world!' asUppercase
+&#8658; 'HELLO WORLD!'
+</screen>
+<indexterm role="cp"><primary>string</primary><secondary>concatenate</secondary></indexterm><para>Two strings are concatenated with the <literal>#,</literal> message:
+</para>
+<anchor id="concatenateStrings"/>
+<screen>Transcript show: 'Hello '&#44; 'my beloved '&#44; 'friend'
+&#8658; 'Hello my beloved friend'
+</screen>
+
+<anchor id="concatenateUppercase"/>
+<para><emphasis>Add a message to modify <link linkend="concatenateStrings">concatenateStrings</link> to output
+&#8217;Hello MY BELOVED friends&#8217;.</emphasis>
+</para>
+
+
+<sect2 label="">
+<title>Fun with numbers</title>
+<indexterm role="cp"><primary>number</primary><secondary>integer</secondary></indexterm><indexterm role="cp"><primary>interger</primary><see>number</see></indexterm>
+<indexterm role="cp"><primary>keyboard shortcut</primary><secondary>execute and print result (<userinput>Ctrl-p</userinput>)</secondary></indexterm>
+<para>In your Workspace, to compute a factorial execute the example below
+with <userinput>Ctrl-a</userinput> then <userinput>Ctrl-p</userinput> (<emphasis><emphasis role="bold">P</emphasis>rint it</emphasis>):
+</para><screen>100 factorial
+&#8658;  9332621544394415268169923885626670049071596826438162146859
+29638952175999932299156089414639761565182862536979208272237582
+51185210916864000000000000000000000000
+</screen>
+<para>Cuis-Smalltalk handles very large integer numbers without requiring a
+special type declaration or method. To convince yourself try the example below:
+</para><screen>10000 factorial / 9999 factorial
+&#8658; 10000
+</screen>
+<para>If you execute and print with <userinput>Ctrl-p</userinput> the code: <literal>10000
+factorial</literal>, you will see that it takes far more time to print one factorial result 
+than to compute two factorials and divide them. The result is an integer
+as expected, not a scaled decimal number as many computer languages
+will return.
+</para>
+<indexterm role="cp"><primary>number</primary><secondary>rational (fraction)</secondary></indexterm><indexterm role="cp"><primary>rational (fraction)</primary><see>number</see></indexterm>
+<indexterm role="cp"><primary>fraction</primary><see>number</see></indexterm>
+
+<para>As we are discussing division, you may not get the result you expect:
+</para><screen>15 / 4
+&#8658; 15/4
+</screen>
+<para>It looks like Cuis-Smalltalk is lazy because it does not answer the decimal
+number <literal>3.75</literal> as we were expecting. In fact Cuis-Smalltalk wants to
+be as accurate as possible, and its answer is a rational number! After
+all, a fraction is just a division we are too lazy &#8211; because it
+is troublesome &#8211; to compute, Cuis-Smalltalk does just that!
+</para>
+<para>Try out this to understand what is happening underneath:
+</para><screen>(15 / 4) + (1 / 4)
+&#8658; 4
+</screen>
+<para>Is it not wonderful? Cuis-Smalltalk computes with rational numbers. We
+started with division and addition operations on integer, and we got
+an accurate result thanks to intermediate computation on rational
+numbers.
+</para>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+In the example, observe how the parentheses are used
+although in arithmetic calculation the division is performed first. With
+Cuis-Smalltalk you need to specify the order of operations with
+parentheses. We will explain why later.
+</para>
+<anchor id="inverseSum"/>
+<para><emphasis>Write the code to compute the
+sum of the first four integer inverses. 4 inverted is 1/4</emphasis>
+</para>
+
+
+<para>Integers can be printed in different forms with the appropriate
+message:
+</para>
+<indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>roman</tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>as words</tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>base</tertiary></indexterm><screen>2020 printStringRoman &#8658; 'MMXX' 
+2020 printStringWords  &#8658; 'two thousand, twenty'
+&quot;Number as the Maya did&quot;
+2020 printStringBase: 20 &#8658; '510'
+</screen>
+<anchor id="capWordNumber"/>
+<para><emphasis>Print 2020 as
+words, capitalized.</emphasis>
+</para>
+
+
+
+<indexterm role="cp"><primary>number</primary><secondary>literal</secondary></indexterm><indexterm role="cp"><primary>literal</primary><secondary>number</secondary></indexterm><para>The integer and float numbers we have played with are <firstterm>Numeric
+Literals</firstterm>. Literals are building blocks of the language and considered as
+constant expressions.  They literally are as they appear.
+</para>
+<para>There are several syntax variants which denote a number:
+</para>
+<informaltable><tgroup cols="2"><colspec colwidth="45*"></colspec><colspec colwidth="55*"></colspec><thead><row><entry><para>Numeric literal                    </para></entry><entry><para>What it represents
+   </para></entry></row></thead><tbody><row><entry><para><literal>1</literal>                       </para></entry><entry><para>integer (decimal notation)
+   </para></entry></row><row><entry><para><literal>2r101</literal>                   </para></entry><entry><para>integer (binary radix)
+   </para></entry></row><row><entry><para><literal>16rFF</literal>                   </para></entry><entry><para>integer (hexadecimal radix)
+   </para></entry></row><row><entry><para><literal>1.5</literal>                     </para></entry><entry><para>floating point number
+   </para></entry></row><row><entry><para><literal>2.4e7</literal>                   </para></entry><entry><para>floating point (exponential notation)
+</para></entry></row></tbody></tgroup></informaltable>
+<para>Depending on the value we need to use, we can mix these literal
+representations:
+</para>
+<screen>16rA + 1 + 5e-1 + 6e-2
+&#8658; 289/25
+</screen>
+</sect2>
+</sect1>
+<sect1 label="" id="Spacewar_0021">
+<title>Spacewar!</title>
+<para>The Spacewar! game was initially developed in 1962 by Steve Russell on
+a DEC PDP-1 minicomputer. It is said to be the first known video game
+installed on several computers and it was very popular in the
+programming community in the 1960s. It was ported and rewritten
+several times to different hardware architectures and complemented with
+additional features. <emphasis>Computer Space</emphasis>, the first arcade video
+game cabinet was a clone of Spacewar!
+</para>
+<anchor id="ch01_002dSpacewarPDP"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-SpacewarPDP.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Wikipedia describes very precisely this space combat simulation game:
+</para>
+<blockquote><attribution>Wikipedia, <ulink url="https://en.wikipedia.org/wiki/Spacewar!#Gameplay">Spacewar!</ulink></attribution>
+<para>The gameplay of Spacewar! involves two monochrome spaceships called
+&quot;the needle&quot; and &quot;the wedge&quot;, each controlled by a player, attempting
+to shoot one another while maneuvering on a two-dimensional plane in
+the gravity well of a star, set against the backdrop of a
+starfield. The ships fire torpedoes, which are not affected by
+the gravitational pull of the star. The ships have a limited number of
+torpedoes and supply of fuel, which is used when the player fires the
+ship&#8217;s thrusters. Torpedoes are fired one at a time by flipping a
+toggle switch on the computer or pressing a button on the control pad,
+and there is a cooldown period between launches. The ships remain in
+motion even when the player is not accelerating, and rotating the
+ships does not change the direction of their motion, though the ships
+can rotate at a constant rate without inertia.
+</para>
+<para>Each player controls one of the ships and must attempt to shoot down
+the other ship while avoiding a collision with the star or the
+opposing ship. Flying near the star can provide a gravity assist to
+the player at the risk of misjudging the trajectory and falling into
+the star. If a ship moves past one edge of the screen, it reappears on
+the other side in a wraparound effect.
+</para></blockquote>
+<para>Therefore, the protagonists of the game are:
+</para>
+<orderedlist numeration="arabic"><listitem><para>a <emphasis role="bold">central star</emphasis> generating a gravity field,
+</para>
+</listitem><listitem><para>a <emphasis role="bold">star field</emphasis> background,
+</para>
+</listitem><listitem><para>two <emphasis role="bold">space ships</emphasis> called <emphasis>the needle</emphasis> and <emphasis>the
+ wedge</emphasis> controlled by two players.
+</para>
+</listitem><listitem><para><emphasis role="bold">torpedoes</emphasis> fired by the space ships.
+</para>
+</listitem></orderedlist>
+<anchor id="ch01_002dSpacewarGameplay"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-SpacewarGameplay.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+
+<!-- -->
+</sect1>
+</chapter>

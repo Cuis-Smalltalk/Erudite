@@ -1,0 +1,33 @@
+<appendix label="" id="Documents-Copyright">
+<title>Documents Copyright</title>
+
+<para>Part of the syntax chapter from the <emphasis>Squeak by Example</emphasis> book was
+borrowed and edited in the present book.
+
+
+Copyright &#169; 2007, 2008, 2009 by Andrew P. Black,
+St&#233;phane Ducasse, Oscar Nierstrasz and Damien Pollet.
+</para>
+<bridgehead renderas="sect2"><link linkend="ch01_002dSpacewarPDP">ch01-SpacewarPDP</link></bridgehead>
+<para>Spacewar running on PDP-1, Joi Ito, 12 May 2007, resized,
+
+
+https://www.flickr.com/photos/35034362831@N01/494431001
+
+
+https://creativecommons.org/licenses/by/2.0/deed.en
+</para>
+<bridgehead renderas="sect2"><link linkend="goldberg1">Adele Goldberg quote</link></bridgehead>
+<para>Oral History of Adele Goldberg, Computer History Museum, 10 May 2010
+</para>
+<bridgehead renderas="sect2">Cuis-Smalltalk mascot</bridgehead>
+<informalfigure><mediaobject><imageobject><imagedata fileref="CuisLogo.jpg" format="JPG"></imagedata></imageobject></mediaobject></informalfigure>
+
+
+<para>The southern mountain cavy (Microcavia australis) is a species of
+South American rodent in the family Caviidae.
+
+
+Copyright &#169; Euan Mee
+<!-- Summary of syntax -->
+</para></appendix>

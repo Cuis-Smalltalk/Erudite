@@ -1,0 +1,1179 @@
+<chapter label="" id="Class-_002d-Model-of-Communicating-Entities">
+<title>Class, Model of Communicating Entities</title>
+
+<anchor id="goldberg1"/><blockquote><attribution>Adele Goldberg</attribution>
+<para>If I give you something that you can play with and extend, even a
+piece of paper with a paragraph and I say it&#8217;s not written well,
+rewrite it, that&#8217;s easier than giving you nothing and say make
+something; you know, giving a blank sheet of paper and starting to
+write.  So the lovely part that has proven true for professional
+programmers as well as kids is when you start with something, an
+object that does something, and then you put many objects like those
+together and have them interact, and then you extend and make them
+behave a little differently, you can take a very incremental approach
+to learning how to control a computer system.
+</para></blockquote>
+
+
+
+<para>Cuis-Smalltalk is a pure object-oriented programming (OOP) language. All the
+entities in the language: integers, floats, rational numbers, strings,
+collections, blocks of code, and so forth &#8211; every instance usable as a
+noun in Smalltalk &#8211; is an object.
+</para>
+
+
+<sect1 label="" id="Understanding-Object-Oriented-Programming">
+<title>Understanding Object-Oriented Programming</title>
+
+<para>But just what is an object?
+</para>
+<para>At its simplest, an object has two components:
+</para>
+<itemizedlist>
+<listitem><para><emphasis role="bold">Internal state.</emphasis> This is embodied by variables
+   known only to the object. A variable only visible within the object
+   is called a <firstterm>private</firstterm> variable. As a consequence, it is impossible
+   &#8211; if the object decides so &#8211; to know the internal state of the object
+   from another object.
+</para>
+</listitem><listitem><para><emphasis role="bold">A repertoire of behaviors.</emphasis> These are the messages
+   an object instance responds to. When the object
+   receives a message it understands, it gets its behavior from a
+   method with that name known by its class or superclass.
+</para>
+</listitem></itemizedlist>
+<indexterm role="cp"><primary>class</primary></indexterm>
+<indexterm role="cp"><primary>subclass</primary></indexterm>
+<indexterm role="cp"><primary>instance</primary></indexterm>
+<indexterm role="cp"><primary>selector</primary></indexterm>
+<para>The method name is called a <firstterm>selector</firstterm> because it is used to select
+which behavior is invoked. For example, in <literal>'hello' at: 1 put: $B</literal>,
+the method invoked has the selector <literal>#at:put:</literal> and the arguments
+<literal>1</literal> and <literal>$B</literal>.  All selectors are symbols.
+</para>
+<para>Object instances are created &#8211; <firstterm>instantiated</firstterm> &#8211;
+following a model or template. This model is known as its <firstterm>Class</firstterm>.
+All instances of a class share the same methods and so react in the same ways.
+</para>
+<para>For example, there is one class <literal>Fraction</literal> but many
+fractions (1/2, 1/3, 23/17, ...) which all behave the way
+we expect fractions to behave.  The class <literal>Fraction</literal>
+and the classes it inherits from define this common behavior,
+as we will now describe.
+</para>
+
+<indexterm role="cp"><primary>variable</primary><secondary>instance</secondary></indexterm><indexterm role="cp"><primary>instance variable</primary></indexterm>
+<para>A given class declares its internal variables &#8211; states &#8211; and the
+behavior by implementing the methods.  A variable is basically a named
+box that can hold any object.  Each instance variable of a class gets its own
+box with the common name.
+</para>
+<indexterm role="cp"><primary>number</primary><secondary>rational (fraction)</secondary></indexterm><para>Lets see how the <literal>Fraction</literal> class is declared:
+</para>
+<screen>Number subclass: #Fraction
+   instanceVariableNames: 'numerator denominator'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Kernel-Numbers'
+</screen>
+<para>As expected there are two variables &#8211; named <firstterm>instance variables</firstterm>
+&#8211; to define the <literal>numerator</literal> and <literal>denominator</literal> of
+a fraction.  Each instance of fraction has its own numerator and its
+own denominator.
+</para>
+<indexterm role="cp"><primary>superclass</primary></indexterm>
+<para>From this declaration, we observe there is a hierarchy in
+the class definition: <literal>Fraction</literal> is a kind of
+<literal>Number</literal>. This means a fraction inherits the internal state
+(variables) and behavior (methods) defined in the <literal>Number</literal>
+class. <literal>Fraction</literal> is called a <firstterm>subclass</firstterm> of <literal>Number</literal>,
+and so naturally we call <literal>Number</literal> a <firstterm>superclass</firstterm> of <literal>Fraction</literal>.
+</para>
+<indexterm role="cp"><primary>class</primary><secondary>inheritance</secondary></indexterm><para>A Class specifies the behavior of all of its instances.  It is useful
+to be able to say <emphasis>this object is like that object, but with these
+differences</emphasis>.  We do this in Smalltalk by having classes inherit instance
+state and behavior from their parent Class.  This child, or subclass
+then specifies just the instance state and behavior that is different
+from its parent, retaining all the unmodified behaviours.
+</para>
+<para>This aspect of object-oriented programming is called
+<firstterm>inheritance</firstterm>. In Cuis-Smalltalk, each class inherits from one parent
+class.
+</para>
+<indexterm role="cp"><primary>polymorphism</primary></indexterm>
+
+<para>In Smalltalk, we say that each object decides for itself how it
+responds to a message.  This is called <firstterm>polymorphism</firstterm>.  The same
+message selector may be sent to objects of different Classes.  The
+<emphasis>shape</emphasis> (morph) of the computation is different depending on the
+specific class of the <emphasis>many</emphasis> (poly) possible classes of the
+object receiving the message.
+</para>
+<para>Different kinds of objects respond to the same <literal>#printString</literal>
+message in different, but appropriate ways.
+</para>
+<!-- instance creation -->
+<indexterm role="cp"><primary>instance</primary><secondary>creation</secondary></indexterm><indexterm role="cp"><primary>class</primary><secondary>method</secondary></indexterm><indexterm role="cp"><primary>method</primary><secondary>class method</secondary></indexterm><para>We have already met fractions. Those fractions are objects called
+<firstterm>instance</firstterm>s of the class <literal>Fraction</literal>. To create an instance
+we wrote <literal>5 / 4</literal>, the mechanism is based on message sending
+and polymorphism.  Let us look into how this works.
+</para>
+<para>The number <literal>5</literal> is an integer receiving the message <literal>#/</literal>,
+therefore looking at the method <literal>/</literal> in the <literal>Integer</literal>
+class we can see how the fraction is instantiated. See part of this
+method:
+</para>
+<screen>/ aNumber
+&quot;Refer to the comment in Number / &quot;
+| quoRem |
+aNumber isInteger ifTrue:
+../..
+   ifFalse: [^ (Fraction numerator: self denominator: aNumber) reduced]].
+../..
+</screen>
+<para>From this source code, we learn that in some situations, the method
+returns a fraction, reduced. We can expect that in some other
+situation, an integer is returned, for example, <literal>6 / 2</literal>.
+</para>
+<para>In the example, we observe the message <literal>#numerator:denominator:</literal> is
+sent to the class <literal>Fraction</literal>, such a message refers to a
+<firstterm>class method</firstterm> understood only by the <literal>Fraction</literal> class. It
+is expected such a named method returns an instance of a
+<literal>Fraction</literal>.
+</para>
+<para>Try this out in a workspace:
+</para><screen>Fraction numerator: 24 denominator: 21
+&#8658; 24/21
+</screen>
+<para>Observe how the resulting fraction is not reduced. Whereas it is reduced
+when instantiated with the <literal>#/</literal> message:
+</para>
+<screen>24 / 21
+&#8658; 8/7
+</screen>
+<para>A class method is often used to create a new instance from a class. In
+<link linkend="forLoop">forLoop</link>, the message <literal>#new</literal> is sent to the class
+<literal>OrderedCollection</literal> to create a new empty collection;
+<emphasis><literal>new</literal></emphasis> is a class method.
+</para>
+<para>In <link linkend="repeatLoop">repeatLoop</link>, the <literal>#newFrom:</literal> message is sent to the class
+<literal>OrderedCollection</literal> to create a new collection filled with
+elements from the array given in the argument; <emphasis><literal>newFrom:</literal></emphasis> is
+another class method.
+</para>
+<!-- instance method -->
+<indexterm role="cp"><primary>instance</primary><secondary>method</secondary></indexterm><indexterm role="cp"><primary>method</primary><secondary>instance method</secondary></indexterm><indexterm role="cp"><primary>polymorphism</primary></indexterm>
+<para>Now observe the hierarchy of the Number class:
+</para>
+<abstract><literal>Number</literal>
+   <literal>Float</literal>
+      <literal>BoxedFloat64</literal>
+      <literal>SmallFloat64</literal>
+   <literal>Fraction</literal>
+   <literal>Integer</literal>
+      <literal>LargePositiveInteger</literal>
+         <literal>LargeNegativeInteger</literal>
+      <literal>SmallInteger</literal>
+</abstract>
+<indexterm role="cp"><primary>number</primary><secondary><literal>squared</literal></secondary></indexterm><para><literal>Float</literal>, <literal>Integer</literal> and <literal>Fraction</literal> are direct
+descendants of the <literal>Number</literal> class. We have already learned about the
+<literal>#squared</literal> message sent to integer and fraction instances:
+</para>
+<screen>16 squared &#8658; 256
+(2 / 3) squared &#8658; 4/9
+</screen>
+<para>As the <literal>#squared</literal> message is sent to <literal>Integer</literal> and
+<literal>Fraction</literal> instances, the associated <literal>squared</literal> method is
+called an <firstterm>instance method</firstterm>. This method is defined in both the
+<literal>Number</literal> and <literal>Fraction</literal> classes.
+</para>
+<indexterm role="cp"><primary>method</primary><secondary>returned value (explicit)</secondary></indexterm><indexterm role="cp"><primary>returned value</primary></indexterm>
+<para>Let&#8217;s examine this method in <literal>Number</literal>:
+</para><screen>Number&gt;&gt;squared
+&quot;Answer the receiver multiplied by itself.&quot;
+   ^ self * self
+</screen>
+<para>In an instance method source code, <literal>self</literal> refers to the
+object itself, here it is the value of the number. The &#x2191; (also
+<literal>^</literal>) symbol indicates to <emphasis>return</emphasis> the following value
+<literal>self * self</literal>.  One might pronounce ^ as &#8220;return&#8221;.
+</para>
+<para>Now let&#8217;s examine this same method in <literal>Fraction</literal>:
+</para><screen>Fraction&gt;&gt;squared
+   ^ Fraction
+      numerator: numerator squared
+      denominator: denominator squared
+</screen>
+<para>Here a new fraction is instantiated with the original instance
+numerator and denominator being squared.
+This alternate <literal>squared</literal> method, ensures a fraction instance is
+returned.
+</para>
+<indexterm role="cp"><primary>method</primary><secondary>overriding</secondary></indexterm><indexterm role="cp"><primary>overriding</primary></indexterm>
+<para>When the message <literal>#squared</literal> is sent to a number, different methods are
+executed depending on if the number is a fraction or another kind of
+number. Polymorphism means that the Class of each instance decides
+how it will respond to a particular message.
+Here, the <literal>Fraction</literal> class
+is <firstterm>overriding</firstterm> the <literal>squared</literal> method, defined above in the
+class hierarchy.  If a method is not overridden, an inherited method
+is invoked to respond to the message.
+</para>
+<indexterm role="cp"><primary>number</primary><secondary><literal>abs</literal></secondary></indexterm><para>Still in the <literal>Number</literal> hierarchy, let&#8217;s examine another example
+of polymorphism with the <literal>#abs</literal> message:
+</para>
+<screen>-10 abs &#8658; 10
+5.3 abs &#8658; 5.3
+(-5 / 3) abs &#8658; 5/3
+</screen>
+<para>The implementation in <literal>Number</literal> does not need much
+explanation. There is the <literal>#ifTrue:ifFalse:</literal> we have not yet
+discussed so far, but the code is quite self-explanatory:
+</para>
+<screen>Number&gt;&gt;abs
+&quot;Answer a Number that is the absolute value (positive magnitude) of the 
+receiver.&quot;
+   self &lt; 0
+      ifTrue: [^ self negated]
+      ifFalse: [^ self]
+</screen>
+<para>This implementation will do just fine for the <literal>Number</literal>
+subclasses. Nevertheless, there are several classes overriding it for
+specialized or optimized cases.
+</para>
+<indexterm role="cp"><primary>method</primary><secondary>returned value (implicit)</secondary></indexterm><para>For example, regarding large positive integer, <literal>abs</literal> is
+empty. Indeed, <emphasis role="bold">in the absence of explicitly returned value, the
+default returned value is the instance itself</emphasis>, in our situation the
+<literal>LargePositiveInteger</literal> instance:
+</para>
+<screen>LargePositiveInteger&gt;&gt;abs
+</screen>
+<para>The <literal>LargeNegativeInteger</literal> knows it is negative and its absolute
+value is itself but with its sign reversed, that is <literal>negated</literal>:
+</para>
+<screen>LargeNegativeInteger&gt;&gt;abs
+   ^ self negated
+</screen>   
+<para>These two overriding methods are more efficient as they avoid unnecessary
+checks and ifTrue/ifFalse branches. Polymorphism is often used to avoid
+unnecessary checks and code branches.
+</para>
+<indexterm role="cp"><primary>keyboard shortcut</primary><secondary>implementors of (<userinput>Ctrl-m</userinput>)</secondary></indexterm>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+If you select the text <literal>abs</literal> in a Browser or
+Workspace and right-click to get the context menu, you will find an
+entry <command>Implementors of it</command>.  You can select this or use
+<userinput>Ctrl-m</userinput> (<emphasis>i<emphasis role="bold">M</emphasis>plementors</emphasis>) to see how various methods for
+<literal>#abs</literal> use polymorphism to specialize their answer to
+produce the naturally expected result.
+</para>
+<para>As an object instance is modeled by its class, it is possible to
+ask any object its
+class with the <literal>#class</literal> message. Observe carefully the class
+returned in lines 2 and 3:
+</para>
+<anchor id="askingClass"/>
+<screen>1 class &#8658; SmallInteger 
+(1/3) class &#8658; Fraction 
+(6/2) class &#8658; SmallInteger 
+(1/3) asFloat class  &#8658; SmallFloat64 
+(1.0/3) class &#8658; SmallFloat64 
+'Hello' class &#8658; String 
+('Hello' at: 1) class &#8658; Character
+</screen>
+
+</sect1>
+<sect1 label="" id="Explore-OOP-from-the-Browser">
+<title>Explore OOP from the Browser</title>
+<!-- explain mini panel | instance | ? | class | -->
+<para>In <link linkend="ch02_002dbrowserDetailed">ch02-browserDetailed</link> of the Browser, below the classes pane, there are three
+buttons:
+</para>
+<itemizedlist>
+<listitem><para><command>instance</command>: to access the <emphasis role="bold">instance methods</emphasis> of
+   the selected class. These methods apply to each and every instance
+   of the class.  Each instance reacts to these.
+</para>
+</listitem><listitem><para><command>?</command>: to access to documentation &#8211; comment &#8211; of the
+   selected class.
+</para>
+</listitem><listitem><para><command>class</command>: to access the <emphasis role="bold">class methods</emphasis> of the
+   selected class. These methods are only accessible from the class
+   itself.  Only the class object reacts to class methods.
+</para>
+</listitem></itemizedlist>
+<para>Below these three buttons, observe the wide text pane, which provides
+contextual information on the selected item.
+</para>
+<para>Again, Class methods apply to the Class itself.  Instance Methods apply for 
+all instances modeled by the class.  We saw above that
+the class <literal>Fraction</literal>
+has a method <literal>#numerator:denominator:</literal> which is used to get a new instance of
+a <literal>Fraction</literal>.  There is only one <literal>Fraction</literal> class object.
+Messages like <literal>#squared</literal> and <literal>#abs</literal> are sent to any <literal>Fraction</literal>
+instance, of which there are many.
+</para>
+<para>Up to now, we have attempted to be very careful with definitions, but 
+you know that when we say &#8220;a fraction&#8221; we
+mean &#8220;an instance of the class <literal>Fraction</literal>&#8221;.
+From here our language will be more casual.
+</para>
+<anchor id="floatInfo"/>
+<para><emphasis>When the
+<literal>Float</literal> class is selected, what is the information provided by
+the text pane?</emphasis>
+</para>
+
+
+<para>We have spent much time here because it is important to avoid
+confusion between instance methods and class
+methods. Let&#8217;s consider the <literal>Float</literal> class as an example.
+</para>
+<indexterm role="cp"><primary>method</primary><secondary>class method</secondary></indexterm>
+<para><emphasis role="bold">Class Methods.</emphasis> In <link linkend="ch03_002dfloatClassSide">ch03-floatClassSide</link> the methods listed are
+class side, in the browser the <command>class</command> button is pressed to see this
+list.
+</para>
+<anchor id="ch03_002dfloatClassSide"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch03-floatClassSide.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>From a Workspace, these methods are called with the message name sent
+directly to the class:
+</para>
+<screen>Float e
+&#8658; 2.718281828459045
+Float epsilon
+&#8658; 2.220446049250313e-16
+Float fmax
+&#8658; 1.7976931348623157e308
+</screen>
+
+<indexterm role="cp"><primary>keyboard shortcut</primary><secondary>code completion (<userinput>tab</userinput>)</secondary></indexterm>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+You have noticed that text typed into the Workspace is
+colored and highlighted based on what you type.  We will discuss this
+below when we talk about the Smalltalk language, but the idea is to be
+helpful.  If you start to type a word the Cuis Workspace knows about,
+you can press the <userinput>tab</userinput> key and get a set of choices for
+completion of the word.  Try typing <literal>Float epsi</literal> and
+pressing <userinput>tab</userinput>.  You can then press <userinput>enter</userinput> and should see
+<literal>Float epsilon</literal>.  Click elsewhere on the Workspace to make
+this menu go away.
+</para>
+<para>Nevertheless, you can not send a class message to an instance of
+<literal>Float</literal>, it throws an error and opens the red debugger
+window. Just close the debug window for now to ignore the result.
+</para>
+<screen>3.14 pi
+&#8658; MessageNotUnderstood: SmallFloat64&gt;&gt;pi
+Float pi e
+&#8658; MessageNotUnderstood: SmallFloat64&gt;&gt;e
+</screen>
+<para>Often these class methods are used to access constant values as seen in
+the previous example or to create a new instance:
+</para>
+<screen>OrderedCollection new
+&#8658; Create a new empty ordered collection
+Fraction numerator: 1 denominator: 3
+&#8658; 1/3 &quot;a fraction instance&quot;
+Float new
+&#8658; 0.0
+Float readFrom: '001.200'
+&#8658; 1.2 
+Integer primesUpTo: 20
+&#8658; #(2 3 5 7 11 13 17 19) 
+</screen>
+<indexterm role="cp"><primary>method</primary><secondary>instance method</secondary></indexterm>
+<para><emphasis role="bold">Instance methods.</emphasis> In <link linkend="ch03_002dfloatInstanceSide">ch03-floatInstanceSide</link>, the methods
+listed are instance side, in the browser the <command>instance</command> button
+is pressed to see this list.
+</para>
+<anchor id="ch03_002dfloatInstanceSide"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch03-floatInstanceSide.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>In a Workspace, these methods are called with the message name sent
+directly to an instance:
+</para>
+<screen>-10.12 abs &#8658; 10.12
+3.14 cos &#8658; -0.9999987317275395
+-10.12 * 2 &#8658; -20.24
+</screen>
+<para>Instance method messages cannot be sent directly to a class, you need
+to instantiate an object first:
+</para>
+<screen>Float cos
+&#8658; MessageNotUnderstood: Float class&gt;&gt;cos
+Fraction squared
+&#8658; MessageNotUnderstood: Fraction class&gt;&gt;squared
+OrderedCollection add: 10
+&#8658; MessageNotUnderstood: OrderedCollection class&gt;&gt;add:
+</screen>
+<para>Of course, you can mix both class and instance methods, as long as you
+send the message to the appropriate class or instance:
+</para>
+<screen>Float pi cos
+&#8658; -1.0
+Float e ln
+&#8658; 1.0 
+(Fraction numerator: 4 denominator: 5) squared
+&#8658; 16/25
+OrderedCollection new add: Float pi; add: Float e; yourself
+&#8658; an OrderedCollection(3.141592653589793 2.718281828459045) 
+
+</screen>
+<para>Here is another example from Spacewar! mixing class and instance
+methods. This portion of code updates the orientation of a torpedo
+according to its velocity vector:
+</para>
+<anchor id="torpedoOrientation"/>
+<screen>self rotation: (velocity y arcTan: velocity x) + Float halfPi
+</screen>
+
+<para>With this brief introduction to the system browser, you are now
+equipped to explore the system classes.
+</para>
+</sect1>
+<sect1 label="" id="Cuis-system-classes">
+<title>Cuis system classes</title>
+<para>As we noted above, Cuis-Smalltalk is a pure object-oriented environment. This 
+means that every single entity you are dealing with is represented
+as an instance of a class written in Cuis-Smalltalk itself. As a direct
+consequence, Cuis-Smalltalk is mostly written in itself.  This means
+the entire system is open to you to learn and play with.
+</para>
+<para>What we call system classes are models of fundamental objects. In
+other programming languages, these would be implemented in
+that language&#8217;s standard library.
+</para>
+<para>In a truly open system, there is no real distinction between system
+classes and user classes, but it will help us to draw a boundary
+around the most used objects. Let&#8217;s have a brief introduction to some
+fundamental Smalltalk classes and their most important methods.
+</para>
+<para>In the upper left pane of the Browser, Categories of classes important
+to start with are:
+</para>
+
+<itemizedlist>
+<listitem><para><emphasis role="bold">Kernel-Numbers</emphasis>. Related to the different number
+   representations and calculations, including mathematics functions,
+   conversion, intervals, and even iterations.
+</para>   
+</listitem><listitem><para><emphasis role="bold">Kernel-Text</emphasis>. Related to character and string as
+   collection of characters.
+</para>
+</listitem><listitem><para><emphasis role="bold">Collections-Abstract</emphasis>, <emphasis role="bold">Collections-Unordered</emphasis>,
+   <emphasis role="bold">Collections-Sequenceable</emphasis>, <emphasis role="bold">Collections-Arrayed</emphasis>.
+   Related to Array, Dictionary, Set, OrderedCollection and many more.
+   This category includes common accessing, enumeration, mathematical
+   functions, and sorting.
+</para>
+</listitem></itemizedlist>
+</sect1>
+<sect1 label="" id="Kernel_002dNumbers">
+<title>Kernel-Numbers</title>
+<indexterm role="cp"><primary>method</primary><secondary>category</secondary></indexterm>
+<para>The top hierarchy <literal>Number</literal> class shows most of the behaviors
+inherited by the subclasses as <literal>Float</literal>, <literal>Integer</literal> and
+<literal>Fraction</literal>. The Smalltalk way to learn about a behavior is to
+point the System Browser toward a top hierarchy class and explore
+the method categories.
+</para>
+<para>Let&#8217;s suppose we want to round a float number. In <literal>Number</literal>, we
+explore the <emphasis role="bold">Truncation and round off</emphasis> method category to
+discover several behaviors. The next thing to do is to test these
+messages in a Workspace to discover the one we are searching for:
+</para>
+<indexterm role="cp"><primary>number</primary><secondary><literal>roundTo:</literal></secondary></indexterm><indexterm role="cp"><primary>number</primary><secondary><literal>roundUpTo:</literal></secondary></indexterm>
+<anchor id="roundingNumbers"/>
+<screen>1.264 roundTo: 0.1 &#8658; 1.3 
+1.264 roundTo: 0.01 &#8658; 1.26 
+1.264 roundUpTo: 0.01 &#8658; 1.27
+1.264 roundTo: 0.001 &#8658; 1.264
+</screen>
+
+
+<indexterm role="cp"><primary>loop</primary><secondary>for</secondary></indexterm><indexterm role="cp"><primary>loop</primary><secondary>for</secondary><tertiary>step</tertiary></indexterm><indexterm role="cp"><primary>for loop</primary><see>loop</see></indexterm>
+<indexterm role="cp"><primary>number</primary><secondary><literal>to:do:</literal></secondary></indexterm><indexterm role="cp"><primary>number</primary><secondary><literal>to:do:by</literal></secondary></indexterm>
+<para>Number is a very strange place to look for an indexed loop in a given
+interval. Nevertheless, an interval is defined by start and stop
+numbers. In the <literal>Number</literal> class, the method category
+<emphasis role="bold">intervals</emphasis> reveals related behaviors. These methods work
+polymorphically with most kinds of numbers:
+</para>
+<anchor id="intervalLoops"/>
+<screen>1 to: 10 do: [:i | Transcript show: 1 / i; space]
+&#8658; 1 (1/2) (1/3) (1/4) (1/5) (1/6) (1/7) (1/8) (1/9) (1/10)
+
+1 to: 10 by: 2 do: [:i | Transcript show: 1 / i; space]
+&#8658; 1 (1/3) (1/5) (1/7) (1/9)
+
+1/10 to: 5/3 by: 1/2 do: [:i | Transcript show: i; space]
+&#8658; (1/10) (3/5) (11/10) (8/5) (1/10) (3/5) (11/10) (8/5) 
+
+Float pi to: 5 by: 1/3 do: [:i | Transcript show: i; space]
+&#8658; 3.141592653589793 3.4749259869231266 3.80825932025646
+4.141592653589793 4.474925986923126 4.808259320256459
+</screen>
+
+<indexterm role="cp"><primary>loop</primary><secondary>repeat</secondary></indexterm><indexterm role="cp"><primary>repeat</primary><see>loop</see></indexterm>
+<indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>timesRepeat:</literal></tertiary></indexterm>
+<para>Now, in the <literal>Integer</literal> class, explore the method category
+<command>enumerating</command>, to find <literal>timesRepeat:</literal>. When a
+portion of code needs to be executed several times
+<footnote><para>More strictly, to be repeated an integer number of times.</para></footnote>, without
+the need for an index, the <literal>#timesRepeat:</literal> message is sent to an
+integer. We already saw this variant in a previous section of this
+chapter.  Throwing a 6-face die 5 times can be simulated with
+an integer:
+</para>
+<indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>atRandom</literal></tertiary></indexterm><anchor id="playingDice"/>
+<screen>5 timesRepeat: [Transcript show: 6 atRandom; space]
+&#8658; 1 2 4 6 2
+</screen>
+
+<para>Note: Expect a different result each time.
+</para>
+<indexterm role="cp"><primary><literal>Interval</literal></primary></indexterm>
+<indexterm role="cp"><primary>number</primary><secondary>interval</secondary></indexterm><indexterm role="cp"><primary>number</primary><secondary><literal>to:</literal></secondary></indexterm><indexterm role="cp"><primary>number</primary><secondary><literal>to:by:</literal></secondary></indexterm>
+<para>Intervals of numbers can be defined on their own, for future use:
+</para>
+<anchor id="interval"/>
+<screen>1 to: 10
+&#8658; (1 to: 10)
+
+1 to: 10 by: 2
+&#8658; (1 to: 9 by: 2)
+</screen>
+
+<para>Intervals work with other kinds of objects such as <literal>Character</literal>s:
+</para><screen>$d to: $h
+&#8658; #($d $e $f $g $h)
+</screen>
+<para>In fact, an interval is an object of its own. It is a sort of
+collection:
+</para>
+<screen>(1 to: 10) class
+&#8658; Interval
+
+(1 to: 10 by: 2) squared
+&#8658; #(1 9 25 49 81)
+
+(1 to: 10) atRandom
+&#8658; 4 &quot;different result each time&quot;
+</screen>
+<para>In Spacewar!, when a ship is destroyed it is teleported to a random
+position in the square gameplay area. Intervals are handy to pick 
+random coordinates. In the example below, the variable
+<literal>randomCoordinate</literal> holds a block of code &#8211; called an anonymous
+function in other languages. It picks a random value in the
+interval consisting of the gameplay area&#8217;s left and right extents:
+</para>
+<anchor id="teleportShipInterval"/>
+<screen>randomCoordinate := [(area left to: area right) atRandom].
+aShip
+   velocity: 0 @ 0;
+   morphPosition: randomCoordinate value @ randomCoordinate value
+</screen>
+
+
+<anchor id="cosTable"/>
+<para><emphasis>Compute the cosine values in
+the interval [0 ; 2PI]&#44; each 1/10. Output the result in the transcript.</emphasis>
+</para>
+
+
+<!-- Integer bits representation and manipulation -->
+<indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>base</tertiary></indexterm><para>Integer numbers are represented in different bases when prefixed with
+the base and &#8220;r&#8221;. The <command>r</command> stands for radix, the base root by
+which the following number is interpreted.
+When executing and printing <userinput>Ctrl-p</userinput> on such a
+number, it is immediately printed in the decimal base:
+</para>
+<anchor id="integerBase"/>
+<screen>2r1111 &#8658; 15
+16rF &#8658; 15
+8r17 &#8658; 15
+20rF &#8658; 15
+10r15 &#8658; 15
+</screen>
+
+<para>Writing numbers as Mayans or Babylonians<footnote><para>Base 20 and 60
+number representations are not exclusive to these civilisations,
+although they are the most documented use cases.</para></footnote>:
+</para>
+<anchor id="countingAncients"/>
+<screen>&quot;The Babylonians&quot;
+60r10 &#8658; 60
+60r30 &#8658; 180
+60r60 &#8658; 360
+60r30 + 60r60 &#8658; 540 
+(60r30 + 60r60) printStringRadix: 60 &#8658; '60r90' 
+
+&quot;The Mayans&quot;
+20r10 &#8658; 20
+20r40 &#8658; 80 &quot;pronounced 4-twenties in some languages&quot;
+20r100 &#8658; 400
+</screen>
+
+<indexterm role="cp"><primary>bits shifting</primary></indexterm>
+<para>Because of the nature of a number represented in base 2, shifting its
+bits left and right is equivalent to multiplying by 2 and dividing by
+2:
+</para>
+<anchor id="shiftBits"/>
+<screen>(2r1111 &lt;&lt; 1) printStringBase: 2 &#8658; '11110'
+2r1111 &lt;&lt; 1 &#8658; 30
+(2r1111 &gt;&gt; 1) printStringBase: 2 &#8658; '111'
+2r1111 &gt;&gt; 1 &#8658; 7
+</screen>
+
+<anchor id="multiplyBy1024"/>
+<para><emphasis>How would you multiply
+the integer 360 by 1024&#44; without using the multiplication operation?</emphasis>
+</para>
+
+
+
+<bridgehead renderas="sect2">Hiatus with decimal numbers</bridgehead>
+<indexterm role="cp"><primary>number</primary><secondary>decimal</secondary></indexterm>
+<para>We saw decimal numbers are written with a dot &#8220;.&#8221; to separate the
+integer and the decimal parts: <literal>1.5</literal>, <literal>1235.021</literal>
+or <literal>0.5</literal>. The number <literal>0.0000241</literal> is more easily
+written with the scientific notation <literal>2.41e-5</literal>; it means 2
+preceded by 5 zeros or 2 as the fifth digit after the decimal dot.
+</para>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+Computers encode and store decimal numbers imprecisely. You
+need to be aware of that when doing computation and equality
+comparisons. Many systems hide these errors because they are very tiny
+errors. Cuis-Smalltalk does not hide this inaccuracy.  There is good
+information about this in the class comment of <literal>Float</literal>.
+</para>
+<anchor id="FloatPrecision"/>
+<screen>0.1 + 0.2 - 0.3
+&#8658; 5.551115123125783e-17
+</screen>
+
+<para>In <link linkend="FloatPrecision">FloatPrecision</link>, the returned value should be zero but it is
+not the case. The computer returns <literal>5.55e-17</literal>, or
+<literal>0.0000000000000000555</literal>, it is very close to zero, but there
+is an error.
+</para>
+<anchor id="exeFloatPrecision"/>
+<para><emphasis>Give 3 calculations showing errors compared
+to the expected results.</emphasis>
+</para>
+
+
+<para>When accuracy is mandatory use the Rational Numbers
+representation in Cuis-Smalltalk.
+</para>
+<indexterm role="cp"><primary>number</primary><secondary>rational (fraction)</secondary></indexterm>
+<para>A rational number is written with the division symbol between two
+integers: do <userinput>Ctrl-p</userinput> on <literal>5/2</literal> &#8658;
+<literal>5/2</literal>. Cuis-Smalltalk returns a rational number, it does not compute a
+decimal.
+</para>
+<anchor id="exeZeroDivide"/>
+<para><emphasis>What happens when
+executing this code</emphasis> <literal>5/0</literal><emphasis>?</emphasis>
+</para>
+
+
+<para>Let&#8217;s come back to our computer&#8217;s dyscalculia with decimal numbers. When
+using the rational numbers, the <link linkend="FloatPrecision">FloatPrecision</link> becomes:
+</para>
+<anchor id="FractionPrecision"/>
+<screen>(1/10) + (2/10) - (3/10)
+&#8658; 0
+</screen>
+
+<para>This time we have the expected result. Under the covers, the computer
+only does the calculations with integer components so no roundoff
+results. This is a fine example where solving some problems requires a
+paradigm shift.
+</para>
+<anchor id="exeFractionPrecision"/>
+<para><emphasis>Return to
+<link linkend="exeFloatPrecision">exeFloatPrecision</link> and use rational numbers to represent decimal
+numbers. The errors will be resolved.</emphasis>
+</para>
+
+
+<indexterm role="cp"><primary>number</primary><secondary>conversion</secondary></indexterm><para>Cuis-Smalltalk knows how to convert a decimal number to a fraction, by
+sending the message <literal>#asFraction</literal>. We already acknowledged the
+computer&#8217;s dyscalculia with decimal numbers, this is why when
+asking for a fraction representation we have this strange answer. The
+internal computer representation of <literal>1.3</literal> is not exactly as
+it seems:
+</para>
+<screen>(13/10) asFloat
+&#8658; 1.3
+
+(13/10) asFloat asFraction
+&#8658; 5854679515581645/45035996273704
+</screen>
+</sect1>
+<sect1 label="" id="Kernel_002dText">
+<title>Kernel-Text</title>
+<para>Notably, this category contains classes <literal>Character</literal>, <literal>String</literal> and <literal>Symbol</literal>. <literal>String</literal> instances are collections of <literal>Character</literal> instances. All these are limited to the small <acronym>ASCII</acronym> character set. The corresponding classes that can handle the much larger Unicode character set are <literal>UnicodeCodePoint</literal>, <literal>UnicodeString</literal>, and <literal>UnicodeSymbol</literal>. As stated before, the Unicode classes can also handle <acronym>ASCII</acronym>, and they are interchangeable. You usually don&#8217;t need to care about which flavor (<acronym>ASCII</acronym> or Unicode) an instance actually is.
+</para>
+<indexterm role="cp"><primary>character</primary></indexterm>
+<para><emphasis role="bold">Character/UnicodeCodePoint.</emphasis> An individual character is written prefixed with a &#8220;$&#8221;, for example: <literal>$A</literal> or <literal>$φ</literal>. It can be defined with the class side method <literal>codePoint:</literal>. Note, however, that you can ask Character only about valid Characters. It is generally safer to ask UnicodeCodePoint instead:
+</para>
+<screen>Character codePoint: 65 &#8658; $A
+Character codePoint: 966 &#8658; nil
+UnicodeCodePoint codePoint: 966 &#8658; $φ
+</screen>
+<para>There are class-side methods for nonprintable characters:
+<literal>Character tab</literal>, <literal>Character lf</literal>, etc.
+</para>
+<para>Additionally, <literal>UnicodeCodePoint</literal> defines a <literal>#namedCharactersMap</literal>, that lets you enter many Unicode characters easily, like:
+</para>
+<para><literal>\leftright</literal> then press spacebar.
+</para>
+<para>As each string is a collection of characters, when iterating a string we
+can use the <literal>Character</literal> instance methods:
+</para>
+<anchor id="apples12"/>
+<screen>'There are 12 apples.' select: [:c |c isDigit].
+&#8658; '12'
+</screen>
+
+<anchor id="selectApples"/>
+<para><emphasis>Modify <link linkend="apples12">apples12</link> to
+reject the numeric characters.</emphasis>
+</para>
+
+
+<indexterm role="cp"><primary>method</primary><secondary>category</secondary></indexterm><indexterm role="cp"><primary>string</primary></indexterm>
+<para><emphasis role="bold">String.</emphasis> <literal>String</literal> is a very large class, it comes with
+more than 200 methods. It is useful to browse these method categories
+to see common ways to group methods.
+</para>
+<para>Sometimes you may not see a category related to what you&#8217;re looking for right away.
+</para>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+If you expect a method selector to start with a specific letter,
+click-select the <command>-- all --</command> method category, then move the
+cursor over the pane listing the method names.  Press this character,
+e.g. <literal>$f</literal>.  This will scroll the method pane to the first
+method name starting with an &#8220;f&#8221;.
+</para>
+<para>Consider the case where you need to search for a substring, a string within a
+string: when browsing
+the <literal>String</literal> class, search for method categories named like
+<emphasis role="bold">finding...</emphasis> or <emphasis role="bold">accessing</emphasis>. There you find a family of
+<literal>findXXX</literal> methods. Read the comments at the beginning of these
+methods:
+</para>
+<screen>findString: subString
+   &quot;Answer the index of subString within the receiver, starting at
+   start. If the receiver does not contain subString, answer 0.&quot;
+   ^ self findString: subString startingAt: 1.
+</screen>
+<para>Or:
+</para>
+<screen>findString: key startingAt: start caseSensitive: caseSensitive
+   &quot;Answer the index in this String at which the substring key first
+   occurs, at or beyond start.  The match can be case-sensitive or
+   not.  If no match is found, zero will be returned.&quot;
+   ../..
+</screen>
+<para>Then experiment with the potentially interesting messages in a workspace:
+</para>
+<screen>'I love apples' findString: 'love' &#8658; 3 &quot;match starts at position 3&quot;
+'I love apples' findString: 'hate'
+&#8658;  0 &quot;not found&quot;
+'We humans, we all love apples' findString: 'we'
+&#8658; 12 
+'We humans, we all love apples'
+   findString: 'we'
+   startingAt: 1
+   caseSensitive: false
+&#8658; 1 
+'we humans, we all love apples' findString: 'we'
+&#8658; 1 
+'we humans, we all love apples' findString: 'we' startingAt: 2
+&#8658; 12
+</screen>
+<para>Following these paths will, most of the time, lead you toward the answer
+you are looking for.
+</para>
+<!-- an exercise to find a method given a behavior -->
+<anchor id="formatString"/>
+<para><emphasis>We want to format a
+string of the form &#8217;Joe bought XX apples and YY oranges&#8217; to the form
+&#8217;Joe bought 5 apples and 4 oranges&#8217;. What message should be used?</emphasis>
+</para>
+
+
+</sect1>
+<sect1 label="" id="Spacewar_0021-States-and-Behaviors">
+<title>Spacewar! States and Behaviors</title>
+
+<sect2 label="">
+<title>The game states</title>
+<para>After defining the classes involved in the game design, we now define
+ several states of these classes:
+</para>
+<itemizedlist>
+<listitem><para>A <literal>SpaceWar</literal> instance representing the gameplay needs to
+ know about the <literal>centralStar</literal>, the <literal>ships</literal>, the
+ fired <literal>torpedoes</literal>, and its <literal>color</literal>.
+</para>
+</listitem><listitem><para>A <literal>CentralStar</literal> has a <literal>mass</literal> state. It is
+ necessary to compute the gravity force applied to a given ship.
+</para>
+</listitem><listitem><para>A <literal>SpaceShip</literal> instance knows about its <literal>name</literal>,
+ its <literal>position</literal> coordinates, its <literal>heading</literal> angle,
+ its <literal>velocity</literal> vector, its <literal>fuel</literal> gauge, its
+ count of the available <literal>torpedoes</literal>, its <literal>mass</literal>
+ and its <literal>acceleration</literal> engine boost.
+</para>
+</listitem><listitem><para>A <literal>Torpedo</literal> has <literal>position</literal>,
+ <literal>velocity</literal> and <literal>lifeSpan</literal> states.
+</para>
+</listitem></itemizedlist>
+<para>We need to explain the mathematical nature of these states, and then
+discuss their object representation in the instance variables of our
+classes.
+</para>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+In the following sections, to ease reading we will write
+&#8220;the variable <literal>myVar</literal> is a <literal>String</literal>&#8221; instead of the
+correct but cumbersome &#8220;the instance variable <literal>myVar</literal> is a
+reference to a <literal>String</literal> instance&#8221;.
+</para>
+<bridgehead renderas="sect1"><literal>SpaceWar</literal></bridgehead>
+<para>This object is the entry into the game. We want a meaningful class
+name. Its instance variables are the involved protagonists of the
+game:
+</para>
+<itemizedlist>
+<listitem><para><literal>centralStar</literal> is the unique <literal>CentralStar</literal> of
+  the game play. We need to know about it to request its mass.
+</para>
+</listitem><listitem><para><literal>ships</literal> is a collection of the two player ships. It
+  is an <literal>Array</literal> instance, its size is fixed to two elements.
+</para>  
+</listitem><listitem><para><literal>torpedoes</literal> is a collection of the fired torpedoes
+  in the gameplay. As this quantity is variable, a dynamic
+  <literal>OrderedCollection</literal> makes sense.
+</para>
+</listitem></itemizedlist>
+<bridgehead renderas="sect1"><literal>CentralStar</literal></bridgehead>
+
+<para>Its unique instance variable, <literal>mass</literal>, is a number, most likely
+an <literal>Integer</literal>.
+</para>
+<bridgehead renderas="sect1"><literal>SpaceShip</literal></bridgehead>
+
+<para>The spaceship is the most complex object, some clarifications
+regarding its variables are needed.
+</para>
+<itemizedlist>
+<listitem><para><literal>name</literal> is a <literal>String</literal>.
+</para>
+<indexterm role="cp"><primary><literal>Point</literal></primary></indexterm>
+<indexterm role="cp"><primary>coordinates</primary></indexterm>
+
+</listitem><listitem><para><literal>position</literal> is a 2D screen coordinate, a
+  location. Smalltalk uses the <literal>Point</literal> class to represent
+  such objects. It understands many mathematics operations as
+  operations on vectors; very useful for mechanical calculations.
+</para>
+<para>A point is easily instantiated with the binary message <literal>#@</literal> send
+  to a number with another number as its argument: <literal>100 @
+  200</literal> returns a <literal>Point</literal> instance representing the
+  coordinates (x;y) = (100;200).
+</para>
+<para>The ship&#8217;s <literal>position</literal> is regularly recomputed according to
+  the law of the Galilean reference frame. The computation depends on
+  the ship&#8217;s velocity, it&#8217;s current engine boost, and the gravity pull
+  of the central star.
+</para> 
+</listitem><listitem><para><literal>heading</literal> is an angle in radians, the direction
+  where the ship&#8217;s nose is pointing.  It is therefore a <literal>Float</literal>
+  number. At the game&#8217;s start, the ships are oriented to the top, the
+  <literal>heading</literal> value is then -pi/2 radians; the oy axis is
+  oriented from the top to the bottom of the screen.
+</para>  
+</listitem><listitem><para><literal>velocity</literal> is the vector representing the
+  instantaneous speed of the ship. It is a <literal>Point</literal> instance.
+</para>  
+</listitem><listitem><para><literal>fuel</literal> is the gauge, as long as it is not zero, the
+  player can ignite the ship&#8217;s rocket engine to provide acceleration to move
+  around and to counter the central star&#8217;s gravity pull. It is an
+  integer number.
+</para>  
+</listitem><listitem><para><literal>torpedoes</literal> is the quantity of available torpedoes
+  the player can fire. It is an <literal>Integer</literal> number.
+</para>  
+</listitem><listitem><para><literal>mass</literal> is an <literal>Integer</literal> representing the ship
+  mass.
+</para>  
+</listitem><listitem><para><literal>acceleration</literal> is the intrinsic ship acceleration
+  norm provided when the ship&#8217;s rockets are ignited. It is therefore
+  an <literal>Integer</literal> number.
+</para>
+</listitem></itemizedlist>
+<para>A few words regarding the Euclidean coordinates: the origin of our
+orthonormal frame is the central star, its first vector is oriented
+toward the right of the screen, and the second one towards the top of
+the screen. This choice eases the computation of the ship&#8217;s acceleration,
+velocity and position.  More on this below.
+</para>
+<bridgehead renderas="sect1"><literal>Torpedo</literal></bridgehead>
+<para>A torpedo is launched or &#8220;fired&#8221; from a ship with an initial
+velocity related to the ship&#8217;s velocity. Once the torpedo life span
+counter reaches zero, it self-destructs.
+</para>
+<itemizedlist>
+<listitem><para><literal>position</literal> is a 2D screen coordinate, a
+  <literal>Point</literal> instance. Unlike the ship, it does not accelerate based
+  on the gravity pull of the central star. Indeed, a torpedo does not
+  come with a mass state.  For our purposes, it is essentially
+  zero. Its position over time only depends on the torpedo velocity
+  and its initial acceleration.
+</para>
+</listitem><listitem><para><literal>heading</literal> is an angle in radians, the direction
+  where the torpedo nose is pointing. Its value matches the ship
+  heading when fired, it is therefore a <literal>Float</literal> number too.
+</para>
+</listitem><listitem><para><literal>velocity</literal> is a vector representing the
+  instantaneous speed of the torpedo. It is constant over the torpedo&#8217;s
+  lifespan. Again velocity is kept as a <literal>Point</literal> instance.
+</para>
+</listitem><listitem><para><literal>lifeSpan</literal> is an integer number counter, when it
+  reaches zero the torpedo self-destructs.
+</para>
+</listitem></itemizedlist>
+</sect2>
+<sect2 label="">
+<title>Instance variables</title>
+<!-- show on one class declaration how to put the variable -->
+<para>In the previous chapter, we explained how to define the four classes
+<literal>SpaceWar</literal>, <literal>CentralStar</literal>, <literal>SpaceShip</literal> and
+<literal>Torpedo</literal>. In this section, we will add to these definitions
+the instance variables &#8211; states &#8211; discussed above.
+</para>
+<para>To add the variables to the <literal>Torpedo</literal> class, from the Browser,
+select this class. Next, add the variable names to the
+<literal>instanceVariableNames:</literal> keyword, separated by one space
+character. Finally, save the updated class definition with
+<userinput>Ctrl-s</userinput> shortcut:
+</para>
+<anchor id="torpedoClassVariables"/>
+<screen>Object subclass: #Torpedo
+   instanceVariableNames: 'position heading velocity lifeSpan'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+</screen>
+
+<anchor id="spacewarVar"/>
+<para><emphasis>Add the instance variables we discussed earlier to the
+<literal>SpaceWar</literal>, <literal>CentralStar</literal> and <literal>SpaceShip</literal> classes.</emphasis>
+</para>
+
+
+
+</sect2>
+<sect2 label="">
+<title>Behaviors</title>
+<indexterm role="cp"><primary>message</primary><secondary>setter</secondary></indexterm><indexterm role="cp"><primary>message</primary><secondary>getter</secondary></indexterm><para>Some of these states need to be accessed from other entities:
+</para>
+<itemizedlist>
+<listitem><para>When initializing a spaceship, we want to set its name
+  with a keyword message categorised as a <firstterm>setter</firstterm>:
+  <literal>ship name: 'The needle'</literal>.
+</para>  
+</listitem><listitem><para>To compute the gravity force applied to an object owning a
+  mass, we want to get its value with a unary message categorised as
+  a <firstterm>getter</firstterm>: <literal>star mass * ship mass</literal>.
+</para>  
+</listitem></itemizedlist>
+<para>To write these behaviors in the Browser, first select the class then
+the method category you want &#8211; when none, select <command>-- all
+--</command>.
+</para>
+<para>In the code pane below appears a method template:
+</para>
+<anchor id="methodTemplate"/>
+<screen>messageSelectorAndArgumentNames
+   &quot;comment stating purpose of message&quot;
+   | temporary variable names |
+   statements
+</screen>
+
+<para>It describes itself as:
+</para>
+<orderedlist numeration="arabic">
+<listitem><para><emphasis role="bold">Line 1.</emphasis> It is a mandatory method name, the same as
+   the message.
+</para>
+</listitem><listitem><para><emphasis role="bold">Line 2.</emphasis> An optional comment surrounded by double
+   quote.
+</para>
+</listitem><listitem><para><emphasis role="bold">Line 3.</emphasis> An optional list of variables local to the
+   method, surrounded by pipe characters.
+</para>
+</listitem><listitem><para><emphasis role="bold">Line 4.</emphasis> A subsequent list of message sendings and
+   assignments.
+</para>
+</listitem></orderedlist>
+<para>The getter <literal>mass</literal> on <literal>SpaceShip</literal> is written as:
+</para>
+<screen>SpaceShip&gt;&gt;mass
+   ^ mass
+</screen>
+<para>The <literal>SpaceShip&gt;&gt;</literal> part is not valid code and should not be
+written in the Browser. It is a text convention to inform the reader
+the subsequent method is from the <literal>SpaceShip</literal> class.
+</para>
+<anchor id="spaceShipGetters"/>
+<para><emphasis>Write the
+<literal>SpaceShip</literal> getter messages for its
+<literal>position</literal>&#44; <literal>velocity</literal> and <literal>mass</literal>
+attributes.</emphasis>
+</para>
+
+
+<indexterm role="cp"><primary>variable</primary><secondary>assignment</secondary></indexterm><indexterm role="cp"><primary>variable</primary><secondary>:=</secondary></indexterm><indexterm role="cp"><primary>variable</primary><secondary>&#x2190;</secondary></indexterm>
+<para>Some instance variables need to be set from another entity,
+so a <firstterm>setter</firstterm> keyword message is necessary.
+To set the name of a space ship we add the
+following method:
+</para>
+<screen>SpaceShip&gt;&gt;name: aString
+   name := aString
+</screen>
+<para>The := character is an assignment, it means the
+<literal>name</literal> instance variable is bound to the <literal>aString</literal>
+object. 
+To type in this symbol type <keycap>_</keycap> then space,
+Cuis-Smalltalk will turn it into the left arrow symbol.  Alternatively write
+<literal>name := aString</literal>.  One might pronounce := as &#8220;gets&#8221;.
+</para>
+<para>Since <literal>name</literal> is an instance variable, each instance method
+knows to use the box for the name.  The meaning here is that we are
+placing the value of the <literal>aString</literal> argument into the
+instance&#8217;s box called <literal>name</literal>.
+</para>
+<para>Since each instance variable box can hold an object of any class, we
+like to name the argument to show that we intend that the
+<literal>name</literal> variable should hold a string, an instance of the
+<literal>String</literal> class.
+</para>
+<anchor id="spaceShipSetters"/>
+<para><emphasis>Ship <literal>position</literal> and <literal>velocity</literal>, as well as
+torpedo <literal>heading</literal> will need to be set at game start-up or
+when a ship jumps in hyperspace.  Write the appropriate setters.</emphasis>
+</para>
+
+
+<para>Observe how we do not have a setter message for the spaceship
+<literal>mass</literal> attribute. Indeed, it does not make sense to change
+the mass of a ship from another object. In fact, if we consider both
+player ships to be of equal mass, we should remove the <literal>mass</literal>
+variable and edit the <literal>mass</literal> method to return a literal number:
+</para>
+<anchor id="methodConstant"/>
+<screen>SpaceShip&gt;&gt;mass
+   ^ 1
+</screen>
+
+<para>On the other hand, we could also consider the <literal>mass</literal> to
+depend on the consumed fuel and torpedoes. After all, 93&#160;% of
+Saturn&#160;V rocket&#8217;s mass was made up of its fuel. We will discuss
+more about that later in the <link linkend="artRefactoring">chapter about
+refactoring</link>.
+</para>
+
+<anchor id="simpleControls"/><bridgehead renderas="sect3">Controls</bridgehead>
+<para>A spaceship controlled by the player understands messages to adjust
+its direction and acceleration<footnote><para>The velocity is a consequence
+of the accelerations applied to the spaceship.</para></footnote>:
+</para>
+<para><emphasis role="bold">Direction.</emphasis> The ship&#8217;s heading is controlled with the
+  <literal>#left</literal> and <literal>#right</literal> messages. The former decrements the
+  <literal>heading</literal> by 0.1 and the latter increments it by 0.1.
+</para>
+<anchor id="shipHeading"/>
+<para><emphasis>Write
+  two methods named <literal>left</literal> and <literal>right</literal> to shift the ship
+  heading of 0.1 according to the indications above.</emphasis>
+</para>
+
+
+<para><emphasis role="bold">Acceleration.</emphasis> When the <literal>#push</literal> message is sent to
+  the ship, the engines are ignited, and an internal acceleration of 10
+  units of acceleration are applied to the ship. When the <literal>#unpush</literal>
+  message is sent, the acceleration stops.
+</para>
+<anchor id="shipAcceleration"/>
+<para><emphasis>Write two methods named <literal>push</literal> and <literal>unpush</literal> to
+  adjust the ship&#8217;s inner acceleration according to the indications
+  above.</emphasis>
+</para>
+
+
+
+</sect2>
+<sect2 label="">
+<title>Initializing</title>
+<indexterm role="cp"><primary><literal>initialize</literal></primary></indexterm>
+<para>When an instance is created, for example, <literal>SpaceShip new</literal>, it
+is automatically initialized: the message <literal>#initialize</literal> is sent to
+the newly created object and its matching <literal>initialize</literal> instance
+side method is called.
+</para>
+<para>The initializing process is useful to set the default values of the
+instance variables. When we create a new space ship object we want to
+set its default position, speed, and acceleration:
+</para>
+<anchor id="initSpaceShip"/>
+<screen>SpaceShip&gt;&gt;initialize
+   super initialize.
+   velocity := 0 @ 0.
+   position := 100 @ 100.
+   acceleration := 0
+</screen>
+
+<indexterm role="cp"><primary><literal>super</literal></primary></indexterm>
+<para>In the method <link linkend="initSpaceShip">initSpaceShip</link>, observe the first line
+<literal>super initialize</literal>. When a message is sent to
+<literal>super</literal>, it refers to the superclass of the class&#8217;s method
+using <literal>super</literal>. So far, the <literal>SpaceShip</literal> parent class is
+<literal>Object</literal>, therefore the <literal>Object&gt;&gt;initialize</literal> method is
+called first for initialization.
+</para>
+<para>When created, a spaceship is positioned to the top and right of the
+central star. It has no velocity nor internal acceleration &#8211; only the
+gravity pull of the central star.  Its nose points in direction of the
+top of the game display.
+</para>
+<para>You probably noticed there is no code to initialize the
+<literal>heading</literal>, something like <literal>heading := Float
+halfPi negated</literal> to orient the ship in the direction of the top of the
+screen. The truth is we don&#8217;t need the <literal>heading</literal> attribute,
+this information will be provided by the class <literal>Morph</literal> used
+later as a parent class of <literal>SpaceShip</literal> and <literal>Torpedo</literal>.  At
+this time, the <literal>heading</literal> variable will be removed and we
+will define the heading behavior with the appropriate <literal>heading</literal>
+and <literal>heading:</literal> methods.
+</para>
+<anchor id="initCentralStar"/>
+<para><emphasis>Write the
+method to initialize the central star with 8000 units of mass.</emphasis>
+</para>
+
+<!-- -->
+</sect2>
+</sect1>
+</chapter>

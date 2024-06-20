@@ -1,0 +1,1027 @@
+<chapter label="" id="The-Fundamentals-of-Morph">
+<title>The Fundamentals of Morph</title>
+
+<blockquote><attribution>Alan Kay</attribution>
+<para>Simple things should be simple and complex things should be possible.
+</para></blockquote>
+
+
+
+<para>What would we expect if we asked for good support for building GUIs in a
+programming system?
+</para>
+<para>In <link linkend="Visual-with-Morph">Visual with Morph</link> we started with that same question, and
+gave an overview of Morphs and their interactive behavior. This
+chapter deals with how Morphs are built, how to create new Morphs and
+what rules they follow.
+</para>
+<indexterm role="cp"><primary>moprh</primary><secondary>legacy</secondary></indexterm><para>The User Interface framework in Cuis-Smalltalk is called Morphic. Morphic was
+originally created by Randy Smith and John Maloney as the
+<ulink url="https://bibliography.selflanguage.org/_static/self4.0UserInterface.pdf">UI
+for Self</ulink>. Later, John Maloney ported it to Smalltalk, to be used as
+the
+<ulink url="http://stephane.ducasse.free.fr/FreeBooks/CollectiveNBlueBook/morphic.final.pdf">UI
+for Squeak</ulink>.
+</para>
+
+
+
+<sect1 label="" id="Going-Vector">
+<title>Going Vector</title>
+
+<para>For Cuis-Smalltalk, we built Morphic 3, the third design iteration of these
+ideas, after Self&#8217;s Morphic 1 and Squeak&#8217;s Morphic 2. If you already
+know Morphic in Self or Squeak, most concepts are similar, although
+with some improvements: Morphic 3 coordinates are not limited to being
+integer numbers, the apparent size (zoom level) of elements is not
+tied to pixel density, and all drawing is done with high quality
+(subpixel) anti aliasing. These enhancements are enabled by the huge
+advance in hardware resources since Self and Squeak were designed (in
+the late 80&#8217;s and late 90&#8217;s respectively). Additionally, careful
+design of the framework relieves Morph programmers from much the
+complexity that was required, especially with regards to geometry.
+</para>
+<sect2 label="">
+<title>A first example</title>
+
+<para>Let&#8217;s start with some examples. What we want is to build our own
+graphic objects, or Morphs. A Morph class is part of the Morph
+hierarchy and usually includes a <literal>drawOn:</literal> method for drawing
+its distinctive appearance. If we forget about computers for a second,
+and consider drawing with color pens on a sheet of paper, one of the
+most basic things we can do is to draw straight lines.
+</para>
+<para>So, let&#8217;s start a System Browser window and build a straight line
+object:
+</para>
+<screen>Morph subclass: #LineExampleMorph
+   instanceVariableNames: ''
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Morphic-Learning'
+</screen>
+<para>In method category <command>drawing</command> add:
+</para>
+<indexterm role="cp"><primary>morph</primary><secondary>vector</secondary><tertiary>line drawing</tertiary></indexterm><indexterm role="cp"><primary>morph</primary><secondary><literal>drawOn:</literal></secondary></indexterm><screen>LineExampleMorph&gt;&gt;drawOn: aCanvas
+   aCanvas strokeWidth: 20 color: Color green do: [
+      aCanvas
+         moveTo: 100 @ 100;
+         lineTo: 400 @ 200 ].
+</screen>
+<para>Now in a Workspace execute:
+</para><screen>LineExampleMorph new openInWorld
+</screen>
+<para>If you get a prompter asking whether to install and activate Vector
+Graphics support, please answer yes. There it is. You have already
+built your first <literal>Morph</literal> class.
+</para>
+<anchor id="ch07_002d01_002dLineDetails"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-01-LineDetails.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>The code is self evident, the <literal>drawOn:</literal> method takes a
+<literal>VectorCanvas</literal> instance as an argument. <literal>VectorCanvas</literal>
+provides many drawing operations for morphs to use. You can play with
+the various drawing operations and their parameters, and see the
+result. If you make a mistake, and the <literal>drawOn:</literal> method fails,
+you&#8217;ll get a red and yellow error box. After fixing your
+<literal>drawOn:</literal> method, do ...World menu &#8594;
+<command>Debug...</command> &#8594; <command>Start drawing all again</command>.. to get
+your morph redrawn correctly.
+</para>
+<anchor id="exeCrossMorph"/>
+<para><emphasis>How will you modify our
+line morph so it draws itself as a cross with an extent of 200
+pixels?</emphasis>
+</para>
+
+
+
+</sect2>
+<sect2 label="">
+<title>Morph you can move</title>
+<indexterm role="cp"><primary>morph</primary><secondary>movable</secondary></indexterm><para>You might have already tried to click and drag on your Line, like you
+can do with regular windows and most other Morphs. If not, try
+now. But nothing happens! The reason is that our Morph is fixed in a
+place in the owner morph (the WorldMorph). It is fixed because
+<literal>drawOn:</literal> says it should be a line between <literal>100 @ 100</literal>
+and <literal>400 @ 200</literal>. Moving it around would mean modifying those
+points. One possible way to do that could be to store those points in instance
+variables.
+</para>
+<para>But now, we just want to code our morph in the simplest possible way,
+and still be able to move it around. The solution is to make it
+subclass of <literal>PlacedMorph</literal>, instead of <literal>Morph</literal>.
+</para>
+<indexterm role="cp"><primary>morph</primary><secondary><literal>delete</literal></secondary></indexterm><para>To do this, first evaluate the code below to get rid of all
+LineExampleMorph instances:
+</para>
+<anchor id="deleteMorphInstances"/>
+<screen>LineExampleMorph allInstancesDo: [ :m | m delete]
+</screen>
+
+<para>Then, in the System Browser class declaration for LineExampleMorph, type
+<literal>PlacedMorph</literal> instead of <literal>Morph</literal> and save. Now execute
+again:
+</para>
+<screen>LineExampleMorph new openInWorld
+</screen>
+<indexterm role="cp"><primary>morph</primary><secondary><literal>location</literal></secondary></indexterm><para>You will get a line you can grab with the mouse and move it
+around. <literal>PlacedMorph</literal> adds a new instance variable called
+<literal>location</literal>. If a morph has a <literal>location</literal>, it can be
+moved around, by modifying it. The <literal>location</literal> also defines a
+new local coordinate system. All the coordinates used in the
+<literal>drawOn:</literal> method are now relative to this new coordinate
+system. That&#8217;s why we don&#8217;t need to modify the <literal>drawOn:</literal>
+method. <literal>drawOn:</literal> now tells how the morph should be drawn, but
+not where. The <literal>location</literal> also specifies a possible rotation
+and scale factor. This means that subinstances of <literal>PlacedMorph</literal>
+can also be rotated and zoomed.
+</para>
+
+</sect2>
+<sect2 label="">
+<title>Filled morph</title>
+<para>Let&#8217;s build another morph, to have more fun.
+</para>
+<screen>PlacedMorph subclass: #TriangleExampleMorph
+   instanceVariableNames: 'borderColor fillColor'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Morphic-Learning'
+</screen>
+<para>In method category <command>initialization</command> add:
+</para>
+<screen>TriangleExampleMorph&gt;&gt;initialize
+   super initialize.
+   borderColor := Color random alpha: 0.8.
+   fillColor := Color random alpha: 0.6.
+</screen>
+<para>In the <command>drawing</command> method category add:
+</para>
+<indexterm role="cp"><primary>morph</primary><secondary>vector</secondary><tertiary>filling area</tertiary></indexterm><indexterm role="cp"><primary>morph</primary><secondary><literal>drawOn:</literal></secondary></indexterm><screen>TriangleExampleMorph&gt;&gt;drawOn: aCanvas
+   aCanvas strokeWidth: 10 color: borderColor fillColor: fillColor do: [
+      aCanvas
+         moveTo: 0 @ 100;
+         lineTo: 87 @ -50;
+         lineTo: -87 @ -50;
+         lineTo: 0 @ 100 ].
+</screen>
+<para>Take a moment to understand that code, to guess what it will do. Now
+execute:
+</para>
+<screen>TriangleExampleMorph new openInWorld
+</screen>
+<para>Do it several times, and move each triangle around. Each new triangle
+you create has different colors. And these colors are not completely
+opaque. This means that when you place your triangle over some other
+morph, you can see through it.
+</para>
+<anchor id="ch07_002d02_002dTriangles"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-02-Triangles.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+
+<anchor id="exeRectMorph"/>
+<para><emphasis>How will you write a
+movable rectangle morph with an x,y extent of 200 by 100? The rect will
+be filled with a random translucent color and surrounded by a thin
+blue line.</emphasis>
+</para>
+
+
+<para>As we learnt previously, Morphic gives you additional ways to interact
+with your morphs. With a three button mouse or a wheel mouse, place
+the mouse pointer (a <literal>HandMorph</literal> instance) over one of your
+triangles and click with the center button or mouse wheel. If you don&#8217;t have
+a three button mouse substitute <userinput>Command-click</userinput>. You get a constellation
+of small colored circles around your morph. This is called the morph&#8217;s
+<firstterm>halo</firstterm>, and each colored circle is a <firstterm>halo
+handle</firstterm>. See <link linkend="ch07_002d02_002dTriangles">ch07-02-Triangles</link>.
+</para>
+<para>At the top left you have the red <command>Remove</command> handle. Clicking on it
+just removes the morph from the morphic world. Hover your hand over
+each handle, and you&#8217;ll get a tooltip with its name. Other handles let
+you <command>Duplicate</command> a morph, open a <command>Menu</command> with actions on it,
+<command>Pick up</command> (same as dragging it with the the mouse as you did
+before). The <command>Move</command> operation is similar to <command>Pick up</command>, but
+doesn&#8217;t remove the morph from the current owner. More about that,
+later. The <command>Debug</command> handle opens a menu from where you can open
+an Inspector or a Hierarchy Browser to study the morph.
+</para>
+<para>You also have a <command>Rotate</command> and <command>Change scale</command> handles. Try
+them! To use them, move your hand to the handle, and then press the
+mouse button and drag it. As you might have guessed, the rotate
+handles spins your morph around the center of its surrounding
+rectangle. The scale handles controls the apparent zoom
+applied to your morph. Both scale and rotation (and also displacement,
+as when you move your morph around) are implemented by modifying the
+inner coordinate system defined by your morph. Displacement, rotation
+and scale are floating point numbers, and thus not limited to
+integers.
+</para>
+<indexterm role="cp"><primary>morph</primary><secondary><literal>rotationCenter</literal></secondary></indexterm><para>To change the center of rotation of a Morph, you override the method
+<literal>rotationCenter</literal> accordingly:
+</para>
+<screen>RectangleExampleMorph&gt;&gt;rotationCenter
+   ^ 0 @ 0
+</screen>
+<para>Observe how our rectangle morph now reacts to the rotation handle. We
+will learn how to control all this with code and animate our morph.
+</para>
+</sect2>
+<sect2 label="">
+<title>Animated morph</title>
+<indexterm role="cp"><primary>morph</primary><secondary>animated</secondary></indexterm><para>Let&#8217;s add two methods to our <literal>TriangleExampleMorph</literal> to
+make our triangle <emphasis>alive</emphasis>:
+</para>
+<indexterm role="cp"><primary>morph</primary><secondary><literal>step,wantsSteps</literal></secondary></indexterm><para>In the method category <command>stepping</command> define:
+</para><screen>TriangleExampleMorph&gt;&gt;wantsSteps
+   ^ true
+</screen>
+<para>...and:
+</para><screen>TriangleExampleMorph&gt;&gt;step
+   fillColor := Color random.
+   self redrawNeeded
+</screen>
+<para>Then create some additional triangles as you did before.
+</para>
+<para>This will make our triangles change color once a second. But more
+interesting, edit the method:
+</para>
+<screen>TriangleExampleMorph&gt;&gt;stepTime
+   ^ 100
+</screen>
+<para>...and:
+</para>
+<indexterm role="cp"><primary>morph</primary><secondary><literal>morphPosition</literal></secondary></indexterm>
+<screen>TriangleExampleMorph&gt;&gt;step
+   self morphPosition: self morphPosition + (0.4@0).
+   self redrawNeeded
+</screen>
+<para>Now, our morph steps ten times per second, and moves to the right at a
+speed of four pixels per second. At each step it moves by 0.4 pixels,
+and not by an integer number of pixels. High quality anti-aliasing
+drawing means we can actually do that! You can make it step at a speed
+of four times a second, and move 1 pixel each time, and see how different
+that looks.
+</para>
+<para>Now try this:
+</para>
+<indexterm role="cp"><primary>morph</primary><secondary><literal>rotateBy:</literal></secondary></indexterm>
+<screen>TriangleExampleMorph&gt;&gt;step
+   self morphPosition: self morphPosition + (0.2@0).
+   self rotateBy: 4 degreesToRadians.
+   self redrawNeeded
+</screen>
+<para>It gets even better. First get rid of all instances:
+</para> 
+<screen>TriangleExampleMorph allInstancesDo: [ :m | m delete]
+</screen>
+<para>And modify these methods:
+</para>
+<screen>TriangleExampleMorph&gt;&gt;initialize
+   super initialize.
+   borderColor := Color random alpha: 0.8.
+   fillColor := Color random alpha: 0.6.
+   scaleBy := 1.1
+</screen>
+<para>Accept <literal>scaleBy</literal> as a new instance variable of the
+<literal>TriangleExampleMorph</literal> class.
+</para>
+<screen>TriangleExampleMorph&gt;&gt;step
+   self morphPosition: self morphPosition + (0.2@0).
+   self rotateBy: 4 degreesToRadians.
+   self scaleBy: scaleBy.
+   self scale &gt; 1.2 ifTrue: [scaleBy := 0.9].
+   self scale &lt; 0.2 ifTrue: [scaleBy := 1.1].
+   self redrawNeeded
+</screen>
+<para>Then create a new triangle:
+</para><screen>TriangleExampleMorph new openInWorld
+</screen>
+<para>See that when the triangle is doing its crazy dance, you can still
+open a halo and interact with it.
+</para>
+
+
+
+</sect2>
+<sect2 label="">
+<title>Morph in morph</title>
+<indexterm role="cp"><primary>morph</primary><secondary>submorph</secondary></indexterm>
+<para>Now, let&#8217;s try something different. Grab one of your
+<literal>LineExampleMorph</literal>. With the halo, zoom it until it is about the
+size of your triangle. Now place the triangle above your line. Open a
+halo on the triangle, click on the <command>Menu</command> handle and select
+...<command>embed into</command> &#8594;
+<command>LineExampleMorph</command>. This makes the triangle a submorph of the
+line. Now, if you move, scale or rotate the line, the triangle also
+gets adjusted.
+</para>
+<para>You can open a halo on the triangle. To do this, middle-click twice
+over it. With the halo on the triangle, you can rotate or zoom it
+independently of the line. Also note that when you grab the triangle
+with your hand (not using the halo), you grab the
+line&#160;+&#160;triangle composite. You can&#8217;t just drag the triangle
+away. For this, you need the triangle&#8217;s halo. Use its <command>Move</command>
+handle<footnote><para>By now, it is likely that the triangle has walked quite
+a bit!</para></footnote> to position it without <emphasis>getting it out</emphasis> of the line. Use
+its <command>Pick up</command> handle to take it with the hand and drop
+it in the world. Now, the triangle is no a longer submorph of the line,
+and the morphs can be moved, rotated or scaled independently.
+</para>
+<para>But let&#8217;s try something. Make the triangle submorph of the line
+again. Now add the following method to category <command>geometry
+testing</command> of the class <literal>LineExampleMorph</literal>:
+</para>
+<indexterm role="cp"><primary>morph</primary><secondary><literal>clipsSubmorphs</literal></secondary></indexterm>
+<screen>LineExampleMorph&gt;&gt;clipsSubmorphs
+   ^ true
+</screen>
+<para>The drawing of the triangle gets cut exactly at the bounds of the
+line. This is most useful for implementing scrolling panes that only
+make a part of their contents visible, but might have other uses too.
+</para>
+<anchor id="ch07_002d04_002dAnimatedAndClippedSubmorph"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-04-AnimatedAndClippedSubmorph.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+
+</sect2>
+</sect1>
+<sect1 label="" id="A-Clock-Morph">
+<title>A Clock Morph</title>
+<para>With all the things we have already learned, we can build a more
+sophisticated morph. Let&#8217;s build a <literal>ClockMorph</literal> as see in
+<link linkend="ch07_002d05_002dClock">ch07-05-Clock</link>.
+</para>
+<!-- In order to have a default text font based on -->
+<!-- vector graphics, do ...@clicksequence{World menu @click{} -->
+<!-- @label{Preferences...} @click{} @label{Set System Font...} @click{} -->
+<!-- @label{DejaVu...} @click{} @label{DejaVuSans}}@footnote{You can select -->
+<!-- any other TrueType font from the ones available.}. -->
+
+<anchor id="ch07_002d05_002dClock"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-05-Clock.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Let&#8217;s create <literal>ClockMorph</literal>, the dial clock :
+</para>
+<screen>PlacedMorph subclass: #ClockMorph
+   instanceVariableNames: ''
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Morphic-Learning'
+</screen>
+<indexterm role="cp"><primary>morph</primary><secondary><literal>drawOn:</literal></secondary></indexterm><para>...and its drawing method in the category <command>drawing</command>:
+</para>
+<anchor id="clockDialDrawing"/>
+<screen>ClockMorph&gt;&gt;drawOn: aCanvas
+   aCanvas
+      ellipseCenter: 0@0
+      radius: 100
+      borderWidth: 10
+      borderColor: Color lightCyan
+      fillColor: Color veryVeryLightGray.
+   aCanvas drawString: 'XII' at: -13 @ -90 font: nil color: Color brown.
+   aCanvas drawString: 'III' at: 66 @ -10 font: nil color: Color brown.
+   aCanvas drawString: 'VI' at: -11 @ 70 font: nil color: Color brown.
+   aCanvas drawString: 'IX' at: -90 @ -10 font: nil color: Color brown
+</screen>
+
+
+<para>We create <literal>ClockHourHandMorph</literal>, the hand for the hours:
+</para>
+<screen>PlacedMorph subclass: #ClockHourHandMorph
+   instanceVariableNames: ''
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Morphic-Learning'
+</screen>
+<para>...and its drawing method in the category <command>drawing</command>:
+</para>
+<screen>ClockHourHandMorph&gt;&gt;drawOn: aCanvas
+   aCanvas fillColor: (Color black alpha: 0.6) do: [
+      aCanvas
+         moveTo: 0 @ 10;
+         lineTo: -5 @ 0;
+         lineTo: 0 @ -50;
+         lineTo: 5 @ 0;
+         lineTo: 0 @ 10 ].
+</screen>
+<para>You can start playing with them. We could use several instances of a
+single <literal>ClockHandMorph</literal>, or create several classes. Here we
+chose to do the latter. Note that all the <literal>drawOn:</literal> methods use
+hardcoded constants for all coordinates. As we have seen before, this
+is not a limitation. We don&#8217;t need to write a lot of specialized trigonometric and
+scaling formulas to build Morphs in Cuis-Smalltalk!
+</para>
+<para>By now, you might imagine what we are doing with all this, but please
+bear with us while we finish building our clock.
+</para>
+<para>We create <literal>ClockMinuteHandMorph</literal>, the hand for the minutes:
+</para>
+<screen>PlacedMorph subclass: #ClockMinuteHandMorph
+   instanceVariableNames: ''
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Morphic-Learning'
+</screen>
+<para>...and its drawing method in the category <command>drawing</command>:
+</para>
+<screen>ClockMinuteHandMorph&gt;&gt;drawOn: aCanvas
+   aCanvas fillColor: ((Color black) alpha: 0.6) do: [
+      aCanvas
+         moveTo: 0 @ 8;
+         lineTo: -4 @ 0;
+         lineTo: 0 @ -82;
+         lineTo: 4 @ 0;
+         lineTo: 0 @ 8 ]
+</screen>
+<para>And finally, the <literal>ClockSecondHandMorph</literal>, the hand for the seconds:
+</para>
+<screen>PlacedMorph subclass: #ClockSecondHandMorph
+   instanceVariableNames: ''
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Morphic-Learning'
+</screen>
+<para>...and its drawing method in the category <command>drawing</command>:
+</para>
+<screen>ClockSecondHandMorph&gt;&gt;drawOn: aCanvas
+   aCanvas strokeWidth: 2.5 color: Color red do: [
+      aCanvas
+         moveTo: 0 @ 0;
+         lineTo: 0 @ -85 ]
+</screen>
+<para>Now, all that is needed is to put our clock parts together in
+<literal>ClockMorph</literal>. In its method category <command>initialization</command> add
+its <literal>initialize</literal> method (accept the new names as instance
+variables):
+</para>
+<screen>ClockMorph&gt;&gt;initialize
+   super initialize.
+   self addMorph: (hourHand := ClockHourHandMorph new).
+   self addMorph: (minuteHand := ClockMinuteHandMorph new).
+   self addMorph: (secondHand := ClockSecondHandMorph new)
+</screen>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+If you have not already added instance variables for the
+clock hands, the Cuis IDE will note this and ask what you want
+to do about it.  We want to declare the three missing names as instance
+variables.
+</para>
+<anchor id="ch07_002d07_002dClockMorph_002dinitialize"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-07-ClockMorph-initialize.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Your <literal>ClockMorph</literal> class definition should now be complete!
+</para>
+<anchor id="ch07_002d08_002dClockMorph_002divars_002dadded"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-08-ClockMorph-ivars-added.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Finally, we animate our clock. In method category <command>stepping</command> add the
+method:
+</para>
+<screen>ClockMorph&gt;&gt;wantsSteps
+   ^ true
+</screen>
+<para>...and:
+</para>
+<screen>ClockMorph&gt;&gt;step
+   | time |
+   time := Time now.
+   hourHand rotationDegrees: time hour * 30.
+   minuteHand rotationDegrees: time minute * 6.
+   secondHand rotationDegrees: time second * 6
+</screen>
+<para>Take a look at how we update the clock hands.
+</para>
+<para>As we said before, any <literal>PlacedMorph</literal> defines a coordinate
+system for its own <literal>drawOn:</literal> method and also for its
+submorphs. This new coordinate system might include rotation or
+reflexion of the axis, and scaling of sizes, but by default they
+don&#8217;t. This means that they just translate the origin, by specifying
+where in the owner point <literal>0 @ 0</literal> is to be located.
+</para>
+<para>The World coordinate system has <literal>0 @ 0</literal> at the top left
+corner, with X coordinates increasing to the right, and Y coordinates
+increasing downwards. Positive rotations go clockwise. This is the
+usual convention in graphics frameworks. Note that this is different
+from the usual mathematics convention, where Y increases upwards, and
+positive angles go counterclockwise.
+</para>
+<para>So, how do we update the hands? For example, for the hour hand, one
+hour means 30 degrees, as 12 hours means 360 degrees or a whole
+turn. So, we multiply hours by 30 to get degrees. Minute and second hand
+work in a similar way, but as there are 60 minutes in one hour, and 60
+seconds in one minute, we need to multiply them by 6 to get degrees. As
+rotation is done around the origin, and the clock has set the origin at its
+center (<link linkend="clockDialDrawing">clockDialDrawing</link>), there&#8217;s no need to set the position of the
+hands. Their <literal>0 @ 0</literal> origin will therefore be at the clock
+<literal>0 @ 0</literal>, i.e. the center of the clock.
+</para>
+<anchor id="ch07_002d06_002dExerciseClock"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-06-ExerciseClock.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<anchor id="exeFancyClock"/>
+<para><emphasis>Look at the clock on
+<link linkend="ch07_002d06_002dExerciseClock">ch07-06-ExerciseClock</link>. Don&#8217;t you think its hand for the seconds
+decorated with a red and yellow disc is fancy? How will you modify our
+clock morph to get this result?</emphasis>
+</para>
+
+
+<para>Create some instances of your clock: <literal>ClockMorph new
+openInWorld</literal>. You can rotate and zoom. Look at the visual quality of
+the Roman numerals in the clock face, especially when rotated and
+zoomed. You don&#8217;t get this graphics quality on your regular
+programming environment! You can also extract the parts, or scale each
+separately. Another fun experiment is to extract the Roman numerals
+into a separate <literal>ClockFaceMorph</literal>, and make it submorph of the
+Clock. Then, you can rotate just the face, not the clock, and the
+clock will show fake time. Try it!
+</para>
+<para>You might have noted two things that seem missing, though: How to
+compute bounding rectangles for Morphs, and how to detect if a Morph
+is being hit by the Hand, so you can move it or get a halo. The
+display rectangle that fully contains a morph is required by the framework
+to manage the required refresh of Display areas as a result of
+any change. But you don&#8217;t need to know this rectangle in order to
+build your own Morphs. In Cuis-Smalltalk, the framework computes it as
+needed, and stores it in the <literal>privateDisplayBounds</literal>
+variable. You don&#8217;t need to worry about that variable at
+all.
+</para>
+<para>With respect to detecting if a Morph is being touched by the Hand,
+or more generally, if some pixel belongs to a Morph, truth is that during
+the drawing operation of a Morph, the framework indeed knows all the
+pixels it is affecting. The <literal>drawOn:</literal> method completely specifies
+the shape of the Morph. Therefore, there is no need to ask the programmer
+to code the Morph geometry again in a separate method! All that is needed
+is careful design of the framework itself, to avoid requiring programmers to
+handle this extra complexity.
+</para>
+<para>The ideas we have outlined in this chapter are the fundamental ones in
+Morphic, and the framework is implemented in order to support
+them. Morphs (i.e. interactive graphic objects) are very general and
+flexible. They are not restricted to a conventional widget library,
+although such a library (rooted in <literal>BoxedMorph</literal>) is included
+and used for building all the Smalltalk tools.
+</para>
+<para>The examples we have explored use the <command>VectorGraphics</command>
+framework. It includes <literal>VectorCanvas</literal> and <literal>HybridCanvas</literal>
+classes. Cuis-Smalltalk also includes the legacy <literal>BitBltCanvas</literal> class
+inherited from Squeak. <literal>BitBltCanvas</literal> doesn&#8217;t support the vector
+graphics drawing operations and doesn&#8217;t do anti-aliasing or
+zooming. But it is mature, and it relies on the BitBlt operation that
+is included in the <acronym>VM</acronym>. This means that it offers excellent
+performance.
+</para>
+<para>To further explore Cuis-Smalltalk&#8217; Morphic, evaluate <literal>Feature
+require: 'SVG'</literal>, and then <literal>SVGMainMorph exampleLion
+openInWorld</literal> and the other examples there. Also, be sure to try the
+examples in the class category <command>Morphic-Examples</command>, among them
+execute <literal>Sample10PythagorasTree new openInWorld</literal> and play
+with the mouse wheel&#8217;s up and down, left and right directions.
+</para>
+<para>Before we leave this section, here is a two lines change to turn our
+Cuis quartz clock<footnote><para>In a quartz clock, the hand for the seconds
+moves every second.</para></footnote> to an automatic Swiss clock<footnote><para>In an
+automatic clock, the hand for the seconds moves every fraction of a
+second. The smaller the fraction, the more premium the clock
+is.</para></footnote><footnote><para>A Japanese automatic clock will be just fine too.</para></footnote>:
+</para>
+<screen>ClockMorph&gt;&gt;stepTime
+    ^ 100 &quot;milliseconds&quot;
+ClockMorph&gt;&gt;step
+../..
+   secondHand rotationDegrees: (time second + (time nanoSecond * 1.0e-9))* 6
+</screen>
+<para>Try to understand how these changes affect the behavior of the
+seconds&#8217; hand and at which fraction of a second it is rotating.
+</para>
+</sect1>
+<sect1 label="" id="Back-to-Spacewar_0021-Morphs">
+<title>Back to Spacewar! Morphs</title>
+
+<sect2 label="">
+<title>Central star</title>
+
+<indexterm role="cp"><primary>backtick</primary></indexterm>
+<para>Our central star has an extent of <literal>30 @ 30</literal> we need to use
+in several places in the code. Therefore it makes sense to define a
+dedicated method to answer this value:
+</para>
+<anchor id="centralStarExtent"/>
+<screen>CentralStar&gt;&gt;morphExtent
+   ^ `30 @ 30`
+</screen>
+
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+An expression surrounded with backticks <literal>'`'</literal> is
+evaluated only once, when the method is first saved and compiled.
+This creates a compound literal value and improves the performance of
+the method since the expression is not evaluated each time the method
+is called: the pre-built value is used instead.
+</para>
+<indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>atRandom</literal></tertiary></indexterm><indexterm role="cp"><primary>morph</primary><secondary><literal>drawOn:</literal></secondary></indexterm>
+<para>As you learnt previously, a morph draws itself from its
+<literal>drawOn:</literal> method. We draw the star as an ellipse with randomly
+fluctuating x and y radius:
+</para>
+<anchor id="centralStarDraw"/>
+<screen>CentralStar&gt;&gt;drawOn: canvas
+   | radius |
+   radius := self morphExtent // 2.
+   canvas ellipseCenter: 0 @ 0
+      radius: (radius x + (2 atRandom - 1)) @ (radius y + (2 atRandom - 1))
+      borderWidth: 3 
+      borderColor: Color orange 
+      fillColor: Color yellow
+</screen>
+
+<para>The star diameters in the x and y directions are fluctuating
+independently of 0 to 2 units. The star does not look perfectly round.
+</para>
+
+
+</sect2>
+<sect2 label="">
+<title>Space ship</title>
+<para>At the game start-up, the nose of the space ship is pointing to the
+top of the screen as seen in <link linkend="ch07_002d10_002dShipDiagram">ch07-10-ShipDiagram</link> and the angle
+of its direction is therefore -90&#176;, while the angle of its
+rotation is 0&#176;. Remember the Y ordinate are oriented
+toward the bottom of the screen.
+</para>
+<anchor id="ch07_002d10_002dShipDiagram"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-10-ShipDiagram.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+<para>Then its <literal>drawOn:</literal> method is written as:
+</para>
+<anchor id="spaceShipDrawing"/>
+<screen>SpaceShip&gt;&gt;drawOn: canvas
+   | a b c d |
+   a := 0 @ -15.
+   b := -10 @ 15.
+   c := 0 @ 10.
+   d := 10 @ 15.
+   canvas line: a to: b width: 2 color: color.
+   canvas line: b to: c width: 2 color: color.
+   canvas line: c to: d width: 2 color: color.
+   canvas line: d to: a width: 2 color: color.
+   &quot;Draw gas exhaust&quot;
+   acceleration ifNotZero: [
+      canvas line: c to: 0 @ 35 width: 1 color: Color gray]
+</screen>
+
+<anchor id="exeGasExhaust"/>
+<para><emphasis>How will you modify
+the space ship <literal>drawOn:</literal> method with the gas exhaust drawing
+depends on the acceleration rate?</emphasis>
+</para>
+
+
+<para>When there is an acceleration from the engine, we draw a small gray
+line to represent the gas exhaust.
+</para>
+<para>When the user turns the ship, the morph is rotated a bit by adjusting
+its heading:
+</para>
+<screen>SpaceShip&gt;&gt;right
+&quot;Rotate the ship to its right&quot;
+   self heading: self heading + 0.1
+
+SpaceShip&gt;&gt;left
+&quot;Rotate the ship to its left&quot;
+   self heading: self heading - 0.1
+</screen>
+
+<para>But how does this heading affect the rotation of the morph?
+</para>
+<para>Underneath, the <literal>MobileMorph</literal> is equipped with an affine
+transformation to scale, rotate and translate the coordinates passed as
+arguments to the drawing messages received by the canvas. Therefore, our
+<literal>heading</literal> methods are defined to match this internal
+representation and we use the <literal>rotation:</literal> method from the
+<literal>PlacedMorph</literal> class to rotate appropriately. The
+<literal>location</literal> attribute represents an affine transformation, and
+we get its rotation angle with the <literal>#radians</literal> message.
+</para>
+<indexterm role="cp"><primary>morph</primary><secondary><literal>rotation:</literal></secondary></indexterm><indexterm role="cp"><primary>morph</primary><secondary><literal>location</literal></secondary></indexterm><screen>Mobile&gt;&gt;heading
+   ^ location radians - Float halfPi
+Mobile&gt;&gt;heading: aHeading
+   self rotation: aHeading + Float halfPi
+</screen>
+<para>When a mobile is vertical, pointing to the top of the screen, its
+heading is -90&#176; (-pi/2) in the screen coordinates
+system. In that situation the mobile is not rotated &#8211; or
+0&#176; rotated &#8211; therefore we add 90&#176; (pi/2) to
+the heading to get the matching rotation angle of the mobile.
+</para>
+</sect2>
+<sect2 label="">
+<title>Torpedo</title>
+
+<!-- Give the diagram of the torpedo, and as an exercise ask how to code -->
+<!-- its drawOn: and morphExtent methods -->
+
+<para>Alike a space ship, when a torpedo is just instantiated its nose
+points in the direction of the top of the screen and its vertices are
+given by the <link linkend="ch07_002d11_002dTorpedoDiagram">ch07-11-TorpedoDiagram</link>.
+</para>
+<anchor id="ch07_002d11_002dTorpedoDiagram"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-11-TorpedoDiagram.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<anchor id="exeTorpedoExtent"/>
+<para><emphasis>Given the vertices
+given by <link linkend="ch07_002d11_002dTorpedoDiagram">ch07-11-TorpedoDiagram</link>&#44; how will you write its
+<literal>morphExtent</literal> method?</emphasis>
+</para>
+
+
+
+<anchor id="exeTorpedoDrawing"/>
+<para><emphasis>How will you write
+the <literal>Torpedo</literal>&#8217;s <literal>drawOn:</literal> method?</emphasis>
+</para>
+
+
+
+</sect2>
+<sect2 label="">
+<title>Drawing revisited</title>
+
+<indexterm role="cp"><primary>class</primary><secondary>instance variable</secondary></indexterm><indexterm role="cp"><primary>variable</primary><secondary>class instance</secondary></indexterm><!-- refactoring of drawOn: explain class variable -->
+<para>As you may have observed, the <literal>SpaceShip</literal> and <literal>Torpedo</literal>
+<literal>drawOn:</literal> methods share the same logic: drawing a polygon given
+its vertices. We likely want to push this common logic to their common
+ancestor, the <literal>Mobile</literal> class. It needs to know about its
+vertices, so we may want to add an instance variable
+<literal>vertices</literal> initialized in its subclasses with an array
+containing the points:
+</para>
+<screen>PlacedMorph subclass: #Mobile
+   instanceVariableNames: 'acceleration color velocity vertices'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+
+SpaceShip&gt;&gt;initialize
+   super initialize.
+   vertices := {0@-15 . -10@15 . 0@10 . 10@15}.
+   self resupply
+   
+Torpedo&gt;&gt;initialize
+   super initialize.
+   vertices := {0@-4 . -2@4 . 2@4}.
+   lifeSpan := 500.
+   acceleration := 3000
+</screen>
+<para>However this is not a good idea. Imagine the game play with 200
+torpedoes, the vertices array will be duplicated 200 times with the
+same data!
+</para>
+<bridgehead renderas="sect3">Class instance variable</bridgehead>
+
+<para>In that kind of situation, what you want is a <firstterm>class instance
+variable</firstterm> defined in the class side &#8211; in contrast to the instance
+side where we have been coding until now.
+</para>
+<para>We make use of the fact that all objects are instances of some class.
+The  <literal>Mobile class</literal> is an instance of the class <literal>Class</literal>!
+</para>
+<orderedlist numeration="arabic">
+<listitem><para>A <firstterm>class instance variable</firstterm> can be accessed and assigned
+ only by the class itself in a <firstterm>class method</firstterm>.
+</para>
+</listitem><listitem><para>An entity (i.e. a fired torpedo) can access class instance
+ variables via <firstterm>class methods</firstterm>, by sending a message to a class
+ (i.e. <literal>Torpedo</literal>) rather than to itself or some other entity.
+</para>
+</listitem><listitem><para>In the class hierarchy, each subclass has its own instance
+ of the class instance variable, and can assign a different value to
+ it &#8211; in contrast with a <firstterm>class variable</firstterm> which is shared among
+ all the subclasses (discussed later).
+</para>
+</listitem><listitem><para>To edit the <emphasis>class</emphasis> instance variables and <emphasis>class</emphasis>
+ methods, in the System Browser press the <command>class</command> button under
+ the class list.
+</para>
+</listitem></orderedlist>
+<para>In the System Browser, we click the <command>class</command> button then we
+declare our variable in the <literal>Mobile class</literal> definition &#8211;
+<link linkend="ch07_002d12_002dbrowserClassSide">ch07-12-browserClassSide</link>:
+</para>
+<anchor id="instanceVariableMobileClass"/>
+<screen>Mobile class
+   instanceVariableNames: 'vertices'
+</screen>
+
+<para>Then we write an access method in the <literal>Mobile class</literal>, so
+<literal>SpaceShip</literal> and <literal>Torpedo</literal> instances can access it:
+</para>
+<screen>Mobile class&gt;&gt;vertices
+   ^ vertices
+</screen>
+<anchor id="ch07_002d12_002dbrowserClassSide"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-12-browserClassSide.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+
+<indexterm role="cp"><primary>class</primary><secondary>initialize</secondary></indexterm><para>Next, each subclass is responsible to correctly initialize
+<literal>vertices</literal> with its <literal>initialize</literal> class method:
+</para>
+<anchor id="initializeClass"/>
+<screen>SpaceShip class&gt;&gt;initialize
+&quot;SpaceShip initialize&quot;
+   vertices :=  {0@-15 . -10@15 . 0@10 . 10@15}
+
+Torpedo class&gt;&gt;initialize
+&quot;Torpedo initialize&quot;
+   vertices := {0@-4 . -2@4 . 2@4}
+</screen>
+
+
+<para>When a class is installed in Cuis-Smalltalk, its <literal>initialize</literal> class
+method is executed. Alternatively select the comment and execute it
+with <userinput>Ctrl-d</userinput>.
+</para>
+<para>Experiment in a Workspace to understand how a class instance
+variable behaves:
+</para>
+<anchor id="classInstanceVar"/>
+<screen>SpaceShip vertices.
+&#8658; nil 
+SpaceShip initialize.
+SpaceShip vertices.
+&#8658; #(0@-15 -10@15 0@10 10@15) 
+
+Torpedo vertices.
+&#8658; nil 
+Torpedo initialize.
+Torpedo vertices.
+&#8658; #(0@-4 -2@4 2@4)
+</screen>
+
+<para>This is really the behavior we want: <literal>SpaceShip</literal> and
+<literal>Torpedo</literal> instances have a different diagram. However, every
+instances of a <literal>SpaceShip</literal> will have the same diagram, referring
+to the same <literal>vertices</literal> array (i.e. same location in the
+computer memory).
+</para>
+<indexterm role="cp"><primary>class</primary><secondary><literal>class</literal></secondary></indexterm><para>Each instance asks its class side with the <literal>#class</literal> message:
+</para>
+<screen>aTorpedo class
+&#8658; Torpedo
+self class
+&#8658; SpaceShip
+</screen>
+<para>The <literal>Torpedo</literal>&#8217;s <literal>drawOn:</literal> is rewritten to access the
+vertices in its class side:
+</para>
+<screen>Torpedo&gt;&gt;drawOn: canvas
+   | vertices |
+   vertices := self class vertices.
+   canvas line: vertices first to: vertices second width: 2 color: color.
+   canvas line: vertices third to: vertices second width: 2 color: color.
+   canvas line: vertices first to: vertices third width: 2 color: color
+</screen>
+<anchor id="exeSpaceShipClassSideDiagram"/>
+<para><emphasis>How will you rewrite <literal>SpaceShip</literal>&#8217;s <literal>drawOn:</literal> to use the vertices in its class side?</emphasis>
+</para>
+
+
+<para>So far, we still have this redundancy in the <literal>drawOn:</literal>
+methods. What we want is <literal>Mobile</literal> to be responsible to draw the
+polygon given a vertices array: <literal>self drawOn: canvas
+polygon: vertices</literal>.
+</para>
+<para>The <literal>SpaceShip</literal> and <literal>Torpedo</literal>&#8217;s <literal>drawOn:</literal> will then
+be simply written as:
+</para>
+<screen>Torpedo&gt;&gt;drawOn: canvas
+   self drawOn: canvas polygon: self class vertices
+
+SpaceShip&gt;&gt;drawOn: canvas
+   | vertices |
+   vertices := self class vertices.
+   self drawOn: canvas polygon: vertices.
+   &quot;Draw gas exhaust&quot;
+   acceleration ifNotZero: [
+      canvas line: vertices third to: 0@35 width: 1 color: Color gray]
+</screen>
+<anchor id="exeDrawMobile"/>
+<para><emphasis>How will you
+write the <literal>drawOn:polygon:</literal> method in <literal>Mobile</literal>? Tip: use the
+iterator <literal>withIndexDo:</literal>.</emphasis>
+</para>
+
+
+<!-- Explain the difference with class variable -->
+<bridgehead renderas="sect3">Class variable</bridgehead>
+<indexterm role="cp"><primary>class</primary><secondary>variable</secondary></indexterm><indexterm role="cp"><primary>variable</primary><secondary>class</secondary></indexterm>
+<para>A <firstterm>class variable</firstterm> is written capitalized in the argument of
+<literal>classVariableNames:</literal> keyword:
+</para>
+<anchor id="classVariableMobile"/>
+<screen>PlacedMorph subclass: #Mobile
+   instanceVariableNames: 'acceleration color velocity'
+   classVariableNames: 'Vertices'
+   poolDictionaries: ''
+   category: 'Spacewar!'
+</screen>
+
+<para>As a class instance variable, it can be directly accessed from the
+class side and instances are grant access only with messages send to
+the class side. <emphasis role="bold">Contrary</emphasis> to a class instance variable, its
+value is common in the whole class hierarchy. 
+</para>
+<para>In Spacewar!, a class variable <literal>Vertices</literal> will have the same
+diagram for a space ship and a torpedo. This is not what we want.
+</para>
+<screen>SpaceShip&gt;&gt;vertices
+   ^ `{0@-15 . -10@15 . 0@10 . 10@15}`
+</screen>
+<!-- it can be simpler -->
+</sect2>
+<sect2 label="">
+<title>Drawing simplified</title>
+<para>Using a class variable in the present game design is a bit
+overkill. It was an excuse to present the concept of class
+variables. If the game came with an editor where the user redesigns
+the ship and torpedo diagrams, it would make sense to hold the vertices
+in a variable. But our vertices of the space ship and torpedo diagrams
+are constant. We do not modify them. As we did with the mass of the
+space ship &#8211; <link linkend="methodConstant">methodConstant</link> &#8211; we can use a method returning a
+collection, surrounded with backtricks to improve efficiency.
+</para>
+<anchor id="verticesMethod"/>
+<screen>SpaceShip&gt;&gt;vertices
+   ^ `{0@-15 . -10@15 . 0@10 . 10@15}`
+   
+Torpedo&gt;&gt;vertices
+   ^ `{0@-4 . -2@4 . 2@4}`
+</screen>
+
+<para>Then in the drawing methods, we replace <literal>self class
+vertices</literal> by <literal>self vertices</literal>.
+</para>
+<!-- refactoring of collision with display bounds -->
+</sect2>
+<sect2 label="">
+<title>Collisions revisited</title>
+<para>In <link linkend="shipSunCollision">shipSunCollision</link>, we have a very naive approach for collision
+between the central star and the ships, based on distance between
+morphs. It was very inaccurate.
+</para>
+<para>In bitmap games, a classic way to deal with collision detection is to
+look at the intersections of the rectangles surrounding the graphic
+objects. The <literal>#displayBounds</literal> message sent to a morph answers its
+bounds in the display, a rectangle encompassing the morph given its
+rotation and scale.
+</para>
+<anchor id="ch07_002d13_002dshipDisplayBounds"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-13-shipDisplayBounds.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>When browsing the <literal>Rectangle</literal> class, you learn the
+<literal>#intersects:</literal> message tells us if two rectangles overlap. This is
+what we need for a more accurate collision detection between the
+central star and the space ships:
+</para>
+<anchor id="accurateCollisionShipsSun"/>
+<screen>SpaceWar&gt;&gt;collisionsShipsStar
+   ships do: [:aShip | 
+      (aShip displayBounds intersects: centralStar displayBounds) ifTrue: [
+         aShip flashWith: Color red.
+         self teleport: aShip]]
+</screen>
+
+
+<para>Nevertheless we use the VectorGraphics framework, its knows about the
+shape of each morph it is rendering. It uses this knowledge for
+collision detection at the pixel precision. We rewrite our detection
+method simpler with the <literal>#collides:</literal> message:
+</para>
+<anchor id="accuratePixelCollisionShipsSun"/>
+<screen>SpaceWar&gt;&gt;collisionsShipsStar
+   ships do: [:aShip | 
+      (aShip collides: centralStar) ifTrue: [
+         aShip flashWith: Color red.
+         self teleport: aShip]]
+</screen>
+
+<anchor id="exeAccurateDetection"/>
+<para><emphasis>Rewrite the three collision detection methods between space ships, torpedoes and the central star.</emphasis>
+</para>
+
+<!-- -->
+</sect2>
+</sect1>
+</chapter>

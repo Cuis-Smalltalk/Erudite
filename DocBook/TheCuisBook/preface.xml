@@ -1,0 +1,135 @@
+<preface id="Preface">
+<title>Preface</title>
+
+<blockquote><attribution>Alan Perlis</attribution>
+<para>A language that doesn&#8217;t affect the way you think about programming, is
+not worth knowing.
+</para></blockquote>
+
+
+
+<!-- We should write Cuis is easily discoverable, one can learn by looking at Cuis code -->
+
+<para>Cuis-Smalltalk &#8212;in short, Cuis&#8212; is a portable environment for doing,
+building and sharing software. Like any other tool, Cuis doesn&#8217;t
+require having a particular mindset or following a particular
+process. However, Cuis is built with a specific view on what software
+is, and what it means to build software. As a consequence, Cuis is
+especially effective if these ideas resonate with you and, at least
+occasionally, you let them guide your thoughts and actions.
+</para>
+<para>In this book, we will accompany you as you explore, discover and
+learn about Cuis and Smalltalk.
+</para>
+<para>We don&#8217;t assume knowledge of computer programming, but if you happen
+to have some experience with an Object-Oriented or Functional language
+you will recognize many concepts. If you don&#8217;t have any programming
+experience or you have coded in an imperative, closer to the metal
+language, such as C or Assembly, many of the ideas may be new.
+</para>
+<para>In any case, especially during the first chapters, read this book and
+follow the examples with an open mind. A new point of view on what
+software development means will be an enriching experience.  For us,
+programming is a thoughtful process.
+</para>
+<para>We understand software development as the activity of learning and
+documenting knowledge for ourselves and others to use, and also to be
+run on a computer. The fact that a computer can execute the software
+and produce useful solutions to some problems is a consequence of the
+knowledge being sound and relevant. Just making it work is not the
+important part!
+</para>
+<para>These ideas strongly shape Cuis and the experience of using it, and
+we&#8217;ll develop them further along in this book.  Amongst their most
+obvious consequences are a passion for reducing unneeded complexity,
+while providing a complete, live software development experience.
+</para>
+<para>This book is an introduction and invitation to explore Cuis.  We hope
+you will join us in this journey to use it as a medium to express
+ideas and thoughts, to build cool stuff, and to make Cuis even better.
+</para>
+<anchor id="ch00_002dimg1"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch00-img1.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>To make your journey with this book more enjoyable, the
+<emphasis>Spacewar!</emphasis><footnote><para><ulink url="https://en.wikipedia.org/wiki/Spacewar!">https://en.wikipedia.org/wiki/Spacewar!</ulink></para></footnote>
+project is its recurring theme. It is distilled into the book in code
+examples, exercises and dedicated chapters. At the end of the book,
+you will have written a replica of this historic video game. The final
+Cuis-Smalltalk package of this game can be downloaded from the book
+repository<footnote><para><ulink url="https://github.com/Cuis-Smalltalk/TheCuisBook/blob/master/Spacewar!.pck.st">https://github.com/Cuis-Smalltalk/TheCuisBook/blob/master/Spacewar!.pck.st</ulink></para></footnote>.
+</para>
+
+<bridgehead renderas="sect1">How to use the book</bridgehead>
+
+<para>The reader can study Cuis-Smalltalk from two versions of the book:
+</para>
+<itemizedlist>
+<listitem><para><emphasis role="bold">Online.</emphasis> With a web browser at the
+ <ulink url="https://cuis-smalltalk.github.io/TheCuisBook">https://cuis-smalltalk.github.io/TheCuisBook</ulink> address. The book
+ is structured in chapters and sections, displayed one at a time. It
+ is a very flexible way to study the book: you can open several
+ chapters and appendices on different tabs in your web browser. It
+ requires you to be connected to the Internet, though.
+</para>
+</listitem><listitem><para><emphasis role="bold">Offline.</emphasis> In a single PDF file you download and read
+ offline. It can be printed as a nice paper book. The most recent
+ build can be found at <ulink url="https://github.com/Cuis-Smalltalk/TheCuisBook">https://github.com/Cuis-Smalltalk/TheCuisBook</ulink>.
+</para>
+</listitem></itemizedlist>
+<indexterm role="cp"><primary>returned value</primary></indexterm>
+<indexterm role="cp"><primary>variable</primary><secondary>assignment</secondary></indexterm><indexterm role="cp"><primary>assignment</primary><see>variable</see></indexterm>
+
+<para>The chapters come with many examples. Some can be copied and pasted into
+Cuis-Smalltalk. We encourage you to do this, and in the process modify them
+to explore on your own.
+</para>
+<para>The code examples in the online version can be directly copied and
+pasted into Cuis-Smalltalk. This is why the assignment character &#8220;&#x2190;&#8221;
+you see in the developer Cuis-Smalltalk window is printed as &#8220;:=&#8221; in the
+online version of the book. The same applies to the return character
+&#8220;&#x2191;&#8221; printed as &#8220;^&#8221; in the online version.
+</para>
+<para>In the offline PDF version, the code examples are printed with the same
+assignment and return characters as seen in the Cuis-Smalltalk windows. Copying
+and pasting also work as expected.
+</para>
+<para>Other examples are code extracts which are not self-sufficient to be
+executed as is. Their purpose is to expose specific facets of the Smalltalk
+language.
+</para>
+<para>A typical example without a caption looks like:
+</para>
+<screen>100 factorial
+</screen>
+<para>The same example with a caption appears with a number and title, and
+can be used as a reference elsewhere in the book:
+</para>
+<anchor id="exampleExample"/>
+<screen>100 factorial
+&#8658;  9332621544394415268169923885626670049071596826438162146859
+29638952175999932299156089414639761565182862536979208272237582
+51185210916864000000000000000000000000
+</screen>
+
+<para>There are also a lot of exercises. Most are very easy; they intend to give you
+an opportunity to apply what you have just learned.
+</para>
+<para>Exercises are easily identified by the Cuis-Smalltalk mascot: <firstterm>Cuis</firstterm>,
+a South American rodent!
+</para>
+<anchor id="exerciseExample"/>
+<para><emphasis>Search the Internet: How many versions of Smalltalk are there?</emphasis>
+</para>
+
+
+<para>The solutions to the exercises are presented in <link linkend="Solutions-to-the-Exercises">Solutions to the
+Exercises</link>.
+</para>
+<para>Happy reading!
+<!--================================================================ -->
+<!--:Part One -->
+<!-- @part Part One @*The basis of @cuis{} -->
+<!-- -->
+</para></preface>

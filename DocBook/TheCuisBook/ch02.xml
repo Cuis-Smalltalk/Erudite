@@ -1,0 +1,605 @@
+<chapter label="" id="The-Message-Way-of-Life">
+<title>The Message Way of Life</title>
+
+<blockquote><attribution>Alan Kay</attribution>
+<para>The key in making great and growable systems is much more to design how its
+ modules communicate rather than what their internal properties and
+ behaviors should be.
+</para></blockquote>
+
+
+
+
+<para>A Smalltalk system is a collection of entities communicating with each other
+through messages. That&#8217;s all, there is nothing more.
+</para>
+
+
+<sect1 label="" id="Communicating-entities">
+<title>Communicating entities</title>
+
+<indexterm role="cp"><primary>message</primary><secondary>sender</secondary></indexterm><indexterm role="cp"><primary>message</primary><secondary>receiver</secondary></indexterm><indexterm role="cp"><primary>instance</primary></indexterm>
+<indexterm role="cp"><primary>class</primary></indexterm>
+<para>When a given entity receives a message from another entity, it
+triggers a specific behavior.  The receiving entity of the message is
+called the <firstterm>receiver</firstterm> and the sending entity, the <firstterm>sender</firstterm>. In
+Cuis-Smalltalk terminology, an entity is called an <firstterm>instance of a class</firstterm>,
+a <firstterm>class instance</firstterm>, or simply an <firstterm>instance</firstterm>.  A <firstterm>class</firstterm> is
+a kind of model for an entity.
+</para>
+<indexterm role="cp"><primary>method</primary></indexterm>
+<para>The behavior is defined internally in the receiver and it can be
+triggered from any instance.
+<emphasis role="bold">Behaviors are invoked only by messages sent between entities</emphasis>.
+An entity may send a message to
+itself. A behavior is defined in a class and is called a <firstterm>method</firstterm>.
+</para>
+<indexterm role="cp"><primary>garbage collection</primary></indexterm>
+<para>This results in a huge cloud of entities communicating with each other
+through message sending. New entities are instantiated when needed
+then automatically garbage collected when no longer required. On a
+fresh Cuis-Smalltalk environment, the count of class instances is more than
+150000.
+</para>
+<indexterm role="cp"><primary>collection</primary><secondary><literal>inject:into:</literal></secondary></indexterm><anchor id="entitiesCount"/>
+<screen>ProtoObject allSubclasses sum: [ :class | class allInstances size] 
+&#8658; 152058
+</screen>
+
+<para>The count of classes, the models for the entities &#8211; instances of the class <literal>Class</literal> &#8211; is less than 700.
+</para>
+<anchor id="classesCount"/>
+<screen>Smalltalk allClasses size
+&#8658; 671
+</screen>
+
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+Because you are not using the base image but one used
+to teach classes, you will likely see
+a much larger number.
+</para>
+<para>To be honest, in our previous chapter, we skipped this important detail
+on Smalltalk design. We wrote about message sending without explaining
+much, we wanted you to discover this design informally.
+The scripts you
+read and wrote were all about entities communicating with each other
+through messages.
+</para>
+</sect1>
+<sect1 label="" id="Message-send-definitions">
+<title>Message send definitions</title>
+<indexterm role="cp"><primary>message</primary><secondary>send</secondary></indexterm>
+<para>There are three kinds of messages in Cuis-Smalltalk:
+</para>
+<indexterm role="cp"><primary>message</primary><secondary>unary</secondary></indexterm>
+<itemizedlist><listitem><para><emphasis role="bold">Unary messages</emphasis> take no argument.
+ 
+
+ In <literal>1 factorial</literal> the message <literal>#factorial</literal> is sent to the
+ object <literal>1</literal>.
+</para>
+<indexterm role="cp"><primary>message</primary><secondary>binary</secondary></indexterm></listitem><listitem><para><emphasis role="bold">Binary messages</emphasis> take exactly one argument.
+ 
+ 
+ In <literal>1 + 2</literal> the message <literal>#+</literal> is sent to the object
+ <literal>1</literal> with the argument <literal>2</literal>.
+</para>
+<indexterm role="cp"><primary>message</primary><secondary>keyword</secondary></indexterm></listitem><listitem><para><emphasis role="bold">Keyword messages</emphasis> take an arbitrary number of
+ arguments.
+ 
+ 
+ In <literal>2 raisedTo: 6 modulo: 10</literal> the message consisting of the
+ message selector <literal>#raisedTo:modulo:</literal> and the arguments
+ <literal>6</literal> and <literal>10</literal> is sent to the object <literal>2</literal>.
+</para>
+</listitem></itemizedlist>
+<para>Unary message selectors consist of alphanumeric characters and start
+with a lowercase letter.
+</para>
+<para>Binary message selectors consist of one or more characters from the
+following set:
+</para>
+<screen>+ - / \ * ~ &lt; &gt; = @ % | &amp; ? ,
+</screen>
+<para>Keyword message selectors consist of a series of alphanumeric
+keywords, where each keyword starts with a lower-case letter and ends
+with a colon.
+</para>
+<indexterm role="cp"><primary>message</primary><secondary>precedence</secondary></indexterm><para>Unary messages have the highest precedence, followed by binary messages, and
+finally keyword messages, so:
+</para>
+<screen>2 raisedTo: 1 + 3 factorial
+&#8658; 128
+</screen>
+<para>First we send <literal>factorial</literal> to <literal>3</literal>, then we send
+<literal>+ 6</literal> to <literal>1</literal>, and finally we send
+<literal>raisedTo: 7</literal> to <literal>2</literal>.
+</para>
+<para>Precedence aside, evaluation is strictly from left to right, so
+</para>
+<screen>1 + 2 * 3
+&#8658; 9
+</screen>
+<para>is not 7. Parentheses must be used to alter the order of evaluation:
+</para>
+<screen>1 + (2 * 3)
+&#8658; 7
+</screen>
+<para>Parentheses can also be used to make potentially confusing code more
+clear. For example, the strict left-to-right evaluation order can be
+confusing when applied to mathematical expressions. In the Spacewar!
+code snippet below, the parentheses make it more clear that the
+addition happens first:
+</para>
+<anchor id="updateShipVelocity"/>
+<screen>newVelocity := (ai + ag) * t + velocity
+</screen>
+
+<indexterm role="cp"><primary>message</primary><secondary>cascade</secondary></indexterm><indexterm role="cp"><primary>cascade of messages</primary></indexterm>
+<para>To send multiple messages to the same receiver a <firstterm>cascade</firstterm> can be
+used to state the receiver once, followed by the cascade of messages
+separated by semicolons. Here is our earlier <link linkend="hello2">hello2</link> code
+expressed with a cascade:
+</para>
+<anchor id="helloCascade"/>
+<screen>Transcript
+   show: 'Hello World!';
+   newLine;
+   show: 'I am Cuising'
+</screen>
+
+<para>Another example of a cascade from the Spacewar! game:
+</para>
+<anchor id="teleportShip"/>
+<screen>aShip 
+   velocity: 0 @ 0;
+   morphPosition: randomCoordinate value @ randomCoordinate value
+</screen>
+
+<para>Observe the text here is formatted to ease code understanding. It is possible to
+write the cascade of messages in one line, but it reduces the
+readability of the code:
+</para>
+<screen>Transcript show: 'Hello World!'; newLine; show: 'I am Cuising'
+</screen>
+<para>The <literal>Transcript</literal> class is frequently helpful in presenting
+useful information when developing an application. An alternative to
+the <userinput>Ctrl-d</userinput> (<emphasis><emphasis role="bold">D</emphasis>o it</emphasis>) shortcut is <userinput>Ctrl-p</userinput>
+(<emphasis><emphasis role="bold">P</emphasis>rint it</emphasis>), which executes the script and prints the result
+directly in the Workspace.
+</para>
+<para>In the <link linkend="helloCascade">helloCascade</link>, we have requested no special result.  Selecting the
+text and typing <userinput>Ctrl-p</userinput> results in the default, which is to
+return the object to which a message is sent, in this case, the
+<literal>Transcript</literal>.
+</para>
+</sect1>
+<sect1 label="" id="Message-to-string-entities">
+<title>Message to string entities</title>
+<indexterm role="cp"><primary>string</primary><secondary>character access</secondary></indexterm><indexterm role="cp"><primary>string</primary><secondary>Unicode</secondary></indexterm><indexterm role="cp"><primary>Unicode</primary></indexterm>
+<para>As previously stated, a <literal>String</literal> is a sequence of <literal>Character</literal> 
+elements, and represents plain Text (without any formatting).
+</para>
+<para>In Cuis, as in most programming languages, <literal>String</literal> literals are a convenient syntax for creating <literal>String</literal> instances. These are some examples of <literal>String</literal> literals:
+</para>
+<screen>'Hello World!'.
+'Accented letters: cigüeña, camión, déjà, deçà, forêt, coïncidence'.
+'Non-latin (Greek) letters: Λορεμ ιπσθμ δολορ σιτ αμετ'.
+</screen>
+<para>The first example is an instance of <literal>String</literal>. This class is used for String literals if all Characters are in the limited <acronym>ASCII</acronym> character set. The following examples contain non-<acronym>ASCII</acronym> Characters. For these, an instance of <literal>UnicodeString</literal> is used instead.  You usually don&#8217;t need to care about this: Instances of <literal>String</literal> and <literal>UnicodeString</literal> understand the same messages, so they are interchangeable.
+</para>
+<para>Access to a character in a string is done with the keyword message
+<literal>#at:</literal> and its index position in the string as the argument. Execute
+the following examples with the <userinput>Ctrl-p</userinput> shortcut:
+</para>
+<screen>'Hello' at: 1 &#8658; $H
+'Hello' at: 5 &#8658; $o
+</screen>
+<para>Observe how a character is prefixed with the &#8220;$&#8221; symbol.
+</para>
+<para><emphasis role="bold">Caution.</emphasis> The index indicates position, naturally starting from 1, and is valid up to the string length.
+</para>
+<indexterm role="cp"><primary>string</primary><secondary><literal>indexOf:</literal></secondary></indexterm><screen>'Hello' indexOf: $e
+&#8658; 2
+</screen>
+<indexterm role="cp"><primary>string</primary><secondary><literal>at:put:</literal></secondary></indexterm><indexterm role="cp"><primary><literal>yourself</literal></primary></indexterm>
+<para>To change one character, use the companion two keyword message
+<literal>#at:put:</literal>. The argument must be noted as a character:
+</para><screen>'Hello' at: 2 put: $a; yourself
+&#8658; 'Hallo'
+</screen>
+<para>Observe the use of the cascade with the <literal>#yourself</literal> message.  A
+cascade sends the following messages to the original receiver, so
+<literal>#yourself</literal> returns the updated string.  Without the
+cascade, <literal>$a</literal> is returned as the result of the <literal>#at:put:</literal>
+message.
+</para>
+<anchor id="helloBelle"/>
+<para><emphasis>Replace each character of
+the string &#8217;Hello&#8217; to become &#8217;Belle&#8217;.</emphasis>
+</para>
+
+
+<indexterm role="cp"><primary>character</primary><secondary>ascii</secondary></indexterm><para>Characters that are part of the <acronym>ASCII</acronym> character set can be
+asked for their <acronym>ASCII</acronym> code. Conversely, given an
+<acronym>ASCII</acronym> code, we can ask for the corresponding
+<literal>Character</literal>:
+</para>
+<screen>$A asciiValue
+&#8658; 65
+Character asciiValue: 65 + 25
+&#8658; $Z
+</screen>
+<indexterm role="cp"><primary>character</primary><secondary>Unicode</secondary></indexterm><indexterm role="cp"><primary>Unicode</primary></indexterm>
+<para>But Characters that are not part of <acronym>ASCII</acronym> don&#8217;t have an
+<acronym>ASCII</acronym>. In general, it is better to use Unicode code points
+instead:
+</para>
+<screen>$A codePoint
+&#8658; 65
+UnicodeCodePoint codePoint: 65 + 25
+&#8658; $Z
+$φ codePoint
+&#8658; 966
+UnicodeCodePoint codePoint: 966
+&#8658; $φ
+</screen>
+<indexterm role="cp"><primary>string</primary><secondary><literal>shuffled</literal></secondary></indexterm><indexterm role="cp"><primary>collection</primary><secondary><literal>shuffled</literal></secondary></indexterm><para>Shuffling a string can be fun but not very useful. However,
+shuffling can apply to any kind of collection, not only to a string, and it
+will prove to be useful as we will see later:
+</para><screen>'hello world' shuffled
+&#8658; 'wod llreohl'
+</screen><para>Note that the results of each shuffle are different.
+</para>
+<indexterm role="cp"><primary>string</primary><secondary><literal>asArray</literal></secondary></indexterm><indexterm role="cp"><primary>message</primary><secondary>composition</secondary></indexterm><para>Messages naturally compose:
+</para><screen>'hello world' shuffled asArray
+&#8658; #($h $d $l $ &quot;20&quot; $o $w $e $l $l $o $r) 
+</screen>
+<para>An <literal>Array</literal> literal starts with a hash or sharp character, <literal>$#</literal>
+and parentheses surround the elements of the array.
+In this case, the elements are <literal>Character</literal>s, but they can
+be instances of any class.
+</para>
+<para>Like <literal>#shuffled</literal>, all collections answer to the message
+<literal>#sorted</literal>, which answers a sorted collection.
+<indexterm role="cp"><primary>string</primary><secondary><literal>sorted</literal></secondary></indexterm></para><screen>'hello world' sorted
+&#8658; ' dehllloorw'
+</screen>
+</sect1>
+<sect1 label="" id="Messages-to-number-entities">
+<title>Messages to number entities</title>
+<indexterm role="cp"><primary>number</primary><secondary>root</secondary></indexterm><indexterm role="cp"><primary>number</primary><secondary><literal>sqrt</literal></secondary></indexterm><indexterm role="cp"><primary>number</primary><secondary><literal>squared</literal></secondary></indexterm><indexterm role="cp"><primary>number</primary><secondary>rational (fraction)</secondary><tertiary>operations</tertiary></indexterm>
+<para>Earlier, we discussed how Cuis-Smalltalk knows about rational numbers.  The
+four arithmetic operations and mathematical functions are implemented
+with unary and binary messages understood by the rational numbers:
+</para>
+<screen>(15 / 14) * (21 / 5) &#8658; 9 / 2
+(15 / 14) / ( 5 / 21) &#8658; 9 /2 
+(3 / 4) squared &#8658; 9 / 16
+(25 / 4) sqrt &#8658; 5 / 2
+</screen>
+<anchor id="squaredSum"/>
+<para><emphasis>Write the code to compute the
+sum of the squares of the inverse of the first four integers.</emphasis>
+</para>
+
+
+<indexterm role="cp"><primary>number</primary><secondary>decimal division</secondary></indexterm><para>If Cuis-Smalltalk integer division returns a rational number, how do we find the
+result in decimal? One option is to write a number as a floating point literal,
+a <firstterm>Float</firstterm>.
+This kind of literal is written with the integer
+and fractional parts separated by a dot &#8220;.&#8221;:
+</para><screen>15.0 / 4 &#8658; 3.75
+15 / 4.0 &#8658; 3.75
+</screen>
+<para>Another option is to convert an integer to a float with the
+<literal>#asFloat</literal> message. It is very useful when the integer is in a
+variable:
+</para>
+<screen>15 asFloat / 4
+&#8658; 3.75
+</screen>
+<indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>division</tertiary></indexterm><para>You can also ask for division with truncation to
+get an integer result using 
+the message <literal>#//</literal>:
+</para><screen>15 // 4
+&#8658; 3
+</screen>
+<indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>division reminder</tertiary></indexterm><para>The modulo remainder of the Euclidean division is computed with the message
+<literal>#\\</literal>:
+</para><screen>15 \\ 4
+&#8658; 3
+</screen>
+<indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>odd</literal></tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>even</literal></tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>isPrime</literal></tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>isDivisibleBy:</literal></tertiary></indexterm><para>Cuis-Smalltalk has arithmetic operations to test if an integer is odd, even,
+a prime number, or divisible by another. You just send the appropriate unary or
+keyword message to the number:
+</para>
+<anchor id="integerBasicTest"/>
+<screen>25 odd &#8658; true
+25 even &#8658; false
+25 isPrime &#8658; false
+23 isPrime &#8658; true
+91 isDivisibleBy: 7 &#8658; true
+117 isDivisibleBy: 7 &#8658; false
+117 isDivisibleBy: 9 &#8658; true
+</screen>
+
+<indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>gcd:</literal> (great common divisor)</tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>lcm:</literal> (least common multiple)</tertiary></indexterm><para>With specific <firstterm>keyword messages</firstterm> you can compute the Least Common
+Multiple and Greatest Common Divisor. A keyword message is composed of
+one or more colons &#8220;:&#8221; to insert one or more arguments:
+</para>
+<screen>12 lcm: 15 &#8658; 60
+12 gcd: 15 &#8658; 3
+</screen>
+<para>In the Spacewar! game, the central star is the source of a gravity
+field. According to Newton&#8217;s law of universal gravitation, any
+object with a mass &#8211; a spaceship or a torpedo in the game &#8211; is
+subjected to the gravitational force. We compute it as a vector to
+account for both its direction and its magnitude.  The game code
+snippet below shows a (simplified) mixed scalar and vector calculation
+done with message sending (See <link linkend="motionEquations">motionEquations</link>):
+</para>
+<anchor id="gravityVector"/>
+<screen>-10 * self mass * owner starMass / (position r raisedTo: 3) * position
+</screen>
+
+</sect1>
+<sect1 label="" id="A-brief-introduction-to-the-system-Browser">
+<title>A brief introduction to the system Browser</title>
+<indexterm role="cp"><primary>tools</primary><secondary>system browser</secondary></indexterm><indexterm role="cp"><primary>browser</primary></indexterm>
+
+<para>Smalltalk organizes instance behaviors using classes.  
+A class is an object that holds a set of methods to be executed
+when one of its instances receives a message
+that is the name of one of these methods.
+</para>
+<para>The <firstterm>System Browser</firstterm>, in short, the <firstterm>Browser</firstterm>, is a tool to
+rule all the classes in Cuis-Smalltalk. It is both a tool to explore the
+classes (system or user ones) and to write new classes and methods.
+</para>
+<para>To access the tool ...World menu &#8594;
+<command>Open...</command> &#8594; <command>Browser</command>...
+</para>
+<anchor id="ch02_002dbrowserDetailed"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch02-browserDetailed.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<indexterm role="cp"><primary>browser</primary><secondary>class category</secondary></indexterm><indexterm role="cp"><primary>class</primary><secondary>category</secondary></indexterm><para>At the top left are the <firstterm>class categories</firstterm>, groups of classes
+sharing the same theme. A category can also be used to create a
+<firstterm>Package</firstterm>, which is an organisational element to save code in a
+file system.  In <link linkend="ch02_002dbrowserDetailed">ch02-browserDetailed</link>, the selected class
+category is <emphasis role="bold">Kernel-Numbers</emphasis>, a group of classes we already
+started using. The term <emphasis role="bold">Kernel-</emphasis> indicates it is part of
+fundamental categories, but it is only a convention. See the other
+categories such as <emphasis role="bold">Kernel-Text</emphasis> and <emphasis role="bold">Kernel-Chronology</emphasis>
+related to text and date entities.
+</para>
+<indexterm role="cp"><primary>class</primary><secondary>declaration</secondary></indexterm><para>Next to the right are the classes in the selected class category. They
+are nicely presented in a parent-child class hierarchy. When a class is
+first selected in this pane, its declaration appears in the large pane
+below, the <literal>Number</literal> class declaration is:
+</para>
+<screen>Magnitude subclass: #Number
+   instanceVariableNames: ''
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Kernel-Numbers'
+</screen>
+<para>A few important points in this declaration:
+</para>
+<itemizedlist>
+<listitem><para><emphasis><literal>Number</literal></emphasis> is a subclass of <emphasis><literal>Magnitude</literal></emphasis>.
+   This means
+   <literal>Number</literal> is a kind of specialized <literal>Magnitude</literal>.
+</para>
+</listitem><listitem><para>the declaration itself is Smalltalk code, indeed the message
+   <literal>#subclass:instanceVariableNames:classVariableNames:...</literal>
+   was sent to <literal>Magnitude</literal> to create this class.
+</para>
+</listitem><listitem><para>the <literal>subclass:</literal> argument <literal>Number</literal> is prefixed
+   with &#8220;#&#8221;. It is a symbol, a kind of unique string. Indeed when
+   declaring the <literal>Number</literal> class, the system does not know about it
+   yet, so it is named as a symbol.
+</para>
+</listitem><listitem><para>The <literal>instanceVariableNames:</literal> argument is a string:
+   the instance variables of the class are declared by names separated
+   by a space. There are none in this class definition.
+</para>
+</listitem></itemizedlist>
+<para>A subclass inherits behaviors from its parent superclass, and so only needs
+to describe what is different from its superclass.  An instance
+of <literal>Number</literal> adds methods (which define behaviors) unknown to an instance
+of <literal>Magnitude</literal>.  We will explore this in detail as we go forward.
+</para>
+<indexterm role="cp"><primary>class</primary><secondary>comment</secondary></indexterm><para>To learn about the purpose of a class, it is good practice to <emphasis role="bold">always</emphasis>
+visit the class comment. Often a comment also comes with code
+examples to learn how to use the object; these code snippets can be
+selected and executed in place as done from a Workspace. In
+<link linkend="ch02_002dbrowserDetailed">ch02-browserDetailed</link>, see the <command>comment</command> button to read or
+to edit the comment of the selected class.
+</para>
+<indexterm role="cp"><primary>method</primary><secondary>category</secondary></indexterm><para>To the right of the class panel is the method categories panel.
+A class may have many methods, so grouping
+them by category helps other users orient themselves in finding related methods.
+As a reference, <literal>Number</literal>
+has more than 100 instance side methods implemented in
+itself<footnote><para>When considering its parents, the combined method count is
+more than 300.</para></footnote>. Clicking the <command>arithmetic</command> category
+directly gives access to related methods in the next and last pane at
+the right.
+</para>
+<indexterm role="cp"><primary>class</primary><secondary>category</secondary></indexterm><indexterm role="cp"><primary>keyboard shortcut</primary><secondary>find a class (<userinput>Ctrl-f</userinput>)</secondary></indexterm>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+A right click on the Class Category pane
+brings up its context menu.  You can select <command>find class ..</command> or,
+as the menu indicates, use <userinput>Ctrl-f</userinput> (<emphasis><emphasis role="bold">F</emphasis>ind</emphasis>), to get a
+fill-in panel and type part of a class name to match.  Try it with
+<literal>String</literal>.
+</para>
+<anchor id="stringArith"/>
+<para><emphasis>How many methods are there
+in the <emphasis role="bold">arithmetic</emphasis> method category of the <literal>CharacterSequence</literal>
+class?</emphasis>
+</para>
+
+
+
+<indexterm role="cp"><primary>method</primary><secondary>instance method</secondary></indexterm><para>In the Browser, once a method is selected &#8211; as in
+<link linkend="ch02_002dbrowserDetailed">ch02-browserDetailed</link>, <literal>abs</literal> method &#8211; the bottom part
+shows its source code, ready to be explored or edited. Often,
+you will find a small comment just after the method name,
+surrounded by double quotes.
+</para>
+<para>Every object knows its own class and will respond with it when sent the message <literal>#class</literal>.
+</para>
+<indexterm role="cp"><primary>browser</primary><secondary>invoke from Workspace</secondary></indexterm><indexterm role="cp"><primary>keyboard shortcut</primary><secondary>browse a class (<userinput>Ctrl-b</userinput>)</secondary></indexterm><para><emphasis role="bold">Tip.</emphasis> In the workspace <userinput>Ctrl-b</userinput> (<emphasis><emphasis role="bold">B</emphasis>rowse</emphasis>)
+on the class name will open a Browser on the named class:
+</para>
+<itemizedlist>
+<listitem><para>In the Workspace, type <literal>2 class</literal> and print
+   with <userinput>Ctrl-p</userinput>,
+</para>
+</listitem><listitem><para><literal>SmallInteger</literal> is printed and automatically highlighted as the current selection,
+</para>
+</listitem><listitem><para>Invoke the Browser on the selected <literal>SmallInteger</literal>
+   class with <userinput>Ctrl-b</userinput>,
+</para>
+</listitem><listitem><para>A new Browser instance opens on the <literal>SmallInteger</literal>, ready to
+   be explored.
+</para>
+</listitem></itemizedlist>
+</sect1>
+<sect1 label="" id="Spacewar_0021-models">
+<title>Spacewar! models</title>
+
+<sect2 label="">
+<title>First classes</title>
+<para>In the last chapter, we listed the protagonists of the game. Now, we
+propose a first implementation of the game model with a set of classes
+representing the involved entities:
+</para>
+<orderedlist numeration="arabic">
+<listitem><para>the game play &#8658; <literal>SpaceWar</literal> class,
+</para>
+</listitem><listitem><para>a central star &#8658; <literal>CentralStar</literal> class,
+</para>
+</listitem><listitem><para>two space ships &#8658; <literal>SpaceShip</literal> class,
+</para>
+</listitem><listitem><para>torpedoes &#8658; <literal>Torpedo</literal> class.
+</para>
+</listitem></orderedlist>
+<indexterm role="cp"><primary>browser</primary><secondary>class category (new)</secondary></indexterm><indexterm role="cp"><primary>class</primary><secondary>category (new)</secondary></indexterm><para>Before defining these classes in Cuis-Smalltalk, we want to create a
+dedicated class category to group them there.
+</para>
+<para>In any kind of Cuis-Smalltalk window, pressing right-click on a pane will typically
+bring up a menu of operations you can apply which are specific to that
+pane.
+</para>
+<para>With the mouse pointer over the class category pane of the Browser &#8211;
+the left-most one &#8211; just do:
+</para>
+<para>...right mouse click &#8594; <command>add item</command>... then
+key in <emphasis>Spacewar!</emphasis>
+</para>
+
+<indexterm role="cp"><primary>class</primary><secondary>create (new)</secondary></indexterm><para>Once our new category is created, the Browser proposes a code template in
+the method source code pane &#8211; the bottom one &#8211; to create a new class in
+the <command>Spacewar!</command> category:
+</para>
+<screen>Object subclass: #NameOfSubclass
+   instanceVariableNames: ''
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+</screen>
+<indexterm role="cp"><primary>keyboard shortcut</primary><secondary>save code (<userinput>Ctrl-s</userinput>)</secondary></indexterm><para>We replace the symbol <literal>#NameOfSubclass</literal> with a symbol
+representing the name of the class we want to create. Let&#8217;s start with
+<literal>#SpaceWar</literal>. To save our class, while over the class
+declaration code do ...right mouse click &#8594;
+<command>Accept</command>... Cuis-Smalltalk will ask for your initials and name
+if it hasn&#8217;t before. Alternatively, you can just do <userinput>Ctrl-s</userinput> (<emphasis><emphasis role="bold">S</emphasis>ave</emphasis>).
+</para>
+<para>Then simply repeat the process for each of <literal>#SpaceShip</literal>,
+<literal>#CentralStar</literal> and <literal>#Torpedo</literal>. If necessary, to
+get another class code template, click the class category
+<command>Spacewar!</command>.
+</para>
+<para>When done, your class category should be filled with four classes as in
+<link linkend="ch02_002dspacewarClassCategory">ch02-spacewarClassCategory</link>.
+</para>
+<anchor id="ch02_002dspacewarClassCategory"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch02-spacewarClassCategory.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+
+<anchor id="Spacewar_0021-package"/></sect2>
+<sect2 label="">
+<title>Spacewar! package</title>
+<indexterm role="cp"><primary>package</primary><secondary>create (new)</secondary></indexterm><indexterm role="cp"><primary>package</primary><secondary>save</secondary></indexterm><indexterm role="cp"><primary>package</primary><secondary>tool</secondary></indexterm><para>Another important use case of a class category is to define a package
+to save code to a file.  A package saves the code of the classes held in
+a given class category and a bit more, but more on that last point
+later. To create our <command>Spacewar!</command> package and save our game code
+we use the Installed Packages tool.
+</para>
+<orderedlist numeration="arabic"><listitem><para>Open the <firstterm>Installed Packages</firstterm> tool ...World
+  menu &#8594; <command>Open...</command> &#8594; <command>Installed
+  Packages</command>...
+</para>
+</listitem><listitem><para>On the Installed Packages window, do ...click <command>new</command>
+  button &#8594; Input <emphasis>Spacewar!</emphasis> &#8594; <userinput>Return</userinput>...
+</para>
+</listitem><listitem><para>Do ...select <command>Spacewar!</command> package &#8594;
+  <command>save</command> button...
+</para>
+</listitem></orderedlist>
+<anchor id="ch02_002dInstalledPackages"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch02-InstalledPackages.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<indexterm role="cp"><primary>package</primary><secondary>load</secondary><tertiary>by graphic interface</tertiary></indexterm><para>A file <filename>Spacewar!.pck.st</filename> is created alongside the Cuis-Smalltalk image
+file.  To install a package in a fresh Cuis-Smalltalk
+environment, use the File List tool:
+</para>
+<orderedlist numeration="arabic">
+<listitem><para>Do ...World menu &#8594;
+  <command>Open...</command> &#8594; <command>File List</command>...
+</para>
+</listitem><listitem><para>Search for the file <filename>Spacewar!.pck.st</filename> and click the
+  <command>install package</command> button  
+</para>
+</listitem></orderedlist>
+<para>You can also drag and drop the package file from your operating system
+over to the Squeak window. Upon dropping the file over the window
+Cuis-Smalltalk will ask you what you want to do with this package.  To
+install it in your environment you can simply press <command>Install
+package</command>.
+</para>
+<para>Or, you can open a Workspace, type in <literal>Feature require: 'Spacewar!'</literal>
+and <userinput>Ctrl-d</userinput> <emphasis><emphasis role="bold">D</emphasis>o it</emphasis>.
+</para>
+<para>Now, we have created and saved the package. Whenever you start with a
+fresh Cuis-Smalltalk environment, you can load the game package.
+</para>
+<para>The classes we defined are empty shells with neither state nor
+behavior. These will be filled in and refactored in the following
+chapters.
+</para>
+</sect2>
+<sect2 label="">
+<title>The Newtonian model</title>
+<anchor id="newtonModel"/><para>For an enjoyable game experience, the player ships must follow
+Newton&#8217;s laws of motion. Acceleration, speed and position are computed
+according to these laws. The ships are subjected to two forces: the
+acceleration from the gravity pull of the central star and an inner
+acceleration coming from the ship engines.
+</para>
+<para>Later, we will learn how these equations are easily converted to
+computer calculations.
+</para>
+<anchor id="motionEquations"/>
+<inlinemediaobject><imageobject><imagedata fileref="motionEquations.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+<!-- -->
+</sect2>
+</sect1>
+</chapter>

@@ -1,0 +1,77 @@
+<chapter label="" id="Top">
+<title>The Cuis Book</title>
+
+<para>This book is for Cuis-Smalltalk (6.0#5608 or later), a free and modern
+implementation of the Smalltalk language and environment.
+</para>
+<para>Copyright &#169; 2020, 2021, 2022, 2023, 2024 H. Fernandes with K. Dickey &amp; J. Vuletich
+
+
+Thanks to Matt Armstrong, Ezequiel Birman, Michael Khol, Szabolcs
+Komáromi, David Lewis, John McGarey, Mariano Montone, Ricardo Pacheco,
+Barry Perryman, Tommy Pettersson, Bernhard Pieber, Mauro Rizzi,
+Stephen Smith &amp; Ignacio Sniechowski for the reviews of the book,
+suggestions and borrowed texts. Your help is very valuable.
+
+
+</para>
+<para>Compilation : June 20, 2024
+</para>
+<para>Documentation source: <ulink url="https://github.com/Cuis-Smalltalk/TheCuisBook">https://github.com/Cuis-Smalltalk/TheCuisBook</ulink> 
+</para>
+<para>The contents of this book are protected under Creative Commons
+Attribution-ShareAlike 4.0 International.
+</para>
+<para><emphasis>You are free to:</emphasis>
+
+
+<emphasis role="bold">Share</emphasis> &#8211; copy and redistribute the material in any medium or
+format
+
+
+<emphasis role="bold">Adapt</emphasis> &#8211; remix, transform, and build upon the material for any
+purpose, even commercially.
+</para>
+<para><emphasis>Under the following terms:</emphasis>
+
+
+<emphasis role="bold">Attribution.</emphasis> You must give appropriate credit, provide a link to
+the license, and indicate if changes were made. You may do so in any
+reasonable manner, but not in any way that suggests the licensor
+endorses you or your use.
+
+
+<emphasis role="bold">Share Alike.</emphasis> If you remix, transform, or build upon the material,
+you must distribute your contributions under the same license as the
+original.
+</para>
+<para>Complete license: <ulink url="https://creativecommons.org/licenses/by-sa/4.0/legalcode">https://creativecommons.org/licenses/by-sa/4.0/legalcode</ulink>
+</para>
+
+<!-- @menu -->
+<!-- * Preface:: -->
+<!-- * Beginnings:: -->
+<!-- * The Message Way of Life:: -->
+<!-- * Class - Model of Communicating Entities:: -->
+<!-- * The Collection Way of Life:: -->
+<!-- * Control Flow Messaging:: -->
+<!-- * Visual with Morph:: -->
+<!-- * The Fundamentals of Morph:: -->
+<!-- * Events:: -->
+<!-- * Code Management:: -->
+<!-- * Debug and Exception Handling:: -->
+<!-- * Sharing Cuis:: -->
+<!-- * Documents Copyright:: -->
+<!-- * Summary of Syntax:: -->
+<!-- * The Exercises:: -->
+<!-- * Solutions to the Exercises:: -->
+<!-- * The Examples:: -->
+<!-- * The Figures:: -->
+<!-- * Spacewar! Source Code:: -->
+<!-- * Indexes:: -->
+<!-- @end menu -->
+
+
+<!--================================================================ -->
+<!-- Preface -->
+</chapter>

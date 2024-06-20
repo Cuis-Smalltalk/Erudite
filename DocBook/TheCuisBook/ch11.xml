@@ -1,0 +1,153 @@
+<chapter label="" id="Sharing-Cuis">
+<title>Sharing Cuis</title>
+
+<blockquote><attribution>Kent Beck, <ulink url="https://1lib.us/book/2083614/6104eb">&#8220;Smalltalk Best Practice Patterns&#8221;(1997)</ulink></attribution>
+<para>Programming is hardly ever a solitary communion between one man and
+one machine. Caring about other people is a conscious decision, and
+one that requires practice.
+</para></blockquote>
+<blockquote><attribution>Dave Thomas, <ulink url="http://rmod-files.lille.inria.fr/FreeBooks/WithStyle/SmalltalkWithStyle.pdf">&#8220;Smalltalk With Style&#8221;(1996)</ulink></attribution>
+<para>Programming remains an intensively collaborative process between
+groups of program readers and writers.
+</para></blockquote>
+<blockquote><attribution>Oscar Nierstrasz, <ulink url="http://scg.unibe.ch/download/st/07BestPractice.pdf">&#8220;Best Practice Patterns - talk slides&#8221;(2009)</ulink></attribution>
+<para>Let your code talk — Names matter. Let the code say what it means.
+Introduce a method for everything that needs to be done. Donʼt be
+afraid to delegate, even to yourself.
+</para></blockquote>
+
+
+
+
+
+<para>This book is an invitation.
+</para>
+<para>We hope that you are using Cuis-Smalltalk to discover pathways of interest
+and are enjoying the journey. If so, at some point you have done
+something wonderful and probably want to share it.
+</para>
+<para>Sharing requires communicating intent.
+</para>
+<para>Good writing takes practice. Good writers read.
+</para>
+
+
+<sect1 label="" id="Golden-Rules-of-the-Smalltalk-Guild">
+<title>Golden Rules of the Smalltalk Guild</title>
+
+<para>Basic questions, that appear to be the golden rules of the Smalltalk
+intergalactic guild<footnote><para><emphasis>Don&#8217;t panic</emphasis>, at this stage of the
+book, the authors are still looking to find all the questions that
+really matter.</para></footnote>:
+</para>
+<itemizedlist><listitem><para>Are methods short and understandable?
+ </para></listitem><listitem><para>Does a line of code read like a sentence?
+ </para></listitem><listitem><para>Do method names say what they do, rather than how they do it?
+ </para></listitem><listitem><para>Do class and instance variable names indicate their role(s)?
+ </para></listitem><listitem><para>Are there useful class comments?
+ </para></listitem><listitem><para>Can we make something simpler?  Leave something out?
+</para></listitem></itemizedlist>
+<para>Now, we have been doing Smalltalk code for a while
+and so tend to follow good practices, but let&#8217;s
+take another look at our code and see
+if we can make it easier for a reader to understand.
+</para>
+
+</sect1>
+<sect1 label="" id="Refactoring-to-Improve-Understanding">
+<title>Refactoring to Improve Understanding</title>
+<indexterm role="cp"><primary>refactoring</primary></indexterm>
+<para>Browsing through the code, I note a method named <literal>#left</literal>, which seems perhaps
+like an abbreviation.  I can ask for <emphasis>senders</emphasis> to see how <literal>#left</literal> is used
+in code elsewhere.
+</para>
+<anchor id="ch11_002d01_002dSendersOfLeft"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-01-SendersOfLeft.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>I notice that most uses of <literal>#left</literal> are to indicate a position,
+not take an action.  How can I fix that?
+</para>
+<para>Because people frequently want to change things for the better,
+there are a number of handy tools to help do this.
+</para>
+<para>Now I could look at our uses of <literal>#left</literal> in Spacewars!, but the Cuis IDE
+already knows how to do this!
+</para>
+<para>If I right-click on the Method Pane in the Browser, I get a context menu
+with selections to help me out. Here I choose <emphasis role="bold">Rename</emphasis>.
+</para>
+<anchor id="ch11_002d02_002dRenameLeft"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-02-RenameLeft.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Now the tools that help us refactor code are quite powerful, so
+restraint is called for.  I don&#8217;t want to change all uses of
+<literal>#left</literal> in the Cuis-Smalltalk system, just in the <command>Spacewar!</command>
+category.
+</para>
+<anchor id="ch11_002d03_002dRenameInCategory"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-03-RenameInCategory.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Of course, when making changes one wants to see that the result is
+what one expects.
+</para>
+<anchor id="ch11_002d04_002dturnLeft"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-04-turnLeft.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>As I am not perfect, I tend to save the Cuis-Smalltalk image before I make
+large changes using powerful tools.  If something happens that
+I did not want, I can then quit the image without saving and
+restart the saved image which remembers the world before I made the change.
+</para>
+<anchor id="exeRenameMethod"/>
+<para><emphasis>Rename <literal>#right</literal> to
+<literal>#turnRight</literal>.</emphasis>
+</para>
+
+
+<para>Looking around some more in the Browser, I notice the method
+<literal>SpaceShip&gt;&gt;nose</literal>.
+</para>
+<para>Where did I use this?  Ah, senders..
+</para>
+<anchor id="ch11_002d05_002dnoseSenders"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-05-noseSenders.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Hmmm, perhaps something more specific.  How about <literal>#noseDirection</literal>?
+How does that look?
+</para>
+<anchor id="ch11_002d06_002dnoseDirection"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-06-noseDirection.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+World menu &#8594; <command>Help</command> is your friend.
+The <command>Terse Guide to Cuise</command> gives access to a large sample
+of code usages. The <command>Class Comment Browser</command> is an alternate
+way to find interesting class information.  There are also more notes
+on code maganement and how we use GitHub.
+</para>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+We want to share with you! Please visit packages at the main Cuis-Smalltalk
+repository at <ulink url="https://github.com/Cuis-Smalltalk">https://github.com/Cuis-Smalltalk</ulink>, search GitHub
+for repositories with names starting with <emphasis role="bold">Cuis-Smalltalk-</emphasis>,
+and perhaps take a look at tutorials and information
+in <ulink url="https://github.com/Cuis-Smalltalk/Learning-Cuis">https://github.com/Cuis-Smalltalk/Learning-Cuis</ulink>.
+</para>
+<para>There is much more to explore, but this book is an <emphasis>introduction</emphasis>
+and we have to stop writing text somewhere.  This is a good place.
+We want to get back to writing code!
+And we look forward to seeing <emphasis>your</emphasis> projects!
+</para>
+<para>Welcome to Cuis-Smalltalk!
+<!--================================================================ -->
+<!--: Part Four -->
+<!-- @part Part Four @*Appendices -->
+<!-- Copyrighted document used in the book -->
+<!-- Documents avec copyright -->
+</para></sect1>
+</chapter>

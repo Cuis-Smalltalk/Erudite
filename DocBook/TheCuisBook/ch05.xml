@@ -1,0 +1,606 @@
+<chapter label="" id="Control-Flow-Messaging">
+<title>Control Flow Messaging</title>
+
+<blockquote><attribution>Alan Perlis</attribution>
+<para>Fools ignore complexity. Pragmatists suffer it. Some can avoid
+it. Geniuses remove it.
+</para></blockquote>
+
+
+
+<para>Cuis-Smalltalk syntax is minimal. Essentially there is syntax only for
+sending messages (i.e., expressions) . Expressions are built up from a
+very small number of primitive elements. There are only 6 keywords,
+and <emphasis role="bold">there is no syntax for control structures</emphasis> or for
+declaring new classes. Instead, nearly everything is achieved by
+sending messages to objects. For instance, instead of an if-then-else
+control structure, Smalltalk sends messages like <literal>#ifTrue:</literal> to
+<literal>Boolean</literal> objects. As we already know, new (sub)classes are
+created by sending a message to their superclass.
+</para>
+
+<sect1 label="" id="Syntactic-elements">
+<title>Syntactic elements</title>
+<para>Expressions are composed of the following building blocks:
+</para>
+<orderedlist numeration="arabic">
+<listitem><para>six reserved keywords, or <emphasis>pseudo-variables</emphasis>:
+    <literal>self</literal>, <literal>super</literal>, <literal>nil</literal>,
+    <literal>true</literal>, <literal>false</literal>, and <literal>thisContext</literal>,
+</para>
+</listitem><listitem><para>constant expressions for <emphasis>literal objects</emphasis> including
+  numbers, characters, strings, symbols and arrays,
+</para>
+</listitem><listitem><para>variable declarations
+</para>
+</listitem><listitem><para>assignments,
+</para>
+</listitem><listitem><para>block closures,
+</para>  
+</listitem><listitem><para>messages.
+</para>
+</listitem></orderedlist>
+</sect1>
+<sect1 label="" id="Pseudo_002dvariables">
+<title>Pseudo-variables</title>
+<indexterm role="cp"><primary>pseudo-variables</primary></indexterm>
+
+<para>In Smalltalk, there are 6 reserved keywords, or pseudo-variables:
+</para>
+<para><literal>nil</literal>, <literal>true</literal>, <literal>false</literal>,
+<literal>self</literal>, <literal>super</literal>, and <literal>thisContext</literal>.
+</para>
+<para>They are called <firstterm>pseudo-variables</firstterm> because they are predefined and
+cannot be assigned to. <literal>true</literal>, <literal>false</literal>, and
+<literal>nil</literal> are constants while the values of <literal>self</literal>,
+<literal>super</literal>, and <literal>thisContext</literal> vary dynamically as
+code is executed.
+</para>
+<itemizedlist>
+<indexterm role="cp"><primary>pseudo-variable</primary><secondary><literal>true</literal></secondary></indexterm><indexterm role="cp"><primary>pseudo-variable</primary><secondary><literal>false</literal></secondary></indexterm><indexterm role="cp"><primary><literal>true</literal></primary></indexterm>
+<indexterm role="cp"><primary><literal>false</literal></primary></indexterm>
+<listitem><para><literal>true</literal> and <literal>false</literal> are the unique
+   instances of the <literal>Boolean</literal> classes <literal>True</literal> and
+   <literal>False</literal>.
+</para>
+<indexterm role="cp"><primary>pseudo-variable</primary><secondary><literal>self</literal></secondary></indexterm><indexterm role="cp"><primary><literal>self</literal></primary></indexterm>
+<indexterm role="cp"><primary><literal>self</literal></primary></indexterm>
+</listitem><listitem><para><literal>self</literal> always refers to the receiver of the
+   currently executing method.
+</para>
+<indexterm role="cp"><primary>pseudo-variable</primary><secondary><literal>super</literal></secondary></indexterm><indexterm role="cp"><primary><literal>super</literal></primary></indexterm>
+</listitem><listitem><para><literal>super</literal> also refers to the receiver of the current
+   method, but when you send a message to <literal>super</literal>, the
+   method-lookup changes so that it starts from the superclass of the
+   class containing the method that uses <literal>super</literal>.
+</para>   
+<indexterm role="cp"><primary>pseudo-variable</primary><secondary><literal>nil</literal></secondary></indexterm><indexterm role="cp"><primary><literal>nil</literal></primary></indexterm>
+</listitem><listitem><para><literal>nil</literal> is the undefined object. It is the unique
+   instance of the class <literal>UndefinedObject</literal>. Instance
+   variables, class variables and local variables are initialized to
+   <literal>nil</literal>.
+</para>
+
+<indexterm role="cp"><primary>pseudo-variable</primary><secondary><literal>thisContext</literal></secondary></indexterm><indexterm role="cp"><primary><literal>thisContext</literal></primary></indexterm>
+</listitem><listitem><para><literal>thisContext</literal> is a pseudo-variable that represents
+   the top frame of the run-time stack. In other words, it represents
+   the currently executing <literal>MethodContext</literal> or
+   <literal>BlockContext</literal>. <literal>thisContext</literal> is normally not
+   of interest to most programmers, but it is essential for
+   implementing development tools like the Debugger and it is also
+   used to implement exception handling and continuations.
+</para>
+</listitem></itemizedlist>
+</sect1>
+<sect1 label="" id="Method-syntax">
+<title>Method syntax</title>
+<indexterm role="cp"><primary>method</primary></indexterm>
+
+<para>Whereas expressions may be evaluated anywhere in Cuis-Smalltalk (for example 
+in a workspace, in a debugger, or in a browser), methods are normally
+defined in the System Browser window or in the Debugger. Methods can
+also be filed in from an external medium, but this is not the usual
+way to program in Cuis-Smalltalk.
+</para>
+<para>Programs are developed one method at a time, in the context of a given
+class. A class is defined by sending a message to an existing class,
+asking it to create a subclass, so there is no special syntax required
+for defining classes. We are already farmiliar with this
+from previous examples.
+</para>
+<para>Let&#8217;s take a another look to the method syntax when control flow is
+involved &#8211; our first explanation was <link linkend="Spacewar_0021-States-and-Behaviors">Spacewar! States and Behaviors</link>).
+</para>
+<para>Here is the method <literal>keyStroke:</literal> in the class <literal>SpaceWar</literal>.
+</para>
+<anchor id="spacewarKeyStroke"/>
+<screen>SpaceWar&gt;&gt;keyStroke: event
+&quot;Check for any keyboard stroke&#44; and take action accordingly&quot;
+   | key |
+   key := event keyCharacter.
+   event isArrowUp ifTrue: [^ ships first push].
+   event isArrowRight ifTrue: [^ ships first right].
+   event isArrowLeft ifTrue: [^ ships first left].
+   event isArrowDown ifTrue: [^ ships first fireTorpedo].
+   key = $w ifTrue: [^ ships second push].
+   ...
+</screen>
+
+<para>Syntactically, a method consists of:
+</para>
+<itemizedlist>
+<listitem><para>the method pattern, containing the name (<emphasis>i.e.</emphasis>,
+ <literal>keyStroke:</literal>) and any arguments. Here <literal>event</literal> is a
+ <literal>KeyboardEvent</literal>,
+</para>
+</listitem><listitem><para>comments (these may occur anywhere, but the convention is to
+ put one at the top that explains what the method does),
+</para> 
+</listitem><listitem><para>declarations of local variables (<emphasis>i.e.</emphasis>, <literal>key</literal>),
+</para>
+</listitem><listitem><para>and any number of expressions separated by dots; here there are
+ 5.
+</para>
+</listitem></itemizedlist>
+<para>The evaluation of any expression preceded by a ^ (typed as ^)
+will cause the method to exit at that point, returning the value of
+that expression. A method that terminates without explicitly returning
+the value of some expression will always return the current
+value of <literal>self</literal>.
+</para>
+<para>Arguments and local variables should always start with lower case
+letters. Names starting with upper-case letters are assumed to be
+global variables. Class names, like <literal>Character</literal>, for example,
+are simply global variables referring to the object representing
+that class.
+</para>
+<para>As you might suspect from <link linkend="classesCount">classesCount</link>, <literal>Smalltalk allClasses size</literal> just
+sends the <literal>#allClasses</literal> message to a dictionary named <literal>Smalltalk</literal>.
+As with any other object, you can inspect this dictionary.  You can note a case of
+self-reference here: the value of <literal>Smalltalk at: #Smalltalk</literal> is <literal>Smalltalk</literal>.
+</para>
+</sect1>
+<sect1 label="" id="Block-syntax">
+<title>Block syntax</title>
+<indexterm role="cp"><primary>block</primary></indexterm>
+
+<para>Blocks provide a mechanism to defer the evaluation of expressions. A
+block is essentially an anonymous function. A block is evaluated by
+sending it the message <literal>#value</literal>. The block answers the value of the
+last expression in its body, unless there is an explicit return (with
+^), in which case it returns the value of the subsequent
+expression).
+</para>
+<screen>[ 1 + 2 ] value
+&#8658; 3
+</screen>
+<indexterm role="cp"><primary>block</primary><secondary>parameter</secondary></indexterm><para>Blocks may take parameters, each of which is declared with a leading
+colon. A vertical bar separates the parameter declaration(s) from the
+body of the block. To evaluate a block with one parameter, you must
+send it the message <literal>#value:</literal> with one argument. A two-parameter
+block must be sent <literal>#value:value:</literal>, and so on, up to 4 arguments:
+</para>
+<screen>[ :x | 1 + x ] value: 2
+&#8658; 3
+[ :x :y | x + y ] value: 1 value: 2
+&#8658; 3
+</screen>
+<para>If you have a block with more than four parameters, you must use
+<literal>#valueWithArguments:</literal> and pass the arguments in an array. (A block
+with a large number of parameters is often a sign of a design
+problem.)
+</para>
+<indexterm role="cp"><primary>block</primary><secondary>local variable</secondary></indexterm><para>Blocks may also declare local variables, which are surrounded by
+vertical bars, just like local variable declarations in a
+method. Locals are declared after any arguments:
+</para>
+<screen>[ :x :y | | z | z := x + y. z ] value: 1 value: 2
+&#8658; 3
+</screen>
+<para>Blocks can refer to
+variables of the surrounding environment.
+Blocks are said to &#8220;close over&#8221; their lexical environment, which
+is a fancy way to say that they remember and refer to variables in
+their surrounding lexical context &#8211; those apparent in their enclosing text.
+</para>
+<para>The following block refers
+to the variable x of its enclosing environment:
+</para>
+<screen>|x|
+x := 1.
+[ :y | x + y ] value: 2
+&#8658; 3
+</screen>
+<indexterm role="cp"><primary>block</primary><secondary>assigned to a variable</secondary></indexterm><para>Blocks are instances of the class <literal>BlockClosure</literal>. This means
+that they are objects, so they can be assigned to variables and passed
+as arguments just like any other object.
+</para>
+<para>Consider the example below to compute the divisors of an integer:
+</para>
+<anchor id="computeDivisors"/>
+<screen>| n m |
+n := 60.
+m := 45.
+(1 to: n) select: [:d | n \\ d = 0 ].
+&quot;&#8658; #(1 2 3 4 5 6 10 12 15 20 30 60)&quot;
+(1 to: m) select: [:d | m \\ d = 0]
+&quot;&#8658; #(1 3 5 9 15 45)&quot;
+</screen>
+
+<para>The problem with this example is the code duplication in the divisor
+computation. We can avoid duplication with a dedicated block doing the
+computation and assigning it to a variable:
+</para>
+<anchor id="blockDivisor"/>
+<para><emphasis>How will you
+rewrite <link linkend="computeDivisors">computeDivisors</link> to avoid code duplication?</emphasis>
+</para>
+
+
+<indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>atRandom</literal></tertiary></indexterm><para>The <literal>SpaceWar&gt;&gt;teleport:</literal> method contains a nice example
+using a block to avoid code duplication to generate random abscissa
+and ordinate coordinates. Each time a new coordinate is needed, the
+message <literal>#value</literal> is sent to the block of code:
+</para>
+<anchor id="teleportMethod"/>
+<screen>SpaceWar&gt;&gt;teleport: aShip
+  &quot;Teleport a ship at a random location&quot;
+  | area randomCoordinate |
+  aShip resupply.
+  area := self morphLocalBounds insetBy: 20.
+  randomCoordinate := [(area left to: area right) atRandom].
+  aShip 
+    velocity: 0 @ 0;
+    morphPosition: randomCoordinate value @ randomCoordinate value
+</screen>
+
+
+</sect1>
+<sect1 label="" id="Control-flow-with-block-and-message">
+<title>Control flow with block and message</title>
+<indexterm role="cp"><primary>control flow</primary></indexterm>
+
+<para>Deciding to send <emphasis>this</emphasis> message instead of <emphasis>that</emphasis>
+one is called <firstterm>control flow</firstterm> &#8211;
+controlling the flow of a computation.
+Smalltalk offers no special constructs for control flow.
+Decision logic is expressed by sending messages to booleans, numbers
+and collections with blocks as arguments.
+</para>
+<bridgehead renderas="sect2">Test</bridgehead>
+<indexterm role="cp"><primary>control flow</primary><secondary>test</secondary></indexterm><indexterm role="cp"><primary>test</primary></indexterm>
+<indexterm role="cp"><primary>boolean</primary></indexterm>
+
+<para>Conditionals are expressed by sending one of the messages
+<literal>#ifTrue:</literal>, <literal>#ifFalse:</literal> or <literal>#ifTrue:ifFalse:</literal> to the result
+of a boolean expression:
+</para>
+<screen>(17 * 13 &gt; 220)
+  ifTrue: [ 'bigger' ]
+  ifFalse: [ 'smaller' ]
+&#8658; 'bigger'
+</screen>
+<para>The class <literal>Boolean</literal> offers a fascinating insight into how much
+of the Smalltalk language has been pushed into the class
+library. <literal>Boolean</literal> is the abstract superclass of the
+<emphasis>Singleton</emphasis> classes <literal>True</literal> and <literal>False</literal><footnote><para>A
+singleton class is designed to have only one instance. Each of
+<literal>True</literal> and <literal>False</literal> classes has one instance, the values 
+<literal>true</literal> and <literal>false</literal>.</para></footnote>.
+</para>
+<para>Most of the behaviour of <literal>Boolean</literal> instances can be understood
+by considering the method <literal>ifTrue:ifFalse:</literal>, which takes two
+blocks as arguments:
+</para>
+<screen>(4 factorial &gt; 20) ifTrue: [ 'bigger' ] ifFalse: [ 'smaller' ]
+&#8658; 'bigger'
+</screen>
+<para>The method is abstract in <literal>Boolean</literal>. It is implemented in its
+concrete subclasses <literal>True</literal> and <literal>False</literal>:
+</para>
+<anchor id="ifTrueIfFalse"/>
+<screen>True&gt;&gt;ifTrue: trueAlternativeBlock ifFalse: falseAlternativeBlock
+  ^ trueAlternativeBlock value
+
+False&gt;&gt;ifTrue: trueAlternativeBlock ifFalse: falseAlternativeBlock
+  ^ falseAlternativeBlock value
+</screen>
+
+<para>In fact, this is the essence of OOP: when a message is sent to an
+object, the object itself determines which method will be used to
+respond. In this case an instance of True simply evaluates the true
+alternative, while an instance of False evaluates the false
+alternative. All the abstract <literal>Boolean</literal> methods are implemented
+in this way for <literal>True</literal> and <literal>False</literal>. Look at another
+example:
+</para>
+<anchor id="negation"/>
+<screen>True&gt;&gt;not
+   &quot;Negation----answer false since the receiver is true.&quot;
+   ^ false
+</screen>
+
+<para>Booleans offer several useful convenience methods, such as
+<literal>ifTrue:</literal>, <literal>ifFalse:</literal>, <literal>ifFalse:ifTrue:</literal>. You also
+have the choice between eager and lazy conjunctions and disjunctions:
+</para>
+<screen>(1 &gt; 2) &amp; (3 &lt; 4)
+&#8658; false  &quot;must evaluate both sides&quot;
+(1 &gt; 2) and: [ 3 &lt; 4 ]
+&#8658; false  &quot;only evaluate receiver&quot;
+(1 &gt; 2) and: [ (1 / 0) &gt; 0 ]
+&#8658; false  &quot;argument block is never evaluated, so no exception&quot;
+</screen>
+<para>In the first example, both <literal>Boolean</literal> subexpressions are
+evaluated, since <literal>&amp;</literal> takes a <literal>Boolean</literal> argument. In
+the second and third examples, only the first is evaluated, since
+<literal>and:</literal> expects a <literal>Block</literal> as its argument. The
+<literal>Block</literal> is evaluated only if the first argument is true.
+</para>
+<anchor id="implementingAndOr"/>
+<para><emphasis>Try to imagine how <literal>and:</literal> and <literal>or:</literal> are  implemented.</emphasis>
+</para>
+
+
+<para>In the <link linkend="spacewarKeyStroke">spacewarKeyStroke</link> at the beginning of this chapter, there
+are 4 control flow <literal>#ifTrue:</literal> messages. Each argument is a block of
+code and when evaluated, it explicitly returns an expression,
+therefore interrupting the method execution.
+</para>
+<para>In the code fragment of <link linkend="shipLost">shipLost</link> below, we test if a ship is
+lost in deep space. It depends on two conditions:
+</para><orderedlist numeration="arabic">
+<listitem><para>the ship is out of the game play area, tested with the
+  <literal>#isInOuterSpace</literal> message,
+</para>
+</listitem><listitem><para>the ship takes the direction of deep space, tested with the
+  <literal>#isGoingOuterSpace</literal> message.
+</para>
+</listitem></orderedlist>
+<para>Of course, the condition #2 is only tested when condition #1 is true.
+</para>
+<anchor id="shipLost"/>
+<screen>&quot;Are we out of screen?
+If so we move the mobile to the other corner
+and slow it down by a factor of 2&quot;
+(self isInOuterSpace and: [self isGoingOuterSpace])
+  ifTrue: [
+     velocity := velocity / 2.
+     self morphPosition: self morphPosition negated]
+</screen>
+
+
+<bridgehead renderas="sect2">Loop</bridgehead>
+<indexterm role="cp"><primary>control flow</primary><secondary>loop</secondary></indexterm><indexterm role="cp"><primary>loop</primary></indexterm>
+
+<para>Loops are typically expressed by sending messages to blocks, integers
+or collections. Since the exit condition for a loop may be repeatedly
+evaluated, it should be a block rather than a boolean value. Here is
+an example of a very procedural loop:
+</para>
+<screen>n := 1.
+[ n &lt; 1000 ] whileTrue: [ n := n * 2 ].
+n &#8658; 1024
+</screen>
+<para><literal>#whileFalse:</literal> reverses the exit condition:
+</para>
+<screen>n := 1.
+[ n &gt; 1000 ] whileFalse: [ n := n * 2 ].
+n &#8658; 1024
+</screen>
+<para>You can check all the alternatives in the <command>controlling</command> method
+category of the class <literal>BlockClosure</literal>.
+</para>
+<para><literal>#timesRepeat:</literal> offers a simple way to implement a fixed iteration:
+</para>
+<screen>n := 1.
+10 timesRepeat: [ n := n * 2 ].
+n &#8658; 1024
+</screen>
+<para>We can also send the message <literal>#to:do:</literal> to a number which then acts
+as the initial value of a loop counter. The two arguments are the
+upper bound, and a block that takes the current value of the loop
+counter as its argument:
+</para>
+<screen>result := String new.
+1 to: 10 do: [:n | result := result, n printString, ' '].
+result &#8658; '1 2 3 4 5 6 7 8 9 10 '
+</screen>
+<para>You can check all the alternatives in the <command>intervals</command> method
+category of the class <literal>Number</literal>.
+</para>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+If the exit condition of method like <literal>whileTrue:</literal> is
+never satisfied, you may have implemented an <firstterm>infinite loop</firstterm>.
+Just type <userinput>Cmd-period</userinput> to get the Debugger.
+</para>
+</sect1>
+<sect1 label="" id="Spacewar_0021_0027s-methods">
+<title>Spacewar!&#8217;s methods</title>
+<para>You are already acquainted to the writing of simple methods for the
+Spacewar! game. We will write some more and learn how to categorize
+them.
+</para>
+<sect2 label="">
+<title>Initializing the game play</title>
+<indexterm role="cp"><primary>method</primary><secondary>creating</secondary></indexterm>
+<para>We want to add the <literal>initialize</literal> method to our <literal>SpaceWar</literal>
+class. Of course we need to use the System Browser:
+...World menu &#8594; <command>Open...</command> &#8594;
+<command>Browser</command>...
+</para>
+<para>As a reminder, proceed as follows (if necessary observe
+<link linkend="ch02_002dbrowserDetailed">ch02-browserDetailed</link>):
+</para>
+<orderedlist numeration="arabic">
+<listitem><para>In the <command>Class Category</command> pane at the far left, scroll down
+ to the <command>Spacewar!</command> category, then select it.
+</para>
+</listitem><listitem><para>In the <command>Class</command> pane, select the class <literal>SpaceWar</literal>.
+</para>
+</listitem><listitem><para>Below, click the <command>instance</command> button to expose the
+ instance side methods of the <literal>SpaceWar</literal> class. It is the
+ default behavior of the browser anyway, so you can skip this step as
+ long as you have not clicked on the <command>class</command> button.
+</para>
+</listitem><listitem><para>In the <command>Method Category</command> pane, select the category
+ <command>-- all --</command>. A method source code template shows up in the pane
+ below:
+</para><screen>messageSelectorAndArgumentNames
+  &quot;comment stating purpose of message&quot;
+  | temporary variable names |
+  statements
+</screen>
+<para>The template comes in four lines: the method name, a comment, local
+  variable declaration and statements. You can select all and delete
+  it or edit each line of the template as needed.
+</para>
+<para>In our case, we select it all and replace it with the
+  <literal>SpaceWar&gt;&gt;initialize</literal> source code:
+</para>
+
+<anchor id="initSpacewar"/>
+<screen>SpaceWar&gt;&gt;initialize
+  &quot;We want to capture keyboard and mouse events&#44; 
+  start the game loop(step) and initialize the actors.&quot;
+  super initialize.
+  color := self defaultColor.
+  self setProperty: #'handlesKeyboard' toValue: true.
+  self setProperty: #'handlesMouseOver:' toValue: true.
+  self startSteppingStepTime: self stepTime.
+  self initializeActors
+</screen>
+
+</listitem><listitem><para>Once edited, save-it with <userinput>Ctrl-s</userinput> or
+  ...right click &#8594; <command>Accept (s)</command>...
+</para>
+</listitem></orderedlist>
+<para>The newly created method shows up in the <command>Method</command> pane. You can
+  get it categorized automatically too: with the mouse, go over the
+  <command>Method Category</command> pane ...right click &#8594;
+  <command>categorize all uncategorized (c)</command>..
+</para>
+<anchor id="categorizeTeleport"/>
+<para><emphasis>In the
+<literal>SpaceWar</literal> class, add the <literal>teleport:</literal> method as defined
+in <link linkend="teleportMethod">teleportMethod</link> then categorize it in the <command>events</command>
+method category.</emphasis>
+</para>
+
+
+</sect2>
+<sect2 label="">
+<title>Space ship controls</title>
+
+<para>In a previous chapter, you wrote as an exercise simple implementation
+of the <link linkend="simpleControls">control ship methods</link>. The definitive
+control methods of the <literal>SpaceShip</literal> class are rewritten as:
+</para>
+<anchor id="shipControls"/>
+<screen>SpaceShip&gt;&gt;push
+  &quot;Init an acceleration boost&quot;
+  fuel isZero ifTrue: [^ self].
+  fuel := fuel - 1.
+  acceleration := 50
+
+SpaceShip&gt;&gt;unpush
+  &quot;Stop the acceleration boost&quot;
+  acceleration := 0
+
+SpaceShip&gt;&gt;right
+  &quot;Rotate the ship to its right&quot;
+  self heading: self heading + 0.1
+  
+SpaceShip&gt;&gt;left
+  &quot;Rotate the ship to its left&quot;
+  self heading: self heading - 0.1
+</screen>
+
+<para>Observe the <literal>right</literal> and <literal>left</literal> methods, they are mostly
+identical to the ones asked in <link linkend="shipHeading">shipHeading</link>. We don&#8217;t modify
+directly the <literal>heading</literal> attribute, we use the methods
+<literal>heading:</literal> and <literal>heading</literal> to read and write this
+information.
+</para>
+<anchor id="categorizeControls"/>
+<para><emphasis>Categorize the control methods in a newly created method
+category named <command>control</command>.</emphasis>
+</para>
+
+
+<para>Control will not be complete without the method to fire a torpedo. It
+is more complex to correctly initialize a torpedo.
+This is because a space ship is typically in motion, and in addition
+its heading and velocity are changing frequently.
+Therefore the torpedo must be set up according to the current 
+space ship position, heading, and velocity before being fired.
+</para>
+<anchor id="fireTorpedo"/>
+<screen>SpaceShip&gt;&gt;fireTorpedo
+  &quot;Fire a torpedo in the direction of
+  the ship heading with its velocity&quot;
+  | torpedo | 
+  torpedoes isZero ifTrue: [ ^ self].
+  torpedoes := torpedoes - 1.
+  torpedo := Torpedo new.
+  torpedo 
+    position: position + self nose;
+    heading: self heading;
+    velocity: velocity;
+    color: self color muchLighter.
+  owner addTorpedo: torpedo
+</screen>
+
+
+<anchor id="ch05_002dSpacewarGamePlay"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch05-SpacewarGamePlay.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+
+</sect2>
+<sect2 label="">
+<title>Collisions</title>
+<para>In a previous chapter we gave a small taste of the collision detection
+code between the space ships and the central star. It relies on
+iterator, block of code and control flow.
+</para>
+<para>However we have other scenarios as ship-ship, torpedo-Sun and
+torpedo-ship collisions.
+</para>
+<anchor id="shipCollision"/>
+<para><emphasis>How will you write the
+method to detect the collision between the two ships and take action
+accordingly? (Adapt from <link linkend="shipSunCollision">shipSunCollision</link>).</emphasis>
+</para>
+
+
+<para>The detection between the two ships and the possible numerous
+torpedoes required two enumerators with nested blocks of code:
+</para>
+<anchor id="shipsTorpedoesCollision"/>
+<screen>SpaceWar&gt;&gt;collisionsShipsTorpedoes
+ships do: [:aShip | 
+  torpedoes do: [:aTorpedo |
+    (aShip morphPosition dist: aTorpedo morphPosition) &lt; 15 ifTrue: [
+      aShip flashWith: Color red.
+      aTorpedo flashWith: Color orange.
+      self destroyTorpedo: aTorpedo.
+      self teleport: aShip]
+  ]
+]
+</screen>
+
+
+<para>The last torpedo-Sun scenario collision is left as an exercise for
+you.
+</para>
+<anchor id="torpedoSunCollision"/>
+<para><emphasis>Write the method to detect the collisions between the torpedoes
+and the central star and take action accordingly. (Adapt from
+<link linkend="shipSunCollision">shipSunCollision</link> and <link linkend="shipsTorpedoesCollision">shipsTorpedoesCollision</link>.)</emphasis>
+</para>
+
+<!-- -->
+</sect2>
+</sect1>
+</chapter>

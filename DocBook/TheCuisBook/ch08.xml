@@ -1,0 +1,315 @@
+<chapter label="" id="Events">
+<title>Events</title>
+
+<blockquote><attribution>Lewis Carroll, Alice in Wonderland</attribution>
+<para>When I used to read fairy tales, I fancied that kind of thing never
+happened, and now here I am in the middle of one!
+</para></blockquote>
+
+
+
+
+<bridgehead renderas="sect1">What just happened?</bridgehead>
+
+<para>We talked above about control flow, how one makes decisions about what
+to do in making calculations.  We talked about this like the entire
+computer processing resource was dedicated to this task. But it isn&#8217;t
+so.
+</para>
+<para>Computers may be fast at some calculations, but they are only so fast,
+and when there are many things to do, one shares and takes turns.
+</para>
+<para>So aside from <emphasis>do this and then do that</emphasis>, <firstterm>event</firstterm>s happen.
+</para>
+<para>Also, a computer may be fast enough that it literally has
+<emphasis>nothing</emphasis> to do.  What does it do then?  When a processor
+<emphasis>goes to sleep</emphasis>, how do we get its attention?
+</para>
+<para>You are reading the right chapter to know.
+</para>
+
+<sect1 label="" id="System-Events">
+<title>System Events</title>
+
+<para>Modern integrated <firstterm>System On a Chip</firstterm> (<firstterm>SOC</firstterm>) hardware has many
+circuits which are active at the same time.  So one kind of event is
+sensing something happening in the world.  Class <literal>EventSensor</literal>
+handles keyboard key press and mouse <firstterm>hardware interrupts</firstterm>,
+translating between hardware signals and software event objects.
+</para>
+<para>Basically, a morph <emphasis>raises its hand</emphasis> and says what events, if
+any, it is interested in receiving. Then it implements methods to get
+the event objects holding the information of the captured events. In
+Cuis-Smalltalk, the class <literal>MorphicEvent</literal> and its subclasses represent
+the diversity of events in the system.
+</para>
+<indexterm role="cp"><primary>event</primary><secondary>classes</secondary></indexterm><abstract><literal>MorphicEvent</literal>
+   <literal>DropEvent</literal>
+   <literal>DropFilesEvent</literal>
+   <literal>UserInputEvent</literal>
+      <literal>KeyboardEvent</literal>
+      <literal>MouseEvent</literal>
+         <literal>MouseButtonEvent</literal>
+         <literal>MouseMoveEvent</literal>
+         <literal>MouseScrollEvent</literal>
+      <literal>WindowEvent</literal>
+</abstract>
+
+<para>As <literal>MouseMoveEvent</literal>s are generated, the <literal>HandMorph</literal>
+adjusts its screen position.  When mouse and keystroke events arrive,
+the <literal>HandMorph</literal> coordinates the &#8220;dispatch&#8221; of events to the
+proper morph under the hand as well as displaying tool tips and
+carrying morphs in transit during drag operations.
+</para>
+<para>As we saw in the previous chapter with <literal>ColorClickEllipse</literal>, any
+morph may override default <literal>Morph</literal> methods to assert that it
+handles various user events and the methods which take the associated
+event objects when events arrive.
+</para>
+<para>Basically, user input events are generated, a <literal>HandMorph</literal>
+reflects any cursor movement, morphs react to events, each long
+running task gets a time slice and makes some progress, any display
+changes are updated on the screen, and the next step happens.  Time
+marches forward a step.
+</para>
+<para>This happens over and over and over, keeping the juggler&#8217;s illusion
+that all balls in the air are moving at once.  Underneath, the balls
+are each moving just a bit, in sequence.
+</para>
+</sect1>
+<sect1 label="" id="Overall-Mechanism">
+<title>Overall Mechanism</title>
+
+<!-- Explain the event-handling-testing and event method categories in -->
+<!-- Morph. (btw, event->event-handling, -->
+<!-- event-handling->event-preferences. Need to be clarified because it -->
+<!-- is confusing -->
+
+<!-- event-handling-tested->events-handled -->
+<!-- event-handling->events-preference -->
+<!-- events->events-handling -->
+
+<indexterm role="cp"><primary>event</primary><secondary>testing</secondary></indexterm><indexterm role="cp"><primary>event</primary><secondary>handling</secondary></indexterm><para>In <link linkend="A-brief-introduction-to-Inspectors">A brief introduction to Inspectors</link>, we explained how to set
+properties for an individual morph instance to handle a
+specific event. In this
+case, one property informed Cuis-Smalltalk we were interested in a
+given event (<literal>#handlesMouseDown</literal>), a second property defined
+the behavior with a block of code to be executed each time this event occurred.
+</para>
+<para>Alternatively, to handle events in a given morph class, we define the
+behavior with instance methods. In the <literal>Morph</literal> class, observe
+the method categories <command>event</command> and <command>event handling
+testing</command>.
+</para>
+<para>The method category <command>event handling testing</command> lists methods
+returning a Boolean to indicate if the instance should be notified about
+certain events. Let&#8217;s take a look at one of these methods,
+<literal>handlesMouseDown:</literal>, its comment is worth reading:
+</para>
+<screen>Morph&gt;&gt;handlesMouseDown: aMouseButtonEvent
+&quot;Do I want to receive mouseButton messages ?
+- #mouseButton1Down:localPosition:
+- #mouseButton1Up:localPosition:
+- #mouseButton2Down:localPosition:
+- #mouseButton2Up:localPosition:
+- #mouseButton3Down:localPosition:
+- #mouseButton3Up:localPosition:
+- #mouseMove:localPosition:
+- #mouseButton2Activity
+NOTE: The default response is false. Subclasses that implement these
+messages directly should override this one to return true.
+Implementors could query the argument, and only answer true for (for
+example) button 2 up only.&quot;
+&quot;Use a property test to allow individual instances to dynamically
+specify this.&quot;
+
+   ^ self hasProperty: #'handlesMouseDown:'
+</screen>
+<para>As defined by default, this method and the other handlers
+check to see if an instance has defined a property with the same
+name as the standard method.
+So each individual instance can add its own behavior.
+</para>
+<para>In a morph class where we want <emphasis>all</emphasis> instances to
+handle mouse down events, we just override
+the appropriate method to return true:
+</para>
+<screen>MyMorph&gt;&gt;&gt;&gt;handlesMouseDown: aMouseButtonEvent
+   ^ true
+</screen>
+<para>Now in the <command>events</command> method category for class <literal>Morph</literal>, we find the
+handlers listed in the comment above. A <literal>ScrollBar</literal>, a kind of
+Morph to represent a list&#8217;s position control, scrolls its list contents when a
+mouse button 1 is pressed:
+</para>
+<screen>ScrollBar&gt;&gt;mouseButton1Down: aMouseBtnEvent position: eventPosition
+&quot;Update visual feedback&quot;
+   self setNextDirectionFromEvent: aMouseBtnEvent.
+   self scrollByPage
+</screen>
+<para>To discover other events available for your morph, explore with the
+System Browser as described above.
+</para>
+</sect1>
+<sect1 label="" id="Spacewar_0021-Events">
+<title>Spacewar! Events</title>
+<para>Obviously our Spacewar! game handles events. Firstly we want to control the
+ships with the keyboard. Secondly, we want the game to pause
+when the mouse cursor moves out of the game play, and resume when it
+enters again.
+</para>
+<para>In our design, a unique morph, <literal>SpaceWar</literal> instance, models the
+game play. Therefore we want this instance to handle the events
+described above.
+</para>
+<sect2 label="">
+<title>Mouse event</title>
+<indexterm role="cp"><primary>event</primary><secondary>mouse</secondary></indexterm><indexterm role="cp"><primary>mouse</primary></indexterm>
+
+<bridgehead renderas="sect3">Mouse cursor enters game play</bridgehead>
+<indexterm role="cp"><primary>event</primary><secondary>testing</secondary><tertiary>mouse over</tertiary></indexterm>
+<para>We want to catch events when the mouse cursor moves over our
+<literal>SpaceWar</literal> morph.
+</para>
+<anchor id="handleMouseOver"/>
+<para><emphasis>Which method should return true to let the game play be notified
+with a dedicated messages that the mouse cursor enters or leaves? In which
+class should we implement this method?</emphasis>
+</para>
+
+
+<para>Once we make explicit we want the game play to receive mouse move-over
+events, we need to set the behavior accordingly with dedicated
+methods.
+</para>
+<indexterm role="cp"><primary>event</primary><secondary>handling</secondary><tertiary>mouse enter</tertiary></indexterm><para>Each time the mouse cursor enters the game play, we want to:
+</para>
+<itemizedlist>
+<listitem><para><emphasis role="bold">Get keyboard focus.</emphasis> It follows the mouse cursor: the
+  keyboard input goes to the morph under the mouse cursor. In Cuis-Smalltalk,
+  the mouse cursor is modeled as a <literal>HandMorph</literal> instance, an
+  event object (see event classes hierarchy at the beginning of this
+  chapter). An event object is interrogated about its hand with the
+  <literal>#hand</literal> message. All in all, we want the keyboard focus to be
+  targeted toward our game play when the mouse enters:
+</para>
+<screen>event hand newKeyboardFocus: self
+</screen>
+</listitem><listitem><para><emphasis role="bold">Resume the game.</emphasis> The continuous update of the game is
+  done through a dedicated process stepping mechanism, which will
+  be discussed in the next chapter. The game play just asks itself to
+  resume stepping:
+  </para><screen>self startStepping
+</screen></listitem></itemizedlist>
+<anchor id="mouseEnter"/>
+<para><emphasis>Which message is
+sent to the game play to be notified the mouse cursor enters the game
+play area?  How should the matching method be written?</emphasis>
+</para>
+
+
+<bridgehead renderas="sect3">Mouse cursor leaves game play</bridgehead>
+<indexterm role="cp"><primary>event</primary><secondary>handling</secondary><tertiary>mouse-enter</tertiary></indexterm>
+<para>We also want to be informed when the mouse cursor leaves our
+<literal>SpaceWar</literal> morph. Thanks to the work done in
+<link linkend="handleMouseOver">handleMouseOver</link>, we already informed Cuis-Smalltalk we want to be
+notified of mouse movement over the game play. However we need to code
+the behavior when the mouse cursor leaves the game play:
+</para>
+<itemizedlist>
+<listitem><para><emphasis role="bold">Release keyboard focus.</emphasis> We tell Cuis-Smalltalk the game play
+  does not want keyboard focus:
+</para>
+<screen>event hand releaseKeyboardFocus: self
+</screen>
+</listitem><listitem><para><emphasis role="bold">Pause the game.</emphasis> We stop the continuous
+  <emphasis>stepping</emphasis> update of the game:
+</para>
+<screen>self stopStepping
+</screen>
+</listitem></itemizedlist>
+<anchor id="mouseLeave"/>
+<para><emphasis>Which message is
+sent to the game play to be notified the mouse cursor leaves the game
+play area?  How should we write the overridden method?</emphasis>
+</para>
+
+
+<para>In graphic user interface, a visual effect is often used to inform the
+user the keyboard focus changed. In Spacewar! we change the game play
+background depending on the sate of the keyboard focus.
+</para>
+<para>In <link linkend="ch08_002dFocus">ch08-Focus</link>, at the left keyboard focus is on the game; at the
+right keyboard focus is not on the game, it is paused and we can see
+underneath.
+</para>
+<anchor id="ch08_002dFocus"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch08-Focus.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>In the Morph framework, the <literal>#keyboardFocusChange:</literal> message is sent
+to the morph losing or gaining the keyboard focus, its parameter is a
+Boolean. Therefore we implement the <link linkend="ch08_002dFocus">ch08-Focus</link> behavior in the
+matching <literal>SpaceWar</literal>&#8217;s method <literal>keyboardFocusChange:</literal>
+</para>
+<anchor id="keyboardFocusEffect"/>
+<screen>SpaceWar&gt;&gt;keyboardFocusChange: gotFocus
+   gotFocus 
+      ifTrue: [color := self defaultColor]
+      ifFalse: [color := self defaultColor alpha: 0.5].
+   self redrawNeeded
+</screen>
+
+</sect2>
+<sect2 label="">
+<title>Keyboard event</title>
+<indexterm role="cp"><primary>event</primary><secondary>keyboard</secondary></indexterm><indexterm role="cp"><primary>event</primary><secondary>testing</secondary><tertiary>keyboard</tertiary></indexterm>
+<para>To control the space ships, we use the keyboard. Therefore we want the
+game play to be notified of keyboard events.
+</para>
+<anchor id="keyboardEvent"/>
+<para><emphasis>Find
+out which method should return true to let the game be notified of
+keyboard event.</emphasis>
+</para>
+
+
+<indexterm role="cp"><primary>event</primary><secondary>handling</secondary><tertiary>keyboard</tertiary></indexterm><para>We can decide to be notified of the key down or key up event and also
+key down then up event (<firstterm>key stroke</firstterm>). As long as our
+<literal>SpaceWar</literal> morph responds true to the <literal>#handlesKeyboard</literal>
+message, it receives the messages <literal>#keyUp:</literal>, <literal>#keyDown:</literal> and
+<literal>#keyStroke:</literal>. By default, the matching methods in the
+<literal>Morph</literal> class do nothing.
+</para>
+<para>The argument of these messages is a <literal>KeyboardEvent</literal> object to
+which, among other things, you can ask the <literal>#keyCharacter</literal> of the
+pressed key or test about some special keys as the keyboard
+arrows. The first player ship &#8211; the green one &#8211; is controlled with
+the keyboard arrows when there are stroked:
+</para>
+<anchor id="firstShipControl"/>
+<screen>SpaceWar&gt;&gt;keyStroke: event
+   event isArrowUp ifTrue: [^ ships first push].
+   event isArrowRight ifTrue: [^ ships first right].
+   event isArrowLeft ifTrue: [^ ships first left].
+   event isArrowDown ifTrue: [^ ships first fireTorpedo].
+   ...
+</screen>
+
+<para>To control the second player ship, we use another classic arrangement
+in QWERTY keyboard controlled game:
+WASD<footnote><para><ulink url="https://en.wikipedia.org/wiki/Arrow_keys#WASD_keys">https://en.wikipedia.org/wiki/Arrow_keys#WASD_keys</ulink></para></footnote>.
+</para>
+<anchor id="secondShipControl"/>
+<para><emphasis>Append the additional code to <link linkend="firstShipControl">firstShipControl</link> to control
+the second player ship with the keys WASD. As a reminder, in Smalltalk
+the character code for q can be written as <literal>$q</literal>.</emphasis>
+</para>
+
+
+
+
+<!-- -->
+</sect2>
+</sect1>
+</chapter>

@@ -1,0 +1,207 @@
+<appendix label="" id="Summary-of-Syntax">
+<title>Summary of Syntax</title>
+
+<informaltable><tgroup cols="3"><colspec colwidth="49*"></colspec><colspec colwidth="1*"></colspec><colspec colwidth="50*"></colspec><thead><row><entry><para>Syntax </para></entry><entry></entry><entry><para>What it represents
+   </para></entry></row></thead><tbody><row><entry><para><literal>startPoint</literal>                 </para></entry><entry></entry><entry><para>a variable name
+   </para></entry></row><row><entry><para><literal>Transcript</literal>                 </para></entry><entry></entry><entry><para>a global variable name
+   </para></entry></row><row><entry><para><literal>self</literal>                       </para></entry><entry></entry><entry><para>pseudo-variable
+   </para></entry></row><row><entry></entry><entry></entry><entry></entry></row><row><entry><para><literal>1</literal>                          </para></entry><entry></entry><entry><para>decimal integer
+   </para></entry></row><row><entry><para><literal>2r101</literal>                      </para></entry><entry></entry><entry><para>binary integer (radix 2)
+   </para></entry></row><row><entry><para><literal>16r1a</literal>                      </para></entry><entry></entry><entry><para>hexadecimal integer (radix 16)
+   </para></entry></row><row><entry><para><literal>1.5</literal>                        </para></entry><entry></entry><entry><para>floating point number
+   </para></entry></row><row><entry><para><literal>2.4e7</literal>                      </para></entry><entry></entry><entry><para>exponential notation
+   </para></entry></row><row><entry><para><literal>$a</literal>                         </para></entry><entry></entry><entry><para>the character ‘a’
+   </para></entry></row><row><entry><para><literal>'Hello'</literal>                    </para></entry><entry></entry><entry><para>the string “Hello”
+   </para></entry></row><row><entry><para><literal>#Hello</literal>                     </para></entry><entry></entry><entry><para>the symbol #Hello
+   </para></entry></row><row><entry><para><literal>#(1 2 3)</literal>                   </para></entry><entry></entry><entry><para>a literal array
+   </para></entry></row><row><entry><para><literal>{1. 2. 1 + 2}</literal>            </para></entry><entry></entry><entry><para>a dynamic array
+   </para></entry></row><row><entry></entry><entry></entry><entry></entry></row><row><entry><para><literal>&quot;a comment&quot;</literal>                </para></entry><entry></entry><entry><para>a comment
+   </para></entry></row><row><entry></entry><entry></entry></row><row><entry><para><literal>|xy|</literal>                       </para></entry><entry></entry><entry><para>declaration of variables x and y
+   </para></entry></row><row><entry><para><literal>x &#x2190; 1</literal>, <literal>x := 1</literal>              </para></entry><entry></entry><entry><para>assign 1 to x
+   </para></entry></row><row><entry><para><literal>[x + y]</literal>                    </para></entry><entry></entry><entry><para>a block that evaluates to x+y
+   </para></entry></row><row><entry><para><literal>&lt;primitive: 1&gt;</literal>             </para></entry><entry></entry><entry><para>virtual machine primitive or annotation
+   </para></entry></row><row><entry></entry><entry></entry><entry></entry></row><row><entry><para><literal>3 factorial</literal>                </para></entry><entry></entry><entry><para>a unary message
+   </para></entry></row><row><entry><para><literal>3+4</literal>                        </para></entry><entry></entry><entry><para>a binary message
+   </para></entry></row><row><entry><para><literal>2 raisedTo: 6 modulo: 10</literal>   </para></entry><entry></entry><entry><para>a keyword message
+   </para></entry></row><row><entry></entry><entry></entry><entry></entry></row><row><entry><para><literal>&#x2191; true</literal>, <literal>^ true</literal>                     </para></entry><entry></entry><entry><para>return the value true
+   </para></entry></row><row><entry><para><literal>Transcript show: 'hello'. Transcript cr</literal> </para></entry><entry></entry><entry><para>expression separator (.)
+   </para></entry></row><row><entry><para><literal>Transcript show: 'hello'; cr</literal> </para></entry><entry></entry><entry><para>message cascade (;)
+   </para></entry></row><row><entry><para><literal>BoxedMorph new :: color: Color blue; openInWorld</literal>      </para></entry><entry></entry><entry><para>message cascade (::)
+   </para></entry></row><row><entry><para><literal>`{ 3@4 . 56 . 'click me'}`</literal>   </para></entry><entry></entry><entry><para>the compound literal <literal>#(3@4 56 'click me')</literal>
+</para></entry></row></tbody></tgroup></informaltable>
+
+<variablelist><indexterm role="cp"><primary>variable</primary><secondary>local</secondary></indexterm><varlistentry><term><emphasis role="bold">Local variables.</emphasis>
+</term><listitem>
+<para><literal>startPoint</literal> is a variable name, or identifier. By
+ convention, identifiers are composed of words in “camelCase” (i.e.,
+ each word except the first starting with an upper case letter). The
+ first letter of an instance variable, method or block argument, or
+ temporary variable must be lower case. This indicates to the reader
+ that the variable has a private scope.
+</para>
+<indexterm role="cp"><primary>variable</primary><secondary>shared</secondary></indexterm></listitem></varlistentry><varlistentry><term><emphasis role="bold">Shared variables</emphasis>
+</term><listitem>
+<para>Identifiers that start with upper case letters are global variables,
+ class variables, pool dictionaries or class
+ names. <literal>Smalltalk</literal> is a global variable, an instance of the
+ class <literal>SystemDictionary</literal>.
+</para>
+<indexterm role="cp"><primary>receiver</primary></indexterm>
+</listitem></varlistentry><varlistentry><term><emphasis role="bold">The receiver.</emphasis>
+</term><listitem>
+<para><literal>self</literal> is a keyword that refers to the object inside which
+ the current method is executing. We call it “the receiver” because
+ this object will normally have received the message that caused the
+ method to execute. self is called a “pseudo-variable” since we cannot
+ assign to it.
+</para>
+<indexterm role="cp"><primary>integer (see number)</primary></indexterm>
+<indexterm role="cp"><primary>number</primary><secondary>integer</secondary></indexterm></listitem></varlistentry><varlistentry><term><emphasis role="bold">Integers.</emphasis>
+</term><listitem>
+<para>In addition to ordinary decimal integers like <literal>42</literal>, Cuis-Smalltalk
+ also provides a radix notation. <literal>2r101</literal> is 101 in radix 2
+ (i.e., binary), which is equal to decimal 5.
+</para>
+<indexterm role="cp"><primary>float (see number)</primary></indexterm>
+<indexterm role="cp"><primary>number</primary><secondary>float</secondary></indexterm></listitem></varlistentry><varlistentry><term><emphasis role="bold">Float point numbers.</emphasis>
+</term><listitem>
+<para>Floating point numbers can be specified with their base-ten exponent:
+ <literal>2.4e7</literal> is 2.4 × 10<superscript>7</superscript>.
+</para>
+<indexterm role="cp"><primary>character</primary></indexterm>
+</listitem></varlistentry><varlistentry><term><emphasis role="bold">Characters.</emphasis>
+</term><listitem>
+<para>A dollar sign introduces a literal character: <literal>$a</literal> is the
+ literal for ‘a’. Instances of non-printing characters can be obtained
+ by sending appropriately named messages to the <literal>Character</literal>
+ class, such as <literal>Character space</literal> and <literal>Character
+ tab</literal>.
+</para>
+<indexterm role="cp"><primary>string</primary></indexterm>
+</listitem></varlistentry><varlistentry><term><emphasis role="bold">Strings.</emphasis>
+</term><listitem>
+<para>Single quotes are used to define a literal string. If you want a
+ string with a quote inside, just double the quote, as in
+ <literal>'G''day'</literal>.
+</para>
+<indexterm role="cp"><primary>symbol</primary></indexterm>
+</listitem></varlistentry><varlistentry><term><emphasis role="bold">Symbols.</emphasis>
+</term><listitem>
+<para>Symbols are like Strings, in that they contain a sequence of
+ characters.  However, unlike a string, a literal symbol is guaranteed
+ to be globally unique. There is only one Symbol object
+ <literal>#Hello</literal> but there may be multiple String objects with the
+ value <literal>'Hello'</literal>.
+</para>
+<indexterm role="cp"><primary>array</primary><secondary>static</secondary></indexterm></listitem></varlistentry><varlistentry><term><emphasis role="bold">Static arrays.</emphasis>
+</term><listitem>
+<para>Static arrays or Compile-time arrays are defined by <literal>#( )</literal>,
+ surrounding space-separated literals. Everything within the
+ parentheses must be a compile-time constant. For example,
+ <literal>#(27 #(true false) abc)</literal> is a literal array of three
+ elements: the integer <literal>27</literal>, the compile-time array containing the two
+ booleans, and the symbol <literal>#abc</literal>.
+</para>
+<indexterm role="cp"><primary>array</primary><secondary>dynamic</secondary></indexterm></listitem></varlistentry><varlistentry><term><emphasis role="bold">Dynamic arrays.</emphasis>
+</term><listitem>
+<para>Dynamic arrays or Run-time arrays. Curly braces { } define a
+ (dynamic) array at run-time.  Elements are expressions separated by
+ periods. So <literal>{ 1. 2. 1+2 }</literal> defines an array with
+ elements <literal>1</literal>, <literal>2</literal>, and the result of evaluating
+ <literal>1+2</literal>. (The curly-brace notation is peculiar to the Squeak
+ family dialect of Smalltalk! In other Smalltalks you must build up
+ dynamic arrays explicitly.)
+</para>
+<indexterm role="cp"><primary>comment</primary></indexterm>
+</listitem></varlistentry><varlistentry><term><emphasis role="bold">Comments.</emphasis>
+</term><listitem>
+<para>Comments are enclosed in double quotes. <literal>&quot;hello&quot;</literal> is a
+ comment, not a string, and is ignored by the Cuis-Smalltalk
+ compiler. Comments may span multiple lines.
+</para>
+<indexterm role="cp"><primary>variable</primary><secondary>local</secondary><tertiary>declaration</tertiary></indexterm></listitem></varlistentry><varlistentry><term><emphasis role="bold">Local variable declarations.</emphasis>
+</term><listitem>
+<para>Vertical bars | | enclose the declaration of one or more local
+ variables in a method (and also in a block).
+</para>
+<indexterm role="cp"><primary>variable</primary><secondary>assignment</secondary></indexterm></listitem></varlistentry><varlistentry><term><emphasis role="bold">Assignment.</emphasis>
+</term><listitem>
+<para><literal>:=</literal> assigns an object to a variable. In the printed
+ version of the book we wrote &#x2190; instead. Since this character
+ is not present in the keyboard, you key in with the underscore
+ character key. So, <literal>x := 1</literal> is the same as <literal>x
+ &#x2190; 1</literal> or <literal>x _ 1</literal>.
+</para>
+<indexterm role="cp"><primary>block</primary></indexterm>
+</listitem></varlistentry><varlistentry><term><emphasis role="bold">Blocks.</emphasis>
+</term><listitem>
+<para>Square brackets <literal>[ ]</literal> define a block, also known as a block
+ closure or a lexical closure, which is a first-class object
+ representing a function. As we shall see, blocks may take arguments
+ and can have local variables.
+</para>
+<indexterm role="cp"><primary>primitive</primary></indexterm>
+</listitem></varlistentry><varlistentry><term><emphasis role="bold">Primitives.</emphasis>
+</term><listitem>
+<para><literal>&lt;primitive: ...&gt;</literal> denotes an invocation of a virtual
+ machine primitive. (<literal>&lt;primitive: 1&gt;</literal> is the VM primitive
+ for <literal>SmallInteger&gt;&gt;+</literal>.) Any code following the primitive is
+ executed only if the primitive fails. The same syntax is also used
+ for method annotations.
+</para>
+<indexterm role="cp"><primary>message</primary><secondary>unary</secondary></indexterm></listitem></varlistentry><varlistentry><term><emphasis role="bold">Unary messages.</emphasis>
+</term><listitem>
+<para>Unary messages consist of a single word (like <literal>#factorial</literal>)
+ sent to a receiver (like 3).
+</para>
+<indexterm role="cp"><primary>message</primary><secondary>binary</secondary></indexterm></listitem></varlistentry><varlistentry><term><emphasis role="bold">Binary messages.</emphasis>
+</term><listitem>
+<para>Binary messages are operators (like <literal>+</literal>) sent to a receiver
+ and taking a single argument. In <literal>3 + 4</literal>, the receiver is
+ <literal>3</literal> and the argument is <literal>4</literal>.
+</para>
+<indexterm role="cp"><primary>message</primary><secondary>keyword</secondary></indexterm></listitem></varlistentry><varlistentry><term><emphasis role="bold">Keyword messages.</emphasis>
+</term><listitem>
+<para>Keyword messages consist of multiple keywords (like
+ <literal>#raisedTo:modulo:</literal>), each ending with a colon and taking a single
+ argument. In the expression <literal>2 raisedTo: 6 modulo: 10</literal>, the
+ message selector <literal>raisedTo:modulo:</literal> takes the two arguments
+ 6 and 10, one following each colon. We send the message to the
+ receiver 2.
+</para>
+<indexterm role="cp"><primary>returned value</primary></indexterm>
+</listitem></varlistentry><varlistentry><term><emphasis role="bold">Method return.</emphasis>
+</term><listitem>
+<para>&#x2191; is used to return a value from a method. (You must type ^ to obtain
+ the &#x2191; character.)
+</para>
+<indexterm role="cp"><primary>sequence</primary></indexterm>
+</listitem></varlistentry><varlistentry><term><emphasis role="bold">Sequences of statements.</emphasis>
+</term><listitem>
+<para>A period or full-stop (.) is the statement separator.  Putting a
+ period between two expressions turns them into independent
+ statements.
+</para>
+<indexterm role="cp"><primary>cascade of messages</primary></indexterm>
+</listitem></varlistentry><varlistentry><term><emphasis role="bold">Cascades.</emphasis>
+</term><listitem>
+<para>There are two kinds of message cascades.
+</para>
+<para>Semicolons can be used to send a cascade of messages to the original 
+ receiver. In <literal>Transcript show: 'hello'; cr</literal> we first send
+ the keyword message <literal>#show: 'hello'</literal> to the receiver
+ <literal>Transcript</literal>, and then we send the unary message <literal>#cr</literal> to
+ the same receiver.
+</para>
+<para>It is sometimes useful to send messages to the <emphasis>result</emphasis> of a message send.
+ In <literal> BoxedMorph new :: color: Color blue; openInWorld. </literal> we send
+ suceeding messages to the new BoxedMorph instance, not the BoxedMorph
+ class.
+</para>
+</listitem></varlistentry><varlistentry><term><emphasis role="bold">Compound Literal</emphasis>
+</term><listitem>
+<para>Backticks (<literal>`</literal>) can be used to create compound literals at compile time.
+ All components of a compound literal must be known when the code is compiled.
+</para>
+</listitem></varlistentry></variablelist><!-- List of exercises -->
+</appendix>

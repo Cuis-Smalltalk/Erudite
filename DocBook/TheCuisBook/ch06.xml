@@ -1,0 +1,710 @@
+<chapter label="" id="Visual-with-Morph">
+<title>Visual with Morph</title>
+
+<blockquote><attribution>John   Maloney</attribution>
+<para>Morphic is a user interface framework that makes it easy and fun to
+build lively interactive user interfaces.
+</para></blockquote>
+
+
+
+
+
+<para>What would we expect if we asked for good support for building GUIs in a
+programming system?
+</para>
+<para>All modern computers (and phones, etc) have high resolution color
+displays. Any software running on them, that is accessible to a user,
+needs to show stuff on that Display.
+</para>
+<para>Conventional UI managers (that is, Operating Systems and Web Browsers)
+started by including only the most basic GUI elements first: basic
+text editors, buttons, simple lists, scrolling for large content, and
+(usually) multiple resizeable overlapping windows. Anything else needs
+to be handled via additional libraries. While there are libraries for
+handling richer content (D3.js and Matplotlib are examples), the
+result is not consistent, neither for developers nor for users.
+</para>
+<para>Cuis-Smalltalk takes a different approach, pioneered by Smalltalk-80 and
+especially Self. We will get into detail in the next chapter,
+<emphasis>The Fundamentals of Morph</emphasis>.  For now, let&#8217;s deal with Morphs directly.
+</para>
+<para>We take the high quality Display for granted, as well as a mouse, finger or
+other pointing device. And we build on the objective of providing
+ample possibilities for GUIs both in existing, and in novel styles and
+designs yet to be invented. Additionally, in the usual Smalltalk way,
+all the framework code is available for study and modification. There
+are no third party libraries. Only the lowest level code is
+precompiled, but that still can be overriden or changed.
+</para>
+<para>Therefore every object you see in Cuis-Smalltalk is a <literal>Morph</literal> or is
+composed of <literal>Morph</literal>s.  Basically, a <literal>Morph</literal> is an object
+with state and behavior that can also depict itself on a computer
+display screen.
+</para>
+<para>Because Morphs are useful, when you look at
+class <literal>Morph</literal> in a Hierarchy Browser you will
+see a large number of methods and many, many subclasses.
+But the basic ideas are quite simple.
+</para>
+
+
+
+<sect1 label="" id="Installing-a-Package">
+<title>Installing a Package</title>
+<para>This chapter will require you to install the package
+<command>UI-Shapes.pck.st</command>, it is part of the
+<ulink url="https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-UI">Cuis-Smalltalk-UI</ulink>
+project. To fetch this package from the web, you have two options:
+</para>
+<orderedlist numeration="arabic">
+<listitem><para>Grab the file
+  <filename><ulink url="https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-UI/raw/main/tools/UI-Shapes.pck.st">UI-Shapes.pck.st</ulink></filename>
+  and save it in the same folder as your Cuis-Smalltalk image file.
+</para>
+</listitem><listitem><para>In the Cuis-Smalltalk image folder, clone its Git repository:
+</para>
+<screen>git clone git@github.com:Cuis-Smalltalk/Cuis-Smalltalk-UI.git
+</screen>
+<para>Along the <command>UI-Shapes.pck.st</command> packages there are other ones
+you can also discover in this repository.
+</para>
+</listitem></orderedlist>
+<indexterm role="cp"><primary>package</primary><secondary>load</secondary><tertiary>by code</tertiary></indexterm><para>Once done, in a Workspace execute the code to install the package:
+</para>
+<screen>Feature require: 'UI-Shapes'
+</screen>
+<para>Your Cuis-Smalltalk environment is now equiped for the next sections of this
+chapter.
+</para>
+</sect1>
+<sect1 label="" id="Ellipse-Morph">
+<title>Ellipse Morph</title>
+<indexterm role="cp"><primary>morph</primary><secondary>ellipse</secondary></indexterm><para>Let&#8217;s start with one of the basic morphs, an <literal>EllipseMorph</literal>.
+You could write <literal>EllipseMorph new openInWorld</literal> and
+<command><emphasis role="bold">D</emphasis>o-it</command>, but we are doing visual things for now, so let&#8217;s
+get a World Menu and select from <command>New Morph...</command> <command>Basic</command>
+submenu and drag onto the desktop.
+</para>
+<para>Every time one obtains a morph from a <command>New Morph...</command> submenu,
+one gets a different morph but made to a standard style.
+</para>
+<anchor id="ch06_002d01_002dEllipseMorphFromMenu"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-01-EllipseMorphFromMenu.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>The basic challenge of <firstterm>user interface design</firstterm> is
+to communicate visibility and control.
+Where am I?  What can I do here?
+</para>
+<para>One of the balance points in design is how to eliminate clutter.  One
+useful strategy is to reveal capabilities in context as they are
+needed.
+</para>
+<indexterm role="cp"><primary>morph</primary><secondary>halo</secondary></indexterm><para>In the case of Cuis-Smalltalk, you have to know some basics because helpful
+tools are there but stay out of the way.  At any time you can
+<userinput>Right-Click</userinput> on the desktop to get the World Menu.  You can also
+<userinput>Middle-Click</userinput> on any <literal>Morph</literal> to get a <firstterm>halo</firstterm> of
+<firstterm>construction handles</firstterm>, which show up as small colored circular
+icons.  If you pause the cursor over one of these, you get a <firstterm>tool
+tip</firstterm>, a temporary text popup who&#8217;s name should give a clue to its
+usage.
+</para>
+<para>If you click elsewhere the construction handles leave, but you can get them
+back at any time with a mouse click.
+</para>
+<anchor id="ch06_002d03_002dDragToEnlarge"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-03-DragToEnlarge.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Now that you know this, move the yellow lower right handle with tool
+tip <command>Change size</command> via <firstterm>Click-Drag</firstterm>.  Just hold down the
+left mouse button while the cursor is over the handle, move the cursor
+to the right and down, and release the mouse button.
+</para>
+<anchor id="ch06_002d04_002dEnlarged"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-04-Enlarged.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+</sect1>
+<sect1 label="" id="Submorph">
+<title>Submorph</title>
+<indexterm role="cp"><primary>morph</primary><secondary>submorph</secondary></indexterm><indexterm role="cp"><primary>morph</primary><secondary>rectangle</secondary></indexterm><para>Morphs can contain other morphs.  These interior morphs are called
+<firstterm>submorph</firstterm>s of their containing morph. Again, you can do this by
+writing the software &#8220;code&#8221;, but let&#8217;s do it directly with a
+<literal>BoxedMorph</literal>.
+</para>
+<para>First we obtain a <literal>BoxedMorph</literal> from the <command>New morph...</command>
+submenus. The <literal>BoxedMorph</literal> instance displays itself as a
+rect with a border.
+</para>
+<anchor id="ch06_002d05_002dAddRectangle"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-05-AddRectangle.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Now drag the rect over the ellipse and <userinput>Middle-Click</userinput> on the
+rect and click on the blue construction handle to gets the rect&#8217;s
+<firstterm>Morph Menu</firstterm>.  Use the menu selection <command>embed into</command> and
+select the ellipse as its new parent.
+</para>
+<anchor id="ch06_002d06_002dEmbedRectIntoEllipse"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-06-EmbedRectIntoEllipse.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Now when you click-drag the ellipse, or use the <command>Pick up</command> or
+<command>Move</command> construction handles, the rect is just a decoration for
+the ellipse.
+</para>
+<para>Indeed, the rect seems to have fused into the ellipse.  Using the
+mouse where the rect shows itself is just using the mouse on the
+ellipse.  This rect does not have many interesting behaviors.
+</para>
+<para>Let&#8217;s add a behavior to just this one <literal>BoxedMorph</literal>.
+</para>
+</sect1>
+<sect1 label="" id="A-brief-introduction-to-Inspectors">
+<title>A brief introduction to Inspectors</title>
+<para>To get the construction halo for an interior morph, just
+<userinput>Middle-Click</userinput> multiple times to &#8220;drill down&#8221; through the
+submorph hierarchy.
+</para>
+<anchor id="ch06_002d07_002dMiddleClickRect"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-07-MiddleClickRect.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<anchor id="ch06_002d08_002d2ndMidClckToSubmorph"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-08-2ndMidClckToSubmorph.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>There is an orange handle on the right, just under the green
+<command>Duplicate</command> handle.  <userinput>Left-Click</userinput> this to get the
+<command>Debug</command> menu.  Use this menu to get an <firstterm>Inspector</firstterm> for the
+rect.
+</para>
+<indexterm role="cp"><primary>tools</primary><secondary>inspector</secondary></indexterm><indexterm role="cp"><primary>inspector</primary><see>tools</see></indexterm>
+<para>Observe <link linkend="ch06_002d11aColorClickOnRect">ch06-11aColorClickOnRect</link>, on the left we have a pane for
+self, all inst vars, and the individual instance variables.  Clicking
+to select &#8220;all inst vars&#8221; and the values pane on the right shows
+that the owner of the rect is the ellipse and rect currently has no
+submorphs.
+</para>
+<para>The lower pane is a Smalltalk code editor, basically a workspace,
+where <literal>self</literal> is bound to the object we are inspecting.
+</para>
+<para>Inspectors work for every object by the way, not just morphs.
+</para>
+<anchor id="ch06_002d11aColorClickOnRect"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-11aColorClickOnRect.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>To add a behavior to all instances of a class, we create an instance
+method.  Here we are going to create a behavior for &#8220;just this one
+<literal>BoxedMorph</literal> instance&#8221;.
+</para>
+<anchor id="morphProperties"/><indexterm role="cp"><primary>morph</primary><secondary>properties</secondary></indexterm><para>In addition to instance variables, a morph can have any number of
+named <firstterm>properties</firstterm> which can be different for each morph.
+</para>
+<para>We add two properties here:
+</para>
+<anchor id="editMorphBehaviorInspector"/>
+<screen>self setProperty: #handlesMouseDown: toValue: true.
+self setProperty: #mouseButton1Up:localPosition:
+   toValue: [:ignoredEvent :ignoredPosition| self color: Color random]
+</screen>
+
+<para>These properties are special to the user interface.  You can find
+methods with these names in the <literal>Morph</literal> class to see what they
+do.
+</para>
+<para>After selecting the text and <command><emphasis role="bold">D</emphasis>o-it</command>, each time you
+<userinput>Left-Click</userinput> on the rect it changes color!
+</para>
+<para>Note that you can no longer move the ellipse by mouse-down on the
+rect, because the rect now takes the mouse event.  You have to
+mouse-down on the ellipse.  More on this below.
+</para>
+<indexterm role="cp"><primary>morph</primary><secondary>move/pick up</secondary></indexterm><para>One quick note on <command>Move</command> versus <command>Pick up</command>.  <command>Move</command>
+moves a submorph &#8220;within&#8221; its parent.  <command>Pick up</command> grabs a morph
+&#8220;out&#8221; of its parent.
+</para>
+<anchor id="ch06_002d09_002dMove_002dWithin"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-09-Move-Within.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<anchor id="ch06_002d10_002dPickUp_002d2_002dMoveOut"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-10-PickUp-2-MoveOut.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Before we go on, let&#8217;s use an inspector on the ellipse to change
+values of a couple of its instance variables.
+</para>
+<anchor id="ch06_002d12_002dInspectEllipse"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-12-InspectEllipse.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Observe <link linkend="ch06_002d14_002dSetBorderColor">ch06-14-SetBorderColor</link> and <link linkend="editShapeInspector">editShapeInspector</link>. In
+the lower pane of the inspector, code can be executed in the context
+of the inspected object. <literal>self</literal> refers to the instance. Here
+the pane contains code to set the borderWidth and the borderColor.
+</para>
+<anchor id="editShapeInspector"/>
+<screen>self borderWidth: 10.
+self borderColor: Color blue
+</screen>
+
+<anchor id="ch06_002d14_002dSetBorderColor"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-14-SetBorderColor.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>In the typical case one wants to refine or change behaviors for all
+instances of a class.
+</para>
+</sect1>
+<sect1 label="" id="Building-your-specialized-Morph">
+<title>Building your specialized Morph</title>
+<indexterm role="cp"><primary>morph</primary><secondary>subclass</secondary></indexterm><para>Let&#8217;s make a simple subclass which changes color when
+<userinput>Left-Click</userinput>ed.  Create a new class just as we did with Spacewar!
+but subclass <literal>EllipseMorph</literal> with <literal>#ColorClickEllipse</literal>.
+</para>
+<screen>EllipseMorph subclass: #ColorClickEllipse
+   instanceVariableNames: ''
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+</screen>
+<para>Save the class definition with <userinput>Ctrl-s</userinput>.
+</para>
+<indexterm role="cp"><primary>event</primary><secondary>testing</secondary></indexterm><para><userinput>Right-Click</userinput> on the <command>Message Category</command> pane and select
+<command>new category...</command>.  This brings up a number of selections and
+allows us to create new ones.  Select &#8220;event handling testing&#8221;.
+Then add the method <literal>ColorClickEllipse&gt;&gt;handlesMouseDown:</literal>.
+</para>
+<screen>handlesMouseDown: aMouseButtonEvent
+  &quot;Answer that I do handle mouseDown events&quot;
+  ^ true
+
+</screen>
+<indexterm role="cp"><primary>event</primary><secondary>handling</secondary></indexterm><para>Likewise, add a new catagory &#8220;event handing&#8221; and add the other
+method we need.
+</para>
+<screen>mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
+   &quot;I ignore the mouseEvent information and change my color.&quot;
+   self color: Color random
+</screen>
+<para>Now, you have created a new Morph class and can select a
+<literal>ColorClickEllipse</literal> from the World Menu <command>New Morph..</command> and
+try it out.  These are fun to <userinput>Left-Click</userinput> on.  Make as many as
+you want!
+</para>
+<anchor id="ch06_002d15_002dColorClickEllipse"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-15-ColorClickEllipse.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Now you know how to specialize an individual morph, or make a whole
+new class of them!
+</para>
+
+</sect1>
+<sect1 label="" id="Spacewar_0021-Morphs">
+<title>Spacewar! Morphs</title>
+
+<sect2 label="">
+<title>All Morphs</title>
+<para>Previously we defined the actors of the game as subclasses of the very
+general <literal>Object</literal> class (See
+<link linkend="torpedoClassVariables">torpedoClassVariables</link>). However the game play, the central star,
+the ships and the torpedoes are visual objects, each with a dedicated
+graphic shape:
+</para>
+<itemizedlist>
+<listitem><para>the game play is a simple rectangular area filled with the
+  black color,
+</para>
+</listitem><listitem><para>the central star is a fluctuating yellow disk with an orange
+  aura,
+</para>
+</listitem><listitem><para>the ships are rotating quadrangles each one painted with a
+  different color,
+</para>
+</listitem><listitem><para>a torpedo is a rotating triangle to paint with a different
+  color depending on the firing ship.
+</para>  
+</listitem></itemizedlist>
+<para>Therefore it makes sense to turn these actors into kinds of
+<literal>Morph</literal>s, the visual entity of Cuis-Smalltalk. To do so, point a System
+Browser to the class definition of each actor, replace the parent
+class <literal>Object</literal> by <literal>PlacedMorph</literal><footnote><para>A
+<literal>PlacedMorph</literal> is a kind of <literal>Morph</literal> with a supplementary
+<literal>location</literal> attribute; so it can be instructed to move, to
+scale and to rotate in the screen.</para></footnote>, then save the class definition
+with <userinput>Ctrl-s</userinput>.
+</para>
+<para>For example, the torpedo class as seen in <link linkend="torpedoClassVariables">torpedoClassVariables</link>
+is edited as:
+</para>
+<screen>PlacedMorph subclass: #Torpedo
+   instanceVariableNames: 'position heading velocity lifeSpan'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+</screen>
+<para>Moreover, a placed Morph already knows about its position and
+orientation on screen &#8211; it can be dragged and moved in the screen and
+rotated with the mouse cursor. Therefore the <literal>position</literal> and
+<literal>heading</literal> instance variables are redundant and should be
+removed. For now we keep it, it will be removed later when we will
+know how to replace each of its use cases with its appropriate Morph
+counterpart.
+</para>
+<anchor id="allActorsMorph"/>
+<para><emphasis>Edit
+<literal>SpaceWar</literal>&#44; <literal>CentralStar</literal> and <literal>SpaceShip</literal>
+to be subclasses of the <literal>PlacedMorph</literal> class.</emphasis>
+</para>
+
+
+<para>As explained in the previous sections of this chapter, a morph can be
+embedded within another morph. In Spacewar!, a <literal>SpaceWar</literal> morph
+instance presenting the game play, it is the <emphasis>owner</emphasis> of the central
+star, space ship and torpedo morphs. Put in other words, the central
+star, space ships and torpedoes are <emphasis>submorphs</emphasis> of a
+<literal>SpaceWar</literal> morph instance.
+</para>
+<para>The <literal>SpaceWar&gt;&gt;initializeActors</literal> code in <link linkend="initActors">initActors</link> is
+ not complete without adding and positioning the central star and
+ space ships as submorphs of the Spacewar! game play:
+</para>
+<anchor id="initFullActors"/>
+<screen>SpaceWar&gt;&gt;initializeActors
+   centralStar := CentralStar new.
+   self addMorph: centralStar.
+   centralStar morphPosition: 0 @ 0.
+   torpedoes := OrderedCollection new.
+   ships := Array with: SpaceShip new with: SpaceShip new.
+   self addAllMorphs: ships.
+   ships first 
+      morphPosition: 200 @ -200;
+      color: Color green.
+   ships second 
+      morphPosition: -200 @ 200;
+      color: Color red
+</screen>
+
+<para>There are two important messages: <literal>#addMorph:</literal> and
+<literal>#morphPosition:</literal>. The former asks to the receiver morph to embed
+its morph argument as a submorph, the latter asks to set the receiver
+coordinates in its owner&#8217;s reference frame. From reading the code, you
+deduce the origin of the owner reference frame is its middle, indeed
+our central star is in the middle of the game play.
+</para>
+<para>There is a third message not written here, <literal>#morphPosition</literal>, to ask
+the coordinates of the receiver in its owner&#8217;s reference frame.
+</para>
+<para>Remember our discussion about the <literal>position</literal> instance
+variable. Now you clearly understand it is redundant and we remove it
+from the <literal>SpaceShip</literal> and <literal>Torpedo</literal> definitions. Each time
+we need to access the position, we just write <literal>self
+morphPosition</literal> and each time we need to modify the position we write
+<literal>self morphPosition: newPosition</literal>. More on that later.
+</para>
+
+<!-- refactor ship and torpedo as mobile entity -->
+<anchor id="artRefactoring"/></sect2>
+<sect2 label="">
+<title>The art of refactoring</title>
+<indexterm role="cp"><primary>refactoring</primary></indexterm>
+
+<para>In our <link linkend="newtonModel">newtonian model</link> we explained the
+space ships are subjected to the engine acceleration and the gravity
+pull of the central star. The equations are described in
+<link linkend="motionEquations">motionEquations</link>.
+</para>
+<para>Based on these mathematics, we wrote the <literal>SpaceShip&gt;&gt;update:</literal>
+method to update the ship position according to the elapsed time &#8211;
+see <link linkend="spaceShipMechanic">spaceShipMechanic</link>.
+</para>
+<para>So far in our model, a torpedo is not subjected to the central star&#8217;s
+gravity pull nor its engine acceleration. It is supposing its mass is
+zero which is unlikely. Of course the <literal>Torpedo&gt;&gt;update:</literal>
+method is simpler than the space ship counter part &#8211; see
+<link linkend="torpedoMechanic">torpedoMechanic</link>. Nevertheless, it is more accurate and even more
+fun that the torpedoes are subjected to the gravity pull<footnote><para>So a
+torpedo should come with a mass.</para></footnote> and its engine acceleration; an
+agile space ship pilot could use gravity assist to accelerate a
+torpedo fired with a path close to the central star.
+</para>
+<para>What are the impacts of these considerations on the torpedo and space
+ship entities?
+</para>
+<orderedlist numeration="arabic">
+<listitem><para>They will share <emphasis>common states</emphasis> as the mass, the
+  position, the heading, the velocity and the acceleration.
+</para>
+</listitem><listitem><para>They will share <emphasis>common behaviors</emphasis> as the necessary
+  computations to update the position, direction, gravity pull and
+  velocity.
+</para>
+</listitem><listitem><para>They will have <emphasis>different states</emphasis>: a torpedo
+  has a life span state while a space ship has fuel tank capacity and
+  torpedoes stock states.
+</para>
+</listitem><listitem><para>They will have <emphasis>different behaviors</emphasis>: a
+  torpedo self destructs when its life span expires, a space ship
+  fires torpedoes and accelerates as long as its fuel tank and its
+  torpedoes count are not zero.
+</para>
+</listitem></orderedlist>
+<para>Shared state and behaviors suggest a common class.  Unshared states
+and behaviors suggests specialized subclasses which embody
+the differences.  So let us &#8220;factor out&#8221; the shared elements of
+the <literal>SpaceShip</literal> and <literal>Torpedo</literal>
+classes into a common ancestor class; one more specialized
+than the <literal>Morph</literal> class they currently share.
+</para>
+<para>Doing such analysis on the computer model of the game is part of the
+<firstterm>refactoring</firstterm> effort to avoid behavior and state duplications while
+making more obvious the common logic in the entities. The general idea of
+code refactoring is to rework existing code to make it more elegant,
+understandable and logical.
+</para>
+<para>To do so, we will introduce a <literal>Mobile</literal> class, a kind of
+ <literal>PlacedMorph</literal> with behaviors specific to a mobile object
+ subjected to accelerations. Its states are the mass, position,
+ heading, velocity and acceleration. Well, as we are discussing
+ refactoring, the mass state does not really makes sense in our game,
+ indeed our mobile&#8217;s mass is constant. We just need a method returning
+ a literal number and we can then remove the <literal>mass</literal> instance
+ variable. Moreover, as explained previously, a <literal>PlacedMorph</literal>
+ instance already know about its position and heading, so we also
+ remove these two attributes, although there are common behaviors to a
+ Space ship and a torpedo.
+</para>
+<para>It results in this <literal>Mobile</literal> definition:
+</para>
+<anchor id="mobileClass"/>
+<screen>PlacedMorph subclass: #Mobile
+   instanceVariableNames: 'velocity acceleration color'
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'Spacewar!'
+</screen>
+
+<anchor id="refactoryShipTorpedo"/>
+<para><emphasis>What should be the refactored definitions of the
+<literal>SpaceShip</literal> and <literal>Torpedo</literal> classes?</emphasis>
+</para>
+
+
+<para>The first behaviors we add to our <literal>Mobile</literal> are its
+initialization and its mass:
+</para>
+<screen>Mobile&gt;&gt;initialize
+  super initialize.
+  velocity := 0 @ 0.
+  acceleration := 0
+        
+Mobile&gt;&gt;mass
+  ^ 1
+</screen>
+<para>The next methods to add are the ones relative to the physical
+calculations. First, the code to calculate the gravity acceleration:
+</para>
+<anchor id="gravityForce"/>
+<screen>Mobile&gt;&gt;gravity
+&quot;Compute the gravity acceleration vector&quot;
+   | position |
+   position := self morphPosition.
+   ^ -10 * self mass * owner starMass / (position r raisedTo: 3) * position
+</screen>
+
+<para>This method deserves a few comments:
+</para><itemizedlist>
+<listitem><para><literal>self morphPosition</literal> returns a <literal>Point</literal>
+  instance, the position of the mobile in the owner reference frame,
+</para>
+</listitem><listitem><para><literal>owner</literal> is the <literal>SpaceWar</literal> instance
+  representing the game play. It is the owner &#8211; parent morph &#8211; of
+  the mobile. When asking <literal>#starMass</literal>, it interrogates its central
+  star mass and return its value:
+</para>
+<screen>SpaceWar&gt;&gt;starMass
+   ^ centralStar mass
+</screen>
+<para>As a side benefit, we can remove the method <literal>starMass</literal>
+defined earlier in the <literal>SpaceShip</literal> class.
+</para>
+</listitem><listitem><para>In <literal>position r</literal>, the <literal>#r</literal> message asks the radius
+  attribute of a point considered in polar coordinates. It is just its
+  length. It is the distance between the mobile and the central star.
+</para>
+</listitem><listitem><para><literal>* position</literal> really means multiply the previous
+  scalar value with a <literal>Point</literal>, hence a vector. Thus the returned
+  value is a <literal>Point</literal>, a vector in this context, the gravity
+  vector.
+</para>
+</listitem></itemizedlist>
+<para>The method to update the mobile position and velocity is mostly the
+same as in <link linkend="spaceShipMechanic">spaceShipMechanic</link>. Of course the
+<literal>SpaceShip&gt;&gt;update:</literal> and <literal>Torpedo&gt;&gt;update:</literal>
+version must be both deleted. Below is the complete version with the
+morph&#8217;s way of accessing the mobile&#8217;s position:
+</para>
+<anchor id="mobileUpdate"/>
+<screen>Mobile&gt;&gt;update: t
+&quot;Update the mobile position and velocity&quot;
+  | ai ag newVelocity |
+  &quot;acceleration vectors&quot;
+  ai := acceleration * self direction.
+  ag := self gravity.
+  newVelocity := (ai + ag) * t + velocity.
+  self morphPosition:
+     (0.5 * (ai + ag) * t squared)
+     + (velocity * t)
+     + self morphPosition.
+  velocity := newVelocity.	
+  &quot;Are we out of screen? If so we move the mobile to the other corner
+  and slow it down by a factor of 2&quot;  
+  (self isInOuterSpace and: [self isGoingOuterSpace]) ifTrue: [
+     velocity := velocity / 2.
+     self morphPosition: self morphPosition negated]
+</screen>
+
+<para>Now we should add the two methods to detect when a mobile is heading
+off into deep space.
+</para>
+<para>But first we define the method <literal>morphLocalBounds</literal> in each of
+our Morph objects. It returns a <literal>Rectangle</literal> instance defined in
+the Morph coordinates by its origin and extent:
+</para>
+<anchor id="boundMorph"/>
+<screen>SpaceWar&gt;&gt;morphLocalBounds
+   ^ -300 @ -300 extent: 600 @ 600
+
+CentralStar&gt;&gt;morphLocalBounds
+   ^ Rectangle center: 0 @ 0 extent: self morphExtent
+
+Mobile&gt;&gt;morphLocalBounds
+   ^ Rectangle encompassing: self class vertices
+</screen>
+
+<anchor id="mobileDeepSpace"/>
+<screen>Mobile&gt;&gt;isInOuterSpace
+&quot;Is the mobile located in the outer space? (outside of the game
+play area)&quot;
+   ^ (owner morphLocalBounds containsPoint: self morphPosition) not
+
+Mobile&gt;&gt;isGoingOuterSpace
+&quot;is the mobile going crazy in the direction of the outer space?&quot;
+   ^ (self morphPosition dotProduct: velocity) &gt; 0
+</screen>
+
+<para>As you see, these test methods are simple and short. When writing
+Cuis-Smalltalk code, this is something we appreciate a lot and we do not
+hesitate to cut a long method in several small methods. It improves
+readability and code reuse. The <literal>#containsPoint:</literal> message asks the
+receiver rectangle whether the point in argument is inside its shape.
+</para>
+<indexterm role="cp"><primary>overriding</primary></indexterm>
+<para>When a mobile is updated, its position and velocity are
+updated. However the <literal>Mobile</literal> subclasses <literal>SpaceShip</literal> or
+<literal>Torpedo</literal> may need additional specific updates. In object
+oriented programming there is this special mechanism named
+<firstterm>overriding</firstterm> to achieve this.
+</para>
+<para>See the <literal>Torpedo&gt;&gt;update:</literal> definition:
+</para>
+<screen>Torpedo&gt;&gt;update: t
+   &quot;Update the torpedo position&quot;
+   super update: t.
+   &quot;orientate the torpedo in its velocity direction, nicer effect
+   while inaccurate&quot;
+   self heading: (velocity y arcTan: velocity x).
+   lifeSpan := lifeSpan - 1.
+   lifeSpan isZero ifTrue: [owner destroyTorpedo: self].
+   acceleration &gt; 0 ifTrue: [acceleration := acceleration - 500]
+</screen>
+<para>Here the <literal>update:</literal> method is specialized to the torpedo
+specific needs. The mechanical calculation done in <literal>Mobile&gt;&gt;update:</literal>
+is still used to update the torpedo position and velocity: this is
+done by <literal>super update: t</literal>. We already discussed
+<literal>super</literal>. In the context of
+<literal>Torpedo&gt;&gt;update:</literal> it means search for an <literal>update:</literal>
+method in <literal>Torpedo</literal>&#8217;s parent class, that class&#8217;s parent
+and so on until the method
+is found, if not a <emphasis>Message Not Understood</emphasis> error is signalled.
+</para>
+<para>Among the specific added behaviors, the torpedo orientation along its
+velocity vector is inaccurate but nice looking. To orient accordingly
+the torpedo, we adjust its heading with its velocity vector heading.
+</para>
+<para>The life span control, the self-destruction sequence, and the engine
+acceleration are also handled specifically. When a torpedo is just fired, its
+engine acceleration is huge then it decreases quickly.
+</para>
+<para>With the System Browser pointed to the <literal>Torpedo&gt;&gt;update:</literal>
+method, observe the <option>inheritance</option> button. It is light green,
+which indicates the message is sent to <literal>super</literal> too. This is
+a reminder the method supplies a specialized behavior.  The button
+tool tip explains the color hilight meanings within the method&#8217;s text.
+When pressing the <option>inheritance</option> button, you browse all
+implementations of the <literal>update:</literal> method within this inheritance
+chain.
+</para>
+<anchor id="ch06_002d20_002dTorpedoUpdateInheritance"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-20-TorpedoUpdateInheritance.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>We already met an example of overriding when initializing a space ship
+instance &#8211; see <link linkend="initSpaceShip">initSpaceShip</link>. In the context of our class
+refactoring, the <literal>initialize</literal> overriding spans the whole
+<literal>Mobile</literal> hierarchy:
+</para>
+<anchor id="initMobileHierarchy"/>
+<screen>Mobile&gt;&gt;initialize
+   super initialize.
+   color := Color gray.
+   velocity := 0 @ 0.
+   acceleration := 0
+
+SpaceShip&gt;&gt;initialize
+   super initialize.
+   self resupply
+
+Torpedo&gt;&gt;initialize
+   super initialize.
+   lifeSpan := 500.
+   acceleration := 3000
+</screen>
+
+<para>Observe how each class is only responsible of its specific state
+initialization:
+</para>
+<orderedlist numeration="arabic">
+<listitem><para><emphasis role="bold">SpaceShip.</emphasis> Its mechanical states are set with the
+ <literal>super initialize</literal> and then the ship is resupplied with
+ fuel and torpedoes:
+</para>
+<screen>SpaceShip&gt;&gt;resupply
+   fuel := 500.
+   torpedoes := 10
+</screen>
+</listitem><listitem><para><emphasis role="bold">Torpedo.</emphasis> Inherited mechanical states initialized; add
+ self-destroy sequence initialization and acceleration adjusted to
+ mimic the torpedo boost at fire up.
+</para>
+</listitem></orderedlist>
+<para>The behaviors specific to each mobile is set with additional
+methods. The <literal>SpaceShip</literal> comes with its control methods we
+already described previously in <link linkend="shipControls">shipControls</link> and
+<link linkend="fireTorpedo">fireTorpedo</link>, of course there is none for a
+<literal>Torpedo</literal>.
+</para>
+<para>Another important specific behavior is how each kind of <literal>Mobile</literal>
+is drawn in the game play, this will be discussed in a next chapter on
+the fundamentals of Morph.
+</para>
+<!-- refactoring central star, no need for mass only a behavior -->
+<!-- -->
+</sect2>
+</sect1>
+</chapter>

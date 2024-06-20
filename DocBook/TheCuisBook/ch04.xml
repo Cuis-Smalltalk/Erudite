@@ -1,0 +1,991 @@
+<chapter label="" id="The-Collection-Way-of-Life">
+<title>The Collection Way of Life</title>
+
+<blockquote><attribution>Alan Perlis</attribution>
+<para>Simplicity does not precede complexity, but follows it.
+</para></blockquote>
+
+
+
+<para>Since the concept&#8217;s introduction in the 70s, collections and their associated
+iterators have been important programming elements of Smalltalk. Correctly
+used, they improve both code compactness and code understanding; two
+paradigms that may seem antagonistic. Since then, these innovations
+have percolated into many popular programming languages.
+</para>
+
+<sect1 label="" id="String-_002d_002d-a-particular-collection">
+<title>String &#8211; a particular collection</title>
+<!-- browse the hierarchy to find more inherited behavior, Should this -->
+<!-- be documented in browser section, or just there -->
+<indexterm role="cp"><primary>class</primary><secondary>inheritance</secondary></indexterm><indexterm role="cp"><primary>class</primary><secondary>protocol</secondary></indexterm><indexterm role="cp"><primary>protocol</primary></indexterm>
+
+<para>The <literal>String</literal> class also inherits behavior from its ancestor
+classes. Indeed <literal>String</literal> is a subclass of
+<literal>CharacterSequence</literal>, itself a subclass of
+<literal>SequenceCollection</literal> . The direct consequence is that when
+searching for some specific behavior, you may need to explore the
+parent classes too. The whole behavior of a class, defined in the
+class itself and its parents is called its <firstterm>protocol</firstterm>.
+</para>
+<indexterm role="cp"><primary>browser</primary><secondary>hierarchy</secondary></indexterm><indexterm role="cp"><primary>browser</primary><secondary>protocol</secondary></indexterm><para>Again the browser is helpful to explore a class protocol. You have two
+options:
+</para>
+<indexterm role="cp"><primary>keyboard shortcut</primary><secondary>browse protocol (<userinput>Ctrl-p</userinput>)</secondary></indexterm><orderedlist numeration="arabic">
+<listitem><para><emphasis role="bold">Explore the protocol.</emphasis> In the class pane of the
+   browser, do ...select <literal>String</literal> class &#8594;
+   right mouse button &#8594; <command>Browse protocol
+   (p)</command>... Alternatively, use the keyboard shortcut <userinput>Ctrl-p</userinput>.
+</para>
+<anchor id="ch03_002dbrowseProtocol"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch03-browseProtocol.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>The new window is a protocol browser for the <literal>String</literal>
+   class. At the left, we see a hierarchy of the <literal>String</literal>&#8217;s ancestor
+   classes.
+   At the right are the method selectors for strings and, in parenthesis,
+   the class where they are defined.  Methods defined in class
+   <literal>String</literal> itself are in bold characters.
+</para>
+<para>Selecting one class there only shows the protocol starting from
+   this class down to the <literal>String</literal> class. If you select
+   <literal>String</literal> in the left panel, you only see methods defined in
+   the <literal>String</literal> class itself.
+</para>
+<para>In <link linkend="ch03_002dbrowseProtocol">ch03-browseProtocol</link>, no specific class is selected,
+   therefore the whole <literal>String</literal> protocol is listed at the
+   right. The method <literal>before:</literal> implemented in
+   <literal>SequenceableCollection</literal> is selected and its source code is
+   displayed on the large bottom pane.
+</para>
+<indexterm role="cp"><primary>keyboard shortcut</primary><secondary>browse hierarchy (<userinput>Ctrl-h</userinput>)</secondary></indexterm></listitem><listitem><para><emphasis role="bold">Explore the hierarchy.</emphasis> In the class pane of the
+   browser, do ...select <literal>String</literal> class &#8594;
+   right mouse button &#8594; <command>Browse hierarchy
+   (h)</command>... Alternatively, use the keyboard shortcut <userinput>Ctrl-h</userinput> or
+   the button <command>hierarchy</command> on the system browser.
+</para>
+<anchor id="ch03_002dbrowseHierarchy"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch03-browseHierarchy.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>The hierarchy browser is very like the system browser with only two
+   differences:
+</para>
+<indexterm role="cp"><primary>class</primary><secondary>category</secondary></indexterm><itemizedlist>
+<listitem><para>At the far left, the class categories pane is absent,
+</para>      
+</listitem><listitem><para>In the classes pane, the hierarchy of <literal>String</literal> is
+      printed. It makes it easy to browse <literal>String</literal> parent and
+      child classes.
+</para>
+</listitem></itemizedlist>
+</listitem></orderedlist>
+<para>The hierarchy browser is a general tool for exploration. Unlike
+the protocol browser, it does not display the entire protocol
+of a class.  No inherited methods are shown, only those
+defined directly in the selected class. In <link linkend="ch03_002dbrowseHierarchy">ch03-browseHierarchy</link>, the class
+<literal>SequenceableCollection</literal> is selected as well as its method
+<literal>before:</literal>.
+</para>
+<para>The <literal>before:</literal> method extracts from a collection the element before a specified
+element. When inherited in <literal>String</literal>, those elements are
+<literal>Character</literal> instances:
+</para>
+<screen>'1 + 3i' before: $i
+&#8658; $3
+</screen>
+<para>Practice the tools and resolve the exercise below.
+</para>
+<anchor id="cutString"/>
+<para><emphasis>Find the appropriate
+method to transform &#8217;Hello My Friend&#8217; into &#8217;My Friend&#8217;.</emphasis>
+</para>
+
+
+<para>Beware, some messages in the <literal>String</literal> protocol may obviously not
+work. Observe below, that the error is thrown on a <literal>Character</literal>
+instance:
+</para>
+<screen>'Hello My Friend' cos
+&#8658; MesageNotUnderstood: Character&gt;&gt;cos
+</screen>
+<para>If you look at implementors of <literal>cos</literal>, you can
+find that <literal>Collection</literal> expects to apply <literal>cos</literal>
+to each member of a collection, hence a character is
+asked for its cosine.
+</para>
+<indexterm role="cp"><primary>symbol</primary></indexterm>
+<para><emphasis role="bold">Symbol.</emphasis> A symbol is very like a string but it is unique and
+never duplicated.
+Two references to <literal>'hello'</literal> might be to two or only
+one object depending on computational history.  Two references
+to <literal>#hello</literal> are guaranteed to always refer to the same object.
+</para>
+<para>Symbols got their name because they are used as <firstterm>symbolic
+constants</firstterm>.  You already observed how in the book we wrote message
+selectors as a symbol.  We use symbols because each message name must
+uniquely index the code for a method.  You will use a symbol when you
+need to name something uniquely.
+</para>
+<para>In the example below, observe the same behavior with string:
+</para>
+<screen>'hello' == 'hello' copy
+&#8658; false
+#hello  == #hello copy
+&#8658; true
+</screen>
+<para>Now you know.  A symbol can&#8217;t be duplicated nor changed.
+</para>
+<indexterm role="cp"><primary>string</primary><secondary>Unicode</secondary></indexterm><indexterm role="cp"><primary>Unicode</primary></indexterm>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+In Cuis-Smalltalk, strings with characters not part of the <acronym>ASCII</acronym> table are usually instances of <literal>UnicodeString</literal>.
+In the same way, you may get an instance of <literal>UnicodeSymbol</literal>  and not <literal>Symbol</literal>, or <literal>UnicodeCodePoint</literal> and not <literal>Character</literal>. You usually don&#8217;t need to care about this. The <acronym>ASCII</acronym> and Unicode classes provide the same services.
+</para>
+
+
+<para>Symbols can contain space characters:
+</para>
+<screen>'hello my friend' asSymbol
+&#8658; #'hello my friend'
+</screen>
+<para><literal>Symbol</literal> is a subclass of <literal>String</literal> and much of its behavior
+is inherited. As we learn about <literal>String</literal>s we
+are also learning quite a bit about symbols.
+</para>
+<para>Note that many <literal>String</literal> methods are defined to return strings.
+</para>
+<screen>'hello my friend' class.
+&#8658; String
+#'hello my friend' class.
+&#8658; Symbol 
+#'hello my friend' asCamelCase
+&#8658; 'helloMyFriend'
+#'hello my friend' asCamelCase asSymbol 
+&#8658; #helloMyFriend
+</screen>
+
+</sect1>
+<sect1 label="" id="Fun-with-variables">
+<title>Fun with variables</title>
+<indexterm role="cp"><primary>variable</primary></indexterm>
+<indexterm role="cp"><primary>variable</primary><secondary>method</secondary></indexterm><indexterm role="cp"><primary>method</primary><secondary>variable</secondary></indexterm>
+<para>How can a variable be fun? With Cuis-Smalltalk, a variable is the name of a
+box that holds a value &#8211; an object, that&#8217;s it!
+</para>
+<para>A variable can hold a value of any class.  The value is strongly typed
+(we can always determine its Class), but the variable (box) is not
+restricted to holding a value of a single type.
+</para>
+<para>One important direct consequence is that the <emphasis>type</emphasis> of a variable
+&#8211; i.e. the class of the referenced object &#8211; can change over
+time. Observe this example:
+</para>
+<screen>| a |
+a := 1 / 3.
+a class
+&#8658; Fraction
+a := a + (2 / 3)
+&#8658; 1
+a class
+&#8658; SmallInteger
+</screen>
+<para>The initial value of the variable <literal>a</literal> was a <literal>Fraction</literal>
+instance, after some calculation it ends as a <literal>SmallInteger</literal>
+instance.
+</para>
+<para>In fact, there is no such thing as type, it is only
+referenced objects which can <emphasis>mutate</emphasis> over time into other kind
+of object: a metal body structure to which you add two wheels may
+become a bicycle, or a car if you add four wheels.
+</para>
+<para>Therefore, to declare a method variable we just name it at the
+beginning of the script and surround it with pipe characters &#8220;|&#8221;.
+</para>
+<para>A variable always holds a value.  Until we place a different value
+into a variable, the variable holds the <literal>nil</literal> value, an
+instance of <literal>UndefinedObject</literal>.  When we say that a value is
+<firstterm>bound</firstterm> to a variable we mean that the named box now holds that
+value.
+</para>
+<para>So far we sent messages directly to objects, but we can send messages to a
+variable bound to an object too.
+</para>
+<para>Any object responds to the message <literal>#printString</literal>.
+</para>
+<screen>| msg |
+msg := 'hello world!'.
+Transcript show: msg capitalized printString, ' is a kind of '.
+Transcript show: msg class printString; newLine.
+msg := 5.
+Transcript show: msg printString, ' is a kind of '.
+Transcript show: msg class printString; newLine.
+</screen>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+This ease of use has a drawback: when writing code to send
+a message to a
+variable bound to an object, the system does not check ahead of time
+that the object
+understands the message. Nevertheless, there is a procedure to catch
+this kind of situation when the message is actually sent.
+</para>
+</sect1>
+<sect1 label="" id="Fun-with-collections">
+<title>Fun with collections</title>
+<para>A Collection is a grouping of objects. Arrays and Lists are
+collections.  We already know a <literal>String</literal> is a collection;
+precisely a collection of characters.  Many kinds of Collection have
+similar behaviors.
+</para>
+<indexterm role="cp"><primary><literal>Array</literal></primary></indexterm>
+<para>An <literal>Array</literal> is a fixed-size collection, and unlike a string, it can
+contain any kind of literal enclosed in <literal>#(&#160;)</literal>:
+</para><screen>&quot;array of numbers&quot;
+#(1 3 5 7 11 1.1)
+&quot;array of mixed literals&quot;
+#(1 'friend' $&amp; 'al')
+</screen>
+<para>An Array is constructed directly using well-formed <emphasis>literal</emphasis> elements.
+We will get to the meaning of this last statement when we discuss
+details of the Smalltalk language.
+</para>
+<para>For now, just note that using non-literal expressions to construct an
+array will not work as expected:
+</para><screen>#(1 2/3)
+&#8658; #(1 2 #/ 3)
+</screen>
+<indexterm role="cp"><primary>array</primary><secondary>dynamic</secondary></indexterm><para>Indeed, the <literal>$/</literal> is interpreted as a literal symbol and we get
+basic components of &#8220;2 / 3&#8221; but this text is not
+interpreted as a fraction. To get a fraction
+inserted in the array, you use a <firstterm>run-time array</firstterm> or <firstterm>dynamic
+array</firstterm>, whose elements <emphasis>are</emphasis> expressions separated by dots and surrounded
+with <literal>{ }</literal>:
+</para>
+<screen>{1 . 2/3 . 7.5}
+&#8658; #(1 2/3 7.5)
+</screen>
+<indexterm role="cp"><primary>array</primary><secondary>operation</secondary></indexterm><indexterm role="cp"><primary>array</primary><secondary>size</secondary></indexterm><para>With an array filled with numbers you can request information and
+arithmetic operations:
+</para><screen>#(1 2 3 4) size &#8658; 4
+#(1 2 3 4) + 10 &#8658; #(11 12 13 14)
+#(1 2 3 4) / 10 &#8658; #(1/10 1/5 3/10 2/5)
+</screen>
+<indexterm role="cp"><primary>collection</primary><secondary><literal>squared</literal></secondary></indexterm><para>Mathematical operations work as well:
+</para><screen>#(1 2 3 4) squared &#8658; #(1 4 9 16)
+#(0 30 45 60) degreeCos
+&#8658; #(1.0 0.8660254037844386
+0.7071067811865475 0.49999999999999994)
+</screen>
+<indexterm role="cp"><primary>array</primary><secondary>statistic</secondary></indexterm><para>Basic statistical methods can be used directly on arrays of numbers:
+</para>
+<screen>#(7.5 3.5 8.9) mean &#8658; 6.633333333333333 
+#(7.5 3.5 8.9) range &#8658; 5.4
+#(7.5 3.5 8.9) min &#8658; 3.5
+#(7.5 3.5 8.9) max &#8658; 8.9
+</screen>
+<para>To get an array of natural numbers from 1 to 100, we use the keyword
+message <literal>#to:</literal>
+</para>
+<screen>(1 to: 100) asArray
+&#8658; #(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22
+23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45
+46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68
+69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91
+92 93 94 95 96 97 98 99 100)
+</screen>
+<para>In this line of code, the message <literal>#to:</literal> is sent to <literal>1</literal>
+with the argument <literal>100</literal>. It returns an interval object. The
+message <literal>#asArray</literal> sent to the interval returns an array.
+</para>
+<anchor id="exeNegativeIntegers"/>
+<para><emphasis>Create an
+array of integer numbers ranging from -80 to 50.</emphasis>
+</para>
+
+
+<!-- introduce ordered collection -->
+<indexterm role="cp"><primary>collection</primary><secondary>dynamic</secondary></indexterm><indexterm role="cp"><primary>collection</primary><secondary><literal>OrderedCollection</literal></secondary></indexterm><indexterm role="cp"><primary>collection</primary><secondary><literal>add:</literal></secondary></indexterm><para>The size of an array is fixed, it can not grow. An
+<literal>OrderedCollection</literal> is a dynamic, ordered collection. It grows
+when adding element with the <literal>#add:</literal> message:
+</para><anchor id="dynamicSize"/>
+<screen>| fibo | 
+fibo := OrderedCollection newFrom: #(1 1 2 3).
+fibo add: 5;
+   add: 8;
+   add: 13;
+   add: 21.
+fibo
+&#8658; an OrderedCollection(1 1 2 3 5 8 13 21)
+</screen>
+
+<indexterm role="cp"><primary>collection</primary><secondary><literal>at:</literal></secondary></indexterm><indexterm role="cp"><primary>collection</primary><secondary><literal>last</literal></secondary></indexterm><indexterm role="cp"><primary>collection</primary><secondary><literal>indexOf:</literal></secondary></indexterm><para>Index access to the elements of a collection is done with a variety of
+messages. The index naturally ranges from 1 to the collection size:
+</para><screen>fibo at: 1 &#8658; 1
+fibo at: 6 &#8658; 5
+fibo last &#8658; 21
+fibo indexOf: 2 &#8658; 3
+fibo at: fibo size &#8658; 21
+</screen>
+
+<bridgehead renderas="sect2">Playing with enumerators</bridgehead>
+<para>A collection comes with a set of helpful methods named
+enumerators. Enumerators operate on each element of a collection.
+</para>
+<indexterm role="cp"><primary>collection</primary><secondary>set operations (union, intersection, difference)</secondary></indexterm><para>Set operations between two collections are computed with the
+<literal>#union:</literal>, <literal>#intersection:</literal> and <literal>#difference:</literal> messages.
+</para><anchor id="setOpe"/>
+<screen>#(1 2 3 4 5) intersection: #(3 4 5 6 7)
+&#8658; #(3 4 5)
+#(1 2 3 4 5) union: #(3 4 5 6 7)
+&#8658; a Set(5 4 3 2 7 1 6) 
+#(1 2 3 4 5) difference: #(3 4 5 6 7)
+&#8658; #(1 2)
+</screen>
+
+<anchor id="holeSet"/>
+<para><emphasis>Construct the array of the
+numbers 1&#44;...&#44;24&#44;76&#44;...&#44;100.</emphasis>
+</para>
+
+
+<para>Set operations work with any kind of object. Comparing objects
+deserves its own section.
+</para>
+<screen>#(1 2 3 'e' 5) intersection: #(3.0 4 6 7 'e')
+&#8658; #(3 'e')
+</screen>
+<indexterm role="cp"><primary>collection</primary><secondary><literal>select:</literal></secondary></indexterm><indexterm role="cp"><primary>collection</primary><secondary>enumerator mechanism</secondary></indexterm><indexterm role="cp"><primary>block</primary></indexterm>
+<para>To select the prime numbers from 1 to 100, we use the <literal>#select:</literal>
+enumerator. This message is sent to a collection, then it will select
+each element of the collection returning true to a test condition:
+</para>
+<anchor id="prime100"/>
+<screen>(1 to: 100) select: [ :n | n isPrime ]
+&#8658;  #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71
+73 79 83 89 97)
+</screen>
+
+<para>This example introduces the message <literal>#select:</literal> and a block of code, a
+primordial constituent element of the Cuis-Smalltalk model. A block of code,
+delimited by square brackets, is a piece of code for later
+execution(s). Let&#8217;s explain how this script is evaluated:
+</para>
+<itemizedlist>
+<listitem><para><literal>(1 to: 100)</literal> is evaluated as an interval
+</para>
+</listitem><listitem><para>the block of code <literal>[:n | n isPrime]</literal> is instantiated (created)
+</para>
+</listitem><listitem><para>the message <literal>#select:</literal> is sent to the interval with the
+ block of code as the argument
+<indexterm role="cp"><primary>block</primary><secondary>parameter</secondary></indexterm> </para></listitem><listitem><para>in the <literal>select:</literal> method, for each integer of the
+ interval, the block of code is invoked with its parameter
+ <literal>n</literal> set to the integer value.  A <firstterm>block parameter</firstterm>
+ starts with a colon, &#8220;:&#8221;, and is an ordinary identifier <footnote><para>An
+ <firstterm>identifier</firstterm> is just a word that starts in a lowercase letter
+ and consists of upper and lower case letters and decimal digits.  All
+ variable names are identifiers</para></footnote>.  Then, each time <literal>n
+ isPrime</literal> evaluates to true, the <literal>n</literal> value is added to a new
+ collection answered when the <literal>select:</literal> method finished
+ testing each element of the collection.
+</para>
+</listitem></itemizedlist>
+<para>A block of code can be saved in a variable, passed as a parameter, and
+can be used multiple times.
+</para><screen>| add2 |
+add2 := [:n| n + 2].
+{ add2 value: 2. add2 value: 7 }.
+&#8658;  #(4 9)
+</screen>
+
+<para>Enumerators implement tremendously powerful ways to process collections without
+needing an index.  By this, we mean that they are simple to get right.
+We like simple!
+</para>
+<para>To get an idea of how useful enumerators are, take a browse at the
+<literal>Collection</literal> class in the method category <literal>enumerating</literal>.
+</para>
+<anchor id="oddNumbers"/>
+<para><emphasis>Select the odd numbers between
+-20 and 45.</emphasis>
+</para>
+
+
+<para>You want to know the number of prime numbers under 100.  Just send the
+message <literal>#size</literal> to the answered collection at <link linkend="prime100">prime100</link>. The
+parenthesis are mandatory to ensure <literal>#size</literal> is sent last to the
+resulting collection:
+</para>
+<anchor id="qtyPrime100"/>
+<screen>( (1 to: 100) select: [:n | n isPrime] ) size
+&#8658; 25
+</screen>
+
+<para>For more clarity, we use a variable named <literal>primeNumbers</literal> to
+store the prime numbers list we built:
+</para><screen>| primeNumbers |
+primeNumbers := (1 to: 100) select: [:n | n isPrime].
+primeNumbers size
+</screen>
+<anchor id="qtyPrime200"/>
+<para><emphasis>Modify <link linkend="qtyPrime100">qtyPrime100</link> to calculate the number
+of prime numbers between 101 and 200.</emphasis>
+</para>
+
+
+<anchor id="multiples7"/>
+<para><emphasis>Build the list of the
+multiples of 7 below 100.</emphasis>
+</para>
+
+
+<anchor id="oddNonPrime"/>
+<para><emphasis>Build a
+collection of the odd integers in [1 ; 100] which are not prime.</emphasis>
+</para>
+
+
+<indexterm role="cp"><primary>collection</primary><secondary><literal>collect:</literal></secondary></indexterm><para>A sister enumerator to <literal>#select:</literal> is <literal>#collect:</literal>. It returns a
+new collection of the same size, with each element transformed by a
+block of code. When searching for perfect cubic roots, it is useful to
+know about some cubes:
+</para>
+<anchor id="cubesCollect"/>
+<screen>(1 to: 10) collect: [:n | n cubed]
+&#8658; #(1 8 27 64 125 216 343 512 729 1000)
+</screen>
+
+<para>The collected elements can be of a different type. Below, a string is
+enumerated and integers are collected:
+</para>
+<screen>'Bonjour' collect: [:c | c asciiValue ]
+&#8658;  #(66 111 110 106 111 117 114)
+</screen>
+<para>We can shift the ASCII value, convert it back to a character, then collect
+it in a new string. It is a simple cipher:
+</para><anchor id="simpleCipher"/>
+<screen>'Bonjour' collect: [:c | (c asciiValue + 1) asCharacter ]
+&#8658; 'Cpokpvs'
+</screen>
+
+<anchor id="decodeCipher"/>
+<para><emphasis>Write the script to decode
+cipher &#8217;Zpv!bsf!b!cptt&#8217;, it was encoded with <link linkend="simpleCipher">simpleCipher</link>.</emphasis>
+</para>
+
+
+<indexterm role="cp"><primary>Caesar cipher</primary></indexterm>
+<para>Caesar&#8217;s cipher is based on shifting letters to the right in the
+alphabet order.  The method is named after Julius Caesar, who used it
+in his private correspondence with a shift of 3.
+</para>
+<anchor id="alphabetCipher"/>
+<para><emphasis>Write a script
+to collect the alphabet&#8217;s uppercase letters representing the Caesar&#8217;s
+cipher. The expected answers is</emphasis> #($D $E $F $G $H $I $J $K $L $M $N $O
+$P $Q $R $S $T $U $V $W $X $Y $Z $A $B $C).
+</para>
+
+
+<para>Once you get the alphabet cipher right, you can encode your first
+message:
+</para><anchor id="encodeCaesar"/>
+<para><emphasis>Encode the
+phrase &#8217;SMALLTALKEXPRESSION&#8217;.</emphasis>
+</para>
+
+
+<para>And decode message:
+</para>
+<anchor id="decodeCaesar"/>
+<para><emphasis>Decode this famous quotation attributed to Julius Caesar &#8217;DOHDMDFWDHVW&#8217;.</emphasis>
+</para>
+
+
+<bridgehead renderas="sect2">Fun with loops</bridgehead>
+<para>Collection can be iterated with traditional loops: there is a whole
+family of <emphasis>repeat</emphasis>, <emphasis>while</emphasis> and <emphasis>for</emphasis> loops.
+</para>
+<indexterm role="cp"><primary>loop</primary><secondary>for</secondary></indexterm><indexterm role="cp"><primary>number</primary><secondary><literal>to:do</literal></secondary></indexterm><para>A simple <emphasis>for</emphasis> loop between two integer values is written with
+the keyword message <literal>#to:do:</literal>, the last argument is a block of code
+executed for each index:
+</para><anchor id="forLoop"/>
+<screen>| sequence |
+sequence := OrderedCollection new.
+1 to: 10 do: [:k | sequence add: 1 / k].
+sequence
+&#8658; an OrderedCollection(1 1/2 1/3 1/4 1/5 1/6 1/7 1/8 1/9 1/10)
+</screen>
+
+<indexterm role="cp"><primary>collection</primary><secondary><literal>collect:</literal></secondary></indexterm><para>A collect writes more concisely, though:
+</para><screen>(1 to: 10) collect: [:k | 1 / k]
+</screen>
+<indexterm role="cp"><primary>loop</primary><secondary>for</secondary><tertiary>step</tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary><literal>to:do:by:</literal></secondary></indexterm><para>To step with a different value than 1, a third numeric argument is
+inserted:
+</para><screen>1 to: 10 by: 0.5 do: [:k | sequence add: 1 / k]
+</screen>
+<indexterm role="cp"><primary>loop</primary><secondary>repeat</secondary></indexterm><indexterm role="cp"><primary>Fibonacci sequence</primary></indexterm>
+<para>A repeated loop without an index or any collection is written with the
+<literal>#timesRepeat:</literal> message send to an integer:
+</para><anchor id="repeatLoop"/>
+<screen>| fibo |
+fibo := OrderedCollection newFrom: #(1 1).
+10 timesRepeat: [
+   fibo add: (fibo last + fibo atLast: 2)].
+fibo
+&#8658; an OrderedCollection(1 1 2 3 5 8 13 21 34 55 89 144)
+</screen>
+
+<indexterm role="cp"><primary>collection</primary><secondary><literal>pairsDo:</literal></secondary></indexterm><para>The quotient of consecutive Fibonacci terms converges toward the golden
+value:
+</para><screen>fibo pairsDo: [:i :j |
+   Transcript show: (j / i ) asFloat ; cr]
+&#8658; 1.0
+&#8658; 1.5
+&#8658; 1.6
+&#8658; 1.6153846153846154
+&#8658; 1.6176470588235294
+&#8658; 1.6179775280898876
+</screen>
+
+</sect1>
+<sect1 label="" id="Collections-detailed">
+<title>Collections detailed</title>
+<indexterm role="cp"><primary>collection</primary></indexterm>
+<para>The <command>Collections-</command> class categories are the most prolific,
+there are 7 of them gathering 46 classes.
+</para>
+<!-- explain category Collections-Abstract -->
+<indexterm role="cp"><primary>class</primary><secondary>abstract</secondary></indexterm><para>The category <command>Collections-Abstract</command> groups classes that are
+said to be abstract. An <firstterm>abstract</firstterm> class cannot be instantiated,
+its behavior is declared but not completely implemented. It is the
+responsibility of its subclasses to implement the missing part of the
+behavior.
+</para>
+<para>An abstract class is useful to establish a set of polymorphic methods
+which each of its concrete subclasses is expected to specialize.
+This captures and communicates our intent.
+</para>
+<para>Observe how the important <literal>do:</literal> method is declared
+but not implemented:
+</para>
+<screen>Collection&gt;&gt;do: aBlock 
+&quot;Evaluate aBlock with each of the receiver's elements as the argument.&quot;
+self subclassResponsibility
+</screen>
+<para>Then observe how two different <literal>Collection</literal> subclasses
+implement it:
+</para>
+<screen>OrderedCollection&gt;&gt;do: aBlock 
+firstIndex to: lastIndex do: [ :index |
+   aBlock value: (array at: index) ]
+</screen>
+<para>and:
+</para>
+<screen>Dictionary&gt;&gt;do: aBlock
+super do: [:assoc | aBlock value: assoc value]
+</screen>
+<!-- distinguish growable and non-growable collection Array (Collections-Arrayed) and OrderedCollection -->
+<!-- (Collections_Sequenceable) -->
+
+<para>Two important groups of collections must be distinguished: collections
+with a fixed size and collections with a variable size.
+</para>
+<indexterm role="cp"><primary>collection</primary><secondary>fixed size</secondary></indexterm><para><emphasis role="bold">Collection of fixed size.</emphasis>  Such collections are gathered in
+the category <command>Collections-Arrayed</command>. The most notable one is
+<literal>Array</literal>, its size &#8211; the number of elements it can hold &#8211; is
+set when creating the instance. Once instantiated, you can neither add nor
+delete elements to an array.
+</para>
+<indexterm role="cp"><primary>collection</primary><secondary>instantiate array</secondary></indexterm><indexterm role="cp"><primary><literal>Array</literal></primary></indexterm>
+
+<para>There are different ways to create <literal>Array</literal> instance:
+</para>
+<anchor id="createArray"/>
+<screen>array1 := #(2 'Apple' $@ 4) &quot;create at compile time&quot;
+array1b := {2 . 'Apple' . 2@1 . 1/3 } &quot;created a execution time&quot;
+array2 := Array with: 2 with: 'Apple' with: 2@3 with: 1/3.
+array3 := Array ofSize: 4 &quot;an empty array with a 4 element capacity&quot;
+</screen>
+
+<para>Array <literal>array1</literal> and <literal>array1b</literal> are bit
+different. The former one is created and filled with its contents during the
+compile time of the code, the consequence is it can only be filled
+with literal elements such as integer, float, or string. The latter one is
+created at the execution time of the code, it can be filled with elements
+instantiated at the execution time as <literal>Fraction</literal> or
+<literal>Point</literal> instances.
+</para>
+<indexterm role="cp"><primary>collection</primary><secondary>access element</secondary></indexterm><para>You can access elements with an important variety of messages:
+</para><anchor id="collectionAccess"/>
+<screen>array1 first &#8658; 2
+array1 second &#8658; 'Apple'
+array1 third &#8658; $@
+array1 fourth &#8658; 4
+array1 last &#8658; 4
+array1 at: 2 &#8658; 'Apple'
+array2 at: 3 &#8658; 2@3
+array2 swap: 2 with: 4 &#8658; #(2 1/3 2@3 'Apple') 
+array1 at: 2 put: 'Orange'; yourself &#8658; #(2 'Orange' $@ 4)
+array1 indexOf: 'Orange &#8658; 2
+</screen>
+
+<para>Use the System Browser to discover alternative ways to access elements
+of a collection.
+</para>
+<anchor id="collFirst"/>
+<para><emphasis>What is the
+appropriate message to access the first 2 elements of the
+<literal>array1</literal> collection?</emphasis>
+</para>
+
+
+<para>You can&#8217;t add or remove an element, though:
+</para>
+<screen>array1 add: 'Orange'
+&#8658; Error: 'This message is not appropriate for this object'
+array1 remove: 'Apple'
+&#8658;  Error: 'This message is not appropriate for this object'
+</screen>
+<para>Nevertheless, it is possible to fill at once an array:
+</para>
+<anchor id="fillArray"/>
+<para><emphasis>Fill every element in
+<literal>array1</literal> with &#8217;kiwi&#8217; all at once?</emphasis>
+</para>
+
+
+<indexterm role="cp"><primary>collection</primary><secondary>variable size</secondary></indexterm><para><emphasis role="bold">Collection of variable size.</emphasis>  Such collection are gathered in
+several class categories: <command>Collections-Unordered</command>,
+<command>Collections-Sequenceable</command>, etc. They represent the most common
+collections.
+</para>
+<para><literal>OrderedCollection</literal> is a notable one. Its elements are ordered:
+elements are added one after the other in sequence<footnote><para>Of course you can
+insert an element between two elements. However, a <literal>LinkList</literal>
+instance is more efficient for this use case.</para></footnote>. Its size is
+variable depending on added or removed elements.
+</para>
+<indexterm role="cp"><primary>collection</primary><secondary>instantiate variable size array</secondary></indexterm><indexterm role="cp"><primary><literal>OrderedCollection</literal></primary></indexterm>
+
+<anchor id="createOrderedColl"/>
+<screen>coll1 := {2 . 'Apple' . 2@1 . 1/3 } asOrderedCollection
+coll2 := OrderedCollection with: 2 with: 'Apple' with: 2@1 with: 1/3
+coll3 := OrderedCollection ofSize: 4
+</screen>
+
+<para>The access to elements is identical to an <literal>Array</literal>
+instance, but dynamic collections allow you to add and remove elements:
+</para>
+<anchor id="remDelArray"/>
+<screen>coll1 add: 'Orange'; yourself
+&#8658; an OrderedCollection(2 'Apple' 2@1 1/3 'Orange')
+coll1 remove: 2@1; yourself
+&#8658; an OrderedCollection(2 'Apple' 1/3)
+</screen>
+
+<!-- exercise with ordered collection -->
+<anchor id="addAfter"/>
+<para><emphasis>How to add &#8217;Orange&#8217; after
+&#8217;Apple&#8217; in <literal>coll1</literal>?</emphasis>
+</para>
+
+
+<!-- Explain in detail Dictionary and Set -->
+<indexterm role="cp"><primary><literal>Set</literal></primary></indexterm>
+<indexterm role="cp"><primary>collection</primary><secondary><literal>Set</literal></secondary></indexterm><para><emphasis role="bold">Set.</emphasis> <literal>Set</literal> is an unordered collection without duplicated
+elements. The order of the elements is not guaranteed, though. Observe
+how pi is the first element of the set:
+</para>
+<anchor id="setCollection"/>
+<screen>set := Set new.
+set add: 1; add: Float pi; yourself
+&#8658; a Set(3.141592653589793 1)
+</screen>
+
+<para>Nonduplicates are guaranteed at least, even with a number of different
+types. Observe how <literal>1</literal>, <literal>3/3</literal> and <literal>1.0</literal>
+are considered equal and not duplicated in the set:
+</para>
+<anchor id="setWithoutDuplicates"/>
+<screen>set := Set new.
+set add: 1; add: Float pi; add: 3/3; add: 1/3; add: 1.0; yourself
+&#8658; a Set(1/3 3.141592653589793 1)
+</screen>
+
+
+<indexterm role="cp"><primary>collection</primary><secondary>convert</secondary></indexterm><para>A very handy way to create a <literal>Set</literal> instance, or any other
+collection is to create a dynamic array and convert it with the
+<literal>#asSet</literal> message:
+</para>
+<anchor id="convertDynArray"/>
+<screen>{1 . Float pi . 3/3 . 1/3 . 1.0} asSet
+&#8658; a Set(3.141592653589793 1/3 1)
+</screen>
+
+<para>Observe the alternate conversion messages:
+</para>
+<screen>{1 . Float pi . 3/3 . 1/3 . 1.0} asOrderedCollection
+&#8658; an OrderedCollection(1 3.141592653589793 1 1/3 1.0) 
+
+{1 . Float pi . 3/3 . 1/3 . 1.0} asSortedCollection
+&#8658; a SortedCollection(1/3 1 1 1.0 3.141592653589793)
+</screen>
+<para>To uniquely collect the divisors list of 30 and 45 (not the common divisors):
+</para>
+<screen>Set  new 
+   addAll: #(1 2 3 5 6 10 15 30) ; 
+   addAll: #(1 3 5 9 15 45) ; 
+   yourself. 
+&#8658; a Set(5 10 15 1 6 30 45 2 3 9)
+</screen>
+<anchor id="setLetters"/>
+<para><emphasis>How will you collect the letters in
+the sentences &#8217;buenos d&#237;as&#8217; and &#8217;bonjour&#8217;?</emphasis>
+</para>
+
+
+<indexterm role="cp"><primary>collection</primary><secondary><literal>Dictionary</literal></secondary></indexterm><indexterm role="cp"><primary><literal>Dictionary</literal></primary></indexterm>
+<para><emphasis role="bold">Dictionary.</emphasis> A dictionary is a list of associations between a
+key and an object. Of course, a key is an object, but it must respond
+to equality tests. Most of the time, symbols are used as keys.
+</para>
+<para>To compile a list of colors:
+</para>
+<anchor id="colorDict"/>
+<screen>| colors |
+colors := Dictionary new.
+colors
+   add: #red -&gt; Color red;
+   add: #blue -&gt; Color blue;
+   add: #green -&gt; Color green
+</screen>
+
+<para>There are shorter descriptions:
+</para><screen>colors := Dictionary newFrom:
+   {#red -&gt; Color red . #blue -&gt; Color blue . #green -&gt; Color green}.
+colors := {#red -&gt; Color red . #blue -&gt; Color blue .
+   #green -&gt; Color green} asDictionary
+</screen>
+<para>You access color by symbols:
+</para>
+<screen>colors at: #blue
+&#8658; Color blue
+colors at: #blue put: Color blue darker
+colors at: #yellow ifAbsentPut: Color yellow
+&#8658; association `#yellow -&gt; Colors yellow` added to the dictionary
+</screen>
+
+<para>There are different ways to access a dictionary&#8217;s contents:
+</para>
+<screen>colors keys.
+&#8658; #(#red #green #blue) 
+colors keyAtValue: Color green
+&#8658; #green
+</screen>
+<para><emphasis role="bold">Beware.</emphasis> The classic enumerators iterate the values of the
+dictionary:
+</para>
+<screen>colors do: [:value | Transcript show:  value; space ]
+&#8658; (Color r: 1.000 g: 1.000 b: 0.078) (Color r: 0.898 g: 0.000 b: 0.000)...
+</screen>
+<para>Sometimes, you really need to iterate the whole key-value association:
+</para>
+<screen>colors associationsDo: [:assoc | 
+   Transcript show: assoc key; space; assoc value; cr ]
+</screen>
+<para>There are other variants to explore by yourself.
+</para>
+<anchor id="nameColor"/>
+<para><emphasis>With an appropriate
+enumerator, how will you edit the contents of the <literal>colors</literal>
+dictionary to replace its values with a nicely capitalized string
+representing the name of the color?</emphasis>
+</para>
+
+
+<!-- The other kind of collection should be self-discoverable -->
+<para>There are many more collections to explore. You now know enough to
+explore and to search by yourself with the System Browser, and to
+experiment with the Workspace.
+</para>
+
+</sect1>
+<sect1 label="" id="SpaceWar_0021-collections">
+<title>SpaceWar! collections</title>
+
+<sect2 label="">
+<title>Instantiate collections</title>
+<para>Whenever you need to deal with more than one element of the same
+nature &#8211; instances of the same class &#8211; it is a clue to use a
+collection to hold them. Moreover, when these elements are of a fixed
+quantity, it indicates more precisely you want to use an <literal>Array</literal>
+instance. An <literal>Array</literal> is a collection of fixed size. It can not
+grow nor shrink.
+</para>
+<para>When this quantity is variable, you want to use an
+<literal>OrderedCollection</literal> instance. It is a collection of variable
+size, it can grow or shrink.
+</para>
+<para>SpaceWar! is a two-player game, there will always be two players
+and two spaceships. We use an <literal>Array</literal> instance to keep a
+reference to each spaceship.
+</para>
+<para>Each player can fire several torpedoes; therefore the gameplay holds
+zero or more torpedoes &#8211; hundreds if we decide so. The torpedoes
+quantity is variable, we want to use an <literal>OrdredCollection</literal>
+instance to keep track of them.
+</para>
+<para>In the <literal>SpaceWar</literal> class, we already defined two instance
+variables <literal>ships</literal> and <literal>torpedoes</literal>. Now, we want an
+<literal>initializeActors</literal> method to set up the game with the involved
+actors &#8211; central star, ships, etc. Part of this initialization is to
+create the necessary collections.
+</para>
+<para>See below an incomplete implementation of this method:
+</para>
+<anchor id="initActors"/>
+<screen>SpaceWar&gt;&gt;initializeActors
+   centralStar := CentralStar new.
+   ../..
+   ships first 
+      position: 200 @ -200;
+      color: Color green. 
+   ships second
+      position: -200 @ 200;
+      color: Color red
+</screen>
+
+<anchor id="initActorsCollections"/>
+<para><emphasis>The example above does not show the creation of the
+<literal>ships</literal> and <literal>torpedoes</literal> collections. Replace
+&#8220;../..&#8221; with lines of code where these collections are
+instantiated and if necessary populated.</emphasis>
+</para>
+
+
+
+</sect2>
+<sect2 label="">
+<title>Collections in action</title>
+<!-- Show the update code, explain a bit about the physics -->
+
+<para>The spaceship and the torpedo objects are responsible for their
+internal states. They understand the <literal>#update:</literal> message to recompute
+their position according to the mechanical laws.
+</para>
+<para>A fired torpedo has a constant velocity, no external forces are applied
+to it. Its position is linearly updated according to the time
+elapsed. The <literal>t</literal> parameter in the <literal>#update:</literal> message is
+this time interval.
+</para>
+<anchor id="torpedoMechanic"/>
+<screen>Torpedo&gt;&gt;update: t
+&quot;Update the torpedo position&quot;
+   position := velocity * t + position.
+   ../..
+</screen>
+
+<para>A spaceship is put under the strain of the star&#8217;s gravity pull and
+the acceleration of its engines. Therefore its velocity and position
+change according to the mechanical laws of physics.
+</para>
+<anchor id="spaceShipMechanic"/>
+<screen>SpaceShip&gt;&gt;update: t
+&quot;Update the ship position and velocity&quot;
+   | ai ag newVelocity |
+   &quot;acceleration vectors&quot;
+   ai := acceleration * self direction.
+   ag := self gravity.
+   newVelocity := (ai + ag) * t + velocity.
+   position := (0.5 * (ai + ag) * t squared) + (velocity * t) + position.
+   velocity := newVelocity.
+   ../..
+</screen>
+
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+Remember that Smalltalk does not
+follow the mathematics precedence of arithmetic operators.
+These are seen as ordinary <emphasis role="bold">binary
+messages</emphasis> which are evaluated from the left to the right when there
+is no parenthesis. For example, in the code fragment
+<literal>...(velocity * t)...</literal>, the parenthesis are mandatory to get
+the expected computation.
+</para>
+<!-- Explain the direction and gravity methods. -->
+<para>Observe in this previous method how the direction and the gravity are
+defined in two specific methods.
+</para>
+<para>The <literal>#direction</literal> message asks for the unit vector representing the
+nose direction of the spaceship:
+</para>
+<anchor id="spaceShipDirection"/>
+<screen>SpaceShip&gt;&gt;direction
+&quot;I am a unit vector representing the nose direction of the mobile&quot;
+   ^ Point rho: 1 theta: self heading
+</screen>
+
+<para>The <literal>#gravity</literal> message asks for the gravity vector of the spaceship
+is subjected to:
+</para>
+<anchor id="spaceShipGravity"/>
+<screen>SpaceShip&gt;&gt;gravity
+&quot;Compute the gravity acceleration vector&quot;
+   | position |
+   position := self morphPosition.
+   ^ [-10 * self mass * self starMass / (position r raisedTo: 3) * position]
+      on: Error do: [0 @ 0]
+</screen>
+
+<para>Observe the message <literal>#starMass</literal> sent to the spaceship herself.
+We, as a spaceship, have not yet figured out how to ask the central star
+for its stellar mass. Our <literal>starMass</literal> method can just return, for
+now, the number 8000.
+</para>
+<!-- Explain the SpaceWar step method -->
+<para>The gameplay is the responsibility of a <literal>SpaceWar</literal> instance. At
+a regular interval of time, it refreshes the states of the game
+actors. A <literal>stepAt:</literal> method is called at a regular interval of time
+determined by the <literal>stepTime</literal> method:
+</para>
+<anchor id="reflreshGamePlay"/>
+<screen>SpaceWar&gt;&gt;stepTime
+&quot;millisecond&quot;
+   ^ 20
+
+SpaceWar&gt;&gt;stepAt: millisecondSinceLast
+   ../..
+   ships do: [:each | each unpush].
+   ../..
+</screen>
+
+<!-- Ask the reader to write the code to update the ship and torpedo position -->
+<para>In the <literal>stepAt:</literal> method, we intentionally left out the details to
+update the ship and torpedo positions. Note: each ship is sent
+regularly an <literal>#unpush</literal> message to reset its previous <literal>#push</literal>
+acceleration.
+</para>
+<anchor id="updateShipsTorpedoes"/>
+<para><emphasis>Replace the two lines &#8220;../..&#8221; with code to update the ships
+and the torpedoes&#8217; positions and velocities.</emphasis>
+</para>
+
+
+
+<para>Among other things, the gameplay handles the collisions between the
+various protagonists. Enumerators are very handy for this.
+</para>
+<para>Ships are held in an array of size 2, we just iterate it with a <literal>#do:</literal>
+message and a dedicated block of code:
+</para>
+<anchor id="shipSunCollision"/>
+<screen>SpaceWar&gt;&gt;collisionsShipsStar
+   ships do: [:aShip | 
+      (aShip morphPosition dist: centralStar morphPosition) &lt; 20 ifTrue: [
+         aShip flashWith: Color red.
+         self teleport: aShip]
+   ]
+</screen>
+<!-- -->
+</sect2>
+</sect1>
+</chapter>

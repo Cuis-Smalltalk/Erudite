@@ -1,0 +1,662 @@
+<chapter label="" id="Code-Management">
+<title>Code Management</title>
+
+<blockquote><attribution>Alan Kay</attribution>
+<para>Change is easy, except for the changed part.
+</para></blockquote>
+
+
+
+<para>Regarding the source code, Cuis-Smalltalk comes with several tools to
+manipulate it: the image, the change record, the change set and the
+package system. We give you a tour around these mechanisms then explain
+how you should manage the code of an application written with Cuis-Smalltalk.
+</para>
+
+<anchor id="ch09_002dImage"/><sect1 label="" id="The-Image">
+<title>The Image</title>
+
+<para>We already wrote about the Cuis-Smalltalk <firstterm>image</firstterm> (See <link linkend="Installing-and-configuring-Cuis_002dSmalltalk">Installing and
+configuring Cuis-Smalltalk</link>). When saving the state of the virtual machine in
+the image file, every single change done in the environment will be
+embodied in the saved image: this includes the windows in the
+environment, Workspace contents, newly written classes and methods,
+existing instances including the visual morphs, a debugging session
+with a System Browser, an Inspector, etc.
+</para>
+<para>At any time, the user can save the image with ...World
+menu &#8594; <command>Save</command>... Alternatively <command>Save as...</command> saves
+the image under an alternate name provided by the user.
+</para>
+<para>Saving the image is the easiest and most straightforward method to
+save your own code. But we can&#8217;t really call that code management as
+your code is not saved in a dedicated file of its own but mixed into
+other code in an image. Moreover it will be unpractical to share your
+work with others, for example via a version control system.
+</para>
+<para>For various reasons, an image may be in fuzzy state: the virtual
+machine may crash when running it, the file system may be unstable, or
+the environment may be in a lock down state. This is a drawback when
+using the image as your sole source code repository. The net result
+could be loosing your work.
+</para>
+<para>Where you lost code because of a virtual machine crash there is a
+solution to recover your lost editing, the <firstterm>Change Log</firstterm>.
+</para>
+</sect1>
+<sect1 label="" id="The-Change-Log">
+<title>The Change Log</title>
+<indexterm role="cp"><primary>change log</primary></indexterm>
+
+<para>Cuis-Smalltalk records any action occurring in the environment: the code you
+edit in the System Browser, the code you execute in a
+Workspace. Therefore, in the event of a Cuis-Smalltalk crash you can restore
+unsaved changes when you launch the same Cuis-Smalltalk image again. Let&#8217;s explore
+this feature with a simple example.
+</para>
+<para>On a fresh Cuis-Smalltalk installation, create a new class category named
+<command>TheCuisBook</command> and within <literal>TheBook</literal> class:
+</para>
+<itemizedlist>
+<listitem><para>Over the class category pane of System Browser (at the most
+   left), do ...Right click &#8594; <command>add
+   items... (a)</command>... key in <command>TheCuisBook</command>.
+</para>
+</listitem><listitem><para>Select this new class category and create the class
+  <literal>TheBook</literal> as a kind of <literal>Object</literal>: select the
+  <command>TheCuisBook</command> category then in the source code below edit the
+  class template to replace <literal>#NameOfClass</literal> with
+  <literal>#TheBook</literal> then save the class definition with
+  <userinput>Ctrl-s</userinput>.
+</para>  
+</listitem></itemizedlist>
+<para>Open a Workspace, then key in the following code:
+</para>
+<screen>| myBook |
+myBook := TheBook new
+</screen>
+<para>Cuis-Smalltalk does not save code you key in the Workspace, but code you
+execute. Let&#8217;s execute this code: <userinput>Ctrl-a</userinput> then <userinput>Ctrl-p</userinput>, the
+Workspace prints the result: <literal>a TheBook</literal>, an instance of a
+<literal>TheBook</literal> class.
+</para>
+<para>Now kill Cuis-Smalltalk abruptly. On GNU/Linux, you can use the
+<command>xkill</command> command to terminate Cuis-Smalltalk by clicking at its window.
+</para>
+<para>Now start Cuis-Smalltalk again, and it immediately informs you there are unsaved
+changes:
+</para>
+<anchor id="ch10_002dRecoverLostChanges1"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-RecoverLostChanges1.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>From there you have three options:
+</para>
+<itemizedlist>
+<listitem><para><emphasis role="bold">Restore lost changes automatically.</emphasis> Cuis-Smalltalk will
+  apply all the changes: new class definitions, new methods; edited
+  class definitions and method source code; executed code (in
+  Workspaces or any places where code can be executed). Often this is
+  not really what you want to do, particularly the executed code.
+</para>
+<indexterm role="cp"><primary>tools</primary><secondary>lost changes</secondary></indexterm></listitem><listitem><para><emphasis role="bold">Restore lost changes manually.</emphasis> In the subsequent
+  <command>Lost changes</command> window you are presented with the unsaved
+  changes, one per line, in chronological order, with the older ones
+  at the top of the list. You select each change (line) you want to
+  restore, then you apply your selection with the <command>file in
+  selections</command> button.
+</para>
+<anchor id="ch10_002dRecoverLostChanges2"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-RecoverLostChanges2.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>To file-in the changes related to the creation of the
+  <literal>TheBook</literal> class but not the executed code in the Workspace, select
+  the two lines related to class definition.
+</para>
+<para>The contextual menu (mouse right click) of the <command>Lost changes</command>
+  window offers a lot of options to filter the changes. Useful when
+  the batch of lost changes is important.
+</para>
+</listitem><listitem><para><emphasis role="bold">Nothing.</emphasis> No changes are restored. Keep in mind that
+  unsaved changes aren&#8217;t discarded until you save your image.
+</para>
+<indexterm role="cp"><primary>tools</primary><secondary>recent changes</secondary></indexterm><para>In case you change your mind and you want to recover changes, do
+  ...World menu &#8594; <command>Changes...</command>  &#8594;
+  <command>Recently logged Changes...</command>.
+</para>
+<para>The system presents you a list of image snapshots tagged with a date
+  stamp. Pick up the one occurring just before you lost your code,
+  most likely at the top of the list. Then in the <command>Recent
+  changes</command> window, you proceed as described earlier to cherry pick the
+  changes to restore.
+</para>
+</listitem></itemizedlist>
+</sect1>
+<sect1 label="" id="The-Change-Set">
+<title>The Change Set</title>
+<indexterm role="cp"><primary>change set</primary></indexterm>
+
+<para>On a fresh Cuis-Smalltalk installation, each code you edit in the System
+Browser is recorded in a <firstterm>Change Set</firstterm>,
+</para>
+<para>You browse a change set with a tool named the <firstterm>Change Sorter</firstterm>:
+...World menu &#8594; <command>Changes...</command>  &#8594;
+<command>Change Sorter</command>...
+</para>
+<anchor id="ch10_002dChangeSet1"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-ChangeSet1.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>The <literal>TheBook</literal> class we added to Cuis-Smalltalk in the previous section
+is a change made to the core of the system. By default, it is recorded
+in a change set automatically created by the system. In
+<link linkend="ch10_002dChangeSet1">ch10-ChangeSet1</link> at the top right, observe the class
+<literal>TheBook</literal>, it belongs to a change set named
+<command>4439-CuisCore-AuthorName-2020Nov16-13h40m</command>.  In the left pane,
+each unsaved change set is marked with a <command>---&gt;</command>. Here it tells us
+the change was not saved on disk. To save the change set, just use its
+contextual menu and use one of the <command>file out</command> entries. The change
+set will be saved along the Cuis-Smalltalk image under its system name with
+<command>AuthorName</command> substituted with the real author name.
+</para>
+<anchor id="ch10_002dChangeSet2"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-ChangeSet2.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Observe <link linkend="ch10_002dChangeSet2">ch10-ChangeSet2</link>, after we added the method
+<literal>pages</literal> to the <literal>TheBook</literal> class, the middle pane lists the
+added or modified methods. When a method is selected its source code
+is printed in the bottom pane.
+</para>
+<para>Let&#8217;s say we save the change set &#8211; <command>File out</command> entries in the
+change sorter tool menu. This creates a new file
+<filename>4451-CuisCore-HilaireFernandes-2020Nov14-21h08m-hlsf.001.cs.st</filename>
+along the Cuis-Smalltalk image file:
+</para>
+<anchor id="changeSetContents"/>
+<screen>From Cuis 5.0 [latest update: #4450] on 18 November 2020 at 9:05:09 am'!
+!classDefinition: #TheBook category: 'TheCuisBook'!
+Object subclass: #TheBook
+   instanceVariableNames: ''
+   classVariableNames: ''
+   poolDictionaries: ''
+   category: 'TheCuisBook'!
+
+!TheBook methodsFor: 'as yet unclassified' stamp: 'hlsf 11/18/2020 09:04:58'!
+pages
+   ^ 151! !
+</screen>
+
+<para>To load this change set back in a new image, you use the <firstterm>File
+List</firstterm> tool ...World menu &#8594; <command>Open</command> &#8594;
+<command>File List</command>... Browse the folder containing the change set file
+to load, then select it, from there you have three options to
+manipulate it.
+</para>
+<anchor id="ch10_002dFileListChangeSet"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-FileListChangeSet.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<itemizedlist>
+<listitem><para><command>code</command>. It opens a kind of System Browser limited to
+  the code in the change set file. It is a very handy tool to read and
+  to learn the code from the change set.
+</para>
+</listitem><listitem><para><command>contents</command>. It opens a <firstterm>Change List</firstterm> tool to review
+  the modifications to the image this change set will produce once
+  installed. It also let you cherry pick the individual changes you
+  want to install and to discard. Each line you cherry pick represents
+  a class or a method addition/modification. Once you select the code
+  to install, press the <command>file in selections</command> button to proceed
+  with the installation.
+</para>
+<para>Consider a co-developer modifying the <literal>TheBook</literal> class, she
+  added an instance variable <literal>pages</literal> and adjusted the
+  <literal>pages</literal> methods accordingly. She filed out her changes then
+  shared the file with you. Observe in <link linkend="ch10_002dChangeList">ch10-ChangeList</link> how you
+  will review her changes with the Change List tool. Our code that
+  will be removed from the image is shown in red stroked, and her code
+  that will be installed is shown in green.
+</para>
+<anchor id="ch10_002dChangeList"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-ChangeList.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+</listitem><listitem><para><command>install</command>. It just installs the complete change set
+  without interactivity.
+</para>  
+</listitem></itemizedlist>
+<para>The change set way of managing the source code is used by the
+developers of Cuis-Smalltalk, to work on its core image. When you want to
+write an application, a dedicated tool or even a set of classes
+covering a specific domain, you really want to use something else to
+manage the code: a package.
+</para>
+</sect1>
+<sect1 label="" id="The-Package">
+<title>The Package</title>
+<indexterm role="cp"><primary>package</primary></indexterm>
+<indexterm role="cp"><primary>class</primary><secondary>category</secondary></indexterm>
+<para>A package can hold a set of classes part of the same class category.
+</para>
+<para>Let&#8217;s save our <command>Morphic-Learning</command> category as a package using
+our Installed Packages Browser.
+</para>
+<para>...World menu &#8594; <command>Open...</command> &#8594;
+<command>Installed Packages</command>...
+</para>
+<anchor id="ch10_002dPackage_002dwith_002drequirement"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-Package-with-requirement.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+
+<indexterm role="cp"><primary>package</primary><secondary>requirement</secondary></indexterm>
+<para>Note that we invoked <literal>Feature require: 'SVG'</literal>
+earlier. Looking at the package names, we can observe several things
+of note:
+</para>
+<itemizedlist>
+<listitem><para>Each package is versioned; <command>SVG</command> has version
+  1, revision 19.
+</para>  
+</listitem><listitem><para>There are packages <command>YAXO</command>, <command>Color-Extras</command> and
+  <command>LinearAlgebra</command> which we never asked for.
+</para>  
+</listitem><listitem><para>Looking at the lower pane, note that those packages are
+  <emphasis role="bold">required</emphasis> by the package <command>SVG</command>.
+</para>  
+</listitem></itemizedlist>
+<para>Now this is important.  When a packaged Feature is required, it may
+specify that it also requires other packages to work properly, and
+in fact to specify that those packages be up to a specific version level.
+</para>
+<para>This is the key to being able to safely compose packages which have
+requirements.
+</para>
+<para>OK, let&#8217;s click on the <command>New</command> button and type
+<command>Morphic-Learning</command> into the prompt.  This results in a new
+package with the same name as our <command>Morphic-Learning</command> category.
+Note that this is version 1, revision 0 (1.0 at right) and that the
+package has yet to be saved.
+</para>
+<anchor id="ch10_002dNewPackage_002dMorphic_002dLearning"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-NewPackage-Morphic-Learning.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Let&#8217;s say that in our clock morph we want to use color named as in the
+<command>Color-Extra</command> package. So to be able to load our
+<command>Morphic-Learning</command> package which makes use of this we need to
+select our new package and click on the <command>add Requirement</command> button
+at center, right.
+</para>
+<para>This brings up a list of loaded packages to choose from.
+</para>
+<anchor id="ch10_002dAdd_002dRequirement"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-Add-Requirement.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Now when we <command>save</command> our package, we see the pathname where the package
+file was created.  We can now safely email this file, check it into a version
+control system, make a copy to our backup thumb drive.
+</para>
+<anchor id="ch10_002dSaved_002dwith_002drequirement"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-Saved-with-requirement.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>As mentioned above, package files are just text files with a special format
+which Cuis-Smalltalk knows how to load.  If you open a File List browser and
+view the package file, you will see information on how the package
+was created, what it provides and requires, and, if you filled in the
+comment box in the Installed Packages browser, a description.
+</para>
+<anchor id="exeDescribePackage"/>
+<para><emphasis>Type &#8220;Morphic
+Toys&#8221; into the comment box&#44; re-save your package&#44; and
+(re)select the package in a File List to see your package
+description.</emphasis>
+</para>
+
+
+<anchor id="exeSavePkgSpacewar"/>
+<para><emphasis>If you have
+not already done so&#44; create and save a <link linkend="Spacewar_0021-package">Spacewar!
+package</link>. There are no additional requirements to specify.</emphasis>
+</para>
+
+
+<!-- explain how to include class extension in a package -->
+<indexterm role="cp"><primary>package</primary><secondary>prefix</secondary></indexterm><para>There are other interesting things we can do with packages.
+We can include several class categories in a single
+package. Consider we want to span our CuisBook classes in two
+categories <command>TheCuisBook-Models</command> and <command>TheCuisBook-Views</command>. A
+new package created with the name <command>TheCuisBook</command> includes these
+two class categories; this label is a <firstterm>prefix</firstterm> to search for the
+matching categories to include in the package.
+</para>
+<para>Therefore, often, a package comes with several categories to organize
+the classes in matching domains. We encourage to do so. When an
+application or framework grows, to keep a sound organisation, you may
+fell the need to reshape the class categories: rename, split, merge,
+etc. As long as you keep the same prefix in the class categories and
+the package name, your classes will be safe in the same package. In
+the System Browser, you can drag and drop any class in any class
+category to reorganize.
+</para>
+<anchor id="twoCategoriesOnePackage"/>
+<para><emphasis>Create a <command>TheCuisBook</command> package from the two class
+categories <command>TheCuisBook-Models</command> and
+<command>TheCuisBook-Views</command>. The former contains a <literal>TheBook</literal>
+class and the later a <literal>TheBookMorph</literal> class. Save the package
+on disk.</emphasis>
+</para>
+
+
+<indexterm role="cp"><primary>package</primary><secondary>system extension</secondary></indexterm><para>Imagine we need to print the page number of the <literal>TheBook</literal> table
+of contents as lower cased roman number, as we do with the printed
+version of this book. The code is very simple:
+</para>
+<screen>4 printStringRoman asLowercase
+&#8658; 'iv'
+</screen>
+<para>Instead of invoking this sequence of messages each time we need it, we
+ add a dedicated message to the <literal>Integer</literal> class:
+</para>
+<screen>Integer&gt;&gt;printStringToc
+   ^ self printStringRoman asLowercase
+</screen>
+<para>Now within our <literal>TheBook</literal>&#8217;s methods we just do things like:
+</para>
+<screen>../..
+ aPage := Page new.
+ aPage number: 1 printStringToc.
+ ../..
+</screen>
+<para>Now we are facing a problem. For the need of the <command>TheBook</command>
+package we extend the <literal>Integer</literal> class with a method
+<literal>printStringToc</literal>, however this method addition is part of the
+Cuis-Smalltalk core system and its associated default change set. See
+<link linkend="ch10_002dChangeSetToCore">ch10-ChangeSetToCore</link>, the Change Sorter tool exactly shows that.
+</para>
+<anchor id="ch10_002dChangeSetToCore"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-ChangeSetToCore.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Therefore when saving our <command>TheBook</command> package this method is not
+included and it is lost when quitting Cuis-Smalltalk. To include it in our
+package we categorize it in a method category with the
+<command>*TheCuisBook</command> prefix. <command>*TheCuisBook-printing</command> is a good
+candidate. In the System Browser method pane, over
+<literal>printStringToc</literal>, do ...Contextual menu &#8594;
+<command>more...</command> &#8594; <command>change category...</command> and key in
+<command>*TheCuisBook-printing</command>.
+</para>
+<para>Now the Change Sorter writes about <literal>Integer&gt;&gt;printStringToc</literal>:
+<citetitle>Method was moved to some other package</citetitle>. The Installed Packages
+tools now tells us we have an extension, use its <command>browse</command> button
+to get an update on the package contents.
+</para>
+<anchor id="ch10_002dBrowsePackageChange"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-BrowsePackageChange.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<para>Observe how each category &#8211; class or method one &#8211; of an extension is
+prefixed with a <command>*</command>.
+</para>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+In addition to adding a package preload <emphasis>requirement</emphasis>,
+you can also select a requirement and <command>delete</command> or <command>update</command>
+it using the buttons at the lower right.  Sometimes a package changes
+which your code depends on and you have to change your code to accord.
+When this happens, to want to be sure to require the newer, changed
+version.  Selecting a requirement and pressing <command>update</command>
+will update the requirement to use the latest loaded package version.
+</para>
+</sect1>
+<sect1 label="" id="Daily-Workflow">
+<title>Daily Workflow</title>
+
+<para>For our Spacewar! game, we created a dedicated package
+<filename>Spacewar!.pck.st</filename> file. This is the way to go when writing
+external package: define a dedicated package and from time to time
+save your work with the <command>save</command> button in the Installed Packages
+tool (See <link linkend="ch02_002dInstalledPackages">ch02-InstalledPackages</link>).
+</para>
+<para>Cuis-Smalltalk uses GitHub to host, version, diff its core development and to
+manage a set of external packages (i.e. code that is maintained
+independently and outside Cuis-Smalltalk but closely related to it).
+</para>
+<para>Package files are simple text files, encoded for latin alphabet (ISO
+8859-15) and handled without problems by GitHub. Cuis-Smalltalk uses the LF
+(ascii code 10) newline convention, as preferred in GitHub. This
+allows Git/GitHub to diff versions, and merge branches.
+</para>
+<para>Separate GitHub repositories are used for projects, i.e. package or
+set of closely related packages that are always loaded and maintained
+together as a whole.
+</para>
+<para>Your daily workflow with Cuis-Smalltalk to develop an external package will
+look like:
+</para>
+<orderedlist numeration="arabic">
+<listitem><para>Start with a standard, fresh, Cuis image. Never save the
+  image.
+</para>
+</listitem><listitem><para>Set up your preferred version control system to manage your
+  external packages. The recommendation is to use a GitHub repository
+  with a name beginning with &#8217;Cuis-Smalltalk-&#8217;, so it will be easy for
+  anybody to find it. But beside this consideration, using any other
+  version control system is fine.
+</para>
+</listitem><listitem><para>Install the necessary packages from the Cuis-Smalltalk Git
+  repositories.
+</para>
+</listitem><listitem><para>Develop. Modify and/or create packages.
+</para>
+</listitem><listitem><para>Save own packages (to your preferred repositories).
+</para>
+</listitem><listitem><para>add / commit / push accordingly to your version control system
+</para>
+</listitem><listitem><para>Fileout changes that are not part of any package. These are
+  automatically captured in numbered changesets, separated from
+  changes to packages.
+</para>
+</listitem><listitem><para>Exit the image. Usually without saving.
+</para>
+</listitem></orderedlist>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+Not to save the image is just best practice advice for you
+when your primary goal is to create new code. We already discussed the
+caveats of saving the image concerning code management
+(See <link linkend="ch09_002dImage">The Image</link>).  But from time to time, you&#8217;ll find
+yourself in the position of an explorer when you open multiple code
+browsers and workplaces to figure something out. In this case, the
+state of the system, the open windows and code snippets, holds the
+value you care about, and saving the image is the right way to
+preserve the system&#8217;s state.
+<footnote><para>For more insight regarding the
+policy of saving the image, read this discussion in the Cuis community
+<ulink url="https://lists.cuis.st/mailman/archives/cuis-dev/2023-July/007841.html">there</ulink>
+and
+<ulink url="https://lists.cuis.st/mailman/archives/cuis-dev/2023-August/007884.html">there</ulink></para></footnote>
+</para>
+<sect2 label="">
+<title>Automate your image</title>
+
+<para>As described in the daily workflow, it is a good habit to not save the
+whole image but only the modified package of the edited source
+code. However, each time we start a coding session, it is tedious to
+set up the image to fit our personal needs and taste.
+</para>
+<para>Things one may want to personalize in the image are:
+</para>
+<itemizedlist>
+<listitem><para>Preferences adjustments,
+</para>
+</listitem><listitem><para>Placement of tools like System Browser, Workspace, Transcript,
+</para>
+</listitem><listitem><para>Default contents in the Workspace, ready to be executed,
+</para>
+</listitem><listitem><para>Installation of Packages.
+</para>
+</listitem></itemizedlist>
+<indexterm role="cp"><primary>command line option</primary><secondary>-s (run a script)</secondary></indexterm><indexterm role="cp"><primary>start-up script</primary></indexterm>
+
+<para>We want to record these image preferences in a
+<filename>setUpEnvironment.st</filename> script to be executed at start up. On
+GNU/Linux, you ask Cuis-Smalltalk to run a script with the <option>-s</option>, for
+example <command>squeakVM Cuis5.0.image -s setUpEnvironement.st</command> where
+<filename>setUpEnvironement.st</filename>. is a file containing Smalltalk code. A
+real life example may look like:
+</para><screen>../cogspur/squeak Cuis5.0-4426 -s ../scripts/setUpEnvironment.st
+</screen>
+<para>We describe in detail an example of a set up script organizing the
+environment as seen in <link linkend="ch10_002dImageSetUp">ch10-ImageSetUp</link>. It is interesting
+Smalltalk code poking around heterogeneous areas of Cuis-Smalltalk like the
+developer tools, the Morph system, the preferences and collection
+handling.
+</para>
+<anchor id="ch10_002dImageSetUp"/>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-ImageSetUp.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+
+
+<indexterm role="cp"><primary>morph</primary><secondary>world</secondary></indexterm><para>Let&#8217;s start by removing the open windows:
+</para>
+<screen>| list |
+&quot;Delete all windows but the taskbar&quot;
+self runningWorld doOneCycleNow.
+list := UISupervisor ui submorphs reject: [:aMorph |
+   aMorph is: #TaskbarMorph].
+list do: [:each | each delete].
+</screen>
+<para>The whole user interface world of Cuis-Smalltalk is a kind of Morph, a
+<literal>WorldMorph</literal> instance. Its submorphs are windows, menus, the
+taskbar or any kind of morph the user can interact with. To access
+this <literal>WorldMorph</literal> instance you ask to the <literal>UISupervisor</literal>
+with the <literal>#ui</literal> message. Once we select all the morphs in the world
+but the taskbar &#8211; really <literal>#reject:</literal> it &#8211; we <literal>#delete</literal> them
+from the world.
+</para>
+<para>Next, we change the preferences:
+</para>
+<screen>| list morph |
+../..
+&quot;Change to Dark theme&quot;
+Feature require: #'Theme-Themes'.
+DarkTheme beCurrent.
+&quot;Adjust font size&quot;
+Preferences at: #defaultFontSize put: 12.
+&quot;Adjust taskbar size&quot;
+morph := UISupervisor ui taskbar.
+morph scale: 1 / 2.
+Display fullScreenMode: true.
+self runningWorld doOneCycleNow.
+</screen>
+<para>We require Theme-Themes package; as it is not installed on the default
+image, it will be searched on the disk for installation. Regarding the
+taskbar access, remember we deleted all the morphs but the taskbar
+from the world, therefore the taskbar is really the first in the sub
+morphs collection of the world. Finally, we update the scale of the
+taskbar and we request Cuis-Smalltalk to display itself full screen. As we
+changed several visual parts, we request one update cycle of the
+environment (i.e. the running world in Cuis-Smalltalk terminology).
+</para>
+<para>Before installing the tools, we ask a <literal>RealEstateAgent</literal> the free
+area. Sadly this agent does not take into consideration the area
+occupied by the taskbar, so we need to tweak its answer. Then we
+compute a quarter of this free area extent (half in width and half
+in height make a quarter of the whole free area):
+</para>
+<screen>| list morph area extent |
+../..
+&quot;Compute the available free space for windows placement&quot;
+area := RealEstateAgent maximumUsableArea
+   extendBy: 0 @ morph morphHeight negated.
+extent := area extent // 2.
+</screen>
+<para>Now we are ready to install a few tools. First three browsers each
+occupying a quarter of the screen:
+</para>
+<screen>&quot;Open a few System Browsers&quot;
+BrowserWindow openBrowser
+   morphPosition: 0 @ 0;
+   morphExtent: extent.
+BrowserWindow openBrowser
+   morphPosition: area width // 2 @ 0;
+   morphExtent: extent.
+&quot;Open a System Browser on a specific class&quot;
+morph := BrowserWindow openBrowser
+   morphPosition: area extent // 2;
+   morphExtent: extent.
+morph model setClass: Integer selector: nil.
+</screen>
+<para>Then in the remaining free quarter, we install a workspace occupying
+two thirds of the area and a transcript one third. The workspace is
+installed with some default contents. We need to hack a bit because
+when asking for a new Workspace, Cuis-Smalltalk does not answer the created
+instance, we have to search it in the windows of the world.
+</para>
+<screen>&quot;Open a Workspace with some default contents&quot;
+morph := Workspace openWorkspace.
+morph model actualContents: '&quot;Some code&quot;
+1 + 2.
+&quot;Other code&quot;
+5 * 3.'.
+morph
+   morphPosition: 0 @ (area height // 2);
+   morphExtent: extent x @ (2 / 3 * extent y).
+&quot;Open a transcript for logs&quot;
+TranscriptWindow openTranscript
+   morphPosition: 0 @ (area height // 2 + (2 / 3 * extent y));
+   morphExtent: extent x @ (1 / 3 * extent y).
+</screen>
+<para>Of course you should adjust the argument of the <literal>#actualContents:</literal>
+message to meaningful code for your usage.
+</para>
+</sect2>
+</sect1>
+<sect1 label="" id="Source-Code-File">
+<title>Source Code File</title>
+<indexterm role="cp"><primary><filename>.st</filename></primary></indexterm>
+<indexterm role="cp"><primary><filename>.pck.st</filename></primary></indexterm>
+<indexterm role="cp"><primary>file extension</primary><secondary><filename>.st</filename></secondary></indexterm><indexterm role="cp"><primary>file extension</primary><secondary><filename>.st.pck</filename></secondary></indexterm>
+<para>In this chapter, you encountered files produced by the Cuis-Smalltalk
+management tools. Some come with the extension <filename>.pck.st</filename> and
+others with the extension <filename>.st</filename>. They both contain Smalltalk code
+but serve different purposes.
+</para>
+<para>Files with extension <filename>.pck.st</filename> are Cuis-Smalltalk package files. They
+have a preamble with package information, like feature provided,
+version information, a description for the package and the package
+requirements.
+</para>
+<para>Smalltalk code files can be installed by selecting them in the File
+List Browser and clicking on <command>install</command> button.
+</para>
+<para>When a package is installed, its dependencies are also installed and
+the loaded packaged appears in the Package List tool. Package files
+<filename>.pck.st</filename> are created using the Packages List tool in
+Cuis-Smalltalk.
+</para>
+<para>Files with extension <filename>.st</filename> contained serialized Smalltalk code &#8211;
+classes and methods. They are created when you <firstterm>file out</firstterm> a
+Smalltalk system category, class or method. You can serialize code in
+the System Browser by selecting a <emphasis role="bold">system
+category</emphasis>, <emphasis role="bold">class</emphasis> or <emphasis role="bold">method</emphasis> &#8594; right click and
+select <command>fileOut</command> from the context menu.
+</para>
+<para>Unlike <filename>.pck.st</filename> files, <filename>.st</filename> files don&#8217;t contain any
+dependencies, description, or package information, only serialized
+Smalltalk code. <filename>.st</filename> files are around since Smalltalk’s early
+days, while <filename>.pkg.st</filename> were added with the Cuis-Smalltalk package
+functionality.
+</para>
+<para>In addition to <command>install</command>, selecting a code file in the File List
+Browser also adds buttons to inspect the <command>code</command> and to treat code
+<command>contents</command> like a Change Sorter. When inspecting the code, a
+browser shows what code is different between the file and the running
+image and allows one to import individual classes or methods with the
+help of the context menu.
+<!-- -->
+</para></sect1>
+</chapter>
