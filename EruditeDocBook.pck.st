@@ -1,10 +1,10 @@
-'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 6:55:32 pm'!
+'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 7:09:16 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 14!
-!requires: 'Erudite' 1 260 nil!
+!provides: 'EruditeDocBook' 1 15!
+!requires: 'Erudite' 1 261 nil!
 !requires: 'EruditeXMLBook' 1 13 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #'EruditeDocBook-Books'!
@@ -250,6 +250,13 @@ parseAcronym: anXMLElement
 
 	^ EruditeDocString contents: anXMLElement contentString! !
 
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 19:01:36'!
+parseAnchor: anXMLElement
+
+	"do nothing"
+	
+	^ nil! !
+
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 09:04:27'!
 parseAppendix: anXMLElement
 
@@ -276,6 +283,26 @@ parseChapter: anXMLElement
 	
 	^ paragraph! !
 
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 19:05:25'!
+parseCommand: anXMLElement
+
+	^ EruditeStyledText 
+		text: (String streamContents: [:s |
+				s space;
+					nextPutAll: anXMLElement contentString;
+					space])
+		style: TextColor blue! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 18:59:24'!
+parseEmphasis: anXMLElement
+
+	^ EruditeStyledText 
+		text: (String streamContents: [:s |
+				s space;
+					nextPutAll: anXMLElement contentString;
+					space])
+		style: TextEmphasis italic! !
+
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 12:01:21'!
 parseIndexterm: anXMLElement
 
@@ -284,7 +311,19 @@ parseIndexterm: anXMLElement
 	
 	^ nil! !
 
-!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 18:51:48'!
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 19:04:23'!
+parseLink: anXMLElement
+
+	"TODO: render proper links"
+
+	^ EruditeStyledText 
+		text: (String streamContents: [:s |
+				s space;
+					nextPutAll: anXMLElement contentString;
+					space])
+		styles: (Array with: TextColor blue with: TextEmphasis underlined )! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 19:00:12'!
 parseLiteral: anXMLElement
 
 	^ EruditeStyledText 
@@ -292,7 +331,7 @@ parseLiteral: anXMLElement
 				s space;
 					nextPutAll: anXMLElement contentString;
 					space])
-		styles: (Array with: TextColor blue)! !
+		style: TextColor blue! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:34:42'!
 parsePara: anXMLElement
@@ -409,6 +448,17 @@ parseTitle: anXMLElement
 			           s nextPutAll: anXMLElement contents first string;
 					newLine; newLine ])
 		level: self sectionLevel ! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 19:07:30'!
+parseUserinput: anXMLElement
+
+	^ EruditeStyledText 
+		text: (String streamContents: [:s |
+				s space;
+					nextPutAll: anXMLElement contentString;
+					space])
+		styles: (Array with: TextColor black 
+					with: (TextBackgroundColor color: Color lightGray)) ! !
 
 !EruditeDocBookParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 20:58:46'!
 parse: aString

@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 4:12:10 pm'!
+'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 7:09:07 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 260!
+!provides: 'Erudite' 1 261!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -20710,6 +20710,11 @@ text: anObject
 	"Set the value of text"
 
 	text _ anObject! !
+
+!EruditeStyledText class methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 18:58:49'!
+text: aString style: style
+
+	^ self text: aString styles: (Array with: style)! !
 
 !EruditeStyledText class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:46:10'!
 text: aString styles: styles
