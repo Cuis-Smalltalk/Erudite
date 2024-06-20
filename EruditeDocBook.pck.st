@@ -1,9 +1,9 @@
-'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 12:24:25 pm'!
+'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 2:03:19 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 9!
+!provides: 'EruditeDocBook' 1 10!
 !requires: 'Erudite' 1 259 nil!
 !requires: 'EruditeXMLBook' 1 13 nil!
 !requires: 'YAXO' 1 27 nil!
@@ -44,7 +44,7 @@ EruditeDocBookParser class
 !DocBookEruditeBook commentStamp: 'MM 6/18/2024 21:15:44' prior: 0!
 (DocBookEruditeBook titled: 'My book') edit!
 
-!DocBookEruditeBookStorer commentStamp: '<historical>' prior: 0!
+!DocBookEruditeBookStorer commentStamp: 'MM 6/20/2024 13:56:45' prior: 0!
 | bookFile |
 
 bookFile  (CodePackage installedPackages at: 'EruditeDocBook') fullFileName asFileEntry parent // 'DocBook/defguide5/src/guide.xml'.
@@ -52,7 +52,19 @@ bookFile  (CodePackage installedPackages at: 'EruditeDocBook') fullFileName asF
 DocBookEruditeBook new
 	file: bookFile;
 	load;
-	open!
+	open.
+	
+---------------
+
+| bookFile |
+
+bookFile _  (CodePackage installedPackages at: 'EruditeDocBook') fullFileName asFileEntry parent // 'DocBook/TheCuisBook/book.xml'.
+DocBookEruditeBook new
+	file: bookFile;
+	load;
+	open.
+
+!
 
 !DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 14:51:14'!
 storerClass
@@ -76,16 +88,19 @@ parser
 
 	^ EruditeDocBookParser new! !
 
-!DocBookEruditeBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 17:14:25'!
+!DocBookEruditeBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 13:44:46'!
 load
 
 	| xml loadedBook |
+	
+	"Only the format of one file per chapter is supported for now..."
 	
 	loadedBook := DocBookEruditeBook new
 					file: book file;
 					yourself.
 	xml := XMLDOMParser parseDocumentFrom: book file readStream.
 	xml tagsNamed: #title do: [:elem | loadedBook title: elem contentString].
+	"Each include is expected to have a chapter."
 	xml tagsNamed: #xi:include do: [:elem | | chapterFilePath chapterXML chapterTitle |
 		chapterFilePath := book file parent // (elem attributeAt: #href).
 		chapterXML := XMLDOMParser parseDocumentFrom: chapterFilePath readStream.
@@ -96,11 +111,11 @@ load
 	^ loadedBook
 	! !
 
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:18:21'!
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 13:59:13'!
 initialize
 
 	super initialize.
-	sectionLevel := 0.! !
+	sectionLevel := 1.! !
 
 !EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:18:10'!
 initialize: aStream
@@ -254,6 +269,26 @@ parseProgramlisting: anXMLElement
 	
 ! !
 
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 14:02:23'!
+parseSect1: anXMLElement
+	
+	^ self parseSection: anXMLElement level: 1! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 14:02:29'!
+parseSect2: anXMLElement
+	
+	^ self parseSection: anXMLElement level: 2! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 14:02:34'!
+parseSect3: anXMLElement
+	
+	^ self parseSection: anXMLElement level: 3! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 14:02:39'!
+parseSect4: anXMLElement
+	
+	^ self parseSection: anXMLElement level: 4! !
+
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:57:44'!
 parseSection: anXMLElement
 
@@ -268,6 +303,23 @@ parseSection: anXMLElement
 			paragraph contents add: parsedElem]].
 	
 	self sectionLevel: self sectionLevel - 1.
+	
+	^ paragraph! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 14:02:07'!
+parseSection: anXMLElement level: level
+
+	| paragraph |
+	
+	self sectionLevel: level.
+	
+	paragraph := EruditeParagraphNode new.
+	
+	anXMLElement childrenDo: [:xmlElem |
+		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
+			paragraph contents add: parsedElem]].
+	
+	self sectionLevel: level.
 	
 	^ paragraph! !
 
