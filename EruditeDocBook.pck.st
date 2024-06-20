@@ -1,12 +1,13 @@
-'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 2:15:57 pm'!
+'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 4:12:22 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 12!
-!requires: 'Erudite' 1 259 nil!
+!provides: 'EruditeDocBook' 1 13!
+!requires: 'Erudite' 1 260 nil!
 !requires: 'EruditeXMLBook' 1 13 nil!
 !requires: 'YAXO' 1 27 nil!
+SystemOrganization addCategory: #'EruditeDocBook-Books'!
 SystemOrganization addCategory: #EruditeDocBook!
 
 
@@ -18,6 +19,26 @@ EruditeBook subclass: #DocBookEruditeBook
 	category: 'EruditeDocBook'!
 !classDefinition: 'DocBookEruditeBook class' category: #EruditeDocBook!
 DocBookEruditeBook class
+	instanceVariableNames: ''!
+
+!classDefinition: #DocBookTheDefinitiveGuideBook category: #EruditeDocBook!
+DocBookEruditeBook subclass: #DocBookTheDefinitiveGuideBook
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeDocBook'!
+!classDefinition: 'DocBookTheDefinitiveGuideBook class' category: #EruditeDocBook!
+DocBookTheDefinitiveGuideBook class
+	instanceVariableNames: ''!
+
+!classDefinition: #TheCuisBook category: #'EruditeDocBook-Books'!
+DocBookEruditeBook subclass: #TheCuisBook
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeDocBook-Books'!
+!classDefinition: 'TheCuisBook class' category: #'EruditeDocBook-Books'!
+TheCuisBook class
 	instanceVariableNames: ''!
 
 !classDefinition: #DocBookEruditeBookStorer category: #EruditeDocBook!
@@ -66,6 +87,18 @@ DocBookEruditeBook new
 
 !
 
+!DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 16:08:52'!
+load
+
+	^ self reload! !
+
+!DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 16:09:37'!
+sections
+
+	"lazily load the book when trying to access its sections"
+	sections ifEmpty:[self load].
+	^ super sections! !
+
 !DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 14:51:14'!
 storerClass
 
@@ -87,6 +120,24 @@ file: anObject
 parser
 
 	^ EruditeDocBookParser new! !
+
+!DocBookTheDefinitiveGuideBook methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 16:11:43'!
+initialize
+
+	super initialize.
+	
+	self title: 'DocBook 5.2: The Definitive Guide'.
+	self file: ((CodePackage installedPackages at: 'EruditeDocBook') fullFileName asFileEntry parent // 'DocBook/defguide5/src/guide.xml').
+	! !
+
+!TheCuisBook methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 15:59:48'!
+initialize
+
+	super initialize.
+	
+	self title: 'The Cuis Book'.
+	self file: ((CodePackage installedPackages at: 'EruditeDocBook') fullFileName asFileEntry parent // 'DocBook/TheCuisBook/book.xml')
+	! !
 
 !DocBookEruditeBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 13:44:46'!
 load

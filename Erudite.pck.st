@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 12:17:46 pm'!
+'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 4:12:10 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 259!
+!provides: 'Erudite' 1 260!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -794,8 +794,13 @@ Note:
 !EruditeClassMethodCommentTextStyler commentStamp: '<historical>' prior: 0!
 A Smalltalk method styler that also styles comments.!
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 10/17/2022 17:50:51'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 6/20/2024 16:03:32'!
 load
+
+	"do nothing for normal books"! !
+
+!EruditeBook methodsFor: 'storage' stamp: 'MM 6/20/2024 16:02:59'!
+reload
 
 	self become: self storer load! !
 
@@ -964,12 +969,12 @@ bookNamed: aString ifNone: aBlock
 	
 	^ self booksList detect: [:aBook | aBook title = aString] ifNone: aBlock! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2024 21:53:26'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 16:01:08'!
 booksList
 
 	"To build the list of books, consider EruditeBook subclasses instances that have a title."
 	
-	^ (self booksListInMethods, (EruditeBook subclasses collect: [:cls | cls new]))
+	^ (self booksListInMethods, (EruditeBook allSubclasses collect: [:cls | cls new]))
 		select: [:book | ({EruditeCompositeBook.EruditeDynamicBook} 
 							includes: book class) not 
 							and: [book title isNil not]]! !
@@ -21399,11 +21404,11 @@ refreshBook
 	styledDocuments _ Dictionary new.
 	self contentsChanged! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 12:35'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 16:02:43'!
 reloadBook
 
-	model load.
-	currentSection _ nil.
+	model reload.
+	currentSection := nil.
 	self sectionsChanged; contentsChanged ! !
 
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 15:39'!
