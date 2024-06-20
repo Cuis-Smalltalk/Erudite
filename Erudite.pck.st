@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6487] on 19 June 2024 at 11:15:57 pm'!
+'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 12:17:46 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 257!
+!provides: 'Erudite' 1 259!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -288,7 +288,7 @@ EruditeDocActionLink class
 
 !classDefinition: #EruditeDocCode category: #'Erudite-Parser'!
 EruditeDocNode subclass: #EruditeDocCode
-	instanceVariableNames: 'code action'
+	instanceVariableNames: 'code action sourceLanguage'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Parser'!
@@ -18905,11 +18905,14 @@ render
 		ifFalse: [
 			node accept: self]]! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 10/22/2022 10:33:05'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/20/2024 12:13:38'!
 renderCode: aDocCode
 
 	highlightSyntax 
-		ifTrue: [stream nextPutAll: '\begin{minted}[fontsize=\footnotesize]{smalltalk}'; newLine]
+		ifTrue: [stream nextPutAll: '\begin{minted}[fontsize=\footnotesize]{';
+						nextPutAll: aDocCode sourceLanguage asString;
+						nextPutAll: '}'; 
+						newLine]
 		ifFalse: [stream nextPutAll: '\begin{code}';newLine].
 		
 	stream nextPutAll: aDocCode code.
@@ -19220,27 +19223,12 @@ render
 	
 	^ stream contents inject: '' into: [:x :y | x, y]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:04:00'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 12:12:42'!
 renderCode: aDocCode
 
-	|text textModel|
-	
-	text := Text string: aDocCode code.
-	
-	textModel := EruditeSmalltalkTextModel withText: text.
-	textModel formatAndStyle.	
-	
-	self codeBackgroundColor ifNotNil: [:color |
-		textModel actualContents addAttribute: (TextBackgroundColor color: color)].
-	
-	stream nextPut: textModel actualContents.
-	
-	"Besides rendering the code, try to evaluate it, since there may be variable assignments."
-	"All errors are ignored, since this a 'dead' code section."
-	[requestor 
-		ifNil: [Compiler evaluate: aDocCode code for: self logged: false]
-		ifNotNil: [Compiler evaluate: aDocCode code notifying: requestor logged: false]]
-	on: Error do: [:ex | Transcript show: ex messageText].! !
+	^ aDocCode sourceLanguage == #smalltalk 
+		 ifTrue: [self renderSmalltalkCode: aDocCode]
+		 ifFalse: [self renderNonSmalltalkCode: aDocCode]! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:04:22'!
 renderCodeDoIt: aDocCode
@@ -19438,6 +19426,40 @@ renderCodePrintItHere: aDocCode
 	
 	stream nextPut: '==> ';
 			nextPut: (Text streamContents: [:s | result printOn: s]).! !
+
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 12:14:44'!
+renderNonSmalltalkCode: aDocCode
+
+	|text |
+	
+	text := Text string: aDocCode code.
+	
+	self codeBackgroundColor ifNotNil: [:color |
+		text addAttribute: (TextBackgroundColor color: color)].
+	
+	stream nextPut: text! !
+
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 12:11:31'!
+renderSmalltalkCode: aDocCode
+
+	|text textModel|
+	
+	text := Text string: aDocCode code.
+	
+	textModel := EruditeSmalltalkTextModel withText: text.
+	textModel formatAndStyle.	
+	
+	self codeBackgroundColor ifNotNil: [:color |
+		textModel actualContents addAttribute: (TextBackgroundColor color: color)].
+	
+	stream nextPut: textModel actualContents.
+	
+	"Besides rendering the code, try to evaluate it, since there may be variable assignments."
+	"All errors are ignored, since this a 'dead' code section."
+	[requestor 
+		ifNil: [Compiler evaluate: aDocCode code for: self logged: false]
+		ifNotNil: [Compiler evaluate: aDocCode code notifying: requestor logged: false]]
+	on: Error do: [:ex | Transcript show: ex messageText].! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 15:48:01'!
 useIconButtons
@@ -20344,11 +20366,12 @@ accept: aVisitor
 
 	^ aVisitor visitCode: self! !
 
-!EruditeDocCode methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 18:18'!
+!EruditeDocCode methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 12:09:01'!
 initialize: aString action: aSymbol
 
-	code _ aString.
-	action _ aSymbol! !
+	code := aString.
+	action := aSymbol.
+	sourceLanguage := #smalltalk! !
 
 !EruditeDocCode methodsFor: 'accessing' stamp: 'MM 11/30/2018 18:19'!
 action
@@ -20373,6 +20396,23 @@ code: anObject
 	"Set the value of code"
 
 	code _ anObject! !
+
+!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 6/20/2024 12:08:09'!
+sourceLanguage
+	"Answer the value of sourceLanguage"
+
+	^ sourceLanguage! !
+
+!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 6/20/2024 12:08:09'!
+sourceLanguage: anObject
+	"Set the value of sourceLanguage"
+
+	sourceLanguage := anObject! !
+
+!EruditeDocCode class methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 11:57:06'!
+code: aString
+
+	^ self code: aString action: nil! !
 
 !EruditeDocCode class methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 18:17'!
 code: aString action: aSymbol
