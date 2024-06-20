@@ -1,9 +1,9 @@
-'From Cuis7.1 [latest update: #6487] on 19 June 2024 at 5:15:28 pm'!
+'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 12:03:29 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 6!
+!provides: 'EruditeDocBook' 1 7!
 !requires: 'Erudite' 1 256 nil!
 !requires: 'EruditeXMLBook' 1 13 nil!
 !requires: 'YAXO' 1 27 nil!
@@ -44,7 +44,7 @@ EruditeDocBookParser class
 !DocBookEruditeBook commentStamp: 'MM 6/18/2024 21:15:44' prior: 0!
 (DocBookEruditeBook titled: 'My book') edit!
 
-!DocBookEruditeBookStorer commentStamp: 'MM 6/19/2024 17:07:07' prior: 0!
+!DocBookEruditeBookStorer commentStamp: '<historical>' prior: 0!
 | bookFile |
 
 bookFile  (CodePackage installedPackages at: 'EruditeDocBook') fullFileName asFileEntry parent // 'DocBook/defguide5/src/guide.xml'.
@@ -52,7 +52,7 @@ bookFile  (CodePackage installedPackages at: 'EruditeDocBook') fullFileName asF
 DocBookEruditeBook new
 	file: bookFile;
 	load;
-	edit!
+	open!
 
 !DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 14:51:14'!
 storerClass
@@ -179,6 +179,11 @@ parseAbstract: anXMLElement
 	
 	^ paragraph! !
 
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 11:54:02'!
+parseAcronym: anXMLElement
+
+	^ EruditeDocString contents: anXMLElement contentString! !
+
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 09:04:27'!
 parseAppendix: anXMLElement
 
@@ -204,6 +209,14 @@ parseChapter: anXMLElement
 			paragraph contents add: parsedElem]].
 	
 	^ paragraph! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 12:01:21'!
+parseIndexterm: anXMLElement
+
+	"TODO
+	Do nothing for now"
+	
+	^ nil! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:34:42'!
 parsePara: anXMLElement
@@ -231,6 +244,13 @@ parsePreface: anXMLElement
 	
 	^ paragraph! !
 
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 11:57:44'!
+parseProgramlisting: anXMLElement
+
+	^ EruditeDocCode code: anXMLElement contentString
+	
+! !
+
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:57:44'!
 parseSection: anXMLElement
 
@@ -247,6 +267,13 @@ parseSection: anXMLElement
 	self sectionLevel: self sectionLevel - 1.
 	
 	^ paragraph! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 12:00:49'!
+parseTag: anXMLElement
+
+	"do nothing"
+	
+	^ nil! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:38:03'!
 parseTitle: anXMLElement
