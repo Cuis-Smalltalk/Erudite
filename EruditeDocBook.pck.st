@@ -1,9 +1,9 @@
-'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 4:12:22 pm'!
+'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 6:55:32 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 13!
+!provides: 'EruditeDocBook' 1 14!
 !requires: 'Erudite' 1 260 nil!
 !requires: 'EruditeXMLBook' 1 13 nil!
 !requires: 'YAXO' 1 27 nil!
@@ -199,11 +199,11 @@ parse: aString
 	
 	^ doc! !
 
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 09:48:29'!
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 18:52:58'!
 parseElement: anXMLElement
 	
 	(anXMLElement isKindOf: XMLStringNode) ifTrue:[
-		^ EruditeDocString contents: anXMLElement string].
+		^ EruditeDocString contents: anXMLElement string withBlanksCondensed ].
 	
 	(anXMLElement isKindOf: XMLElement)
 		ifFalse: [^EruditeDocString contents: ''].
@@ -284,11 +284,14 @@ parseIndexterm: anXMLElement
 	
 	^ nil! !
 
-!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 14:15:19'!
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 18:51:48'!
 parseLiteral: anXMLElement
 
 	^ EruditeStyledText 
-		text: anXMLElement contents first string
+		text: (String streamContents: [:s |
+				s space;
+					nextPutAll: anXMLElement contentString;
+					space])
 		styles: (Array with: TextColor blue)! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:34:42'!
@@ -398,13 +401,13 @@ parseTag: anXMLElement
 	
 	^ nil! !
 
-!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:38:03'!
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 18:48:49'!
 parseTitle: anXMLElement
 
 	^ EruditeDocHeading 
 		heading: (String streamContents: [:s |
 			           s nextPutAll: anXMLElement contents first string;
-					nextPut: Character newLineCharacter ])
+					newLine; newLine ])
 		level: self sectionLevel ! !
 
 !EruditeDocBookParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 20:58:46'!
