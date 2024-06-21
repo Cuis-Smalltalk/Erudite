@@ -1,11 +1,11 @@
-'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 7:09:16 pm'!
+'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 9:14:23 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 15!
+!provides: 'EruditeDocBook' 1 16!
 !requires: 'Erudite' 1 261 nil!
-!requires: 'EruditeXMLBook' 1 13 nil!
+!requires: 'EruditeXMLBook' 1 14 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #'EruditeDocBook-Books'!
 SystemOrganization addCategory: #EruditeDocBook!

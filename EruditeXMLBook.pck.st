@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6469] on 18 June 2024 at 12:40:17 am'!
+'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 9:14:15 pm'!
 'Description '!
-!provides: 'EruditeXMLBook' 1 12!
-!requires: 'Erudite' 1 255 nil!
+!provides: 'EruditeXMLBook' 1 14!
+!requires: 'Erudite' 1 261 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #EruditeXMLBook!
 
@@ -205,6 +205,11 @@ contents: anObject
 
 	contents := anObject! !
 
+!EruditeParagraphNode class methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 12:21:22'!
+contents: nodeContents
+
+	^ self new contents: nodeContents; yourself! !
+
 !EruditeXMLElementParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 17:52:09'!
 parse: anXMLElement using: aParser
 
@@ -336,7 +341,7 @@ parse: aString
 	
 	^ doc! !
 
-!EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 19:28:55'!
+!EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 20:54:32'!
 parseElement: anXMLElement
 
 	|tag|
@@ -346,7 +351,7 @@ parseElement: anXMLElement
 	
 	tag := anXMLElement tag.
 	
-	^ (self parserAt: tag) 
+	^ (self parserFor: tag) 
 		parse: anXMLElement
 		using: [:elem | self parseElement: elem]! !
 
@@ -356,6 +361,11 @@ parserAt: xmlTag
 	^ self parsers 
 			detect: [:parserClass | parserClass tag sameAs: xmlTag]
 			ifNone: [self error: 'No parser for element: ', xmlTag]! !
+
+!EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 20:54:46'!
+parserFor: tag
+
+	^ self parserAt:tag! !
 
 !EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 16:01:31'!
 parsers
@@ -440,14 +450,14 @@ new
 
 	^ self basicNew initialize! !
 
-!MorphicEruditeDocRenderer methodsFor: '*EruditeXMLBook' stamp: 'MM 6/15/2024 22:30:51'!
+!MorphicEruditeDocRenderer methodsFor: '*EruditeXMLBook' stamp: 'MM 6/20/2024 18:47:28'!
 visitParagraph: aParagraph
 
-	"stream nextPut: Character newLineCharacter asString."
-	stream nextPut: Character newLineCharacter asString.
-	
 	aParagraph contents do: [:elem |
 		elem accept: self].
+	
+	stream nextPut: Character newLineCharacter asString.
+	stream nextPut: Character newLineCharacter asString.
 	
 	! !
 
