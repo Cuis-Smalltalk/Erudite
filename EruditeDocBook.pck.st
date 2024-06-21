@@ -1,9 +1,9 @@
-'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 11:20:45 pm'!
+'From Cuis7.1 [latest update: #6487] on 21 June 2024 at 8:58:02 am'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 19!
+!provides: 'EruditeDocBook' 1 20!
 !requires: 'Erudite' 1 263 nil!
 !requires: 'EruditeXMLBook' 1 14 nil!
 !requires: 'YAXO' 1 27 nil!
@@ -261,7 +261,7 @@ parseChildrenOf: anXMLElement
 	
 	^ node! !
 
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 18:52:58'!
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/21/2024 08:42:12'!
 parseElement: anXMLElement
 	
 	(anXMLElement isKindOf: XMLStringNode) ifTrue:[
@@ -270,10 +270,14 @@ parseElement: anXMLElement
 	(anXMLElement isKindOf: XMLElement)
 		ifFalse: [^EruditeDocString contents: ''].
 	
-	^ (self parserFor: anXMLElement tag) ifNotNil: [:selector |
-		self perform: selector with: anXMLElement]! !
+	^ (self parserFor: anXMLElement tag) 
+		ifNotNil: [:selector |
+			self perform: selector with: anXMLElement]
+		ifNil: [
+			"We didn't find a parser for the element, so parse the element children 'blindly'"
+			self parseChildrenOf: anXMLElement ]! !
 
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 08:31:17'!
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/21/2024 08:39:19'!
 parserFor: xmlTag
 
 	| parserSelector |
@@ -281,7 +285,7 @@ parserFor: xmlTag
 	parserSelector := ('parse', xmlTag capitalized, ':') asSymbol.
 	^ (self respondsTo: parserSelector) 
 		ifTrue: [parserSelector]
-		ifFalse: [Transcript show: '[EruditeDocBookParser WARNING] - Ignoring element. No parser for: ', xmlTag; cr.
+		ifFalse: [Transcript show: '[EruditeDocBookParser WARNING] - No parser for: ', xmlTag; cr.
 				nil]! !
 
 !EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:14:52'!
@@ -393,6 +397,15 @@ parseIndexterm: anXMLElement
 	
 	^ nil! !
 
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/21/2024 08:51:50'!
+parseInfo: anXMLElement
+
+	"render nothing.
+	<info> elements contain metadata.
+	See: https://tdg.docbook.org/tdg/5.2/info"
+	
+	^ self parseChildrenOf: anXMLElement! !
+
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 22:36:41'!
 parseInlinemediaobject: anXMLElement
 
@@ -420,10 +433,10 @@ parseLiteral: anXMLElement
 					space])
 		style: TextColor blue! !
 
-!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 22:39:05'!
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/21/2024 08:34:25'!
 parseMediaobject: anXMLElement
 
-	^ self parseChildrenOf: anXMLElement! !
+	^ EruditeParagraphNode contents: (Array with: (self parseChildrenOf: anXMLElement))! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:34:42'!
 parsePara: anXMLElement
@@ -465,6 +478,16 @@ parseProgramlisting: anXMLElement
 								yourself))
 	
 ! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/21/2024 08:54:54'!
+parsePubdate: anXMLElement
+
+	^ nil! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/21/2024 08:55:01'!
+parseReleaseinfo: anXMLElement
+
+	^ nil! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 14:09:12'!
 parseScreen: anXMLElement
@@ -529,13 +552,6 @@ parseSection: anXMLElement level: level
 	self sectionLevel: level.
 	
 	^ paragraph! !
-
-!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 12:00:49'!
-parseTag: anXMLElement
-
-	"do nothing"
-	
-	^ nil! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 18:48:49'!
 parseTitle: anXMLElement
