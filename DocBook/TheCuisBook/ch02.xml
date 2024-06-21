@@ -53,7 +53,7 @@ fresh Cuis-Smalltalk environment, the count of class instances is more than
 &#8658; 671
 </screen>
 
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 Because you are not using the base image but one used
 to teach classes, you will likely see
 a much larger number.
@@ -361,7 +361,7 @@ classes (system or user ones) and to write new classes and methods.
 <command>Open...</command> &#8594; <command>Browser</command>...
 </para>
 <anchor id="ch02_002dbrowserDetailed"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch02-browserDetailed.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch02-browserDetailed.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <indexterm role="cp"><primary>browser</primary><secondary>class category</secondary></indexterm><indexterm role="cp"><primary>class</primary><secondary>category</secondary></indexterm><para>At the top left are the <firstterm>class categories</firstterm>, groups of classes
@@ -429,7 +429,7 @@ directly gives access to related methods in the next and last pane at
 the right.
 </para>
 <indexterm role="cp"><primary>class</primary><secondary>category</secondary></indexterm><indexterm role="cp"><primary>keyboard shortcut</primary><secondary>find a class (<userinput>Ctrl-f</userinput>)</secondary></indexterm>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 A right click on the Class Category pane
 brings up its context menu.  You can select <command>find class ..</command> or,
 as the menu indicates, use <userinput>Ctrl-f</userinput> (<emphasis><emphasis role="bold">F</emphasis>ind</emphasis>), to get a
@@ -528,7 +528,7 @@ get another class code template, click the class category
 <link linkend="ch02_002dspacewarClassCategory">ch02-spacewarClassCategory</link>.
 </para>
 <anchor id="ch02_002dspacewarClassCategory"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch02-spacewarClassCategory.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch02-spacewarClassCategory.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 
@@ -553,7 +553,7 @@ we use the Installed Packages tool.
 </para>
 </listitem></orderedlist>
 <anchor id="ch02_002dInstalledPackages"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch02-InstalledPackages.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch02-InstalledPackages.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <indexterm role="cp"><primary>package</primary><secondary>load</secondary><tertiary>by graphic interface</tertiary></indexterm><para>A file <filename>Spacewar!.pck.st</filename> is created alongside the Cuis-Smalltalk image
@@ -597,7 +597,7 @@ acceleration coming from the ship engines.
 computer calculations.
 </para>
 <anchor id="motionEquations"/>
-<inlinemediaobject><imageobject><imagedata fileref="motionEquations.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="motionEquations.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 <!-- -->
 </sect2>

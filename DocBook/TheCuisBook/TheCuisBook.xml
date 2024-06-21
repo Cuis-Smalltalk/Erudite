@@ -251,7 +251,7 @@ you will join us in this journey to use it as a medium to express
 ideas and thoughts, to build cool stuff, and to make Cuis even better.
 </para>
 <anchor id="ch00_002dimg1"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch00-img1.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch00-img1.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>To make your journey with this book more enjoyable, the
@@ -554,7 +554,7 @@ keep the default Cuis-Smalltalk theme, we suggest you do the same so your
 environment reflects the book screenshots.
 </para>
 <anchor id="ch01_002dPreferences"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch01-Preferences.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-Preferences.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 </sect2>
@@ -571,7 +571,7 @@ area to place the Workspace window at the half left of the Cuis-Smalltalk
 environment.
 </para>
 <anchor id="ch01_002dimg1a"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch01-img1a.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-img1a.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The <command>resize...</command> option offers even more freedom to place the
@@ -610,7 +610,7 @@ doing here. Do ...World menu &#8594; <command>Open...</command>
 &#8594; <command>Transcript</command>... and execute the code again.
 </para>
 <anchor id="ch01_002dimg2"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch01-img2.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-img2.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The workspace code has three parts:
@@ -711,7 +711,7 @@ started with division and addition operations on integer, and we got
 an accurate result thanks to intermediate computation on rational
 numbers.
 </para>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 In the example, observe how the parentheses are used
 although in arithmetic calculation the division is performed first. With
 Cuis-Smalltalk you need to specify the order of operations with
@@ -770,7 +770,7 @@ additional features. <emphasis>Computer Space</emphasis>, the first arcade video
 game cabinet was a clone of Spacewar!
 </para>
 <anchor id="ch01_002dSpacewarPDP"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch01-SpacewarPDP.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-SpacewarPDP.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Wikipedia describes very precisely this space combat simulation game:
@@ -810,7 +810,7 @@ the other side in a wraparound effect.
 </para>
 </listitem></orderedlist>
 <anchor id="ch01_002dSpacewarGameplay"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch01-SpacewarGameplay.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-SpacewarGameplay.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 
@@ -872,7 +872,7 @@ fresh Cuis-Smalltalk environment, the count of class instances is more than
 &#8658; 671
 </screen>
 
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 Because you are not using the base image but one used
 to teach classes, you will likely see
 a much larger number.
@@ -1180,7 +1180,7 @@ classes (system or user ones) and to write new classes and methods.
 <command>Open...</command> &#8594; <command>Browser</command>...
 </para>
 <anchor id="ch02_002dbrowserDetailed"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch02-browserDetailed.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch02-browserDetailed.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <indexterm role="cp"><primary>browser</primary><secondary>class category</secondary></indexterm><indexterm role="cp"><primary>class</primary><secondary>category</secondary></indexterm><para>At the top left are the <firstterm>class categories</firstterm>, groups of classes
@@ -1248,7 +1248,7 @@ directly gives access to related methods in the next and last pane at
 the right.
 </para>
 <indexterm role="cp"><primary>class</primary><secondary>category</secondary></indexterm><indexterm role="cp"><primary>keyboard shortcut</primary><secondary>find a class (<userinput>Ctrl-f</userinput>)</secondary></indexterm>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 A right click on the Class Category pane
 brings up its context menu.  You can select <command>find class ..</command> or,
 as the menu indicates, use <userinput>Ctrl-f</userinput> (<emphasis><emphasis role="bold">F</emphasis>ind</emphasis>), to get a
@@ -1347,7 +1347,7 @@ get another class code template, click the class category
 <link linkend="ch02_002dspacewarClassCategory">ch02-spacewarClassCategory</link>.
 </para>
 <anchor id="ch02_002dspacewarClassCategory"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch02-spacewarClassCategory.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch02-spacewarClassCategory.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 
@@ -1372,7 +1372,7 @@ we use the Installed Packages tool.
 </para>
 </listitem></orderedlist>
 <anchor id="ch02_002dInstalledPackages"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch02-InstalledPackages.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch02-InstalledPackages.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <indexterm role="cp"><primary>package</primary><secondary>load</secondary><tertiary>by graphic interface</tertiary></indexterm><para>A file <filename>Spacewar!.pck.st</filename> is created alongside the Cuis-Smalltalk image
@@ -1416,7 +1416,7 @@ acceleration coming from the ship engines.
 computer calculations.
 </para>
 <anchor id="motionEquations"/>
-<inlinemediaobject><imageobject><imagedata fileref="motionEquations.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="motionEquations.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 <!-- -->
 </sect2>
@@ -1684,7 +1684,7 @@ checks and ifTrue/ifFalse branches. Polymorphism is often used to avoid
 unnecessary checks and code branches.
 </para>
 <indexterm role="cp"><primary>keyboard shortcut</primary><secondary>implementors of (<userinput>Ctrl-m</userinput>)</secondary></indexterm>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 If you select the text <literal>abs</literal> in a Browser or
 Workspace and right-click to get the context menu, you will find an
 entry <command>Implementors of it</command>.  You can select this or use
@@ -1760,7 +1760,7 @@ class side, in the browser the <command>class</command> button is pressed to see
 list.
 </para>
 <anchor id="ch03_002dfloatClassSide"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch03-floatClassSide.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch03-floatClassSide.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>From a Workspace, these methods are called with the message name sent
@@ -1775,7 +1775,7 @@ Float fmax
 </screen>
 
 <indexterm role="cp"><primary>keyboard shortcut</primary><secondary>code completion (<userinput>tab</userinput>)</secondary></indexterm>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 You have noticed that text typed into the Workspace is
 colored and highlighted based on what you type.  We will discuss this
 below when we talk about the Smalltalk language, but the idea is to be
@@ -1815,7 +1815,7 @@ listed are instance side, in the browser the <command>instance</command> button
 is pressed to see this list.
 </para>
 <anchor id="ch03_002dfloatInstanceSide"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch03-floatInstanceSide.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch03-floatInstanceSide.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>In a Workspace, these methods are called with the message name sent
@@ -2070,7 +2070,7 @@ or <literal>0.5</literal>. The number <literal>0.0000241</literal> is more easil
 written with the scientific notation <literal>2.41e-5</literal>; it means 2
 preceded by 5 zeros or 2 as the fifth digit after the decimal dot.
 </para>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 Computers encode and store decimal numbers imprecisely. You
 need to be aware of that when doing computation and equality
 comparisons. Many systems hide these errors because they are very tiny
@@ -2181,7 +2181,7 @@ to see common ways to group methods.
 </para>
 <para>Sometimes you may not see a category related to what you&#8217;re looking for right away.
 </para>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 If you expect a method selector to start with a specific letter,
 click-select the <command>-- all --</command> method category, then move the
 cursor over the pane listing the method names.  Press this character,
@@ -2267,7 +2267,7 @@ string of the form &#8217;Joe bought XX apples and YY oranges&#8217; to the form
 discuss their object representation in the instance variables of our
 classes.
 </para>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 In the following sections, to ease reading we will write
 &#8220;the variable <literal>myVar</literal> is a <literal>String</literal>&#8221; instead of the
 correct but cumbersome &#8220;the instance variable <literal>myVar</literal> is a
@@ -2641,7 +2641,7 @@ options:
    (p)</command>... Alternatively, use the keyboard shortcut <userinput>Ctrl-p</userinput>.
 </para>
 <anchor id="ch03_002dbrowseProtocol"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch03-browseProtocol.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch03-browseProtocol.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The new window is a protocol browser for the <literal>String</literal>
@@ -2669,7 +2669,7 @@ options:
    the button <command>hierarchy</command> on the system browser.
 </para>
 <anchor id="ch03_002dbrowseHierarchy"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch03-browseHierarchy.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch03-browseHierarchy.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The hierarchy browser is very like the system browser with only two
@@ -2741,7 +2741,7 @@ need to name something uniquely.
 <para>Now you know.  A symbol can&#8217;t be duplicated nor changed.
 </para>
 <indexterm role="cp"><primary>string</primary><secondary>Unicode</secondary></indexterm><indexterm role="cp"><primary>Unicode</primary></indexterm>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 In Cuis-Smalltalk, strings with characters not part of the <acronym>ASCII</acronym> table are usually instances of <literal>UnicodeString</literal>.
 In the same way, you may get an instance of <literal>UnicodeSymbol</literal>  and not <literal>Symbol</literal>, or <literal>UnicodeCodePoint</literal> and not <literal>Character</literal>. You usually don&#8217;t need to care about this. The <acronym>ASCII</acronym> and Unicode classes provide the same services.
 </para>
@@ -2824,7 +2824,7 @@ msg := 5.
 Transcript show: msg printString, ' is a kind of '.
 Transcript show: msg class printString; newLine.
 </screen>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 This ease of use has a drawback: when writing code to send
 a message to a
 variable bound to an object, the system does not check ahead of time
@@ -3505,7 +3505,7 @@ change according to the mechanical laws of physics.
    ../..
 </screen>
 
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 Remember that Smalltalk does not
 follow the mathematics precedence of arithmetic operators.
 These are seen as ordinary <emphasis role="bold">binary
@@ -4003,7 +4003,7 @@ result &#8658; '1 2 3 4 5 6 7 8 9 10 '
 <para>You can check all the alternatives in the <command>intervals</command> method
 category of the class <literal>Number</literal>.
 </para>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 If the exit condition of method like <literal>whileTrue:</literal> is
 never satisfied, you may have implemented an <firstterm>infinite loop</firstterm>.
 Just type <userinput>Cmd-period</userinput> to get the Debugger.
@@ -4147,7 +4147,7 @@ space ship position, heading, and velocity before being fired.
 
 
 <anchor id="ch05_002dSpacewarGamePlay"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch05-SpacewarGamePlay.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch05-SpacewarGamePlay.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 
@@ -4290,7 +4290,7 @@ submenu and drag onto the desktop.
 one gets a different morph but made to a standard style.
 </para>
 <anchor id="ch06_002d01_002dEllipseMorphFromMenu"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-01-EllipseMorphFromMenu.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-01-EllipseMorphFromMenu.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The basic challenge of <firstterm>user interface design</firstterm> is
@@ -4314,7 +4314,7 @@ usage.
 back at any time with a mouse click.
 </para>
 <anchor id="ch06_002d03_002dDragToEnlarge"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-03-DragToEnlarge.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-03-DragToEnlarge.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Now that you know this, move the yellow lower right handle with tool
@@ -4323,7 +4323,7 @@ left mouse button while the cursor is over the handle, move the cursor
 to the right and down, and release the mouse button.
 </para>
 <anchor id="ch06_002d04_002dEnlarged"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-04-Enlarged.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-04-Enlarged.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 </sect1>
@@ -4339,7 +4339,7 @@ submenus. The <literal>BoxedMorph</literal> instance displays itself as a
 rect with a border.
 </para>
 <anchor id="ch06_002d05_002dAddRectangle"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-05-AddRectangle.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-05-AddRectangle.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Now drag the rect over the ellipse and <userinput>Middle-Click</userinput> on the
@@ -4348,7 +4348,7 @@ rect and click on the blue construction handle to gets the rect&#8217;s
 select the ellipse as its new parent.
 </para>
 <anchor id="ch06_002d06_002dEmbedRectIntoEllipse"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-06-EmbedRectIntoEllipse.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-06-EmbedRectIntoEllipse.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Now when you click-drag the ellipse, or use the <command>Pick up</command> or
@@ -4369,11 +4369,11 @@ ellipse.  This rect does not have many interesting behaviors.
 submorph hierarchy.
 </para>
 <anchor id="ch06_002d07_002dMiddleClickRect"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-07-MiddleClickRect.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-07-MiddleClickRect.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <anchor id="ch06_002d08_002d2ndMidClckToSubmorph"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-08-2ndMidClckToSubmorph.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-08-2ndMidClckToSubmorph.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>There is an orange handle on the right, just under the green
@@ -4394,7 +4394,7 @@ where <literal>self</literal> is bound to the object we are inspecting.
 <para>Inspectors work for every object by the way, not just morphs.
 </para>
 <anchor id="ch06_002d11aColorClickOnRect"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-11aColorClickOnRect.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-11aColorClickOnRect.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>To add a behavior to all instances of a class, we create an instance
@@ -4428,18 +4428,18 @@ moves a submorph &#8220;within&#8221; its parent.  <command>Pick up</command> gr
 &#8220;out&#8221; of its parent.
 </para>
 <anchor id="ch06_002d09_002dMove_002dWithin"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-09-Move-Within.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-09-Move-Within.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <anchor id="ch06_002d10_002dPickUp_002d2_002dMoveOut"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-10-PickUp-2-MoveOut.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-10-PickUp-2-MoveOut.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Before we go on, let&#8217;s use an inspector on the ellipse to change
 values of a couple of its instance variables.
 </para>
 <anchor id="ch06_002d12_002dInspectEllipse"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-12-InspectEllipse.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-12-InspectEllipse.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Observe <link linkend="ch06_002d14_002dSetBorderColor">ch06-14-SetBorderColor</link> and <link linkend="editShapeInspector">editShapeInspector</link>. In
@@ -4453,7 +4453,7 @@ self borderColor: Color blue
 </screen>
 
 <anchor id="ch06_002d14_002dSetBorderColor"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-14-SetBorderColor.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-14-SetBorderColor.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>In the typical case one wants to refine or change behaviors for all
@@ -4497,7 +4497,7 @@ try it out.  These are fun to <userinput>Left-Click</userinput> on.  Make as man
 you want!
 </para>
 <anchor id="ch06_002d15_002dColorClickEllipse"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-15-ColorClickEllipse.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-15-ColorClickEllipse.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Now you know how to specialize an individual morph, or make a whole
@@ -4851,7 +4851,7 @@ implementations of the <literal>update:</literal> method within this inheritance
 chain.
 </para>
 <anchor id="ch06_002d20_002dTorpedoUpdateInheritance"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-20-TorpedoUpdateInheritance.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-20-TorpedoUpdateInheritance.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>We already met an example of overriding when initializing a space ship
@@ -4986,7 +4986,7 @@ Graphics support, please answer yes. There it is. You have already
 built your first <literal>Morph</literal> class.
 </para>
 <anchor id="ch07_002d01_002dLineDetails"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-01-LineDetails.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-01-LineDetails.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The code is self evident, the <literal>drawOn:</literal> method takes a
@@ -5088,7 +5088,7 @@ opaque. This means that when you place your triangle over some other
 morph, you can see through it.
 </para>
 <anchor id="ch07_002d02_002dTriangles"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-02-Triangles.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-02-Triangles.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 
@@ -5254,7 +5254,7 @@ line. This is most useful for implementing scrolling panes that only
 make a part of their contents visible, but might have other uses too.
 </para>
 <anchor id="ch07_002d04_002dAnimatedAndClippedSubmorph"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-04-AnimatedAndClippedSubmorph.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-04-AnimatedAndClippedSubmorph.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 
@@ -5273,7 +5273,7 @@ sophisticated morph. Let&#8217;s build a <literal>ClockMorph</literal> as see in
 <!-- any other TrueType font from the ones available.}. -->
 
 <anchor id="ch07_002d05_002dClock"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-05-Clock.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-05-Clock.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Let&#8217;s create <literal>ClockMorph</literal>, the dial clock :
@@ -5376,20 +5376,20 @@ variables):
    self addMorph: (minuteHand := ClockMinuteHandMorph new).
    self addMorph: (secondHand := ClockSecondHandMorph new)
 </screen>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 If you have not already added instance variables for the
 clock hands, the Cuis IDE will note this and ask what you want
 to do about it.  We want to declare the three missing names as instance
 variables.
 </para>
 <anchor id="ch07_002d07_002dClockMorph_002dinitialize"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-07-ClockMorph-initialize.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-07-ClockMorph-initialize.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Your <literal>ClockMorph</literal> class definition should now be complete!
 </para>
 <anchor id="ch07_002d08_002dClockMorph_002divars_002dadded"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-08-ClockMorph-ivars-added.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-08-ClockMorph-ivars-added.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Finally, we animate our clock. In method category <command>stepping</command> add the
@@ -5434,7 +5434,7 @@ hands. Their <literal>0 @ 0</literal> origin will therefore be at the clock
 <literal>0 @ 0</literal>, i.e. the center of the clock.
 </para>
 <anchor id="ch07_002d06_002dExerciseClock"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-06-ExerciseClock.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-06-ExerciseClock.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <anchor id="exeFancyClock"/>
@@ -5531,7 +5531,7 @@ dedicated method to answer this value:
    ^ `30 @ 30`
 </screen>
 
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 An expression surrounded with backticks <literal>'`'</literal> is
 evaluated only once, when the method is first saved and compiled.
 This creates a compound literal value and improves the performance of
@@ -5569,7 +5569,7 @@ rotation is 0&#176;. Remember the Y ordinate are oriented
 toward the bottom of the screen.
 </para>
 <anchor id="ch07_002d10_002dShipDiagram"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-10-ShipDiagram.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-10-ShipDiagram.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 <para>Then its <literal>drawOn:</literal> method is written as:
 </para>
@@ -5645,7 +5645,7 @@ points in the direction of the top of the screen and its vertices are
 given by the <link linkend="ch07_002d11_002dTorpedoDiagram">ch07-11-TorpedoDiagram</link>.
 </para>
 <anchor id="ch07_002d11_002dTorpedoDiagram"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-11-TorpedoDiagram.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-11-TorpedoDiagram.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <anchor id="exeTorpedoExtent"/>
@@ -5740,7 +5740,7 @@ declare our variable in the <literal>Mobile class</literal> definition &#8211;
    ^ vertices
 </screen>
 <anchor id="ch07_002d12_002dbrowserClassSide"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-12-browserClassSide.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-12-browserClassSide.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 
@@ -5897,7 +5897,7 @@ bounds in the display, a rectangle encompassing the morph given its
 rotation and scale.
 </para>
 <anchor id="ch07_002d13_002dshipDisplayBounds"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-13-shipDisplayBounds.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-13-shipDisplayBounds.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>When browsing the <literal>Rectangle</literal> class, you learn the
@@ -6181,7 +6181,7 @@ right keyboard focus is not on the game, it is paused and we can see
 underneath.
 </para>
 <anchor id="ch08_002dFocus"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch08-Focus.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch08-Focus.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>In the Morph framework, the <literal>#keyboardFocusChange:</literal> message is sent
@@ -6339,7 +6339,7 @@ Workspace prints the result: <literal>a TheBook</literal>, an instance of a
 changes:
 </para>
 <anchor id="ch10_002dRecoverLostChanges1"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-RecoverLostChanges1.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-RecoverLostChanges1.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>From there you have three options:
@@ -6359,7 +6359,7 @@ changes:
   selections</command> button.
 </para>
 <anchor id="ch10_002dRecoverLostChanges2"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-RecoverLostChanges2.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-RecoverLostChanges2.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>To file-in the changes related to the creation of the
@@ -6397,7 +6397,7 @@ Browser is recorded in a <firstterm>Change Set</firstterm>,
 <command>Change Sorter</command>...
 </para>
 <anchor id="ch10_002dChangeSet1"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-ChangeSet1.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-ChangeSet1.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The <literal>TheBook</literal> class we added to Cuis-Smalltalk in the previous section
@@ -6413,7 +6413,7 @@ set will be saved along the Cuis-Smalltalk image under its system name with
 <command>AuthorName</command> substituted with the real author name.
 </para>
 <anchor id="ch10_002dChangeSet2"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-ChangeSet2.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-ChangeSet2.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Observe <link linkend="ch10_002dChangeSet2">ch10-ChangeSet2</link>, after we added the method
@@ -6447,7 +6447,7 @@ to load, then select it, from there you have three options to
 manipulate it.
 </para>
 <anchor id="ch10_002dFileListChangeSet"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-FileListChangeSet.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-FileListChangeSet.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <itemizedlist>
@@ -6472,7 +6472,7 @@ manipulate it.
   that will be installed is shown in green.
 </para>
 <anchor id="ch10_002dChangeList"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-ChangeList.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-ChangeList.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 </listitem><listitem><para><command>install</command>. It just installs the complete change set
@@ -6499,7 +6499,7 @@ our Installed Packages Browser.
 <command>Installed Packages</command>...
 </para>
 <anchor id="ch10_002dPackage_002dwith_002drequirement"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-Package-with-requirement.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-Package-with-requirement.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 
@@ -6533,7 +6533,7 @@ Note that this is version 1, revision 0 (1.0 at right) and that the
 package has yet to be saved.
 </para>
 <anchor id="ch10_002dNewPackage_002dMorphic_002dLearning"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-NewPackage-Morphic-Learning.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-NewPackage-Morphic-Learning.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Let&#8217;s say that in our clock morph we want to use color named as in the
@@ -6545,7 +6545,7 @@ at center, right.
 <para>This brings up a list of loaded packages to choose from.
 </para>
 <anchor id="ch10_002dAdd_002dRequirement"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-Add-Requirement.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-Add-Requirement.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Now when we <command>save</command> our package, we see the pathname where the package
@@ -6553,7 +6553,7 @@ file was created.  We can now safely email this file, check it into a version
 control system, make a copy to our backup thumb drive.
 </para>
 <anchor id="ch10_002dSaved_002dwith_002drequirement"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-Saved-with-requirement.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-Saved-with-requirement.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>As mentioned above, package files are just text files with a special format
@@ -6631,7 +6631,7 @@ Cuis-Smalltalk core system and its associated default change set. See
 <link linkend="ch10_002dChangeSetToCore">ch10-ChangeSetToCore</link>, the Change Sorter tool exactly shows that.
 </para>
 <anchor id="ch10_002dChangeSetToCore"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-ChangeSetToCore.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-ChangeSetToCore.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Therefore when saving our <command>TheBook</command> package this method is not
@@ -6649,13 +6649,13 @@ tools now tells us we have an extension, use its <command>browse</command> butto
 to get an update on the package contents.
 </para>
 <anchor id="ch10_002dBrowsePackageChange"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-BrowsePackageChange.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-BrowsePackageChange.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Observe how each category &#8211; class or method one &#8211; of an extension is
 prefixed with a <command>*</command>.
 </para>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 In addition to adding a package preload <emphasis>requirement</emphasis>,
 you can also select a requirement and <command>delete</command> or <command>update</command>
 it using the buttons at the lower right.  Sometimes a package changes
@@ -6716,7 +6716,7 @@ look like:
 </listitem><listitem><para>Exit the image. Usually without saving.
 </para>
 </listitem></orderedlist>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 Not to save the image is just best practice advice for you
 when your primary goal is to create new code. We already discussed the
 caveats of saving the image concerning code management
@@ -6769,7 +6769,7 @@ developer tools, the Morph system, the preferences and collection
 handling.
 </para>
 <anchor id="ch10_002dImageSetUp"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-ImageSetUp.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-ImageSetUp.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <indexterm role="cp"><primary>morph</primary><secondary>world</secondary></indexterm><para>Let&#8217;s start by removing the open windows:
@@ -6960,7 +6960,7 @@ which allow one to <literal>ensure:</literal> cleanup or capture and use excepti
 <para>Exceptions are created and <firstterm>signal</firstterm>ed.  Let&#8217;s make one and look at it.
 </para>
 <anchor id="ch10_002d01_002dZeroDivide"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-01-ZeroDivide.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-01-ZeroDivide.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Again, we can use an Inspector on any object, and <literal>Exception</literal>s are
@@ -7003,11 +7003,11 @@ fileNames asArray.
 (<emphasis>select <emphasis role="bold">P</emphasis>rint-it</emphasis>) to see the result.
 </para>
 <anchor id="ch10_002d02_002dDirChildNames"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-02-DirChildNames.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-02-DirChildNames.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <indexterm role="cp"><primary>file</primary></indexterm>
-<indexterm role="cp"><primary>string</primary><secondary>file entry</secondary></indexterm><para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<indexterm role="cp"><primary>string</primary><secondary>file entry</secondary></indexterm><para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 The <literal>String</literal> class has several method category names
 starting with <command>fileman-</command> for converting pathnames (system names
 for files and directories) into <literal>FileEntry</literal> and
@@ -7020,7 +7020,7 @@ Remove the result, then <userinput>Ctrl-a</userinput> (<emphasis>select <emphasi
 <userinput>Ctrl-Shift-D</userinput> (<emphasis>select <emphasis role="bold">D</emphasis>ebug-it</emphasis>).
 </para>
 <anchor id="ch10_002d03_002dDebugIt"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-03-DebugIt.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-03-DebugIt.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <indexterm role="cp"><primary>execution stack</primary></indexterm>
@@ -7084,7 +7084,7 @@ and control of how the execution processing is to proceed.
 instructions here, just close the debugger and start with Debug-It again.
 </para>
 <anchor id="ch10_002d04_002dStepInto"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-04-StepInto.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-04-StepInto.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>As you <firstterm>single step</firstterm> the debugger, hilighting of the <emphasis>next</emphasis> message
@@ -7092,7 +7092,7 @@ send changes.  Press <userinput>Over</userinput> three times.  You should see th
 starting with <emphasis>childrenDo:</emphasis> hilighted.  Now press <userinput>Into</userinput>.
 </para>
 <anchor id="ch10_002d05_002dFocusObjAndArgs"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-05-FocusObjAndArgs.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-05-FocusObjAndArgs.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The stack area shows the focus object is a <literal>DirectoryEntry</literal>.
@@ -7142,7 +7142,7 @@ fileNames := OrderedCollection new.
 fileNames asArray.
 </screen>
 
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 The object which receives the <literal>#halt</literal> message
 becomes the focus object of the debugger.
 </para>
@@ -7150,13 +7150,13 @@ becomes the focus object of the debugger.
 (<emphasis>select <emphasis role="bold">P</emphasis>rint-it</emphasis>).
 </para>
 <anchor id="ch10_002d06_002dHalt"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-06-Halt.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-06-Halt.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Press <userinput>Over</userinput> twice to step over the breakpoint.
 </para>
 <anchor id="ch10_002d07_002dOver"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-07-Over.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-07-Over.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Well, this looks familiar.  I know what to do here.
@@ -7251,7 +7251,7 @@ like an abbreviation.  I can ask for <emphasis>senders</emphasis> to see how <li
 in code elsewhere.
 </para>
 <anchor id="ch11_002d01_002dSendersOfLeft"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch11-01-SendersOfLeft.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-01-SendersOfLeft.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>I notice that most uses of <literal>#left</literal> are to indicate a position,
@@ -7267,7 +7267,7 @@ already knows how to do this!
 with selections to help me out. Here I choose <emphasis role="bold">Rename</emphasis>.
 </para>
 <anchor id="ch11_002d02_002dRenameLeft"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch11-02-RenameLeft.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-02-RenameLeft.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Now the tools that help us refactor code are quite powerful, so
@@ -7276,14 +7276,14 @@ restraint is called for.  I don&#8217;t want to change all uses of
 category.
 </para>
 <anchor id="ch11_002d03_002dRenameInCategory"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch11-03-RenameInCategory.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-03-RenameInCategory.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Of course, when making changes one wants to see that the result is
 what one expects.
 </para>
 <anchor id="ch11_002d04_002dturnLeft"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch11-04-turnLeft.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-04-turnLeft.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>As I am not perfect, I tend to save the Cuis-Smalltalk image before I make
@@ -7303,24 +7303,24 @@ restart the saved image which remembers the world before I made the change.
 <para>Where did I use this?  Ah, senders..
 </para>
 <anchor id="ch11_002d05_002dnoseSenders"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch11-05-noseSenders.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-05-noseSenders.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Hmmm, perhaps something more specific.  How about <literal>#noseDirection</literal>?
 How does that look?
 </para>
 <anchor id="ch11_002d06_002dnoseDirection"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch11-06-noseDirection.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-06-noseDirection.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 World menu &#8594; <command>Help</command> is your friend.
 The <command>Terse Guide to Cuise</command> gives access to a large sample
 of code usages. The <command>Class Comment Browser</command> is an alternate
 way to find interesting class information.  There are also more notes
 on code maganement and how we use GitHub.
 </para>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 We want to share with you! Please visit packages at the main Cuis-Smalltalk
 repository at <ulink url="https://github.com/Cuis-Smalltalk">https://github.com/Cuis-Smalltalk</ulink>, search GitHub
 for repositories with names starting with <emphasis role="bold">Cuis-Smalltalk-</emphasis>,
@@ -7363,7 +7363,7 @@ https://creativecommons.org/licenses/by/2.0/deed.en
 <para>Oral History of Adele Goldberg, Computer History Museum, 10 May 2010
 </para>
 <bridgehead renderas="sect2">Cuis-Smalltalk mascot</bridgehead>
-<informalfigure><mediaobject><imageobject><imagedata fileref="CuisLogo.jpg" format="JPG"></imagedata></imageobject></mediaobject></informalfigure>
+<informalfigure><mediaobject><imageobject><imagedata fileref="CuisLogo.png" format="PNG"></imagedata></imageobject></mediaobject></informalfigure>
 
 
 <para>The southern mountain cavy (Microcavia australis) is a species of
@@ -7605,7 +7605,7 @@ Smalltalk-72, Smalltalk-76 and Smalltalk-80.
 <title>Smallltalk Philosophy</title>
 <bridgehead renderas="sect2"><link linkend="exePlacement">exePlacement</link></bridgehead>
 <anchor id="E_002dimg1"/>
-<inlinemediaobject><imageobject><imagedata fileref="E-img1.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="E-img1.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <bridgehead renderas="sect2"><link linkend="concatenateUppercase">concatenateUppercase</link></bridgehead>
@@ -8094,7 +8094,7 @@ drawOn: aCanvas
             lineTo: 0 @ 0]
 </screen>
 <anchor id="E_002dexeRectMorph"/>
-<inlinemediaobject><imageobject><imagedata fileref="E-exeRectMorph.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="E-exeRectMorph.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 

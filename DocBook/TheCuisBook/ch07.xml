@@ -76,7 +76,7 @@ Graphics support, please answer yes. There it is. You have already
 built your first <literal>Morph</literal> class.
 </para>
 <anchor id="ch07_002d01_002dLineDetails"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-01-LineDetails.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-01-LineDetails.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The code is self evident, the <literal>drawOn:</literal> method takes a
@@ -178,7 +178,7 @@ opaque. This means that when you place your triangle over some other
 morph, you can see through it.
 </para>
 <anchor id="ch07_002d02_002dTriangles"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-02-Triangles.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-02-Triangles.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 
@@ -344,7 +344,7 @@ line. This is most useful for implementing scrolling panes that only
 make a part of their contents visible, but might have other uses too.
 </para>
 <anchor id="ch07_002d04_002dAnimatedAndClippedSubmorph"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-04-AnimatedAndClippedSubmorph.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-04-AnimatedAndClippedSubmorph.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 
@@ -363,7 +363,7 @@ sophisticated morph. Let&#8217;s build a <literal>ClockMorph</literal> as see in
 <!-- any other TrueType font from the ones available.}. -->
 
 <anchor id="ch07_002d05_002dClock"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-05-Clock.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-05-Clock.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Let&#8217;s create <literal>ClockMorph</literal>, the dial clock :
@@ -466,20 +466,20 @@ variables):
    self addMorph: (minuteHand := ClockMinuteHandMorph new).
    self addMorph: (secondHand := ClockSecondHandMorph new)
 </screen>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 If you have not already added instance variables for the
 clock hands, the Cuis IDE will note this and ask what you want
 to do about it.  We want to declare the three missing names as instance
 variables.
 </para>
 <anchor id="ch07_002d07_002dClockMorph_002dinitialize"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-07-ClockMorph-initialize.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-07-ClockMorph-initialize.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Your <literal>ClockMorph</literal> class definition should now be complete!
 </para>
 <anchor id="ch07_002d08_002dClockMorph_002divars_002dadded"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-08-ClockMorph-ivars-added.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-08-ClockMorph-ivars-added.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Finally, we animate our clock. In method category <command>stepping</command> add the
@@ -524,7 +524,7 @@ hands. Their <literal>0 @ 0</literal> origin will therefore be at the clock
 <literal>0 @ 0</literal>, i.e. the center of the clock.
 </para>
 <anchor id="ch07_002d06_002dExerciseClock"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-06-ExerciseClock.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-06-ExerciseClock.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <anchor id="exeFancyClock"/>
@@ -621,7 +621,7 @@ dedicated method to answer this value:
    ^ `30 @ 30`
 </screen>
 
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 An expression surrounded with backticks <literal>'`'</literal> is
 evaluated only once, when the method is first saved and compiled.
 This creates a compound literal value and improves the performance of
@@ -659,7 +659,7 @@ rotation is 0&#176;. Remember the Y ordinate are oriented
 toward the bottom of the screen.
 </para>
 <anchor id="ch07_002d10_002dShipDiagram"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-10-ShipDiagram.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-10-ShipDiagram.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 <para>Then its <literal>drawOn:</literal> method is written as:
 </para>
@@ -735,7 +735,7 @@ points in the direction of the top of the screen and its vertices are
 given by the <link linkend="ch07_002d11_002dTorpedoDiagram">ch07-11-TorpedoDiagram</link>.
 </para>
 <anchor id="ch07_002d11_002dTorpedoDiagram"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-11-TorpedoDiagram.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-11-TorpedoDiagram.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <anchor id="exeTorpedoExtent"/>
@@ -830,7 +830,7 @@ declare our variable in the <literal>Mobile class</literal> definition &#8211;
    ^ vertices
 </screen>
 <anchor id="ch07_002d12_002dbrowserClassSide"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-12-browserClassSide.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-12-browserClassSide.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 
@@ -987,7 +987,7 @@ bounds in the display, a rectangle encompassing the morph given its
 rotation and scale.
 </para>
 <anchor id="ch07_002d13_002dshipDisplayBounds"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch07-13-shipDisplayBounds.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch07-13-shipDisplayBounds.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>When browsing the <literal>Rectangle</literal> class, you learn the

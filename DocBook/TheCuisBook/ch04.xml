@@ -38,7 +38,7 @@ options:
    (p)</command>... Alternatively, use the keyboard shortcut <userinput>Ctrl-p</userinput>.
 </para>
 <anchor id="ch03_002dbrowseProtocol"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch03-browseProtocol.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch03-browseProtocol.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The new window is a protocol browser for the <literal>String</literal>
@@ -66,7 +66,7 @@ options:
    the button <command>hierarchy</command> on the system browser.
 </para>
 <anchor id="ch03_002dbrowseHierarchy"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch03-browseHierarchy.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch03-browseHierarchy.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The hierarchy browser is very like the system browser with only two
@@ -138,7 +138,7 @@ need to name something uniquely.
 <para>Now you know.  A symbol can&#8217;t be duplicated nor changed.
 </para>
 <indexterm role="cp"><primary>string</primary><secondary>Unicode</secondary></indexterm><indexterm role="cp"><primary>Unicode</primary></indexterm>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 In Cuis-Smalltalk, strings with characters not part of the <acronym>ASCII</acronym> table are usually instances of <literal>UnicodeString</literal>.
 In the same way, you may get an instance of <literal>UnicodeSymbol</literal>  and not <literal>Symbol</literal>, or <literal>UnicodeCodePoint</literal> and not <literal>Character</literal>. You usually don&#8217;t need to care about this. The <acronym>ASCII</acronym> and Unicode classes provide the same services.
 </para>
@@ -221,7 +221,7 @@ msg := 5.
 Transcript show: msg printString, ' is a kind of '.
 Transcript show: msg class printString; newLine.
 </screen>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 This ease of use has a drawback: when writing code to send
 a message to a
 variable bound to an object, the system does not check ahead of time
@@ -902,7 +902,7 @@ change according to the mechanical laws of physics.
    ../..
 </screen>
 
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 Remember that Smalltalk does not
 follow the mathematics precedence of arithmetic operators.
 These are seen as ordinary <emphasis role="bold">binary

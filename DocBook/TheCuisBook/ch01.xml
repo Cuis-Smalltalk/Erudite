@@ -217,7 +217,7 @@ keep the default Cuis-Smalltalk theme, we suggest you do the same so your
 environment reflects the book screenshots.
 </para>
 <anchor id="ch01_002dPreferences"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch01-Preferences.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-Preferences.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 </sect2>
@@ -234,7 +234,7 @@ area to place the Workspace window at the half left of the Cuis-Smalltalk
 environment.
 </para>
 <anchor id="ch01_002dimg1a"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch01-img1a.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-img1a.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The <command>resize...</command> option offers even more freedom to place the
@@ -273,7 +273,7 @@ doing here. Do ...World menu &#8594; <command>Open...</command>
 &#8594; <command>Transcript</command>... and execute the code again.
 </para>
 <anchor id="ch01_002dimg2"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch01-img2.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-img2.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The workspace code has three parts:
@@ -374,7 +374,7 @@ started with division and addition operations on integer, and we got
 an accurate result thanks to intermediate computation on rational
 numbers.
 </para>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 In the example, observe how the parentheses are used
 although in arithmetic calculation the division is performed first. With
 Cuis-Smalltalk you need to specify the order of operations with
@@ -433,7 +433,7 @@ additional features. <emphasis>Computer Space</emphasis>, the first arcade video
 game cabinet was a clone of Spacewar!
 </para>
 <anchor id="ch01_002dSpacewarPDP"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch01-SpacewarPDP.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-SpacewarPDP.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Wikipedia describes very precisely this space combat simulation game:
@@ -473,7 +473,7 @@ the other side in a wraparound effect.
 </para>
 </listitem></orderedlist>
 <anchor id="ch01_002dSpacewarGameplay"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch01-SpacewarGameplay.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch01-SpacewarGameplay.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 

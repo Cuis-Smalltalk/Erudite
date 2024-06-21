@@ -62,7 +62,7 @@ like an abbreviation.  I can ask for <emphasis>senders</emphasis> to see how <li
 in code elsewhere.
 </para>
 <anchor id="ch11_002d01_002dSendersOfLeft"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch11-01-SendersOfLeft.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-01-SendersOfLeft.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>I notice that most uses of <literal>#left</literal> are to indicate a position,
@@ -78,7 +78,7 @@ already knows how to do this!
 with selections to help me out. Here I choose <emphasis role="bold">Rename</emphasis>.
 </para>
 <anchor id="ch11_002d02_002dRenameLeft"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch11-02-RenameLeft.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-02-RenameLeft.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Now the tools that help us refactor code are quite powerful, so
@@ -87,14 +87,14 @@ restraint is called for.  I don&#8217;t want to change all uses of
 category.
 </para>
 <anchor id="ch11_002d03_002dRenameInCategory"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch11-03-RenameInCategory.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-03-RenameInCategory.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Of course, when making changes one wants to see that the result is
 what one expects.
 </para>
 <anchor id="ch11_002d04_002dturnLeft"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch11-04-turnLeft.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-04-turnLeft.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>As I am not perfect, I tend to save the Cuis-Smalltalk image before I make
@@ -114,24 +114,24 @@ restart the saved image which remembers the world before I made the change.
 <para>Where did I use this?  Ah, senders..
 </para>
 <anchor id="ch11_002d05_002dnoseSenders"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch11-05-noseSenders.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-05-noseSenders.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Hmmm, perhaps something more specific.  How about <literal>#noseDirection</literal>?
 How does that look?
 </para>
 <anchor id="ch11_002d06_002dnoseDirection"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch11-06-noseDirection.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch11-06-noseDirection.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 World menu &#8594; <command>Help</command> is your friend.
 The <command>Terse Guide to Cuise</command> gives access to a large sample
 of code usages. The <command>Class Comment Browser</command> is an alternate
 way to find interesting class information.  There are also more notes
 on code maganement and how we use GitHub.
 </para>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 We want to share with you! Please visit packages at the main Cuis-Smalltalk
 repository at <ulink url="https://github.com/Cuis-Smalltalk">https://github.com/Cuis-Smalltalk</ulink>, search GitHub
 for repositories with names starting with <emphasis role="bold">Cuis-Smalltalk-</emphasis>,

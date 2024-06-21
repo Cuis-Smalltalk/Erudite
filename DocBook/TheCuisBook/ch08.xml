@@ -244,7 +244,7 @@ right keyboard focus is not on the game, it is paused and we can see
 underneath.
 </para>
 <anchor id="ch08_002dFocus"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch08-Focus.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch08-Focus.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>In the Morph framework, the <literal>#keyboardFocusChange:</literal> message is sent

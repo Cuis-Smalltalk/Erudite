@@ -260,7 +260,7 @@ checks and ifTrue/ifFalse branches. Polymorphism is often used to avoid
 unnecessary checks and code branches.
 </para>
 <indexterm role="cp"><primary>keyboard shortcut</primary><secondary>implementors of (<userinput>Ctrl-m</userinput>)</secondary></indexterm>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 If you select the text <literal>abs</literal> in a Browser or
 Workspace and right-click to get the context menu, you will find an
 entry <command>Implementors of it</command>.  You can select this or use
@@ -336,7 +336,7 @@ class side, in the browser the <command>class</command> button is pressed to see
 list.
 </para>
 <anchor id="ch03_002dfloatClassSide"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch03-floatClassSide.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch03-floatClassSide.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>From a Workspace, these methods are called with the message name sent
@@ -351,7 +351,7 @@ Float fmax
 </screen>
 
 <indexterm role="cp"><primary>keyboard shortcut</primary><secondary>code completion (<userinput>tab</userinput>)</secondary></indexterm>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 You have noticed that text typed into the Workspace is
 colored and highlighted based on what you type.  We will discuss this
 below when we talk about the Smalltalk language, but the idea is to be
@@ -391,7 +391,7 @@ listed are instance side, in the browser the <command>instance</command> button
 is pressed to see this list.
 </para>
 <anchor id="ch03_002dfloatInstanceSide"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch03-floatInstanceSide.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch03-floatInstanceSide.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>In a Workspace, these methods are called with the message name sent
@@ -646,7 +646,7 @@ or <literal>0.5</literal>. The number <literal>0.0000241</literal> is more easil
 written with the scientific notation <literal>2.41e-5</literal>; it means 2
 preceded by 5 zeros or 2 as the fifth digit after the decimal dot.
 </para>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 Computers encode and store decimal numbers imprecisely. You
 need to be aware of that when doing computation and equality
 comparisons. Many systems hide these errors because they are very tiny
@@ -757,7 +757,7 @@ to see common ways to group methods.
 </para>
 <para>Sometimes you may not see a category related to what you&#8217;re looking for right away.
 </para>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 If you expect a method selector to start with a specific letter,
 click-select the <command>-- all --</command> method category, then move the
 cursor over the pane listing the method names.  Press this character,
@@ -843,7 +843,7 @@ string of the form &#8217;Joe bought XX apples and YY oranges&#8217; to the form
 discuss their object representation in the instance variables of our
 classes.
 </para>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 In the following sections, to ease reading we will write
 &#8220;the variable <literal>myVar</literal> is a <literal>String</literal>&#8221; instead of the
 correct but cumbersome &#8220;the instance variable <literal>myVar</literal> is a

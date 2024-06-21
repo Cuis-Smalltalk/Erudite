@@ -18,7 +18,7 @@ Smalltalk-72, Smalltalk-76 and Smalltalk-80.
 <title>Smallltalk Philosophy</title>
 <bridgehead renderas="sect2"><link linkend="exePlacement">exePlacement</link></bridgehead>
 <anchor id="E_002dimg1"/>
-<inlinemediaobject><imageobject><imagedata fileref="E-img1.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="E-img1.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <bridgehead renderas="sect2"><link linkend="concatenateUppercase">concatenateUppercase</link></bridgehead>
@@ -507,7 +507,7 @@ drawOn: aCanvas
             lineTo: 0 @ 0]
 </screen>
 <anchor id="E_002dexeRectMorph"/>
-<inlinemediaobject><imageobject><imagedata fileref="E-exeRectMorph.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="E-exeRectMorph.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 

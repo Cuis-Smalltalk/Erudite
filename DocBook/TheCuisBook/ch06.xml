@@ -90,7 +90,7 @@ submenu and drag onto the desktop.
 one gets a different morph but made to a standard style.
 </para>
 <anchor id="ch06_002d01_002dEllipseMorphFromMenu"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-01-EllipseMorphFromMenu.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-01-EllipseMorphFromMenu.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The basic challenge of <firstterm>user interface design</firstterm> is
@@ -114,7 +114,7 @@ usage.
 back at any time with a mouse click.
 </para>
 <anchor id="ch06_002d03_002dDragToEnlarge"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-03-DragToEnlarge.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-03-DragToEnlarge.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Now that you know this, move the yellow lower right handle with tool
@@ -123,7 +123,7 @@ left mouse button while the cursor is over the handle, move the cursor
 to the right and down, and release the mouse button.
 </para>
 <anchor id="ch06_002d04_002dEnlarged"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-04-Enlarged.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-04-Enlarged.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 </sect1>
@@ -139,7 +139,7 @@ submenus. The <literal>BoxedMorph</literal> instance displays itself as a
 rect with a border.
 </para>
 <anchor id="ch06_002d05_002dAddRectangle"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-05-AddRectangle.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-05-AddRectangle.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Now drag the rect over the ellipse and <userinput>Middle-Click</userinput> on the
@@ -148,7 +148,7 @@ rect and click on the blue construction handle to gets the rect&#8217;s
 select the ellipse as its new parent.
 </para>
 <anchor id="ch06_002d06_002dEmbedRectIntoEllipse"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-06-EmbedRectIntoEllipse.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-06-EmbedRectIntoEllipse.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Now when you click-drag the ellipse, or use the <command>Pick up</command> or
@@ -169,11 +169,11 @@ ellipse.  This rect does not have many interesting behaviors.
 submorph hierarchy.
 </para>
 <anchor id="ch06_002d07_002dMiddleClickRect"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-07-MiddleClickRect.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-07-MiddleClickRect.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <anchor id="ch06_002d08_002d2ndMidClckToSubmorph"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-08-2ndMidClckToSubmorph.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-08-2ndMidClckToSubmorph.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>There is an orange handle on the right, just under the green
@@ -194,7 +194,7 @@ where <literal>self</literal> is bound to the object we are inspecting.
 <para>Inspectors work for every object by the way, not just morphs.
 </para>
 <anchor id="ch06_002d11aColorClickOnRect"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-11aColorClickOnRect.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-11aColorClickOnRect.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>To add a behavior to all instances of a class, we create an instance
@@ -228,18 +228,18 @@ moves a submorph &#8220;within&#8221; its parent.  <command>Pick up</command> gr
 &#8220;out&#8221; of its parent.
 </para>
 <anchor id="ch06_002d09_002dMove_002dWithin"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-09-Move-Within.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-09-Move-Within.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <anchor id="ch06_002d10_002dPickUp_002d2_002dMoveOut"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-10-PickUp-2-MoveOut.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-10-PickUp-2-MoveOut.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Before we go on, let&#8217;s use an inspector on the ellipse to change
 values of a couple of its instance variables.
 </para>
 <anchor id="ch06_002d12_002dInspectEllipse"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-12-InspectEllipse.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-12-InspectEllipse.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Observe <link linkend="ch06_002d14_002dSetBorderColor">ch06-14-SetBorderColor</link> and <link linkend="editShapeInspector">editShapeInspector</link>. In
@@ -253,7 +253,7 @@ self borderColor: Color blue
 </screen>
 
 <anchor id="ch06_002d14_002dSetBorderColor"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-14-SetBorderColor.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-14-SetBorderColor.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>In the typical case one wants to refine or change behaviors for all
@@ -297,7 +297,7 @@ try it out.  These are fun to <userinput>Left-Click</userinput> on.  Make as man
 you want!
 </para>
 <anchor id="ch06_002d15_002dColorClickEllipse"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-15-ColorClickEllipse.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-15-ColorClickEllipse.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Now you know how to specialize an individual morph, or make a whole
@@ -651,7 +651,7 @@ implementations of the <literal>update:</literal> method within this inheritance
 chain.
 </para>
 <anchor id="ch06_002d20_002dTorpedoUpdateInheritance"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch06-20-TorpedoUpdateInheritance.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch06-20-TorpedoUpdateInheritance.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>We already met an example of overriding when initializing a space ship

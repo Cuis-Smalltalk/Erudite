@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 7:09:07 pm'!
+'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 11:20:40 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 261!
+!provides: 'Erudite' 1 264!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -274,6 +274,16 @@ Object subclass: #EruditeDocNode
 	category: 'Erudite-Parser'!
 !classDefinition: 'EruditeDocNode class' category: #'Erudite-Parser'!
 EruditeDocNode class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeCompositeDocNode category: #'Erudite-Parser'!
+EruditeDocNode subclass: #EruditeCompositeDocNode
+	instanceVariableNames: 'children'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Parser'!
+!classDefinition: 'EruditeCompositeDocNode class' category: #'Erudite-Parser'!
+EruditeCompositeDocNode class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeDocActionLink category: #'Erudite-Parser'!
@@ -19489,6 +19499,12 @@ visitCode: aDocCode
 	
 	self perform: codeActionSelector with: aDocCode! !
 
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:29:36'!
+visitCompositeNode: aDocNode
+
+	aDocNode children do: [:node |
+		node accept: self]! !
+
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'jmv 6/11/2020 16:33:17'!
 visitHeading: aEruditeHeading
 
@@ -20088,21 +20104,23 @@ renderLink: aDocLink on: aStream
 									ifAbsent: [self error: 'Class not found: ', className asString].
 						self browse: class selector: nil]))! !
 
-!EruditeImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:56:31'!
+!EruditeImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 23:18:08'!
 render: aDocLink in: aDocument on: aStream
 
 	|form imageMorph |
 	
-	form _ [aDocument getNodeData: aDocLink]
+	form := [aDocument getNodeData: aDocLink]
 				on: Error
-				do: [:e | ^aStream nextPut: e printString].
+				do: [:e | 
+						Transcript show: e messageText; cr.
+						^aStream nextPut: e printString].
 	
 	"Process image options performing options as messages."
 	aDocLink options keysAndValuesDo: [:key :value |
-		[form _ form perform: (key, ':') asSymbol with: (Compiler evaluate: value)]
+		[form := form perform: (key, ':') asSymbol with: (Compiler evaluate: value)]
 			on: Error do: [:e | aStream nextPut: e messageText asText]].
 	
-	imageMorph _ ImageMorph new
+	imageMorph := ImageMorph new
 					image: form.
 							
 	aStream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
@@ -20331,6 +20349,35 @@ storeData: aDictionary
 	"Store my  data in aDictionary.
 A node's data is serialized and transferred in books."
 	! !
+
+!EruditeCompositeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:27:36'!
+accept: aVisitor
+
+	^ aVisitor visitCompositeNode: self! !
+
+!EruditeCompositeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:32:21'!
+initialize
+
+	super initialize.
+	
+	children := OrderedCollection new! !
+
+!EruditeCompositeDocNode methodsFor: 'accessing' stamp: 'MM 6/20/2024 22:27:58'!
+children
+	"Answer the value of children"
+
+	^ children! !
+
+!EruditeCompositeDocNode methodsFor: 'accessing' stamp: 'MM 6/20/2024 22:27:58'!
+children: anObject
+	"Set the value of children"
+
+	children := anObject! !
+
+!EruditeCompositeDocNode class methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:28:17'!
+children: aCollection
+
+	^self new children: aCollection; yourself! !
 
 !EruditeDocActionLink methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:02'!
 accept: aVisitor

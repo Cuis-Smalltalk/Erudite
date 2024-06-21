@@ -46,7 +46,7 @@ which allow one to <literal>ensure:</literal> cleanup or capture and use excepti
 <para>Exceptions are created and <firstterm>signal</firstterm>ed.  Let&#8217;s make one and look at it.
 </para>
 <anchor id="ch10_002d01_002dZeroDivide"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-01-ZeroDivide.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-01-ZeroDivide.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Again, we can use an Inspector on any object, and <literal>Exception</literal>s are
@@ -89,11 +89,11 @@ fileNames asArray.
 (<emphasis>select <emphasis role="bold">P</emphasis>rint-it</emphasis>) to see the result.
 </para>
 <anchor id="ch10_002d02_002dDirChildNames"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-02-DirChildNames.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-02-DirChildNames.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <indexterm role="cp"><primary>file</primary></indexterm>
-<indexterm role="cp"><primary>string</primary><secondary>file entry</secondary></indexterm><para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<indexterm role="cp"><primary>string</primary><secondary>file entry</secondary></indexterm><para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 The <literal>String</literal> class has several method category names
 starting with <command>fileman-</command> for converting pathnames (system names
 for files and directories) into <literal>FileEntry</literal> and
@@ -106,7 +106,7 @@ Remove the result, then <userinput>Ctrl-a</userinput> (<emphasis>select <emphasi
 <userinput>Ctrl-Shift-D</userinput> (<emphasis>select <emphasis role="bold">D</emphasis>ebug-it</emphasis>).
 </para>
 <anchor id="ch10_002d03_002dDebugIt"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-03-DebugIt.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-03-DebugIt.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <indexterm role="cp"><primary>execution stack</primary></indexterm>
@@ -170,7 +170,7 @@ and control of how the execution processing is to proceed.
 instructions here, just close the debugger and start with Debug-It again.
 </para>
 <anchor id="ch10_002d04_002dStepInto"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-04-StepInto.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-04-StepInto.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>As you <firstterm>single step</firstterm> the debugger, hilighting of the <emphasis>next</emphasis> message
@@ -178,7 +178,7 @@ send changes.  Press <userinput>Over</userinput> three times.  You should see th
 starting with <emphasis>childrenDo:</emphasis> hilighted.  Now press <userinput>Into</userinput>.
 </para>
 <anchor id="ch10_002d05_002dFocusObjAndArgs"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-05-FocusObjAndArgs.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-05-FocusObjAndArgs.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>The stack area shows the focus object is a <literal>DirectoryEntry</literal>.
@@ -228,7 +228,7 @@ fileNames := OrderedCollection new.
 fileNames asArray.
 </screen>
 
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 The object which receives the <literal>#halt</literal> message
 becomes the focus object of the debugger.
 </para>
@@ -236,13 +236,13 @@ becomes the focus object of the debugger.
 (<emphasis>select <emphasis role="bold">P</emphasis>rint-it</emphasis>).
 </para>
 <anchor id="ch10_002d06_002dHalt"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-06-Halt.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-06-Halt.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Press <userinput>Over</userinput> twice to step over the breakpoint.
 </para>
 <anchor id="ch10_002d07_002dOver"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch10-07-Over.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch10-07-Over.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 <para>Well, this looks familiar.  I know what to do here.

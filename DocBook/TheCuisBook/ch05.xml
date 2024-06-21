@@ -409,7 +409,7 @@ result &#8658; '1 2 3 4 5 6 7 8 9 10 '
 <para>You can check all the alternatives in the <command>intervals</command> method
 category of the class <literal>Number</literal>.
 </para>
-<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 If the exit condition of method like <literal>whileTrue:</literal> is
 never satisfied, you may have implemented an <firstterm>infinite loop</firstterm>.
 Just type <userinput>Cmd-period</userinput> to get the Debugger.
@@ -553,7 +553,7 @@ space ship position, heading, and velocity before being fired.
 
 
 <anchor id="ch05_002dSpacewarGamePlay"/>
-<inlinemediaobject><imageobject><imagedata fileref="ch05-SpacewarGamePlay.jpg" format="JPG"></imagedata></imageobject></inlinemediaobject>
+<inlinemediaobject><imageobject><imagedata fileref="ch05-SpacewarGamePlay.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 
 
 

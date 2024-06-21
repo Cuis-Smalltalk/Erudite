@@ -1,10 +1,10 @@
-'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 9:14:23 pm'!
+'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 11:20:45 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 16!
-!requires: 'Erudite' 1 261 nil!
+!provides: 'EruditeDocBook' 1 19!
+!requires: 'Erudite' 1 263 nil!
 !requires: 'EruditeXMLBook' 1 14 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #'EruditeDocBook-Books'!
@@ -13,7 +13,7 @@ SystemOrganization addCategory: #EruditeDocBook!
 
 !classDefinition: #DocBookEruditeBook category: #EruditeDocBook!
 EruditeBook subclass: #DocBookEruditeBook
-	instanceVariableNames: 'file'
+	instanceVariableNames: 'file mediaDir imageDir'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeDocBook'!
@@ -53,7 +53,7 @@ DocBookEruditeBookStorer class
 
 !classDefinition: #EruditeDocBookParser category: #EruditeDocBook!
 Object subclass: #EruditeDocBookParser
-	instanceVariableNames: 'stream sectionLevel'
+	instanceVariableNames: 'stream sectionLevel book'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeDocBook'!
@@ -87,10 +87,22 @@ DocBookEruditeBook new
 
 !
 
+!DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:03:44'!
+baseDir
+
+	^ file parent! !
+
 !DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 16:08:52'!
 load
 
 	^ self reload! !
+
+!DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:53:56'!
+parser
+
+	^ EruditeDocBookParser new
+		book: self;
+		yourself! !
 
 !DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 16:09:37'!
 sections
@@ -116,10 +128,29 @@ file: anObject
 
 	file := anObject! !
 
-!DocBookEruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:05:58'!
-parser
+!DocBookEruditeBook methodsFor: 'accessing' stamp: 'MM 6/20/2024 22:04:16'!
+imageDir
+	"Answer the value of imageDir"
 
-	^ EruditeDocBookParser new! !
+	^ imageDir ifNil: [self mediaDir]! !
+
+!DocBookEruditeBook methodsFor: 'accessing' stamp: 'MM 6/20/2024 22:03:57'!
+imageDir: anObject
+	"Set the value of imageDir"
+
+	imageDir := anObject! !
+
+!DocBookEruditeBook methodsFor: 'accessing' stamp: 'MM 6/20/2024 22:04:31'!
+mediaDir
+	"Answer the value of mediaDir"
+
+	^ mediaDir ifNil: [self baseDir]! !
+
+!DocBookEruditeBook methodsFor: 'accessing' stamp: 'MM 6/20/2024 22:03:57'!
+mediaDir: anObject
+	"Set the value of mediaDir"
+
+	mediaDir := anObject! !
 
 !DocBookTheDefinitiveGuideBook methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 16:11:43'!
 initialize
@@ -130,13 +161,17 @@ initialize
 	self file: ((CodePackage installedPackages at: 'EruditeDocBook') fullFileName asFileEntry parent // 'DocBook/defguide5/src/guide.xml').
 	! !
 
-!TheCuisBook methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 15:59:48'!
+!TheCuisBook methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:08:53'!
 initialize
 
+	| baseDir |
+	
 	super initialize.
 	
 	self title: 'The Cuis Book'.
-	self file: ((CodePackage installedPackages at: 'EruditeDocBook') fullFileName asFileEntry parent // 'DocBook/TheCuisBook/book.xml')
+	baseDir := (CodePackage installedPackages at: 'EruditeDocBook') fullFileName asFileEntry parent.
+	self file:  (baseDir // 'DocBook/TheCuisBook/book.xml').
+	self imageDir: (baseDir / 'DocBook/TheCuisBook/img')
 	! !
 
 !DocBookEruditeBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 13:44:46'!
@@ -162,6 +197,18 @@ load
 	^ loadedBook
 	! !
 
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:16:11'!
+addContent: aDocNode
+
+	doc contents add: aDocNode.
+	
+	^ aDocNode! !
+
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:54:48'!
+book: aBook
+
+	book := aBook! !
+
 !EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 13:59:13'!
 initialize
 
@@ -181,7 +228,7 @@ parse
 		parser: self;
 		yourself! !
 
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:00:08'!
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:25:52'!
 parse: aString
 
 	| parser xml doc contents |
@@ -195,9 +242,24 @@ parse: aString
 			yourself.
 	xml elementsDo: [:xmlElem |
 		(self parseElement: xmlElem) ifNotNil: [:parsedElem |
+			self assert: (parsedElem isKindOf: EruditeDocNode).
 			contents add: parsedElem]].
 	
 	^ doc! !
+
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:42:33'!
+parseChildrenOf: anXMLElement
+
+	| node |
+	
+	node := EruditeCompositeDocNode new.
+	
+	anXMLElement childrenDo: [:xmlElem | 
+		(self parseElement: xmlElem) ifNotNil: [:docNode |
+			self assert: (docNode isKindOf: EruditeDocNode).
+			node children add: docNode]].
+	
+	^ node! !
 
 !EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 18:52:58'!
 parseElement: anXMLElement
@@ -303,6 +365,26 @@ parseEmphasis: anXMLElement
 					space])
 		style: TextEmphasis italic! !
 
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 23:18:58'!
+parseImagedata: anXMLElement
+
+	| imagePath |
+	
+	imagePath := 	book imageDir // (anXMLElement attributeAt: #fileref).
+	
+	imagePath exists 
+		ifFalse: [
+			Transcript show: '[EruditeDocBookParser] - fileref does not exist: ', imagePath asString; cr].
+	
+	^ EruditeDocLink target: imagePath asString
+						type: #image
+						label: imagePath asString! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 22:43:48'!
+parseImageobject: anXMLElement
+
+	^ self parseChildrenOf: anXMLElement! !
+
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 12:01:21'!
 parseIndexterm: anXMLElement
 
@@ -310,6 +392,11 @@ parseIndexterm: anXMLElement
 	Do nothing for now"
 	
 	^ nil! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 22:36:41'!
+parseInlinemediaobject: anXMLElement
+
+	^ self parseChildrenOf: anXMLElement! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 19:04:23'!
 parseLink: anXMLElement
@@ -333,6 +420,11 @@ parseLiteral: anXMLElement
 					space])
 		style: TextColor blue! !
 
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 22:39:05'!
+parseMediaobject: anXMLElement
+
+	^ self parseChildrenOf: anXMLElement! !
+
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:34:42'!
 parsePara: anXMLElement
 
@@ -345,6 +437,11 @@ parsePara: anXMLElement
 			paragraph contents add: parsedElem]].
 	
 	^ paragraph! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 22:38:52'!
+parsePhrase: anXMLElement
+
+	^ self parseChildrenOf: anXMLElement! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 09:43:22'!
 parsePreface: anXMLElement
