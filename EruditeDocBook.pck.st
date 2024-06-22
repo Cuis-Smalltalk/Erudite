@@ -1,9 +1,9 @@
-'From Cuis7.1 [latest update: #6487] on 22 June 2024 at 3:31:38 pm'!
+'From Cuis7.1 [latest update: #6487] on 22 June 2024 at 8:40:33 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 22!
+!provides: 'EruditeDocBook' 1 23!
 !requires: 'Erudite' 1 263 nil!
 !requires: 'EruditeXMLBook' 1 14 nil!
 !requires: 'YAXO' 1 27 nil!
@@ -421,19 +421,25 @@ parseInlinemediaobject: anXMLElement
 
 	^ self parseChildrenOf: anXMLElement! !
 
-!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/22/2024 12:27:36'!
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/22/2024 20:39:07'!
 parseItemizedlist: anXMLElement
 
-	| node |
+	| list composite |
 	
-	node := EruditeDocList new.
+	"We use a composite because the list can contain nodes other than list items."
+	
+	list := EruditeDocList new.
+	composite := EruditeCompositeDocNode new.
 	
 	anXMLElement childrenDo: [:xmlElem | 
 		(self parseElement: xmlElem) ifNotNil: [:docNode |
-			self assert: (docNode isKindOf: EruditeDocListItem ).
-			node items add: docNode]].
-	
-	^ node! !
+			(docNode isKindOf: EruditeDocListItem) 
+				ifTrue: [	list items add: docNode]
+				ifFalse: [composite children add: docNode]]].
+			
+	^ composite children 
+		ifEmpty: [list]
+		ifNotEmpty: [composite children addFirst: list. composite]! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 19:04:23'!
 parseLink: anXMLElement
