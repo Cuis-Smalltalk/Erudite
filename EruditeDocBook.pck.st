@@ -1,9 +1,9 @@
-'From Cuis7.1 [latest update: #6487] on 21 June 2024 at 8:58:02 am'!
+'From Cuis7.1 [latest update: #6487] on 22 June 2024 at 3:31:38 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 20!
+!provides: 'EruditeDocBook' 1 22!
 !requires: 'Erudite' 1 263 nil!
 !requires: 'EruditeXMLBook' 1 14 nil!
 !requires: 'YAXO' 1 27 nil!
@@ -359,15 +359,25 @@ parseCommand: anXMLElement
 					space])
 		style: TextColor blue! !
 
-!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 18:59:24'!
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/22/2024 12:21:18'!
 parseEmphasis: anXMLElement
+
+	|style|
+	
+	style := TextEmphasis italic.
+	
+	(anXMLElement attributeAt: #role) = 'bold' ifTrue: [
+		style := TextEmphasis bold].
+	
+	(anXMLElement attributeAt: #role) = 'strong' ifTrue: [
+		style := TextEmphasis bold].
 
 	^ EruditeStyledText 
 		text: (String streamContents: [:s |
 				s space;
 					nextPutAll: anXMLElement contentString;
 					space])
-		style: TextEmphasis italic! !
+		style: style! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 23:18:58'!
 parseImagedata: anXMLElement
@@ -411,6 +421,20 @@ parseInlinemediaobject: anXMLElement
 
 	^ self parseChildrenOf: anXMLElement! !
 
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/22/2024 12:27:36'!
+parseItemizedlist: anXMLElement
+
+	| node |
+	
+	node := EruditeDocList new.
+	
+	anXMLElement childrenDo: [:xmlElem | 
+		(self parseElement: xmlElem) ifNotNil: [:docNode |
+			self assert: (docNode isKindOf: EruditeDocListItem ).
+			node items add: docNode]].
+	
+	^ node! !
+
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 19:04:23'!
 parseLink: anXMLElement
 
@@ -422,6 +446,20 @@ parseLink: anXMLElement
 					nextPutAll: anXMLElement contentString;
 					space])
 		styles: (Array with: TextColor blue with: TextEmphasis underlined )! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/22/2024 12:30:30'!
+parseListitem: anXMLElement
+
+	| node |
+	
+	node := EruditeDocListItem new.
+	
+	anXMLElement childrenDo: [:xmlElem | 
+		(self parseElement: xmlElem) ifNotNil: [:docNode |
+			self assert: (docNode isKindOf: EruditeDocNode ).
+			node contents add: docNode]].
+	
+	^ node! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 19:00:12'!
 parseLiteral: anXMLElement
@@ -437,6 +475,20 @@ parseLiteral: anXMLElement
 parseMediaobject: anXMLElement
 
 	^ EruditeParagraphNode contents: (Array with: (self parseChildrenOf: anXMLElement))! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/22/2024 12:39:55'!
+parseOrderedlist: anXMLElement
+
+	| node |
+	
+	node := EruditeDocList new.
+	
+	anXMLElement childrenDo: [:xmlElem | 
+		(self parseElement: xmlElem) ifNotNil: [:docNode |
+			self assert: (docNode isKindOf: EruditeDocListItem ).
+			node items add: docNode]].
+	
+	^ node! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:34:42'!
 parsePara: anXMLElement
@@ -572,6 +624,27 @@ parseUserinput: anXMLElement
 					space])
 		styles: (Array with: TextColor black 
 					with: (TextBackgroundColor color: Color lightGray)) ! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/22/2024 15:29:36'!
+parseVariablelist: anXMLElement
+
+	| node |
+	
+	node := EruditeDocList new.
+	
+	anXMLElement tagsNamed: #varlistentry do: [:entry | 
+		| listitem |
+		
+		listitem := self parseElement: (entry firstTagNamed: #listitem).
+		entry tagsNamed: #term do: [:term | 
+			listitem contents addFirst: 
+				(EruditeStyledText 
+					text: term contentString
+					styles: (Array with: (TextBackgroundColor color: Color veryLightGray )
+										 with: TextColor white))].
+		node items add: listitem].			
+	
+	^ node! !
 
 !EruditeDocBookParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 20:58:46'!
 parse: aString

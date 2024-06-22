@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 11:20:40 pm'!
+'From Cuis7.1 [latest update: #6487] on 22 June 2024 at 3:31:46 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 264!
+!provides: 'Erudite' 1 265!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -19524,14 +19524,14 @@ visitLink: aDocLink
 	(self linkRendererFor: aDocLink type) 
 		render: aDocLink in: document on: stream! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 19:56:59'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/22/2024 15:30:35'!
 visitList: aListNode
 
 	aListNode items do: [:item |
+		stream nextPut: '* '.
 		item contents do: [:elem |
-			stream nextPut: '* '.
-			elem accept: self.
-			stream nextPut: Character newLineCharacter asString.]]! !
+			elem accept: self].
+		stream nextPut: Character newLineCharacter asString]! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 23:10:43'!
 visitStyledText: aStyledText
@@ -20664,6 +20664,11 @@ contents: anObject
 	"Set the value of contents"
 
 	contents := anObject! !
+
+!EruditeDocListItem methodsFor: 'as yet unclassified' stamp: 'MM 6/22/2024 12:31:24'!
+accept: aVisitor
+
+	^ aVisitor visitListItem: self! !
 
 !EruditeDocListItem methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 18:05:32'!
 initialize
