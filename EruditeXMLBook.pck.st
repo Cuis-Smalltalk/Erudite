@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6487] on 20 June 2024 at 9:14:15 pm'!
+'From Cuis7.1 [latest update: #6487] on 23 June 2024 at 7:06:09 pm'!
 'Description '!
-!provides: 'EruditeXMLBook' 1 14!
-!requires: 'Erudite' 1 261 nil!
+!provides: 'EruditeXMLBook' 1 15!
+!requires: 'Erudite' 1 267 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #EruditeXMLBook!
 
@@ -412,6 +412,14 @@ addElement: element
 
 	super addElement: element.
 	children addLast: element! !
+
+!EruditeXMLElement methodsFor: 'as yet unclassified' stamp: 'MM 6/23/2024 18:52:04'!
+attributeAt: aSymbol ifPresent: aBlock
+
+	| value |
+	
+	value := self attributeAt: aSymbol.
+	^ value ifNotNil: [aBlock value: value]! !
 
 !EruditeXMLElement methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 17:40:25'!
 children

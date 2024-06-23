@@ -42,14 +42,14 @@ fresh Cuis-Smalltalk environment, the count of class instances is more than
 150000.
 </para>
 <indexterm role="cp"><primary>collection</primary><secondary><literal>inject:into:</literal></secondary></indexterm><anchor id="entitiesCount"/>
-<screen>ProtoObject allSubclasses sum: [ :class | class allInstances size] 
+<screen language="smalltalk">ProtoObject allSubclasses sum: [ :class | class allInstances size] 
 &#8658; 152058
 </screen>
 
 <para>The count of classes, the models for the entities &#8211; instances of the class <literal>Class</literal> &#8211; is less than 700.
 </para>
 <anchor id="classesCount"/>
-<screen>Smalltalk allClasses size
+<screen language="smalltalk">Smalltalk allClasses size
 &#8658; 671
 </screen>
 
@@ -108,7 +108,7 @@ with a colon.
 <indexterm role="cp"><primary>message</primary><secondary>precedence</secondary></indexterm><para>Unary messages have the highest precedence, followed by binary messages, and
 finally keyword messages, so:
 </para>
-<screen>2 raisedTo: 1 + 3 factorial
+<screen language="smalltalk">2 raisedTo: 1 + 3 factorial
 &#8658; 128
 </screen>
 <para>First we send <literal>factorial</literal> to <literal>3</literal>, then we send
@@ -117,12 +117,12 @@ finally keyword messages, so:
 </para>
 <para>Precedence aside, evaluation is strictly from left to right, so
 </para>
-<screen>1 + 2 * 3
+<screen language="smalltalk">1 + 2 * 3
 &#8658; 9
 </screen>
 <para>is not 7. Parentheses must be used to alter the order of evaluation:
 </para>
-<screen>1 + (2 * 3)
+<screen language="smalltalk">1 + (2 * 3)
 &#8658; 7
 </screen>
 <para>Parentheses can also be used to make potentially confusing code more
@@ -132,7 +132,7 @@ code snippet below, the parentheses make it more clear that the
 addition happens first:
 </para>
 <anchor id="updateShipVelocity"/>
-<screen>newVelocity := (ai + ag) * t + velocity
+<screen language="smalltalk">newVelocity := (ai + ag) * t + velocity
 </screen>
 
 <indexterm role="cp"><primary>message</primary><secondary>cascade</secondary></indexterm><indexterm role="cp"><primary>cascade of messages</primary></indexterm>
@@ -142,7 +142,7 @@ separated by semicolons. Here is our earlier <link linkend="hello2">hello2</link
 expressed with a cascade:
 </para>
 <anchor id="helloCascade"/>
-<screen>Transcript
+<screen language="smalltalk">Transcript
    show: 'Hello World!';
    newLine;
    show: 'I am Cuising'
@@ -151,7 +151,7 @@ expressed with a cascade:
 <para>Another example of a cascade from the Spacewar! game:
 </para>
 <anchor id="teleportShip"/>
-<screen>aShip 
+<screen language="smalltalk">aShip 
    velocity: 0 @ 0;
    morphPosition: randomCoordinate value @ randomCoordinate value
 </screen>
@@ -160,7 +160,7 @@ expressed with a cascade:
 write the cascade of messages in one line, but it reduces the
 readability of the code:
 </para>
-<screen>Transcript show: 'Hello World!'; newLine; show: 'I am Cuising'
+<screen language="smalltalk">Transcript show: 'Hello World!'; newLine; show: 'I am Cuising'
 </screen>
 <para>The <literal>Transcript</literal> class is frequently helpful in presenting
 useful information when developing an application. An alternative to
@@ -182,7 +182,7 @@ elements, and represents plain Text (without any formatting).
 </para>
 <para>In Cuis, as in most programming languages, <literal>String</literal> literals are a convenient syntax for creating <literal>String</literal> instances. These are some examples of <literal>String</literal> literals:
 </para>
-<screen>'Hello World!'.
+<screen language="smalltalk">'Hello World!'.
 'Accented letters: cigüeña, camión, déjà, deçà, forêt, coïncidence'.
 'Non-latin (Greek) letters: Λορεμ ιπσθμ δολορ σιτ αμετ'.
 </screen>
@@ -192,20 +192,20 @@ elements, and represents plain Text (without any formatting).
 <literal>#at:</literal> and its index position in the string as the argument. Execute
 the following examples with the <userinput>Ctrl-p</userinput> shortcut:
 </para>
-<screen>'Hello' at: 1 &#8658; $H
+<screen language="smalltalk">'Hello' at: 1 &#8658; $H
 'Hello' at: 5 &#8658; $o
 </screen>
 <para>Observe how a character is prefixed with the &#8220;$&#8221; symbol.
 </para>
 <para><emphasis role="bold">Caution.</emphasis> The index indicates position, naturally starting from 1, and is valid up to the string length.
 </para>
-<indexterm role="cp"><primary>string</primary><secondary><literal>indexOf:</literal></secondary></indexterm><screen>'Hello' indexOf: $e
+<indexterm role="cp"><primary>string</primary><secondary><literal>indexOf:</literal></secondary></indexterm><screen language="smalltalk">'Hello' indexOf: $e
 &#8658; 2
 </screen>
 <indexterm role="cp"><primary>string</primary><secondary><literal>at:put:</literal></secondary></indexterm><indexterm role="cp"><primary><literal>yourself</literal></primary></indexterm>
 <para>To change one character, use the companion two keyword message
 <literal>#at:put:</literal>. The argument must be noted as a character:
-</para><screen>'Hello' at: 2 put: $a; yourself
+</para><screen language="smalltalk">'Hello' at: 2 put: $a; yourself
 &#8658; 'Hallo'
 </screen>
 <para>Observe the use of the cascade with the <literal>#yourself</literal> message.  A
@@ -225,7 +225,7 @@ asked for their <acronym>ASCII</acronym> code. Conversely, given an
 <acronym>ASCII</acronym> code, we can ask for the corresponding
 <literal>Character</literal>:
 </para>
-<screen>$A asciiValue
+<screen language="smalltalk">$A asciiValue
 &#8658; 65
 Character asciiValue: 65 + 25
 &#8658; $Z
@@ -235,7 +235,7 @@ Character asciiValue: 65 + 25
 <acronym>ASCII</acronym>. In general, it is better to use Unicode code points
 instead:
 </para>
-<screen>$A codePoint
+<screen language="smalltalk">$A codePoint
 &#8658; 65
 UnicodeCodePoint codePoint: 65 + 25
 &#8658; $Z
@@ -247,12 +247,12 @@ UnicodeCodePoint codePoint: 966
 <indexterm role="cp"><primary>string</primary><secondary><literal>shuffled</literal></secondary></indexterm><indexterm role="cp"><primary>collection</primary><secondary><literal>shuffled</literal></secondary></indexterm><para>Shuffling a string can be fun but not very useful. However,
 shuffling can apply to any kind of collection, not only to a string, and it
 will prove to be useful as we will see later:
-</para><screen>'hello world' shuffled
+</para><screen language="smalltalk">'hello world' shuffled
 &#8658; 'wod llreohl'
 </screen><para>Note that the results of each shuffle are different.
 </para>
 <indexterm role="cp"><primary>string</primary><secondary><literal>asArray</literal></secondary></indexterm><indexterm role="cp"><primary>message</primary><secondary>composition</secondary></indexterm><para>Messages naturally compose:
-</para><screen>'hello world' shuffled asArray
+</para><screen language="smalltalk">'hello world' shuffled asArray
 &#8658; #($h $d $l $ &quot;20&quot; $o $w $e $l $l $o $r) 
 </screen>
 <para>An <literal>Array</literal> literal starts with a hash or sharp character, <literal>$#</literal>
@@ -262,7 +262,7 @@ be instances of any class.
 </para>
 <para>Like <literal>#shuffled</literal>, all collections answer to the message
 <literal>#sorted</literal>, which answers a sorted collection.
-<indexterm role="cp"><primary>string</primary><secondary><literal>sorted</literal></secondary></indexterm></para><screen>'hello world' sorted
+<indexterm role="cp"><primary>string</primary><secondary><literal>sorted</literal></secondary></indexterm></para><screen language="smalltalk">'hello world' sorted
 &#8658; ' dehllloorw'
 </screen>
 </sect1>
@@ -273,7 +273,7 @@ be instances of any class.
 four arithmetic operations and mathematical functions are implemented
 with unary and binary messages understood by the rational numbers:
 </para>
-<screen>(15 / 14) * (21 / 5) &#8658; 9 / 2
+<screen language="smalltalk">(15 / 14) * (21 / 5) &#8658; 9 / 2
 (15 / 14) / ( 5 / 21) &#8658; 9 /2 
 (3 / 4) squared &#8658; 9 / 16
 (25 / 4) sqrt &#8658; 5 / 2
@@ -289,25 +289,25 @@ result in decimal? One option is to write a number as a floating point literal,
 a <firstterm>Float</firstterm>.
 This kind of literal is written with the integer
 and fractional parts separated by a dot &#8220;.&#8221;:
-</para><screen>15.0 / 4 &#8658; 3.75
+</para><screen language="smalltalk">15.0 / 4 &#8658; 3.75
 15 / 4.0 &#8658; 3.75
 </screen>
 <para>Another option is to convert an integer to a float with the
 <literal>#asFloat</literal> message. It is very useful when the integer is in a
 variable:
 </para>
-<screen>15 asFloat / 4
+<screen language="smalltalk">15 asFloat / 4
 &#8658; 3.75
 </screen>
 <indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>division</tertiary></indexterm><para>You can also ask for division with truncation to
 get an integer result using 
 the message <literal>#//</literal>:
-</para><screen>15 // 4
+</para><screen language="smalltalk">15 // 4
 &#8658; 3
 </screen>
 <indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>division reminder</tertiary></indexterm><para>The modulo remainder of the Euclidean division is computed with the message
 <literal>#\\</literal>:
-</para><screen>15 \\ 4
+</para><screen language="smalltalk">15 \\ 4
 &#8658; 3
 </screen>
 <indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>odd</literal></tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>even</literal></tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>isPrime</literal></tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>isDivisibleBy:</literal></tertiary></indexterm><para>Cuis-Smalltalk has arithmetic operations to test if an integer is odd, even,
@@ -315,7 +315,7 @@ a prime number, or divisible by another. You just send the appropriate unary or
 keyword message to the number:
 </para>
 <anchor id="integerBasicTest"/>
-<screen>25 odd &#8658; true
+<screen language="smalltalk">25 odd &#8658; true
 25 even &#8658; false
 25 isPrime &#8658; false
 23 isPrime &#8658; true
@@ -328,7 +328,7 @@ keyword message to the number:
 Multiple and Greatest Common Divisor. A keyword message is composed of
 one or more colons &#8220;:&#8221; to insert one or more arguments:
 </para>
-<screen>12 lcm: 15 &#8658; 60
+<screen language="smalltalk">12 lcm: 15 &#8658; 60
 12 gcd: 15 &#8658; 3
 </screen>
 <para>In the Spacewar! game, the central star is the source of a gravity
@@ -340,7 +340,7 @@ snippet below shows a (simplified) mixed scalar and vector calculation
 done with message sending (See <link linkend="motionEquations">motionEquations</link>):
 </para>
 <anchor id="gravityVector"/>
-<screen>-10 * self mass * owner starMass / (position r raisedTo: 3) * position
+<screen language="smalltalk">-10 * self mass * owner starMass / (position r raisedTo: 3) * position
 </screen>
 
 </sect1>
@@ -379,7 +379,7 @@ are nicely presented in a parent-child class hierarchy. When a class is
 first selected in this pane, its declaration appears in the large pane
 below, the <literal>Number</literal> class declaration is:
 </para>
-<screen>Magnitude subclass: #Number
+<screen language="smalltalk">Magnitude subclass: #Number
    instanceVariableNames: ''
    classVariableNames: ''
    poolDictionaries: ''
@@ -506,7 +506,7 @@ key in <emphasis>Spacewar!</emphasis>
 the method source code pane &#8211; the bottom one &#8211; to create a new class in
 the <command>Spacewar!</command> category:
 </para>
-<screen>Object subclass: #NameOfSubclass
+<screen language="smalltalk">Object subclass: #NameOfSubclass
    instanceVariableNames: ''
    classVariableNames: ''
    poolDictionaries: ''

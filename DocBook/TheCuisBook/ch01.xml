@@ -261,7 +261,7 @@ details of the syntax out of this section.
 in Smalltalk:
 </para>
 <anchor id="hello"/>
-<screen>Transcript show: 'Hello World!'
+<screen language="smalltalk">Transcript show: 'Hello World!'
 </screen>
 
 <indexterm role="cp"><primary>tools</primary><secondary>transcript</secondary></indexterm><para>To execute this code, select it with the mouse and over it do
@@ -293,7 +293,7 @@ shortcuts <userinput>Ctrl-a</userinput> (<emphasis>select <emphasis role="bold">
 (<emphasis><emphasis role="bold">D</emphasis>o it</emphasis>).
 </para>
 <anchor id="hello2"/>
-<screen>Transcript show: 'Hello World!'.
+<screen  language="smalltalk">Transcript show: 'Hello World!'.
 Transcript newLine.
 Transcript show: 'I am Cuising'
 </screen>
@@ -309,18 +309,18 @@ language, it is a collection of characters. We already met string with
 our first script, it is enclosed in single quotes: <literal>'hello
 world!'</literal>. We capitalize it with the <literal>#capitalized</literal> message:
 </para>
-<indexterm role="cp"><primary>string</primary><secondary><literal>capitalized</literal></secondary></indexterm><screen>Transcript show: 'hello world!' capitalized
+<indexterm role="cp"><primary>string</primary><secondary><literal>capitalized</literal></secondary></indexterm><screen language="smalltalk">Transcript show: 'hello world!' capitalized
 &#8658; 'Hello world!' 
 </screen>
 <indexterm role="cp"><primary>string</primary><secondary><literal>asUppercase</literal></secondary></indexterm><para>To convert all the characters to capitals use the <literal>#asUppercase</literal> message:
 </para>
-<screen>Transcript show: 'hello world!' asUppercase
+<screen language="smalltalk">Transcript show: 'hello world!' asUppercase
 &#8658; 'HELLO WORLD!'
 </screen>
 <indexterm role="cp"><primary>string</primary><secondary>concatenate</secondary></indexterm><para>Two strings are concatenated with the <literal>#,</literal> message:
 </para>
 <anchor id="concatenateStrings"/>
-<screen>Transcript show: 'Hello '&#44; 'my beloved '&#44; 'friend'
+<screen  language="smalltalk">Transcript show: 'Hello '&#44; 'my beloved '&#44; 'friend'
 &#8658; 'Hello my beloved friend'
 </screen>
 
@@ -336,7 +336,7 @@ world!'</literal>. We capitalize it with the <literal>#capitalized</literal> mes
 <indexterm role="cp"><primary>keyboard shortcut</primary><secondary>execute and print result (<userinput>Ctrl-p</userinput>)</secondary></indexterm>
 <para>In your Workspace, to compute a factorial execute the example below
 with <userinput>Ctrl-a</userinput> then <userinput>Ctrl-p</userinput> (<emphasis><emphasis role="bold">P</emphasis>rint it</emphasis>):
-</para><screen>100 factorial
+</para><screen language="smalltalk">100 factorial
 &#8658;  9332621544394415268169923885626670049071596826438162146859
 29638952175999932299156089414639761565182862536979208272237582
 51185210916864000000000000000000000000
@@ -356,7 +356,7 @@ will return.
 <indexterm role="cp"><primary>fraction</primary><see>number</see></indexterm>
 
 <para>As we are discussing division, you may not get the result you expect:
-</para><screen>15 / 4
+</para><screen  language="smalltalk">15 / 4
 &#8658; 15/4
 </screen>
 <para>It looks like Cuis-Smalltalk is lazy because it does not answer the decimal
@@ -366,7 +366,7 @@ all, a fraction is just a division we are too lazy &#8211; because it
 is troublesome &#8211; to compute, Cuis-Smalltalk does just that!
 </para>
 <para>Try out this to understand what is happening underneath:
-</para><screen>(15 / 4) + (1 / 4)
+</para><screen language="smalltalk">(15 / 4) + (1 / 4)
 &#8658; 4
 </screen>
 <para>Is it not wonderful? Cuis-Smalltalk computes with rational numbers. We
@@ -389,7 +389,7 @@ sum of the first four integer inverses. 4 inverted is 1/4</emphasis>
 <para>Integers can be printed in different forms with the appropriate
 message:
 </para>
-<indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>roman</tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>as words</tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>base</tertiary></indexterm><screen>2020 printStringRoman &#8658; 'MMXX' 
+<indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>roman</tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>as words</tertiary></indexterm><indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary>base</tertiary></indexterm><screen language="smalltalk">2020 printStringRoman &#8658; 'MMXX' 
 2020 printStringWords  &#8658; 'two thousand, twenty'
 &quot;Number as the Maya did&quot;
 2020 printStringBase: 20 &#8658; '510'
@@ -417,7 +417,7 @@ constant expressions.  They literally are as they appear.
 <para>Depending on the value we need to use, we can mix these literal
 representations:
 </para>
-<screen>16rA + 1 + 5e-1 + 6e-2
+<screen language="smalltalk">16rA + 1 + 5e-1 + 6e-2
 &#8658; 289/25
 </screen>
 </sect2>

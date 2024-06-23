@@ -71,7 +71,7 @@ box with the common name.
 </para>
 <indexterm role="cp"><primary>number</primary><secondary>rational (fraction)</secondary></indexterm><para>Lets see how the <literal>Fraction</literal> class is declared:
 </para>
-<screen>Number subclass: #Fraction
+<screen language="smalltalk">Number subclass: #Fraction
    instanceVariableNames: 'numerator denominator'
    classVariableNames: ''
    poolDictionaries: ''
@@ -124,7 +124,7 @@ therefore looking at the method <literal>/</literal> in the <literal>Integer</li
 class we can see how the fraction is instantiated. See part of this
 method:
 </para>
-<screen>/ aNumber
+<screen language="smalltalk">/ aNumber
 &quot;Refer to the comment in Number / &quot;
 | quoRem |
 aNumber isInteger ifTrue:
@@ -143,13 +143,13 @@ is expected such a named method returns an instance of a
 <literal>Fraction</literal>.
 </para>
 <para>Try this out in a workspace:
-</para><screen>Fraction numerator: 24 denominator: 21
+</para><screen language="smalltalk">Fraction numerator: 24 denominator: 21
 &#8658; 24/21
 </screen>
 <para>Observe how the resulting fraction is not reduced. Whereas it is reduced
 when instantiated with the <literal>#/</literal> message:
 </para>
-<screen>24 / 21
+<screen language="smalltalk">24 / 21
 &#8658; 8/7
 </screen>
 <para>A class method is often used to create a new instance from a class. In
@@ -180,7 +180,7 @@ another class method.
 descendants of the <literal>Number</literal> class. We have already learned about the
 <literal>#squared</literal> message sent to integer and fraction instances:
 </para>
-<screen>16 squared &#8658; 256
+<screen language="smalltalk">16 squared &#8658; 256
 (2 / 3) squared &#8658; 4/9
 </screen>
 <para>As the <literal>#squared</literal> message is sent to <literal>Integer</literal> and
@@ -190,7 +190,7 @@ called an <firstterm>instance method</firstterm>. This method is defined in both
 </para>
 <indexterm role="cp"><primary>method</primary><secondary>returned value (explicit)</secondary></indexterm><indexterm role="cp"><primary>returned value</primary></indexterm>
 <para>Let&#8217;s examine this method in <literal>Number</literal>:
-</para><screen>Number&gt;&gt;squared
+</para><screen language="smalltalk">Number&gt;&gt;squared
 &quot;Answer the receiver multiplied by itself.&quot;
    ^ self * self
 </screen>
@@ -200,7 +200,7 @@ object itself, here it is the value of the number. The &#x2191; (also
 <literal>self * self</literal>.  One might pronounce ^ as &#8220;return&#8221;.
 </para>
 <para>Now let&#8217;s examine this same method in <literal>Fraction</literal>:
-</para><screen>Fraction&gt;&gt;squared
+</para><screen language="smalltalk">Fraction&gt;&gt;squared
    ^ Fraction
       numerator: numerator squared
       denominator: denominator squared
@@ -223,7 +223,7 @@ is invoked to respond to the message.
 <indexterm role="cp"><primary>number</primary><secondary><literal>abs</literal></secondary></indexterm><para>Still in the <literal>Number</literal> hierarchy, let&#8217;s examine another example
 of polymorphism with the <literal>#abs</literal> message:
 </para>
-<screen>-10 abs &#8658; 10
+<screen language="smalltalk">-10 abs &#8658; 10
 5.3 abs &#8658; 5.3
 (-5 / 3) abs &#8658; 5/3
 </screen>
@@ -231,7 +231,7 @@ of polymorphism with the <literal>#abs</literal> message:
 explanation. There is the <literal>#ifTrue:ifFalse:</literal> we have not yet
 discussed so far, but the code is quite self-explanatory:
 </para>
-<screen>Number&gt;&gt;abs
+<screen language="smalltalk">Number&gt;&gt;abs
 &quot;Answer a Number that is the absolute value (positive magnitude) of the 
 receiver.&quot;
    self &lt; 0
@@ -247,12 +247,12 @@ empty. Indeed, <emphasis role="bold">in the absence of explicitly returned value
 default returned value is the instance itself</emphasis>, in our situation the
 <literal>LargePositiveInteger</literal> instance:
 </para>
-<screen>LargePositiveInteger&gt;&gt;abs
+<screen language="smalltalk">LargePositiveInteger&gt;&gt;abs
 </screen>
 <para>The <literal>LargeNegativeInteger</literal> knows it is negative and its absolute
 value is itself but with its sign reversed, that is <literal>negated</literal>:
 </para>
-<screen>LargeNegativeInteger&gt;&gt;abs
+<screen language="smalltalk">LargeNegativeInteger&gt;&gt;abs
    ^ self negated
 </screen>   
 <para>These two overriding methods are more efficient as they avoid unnecessary
@@ -274,7 +274,7 @@ class with the <literal>#class</literal> message. Observe carefully the class
 returned in lines 2 and 3:
 </para>
 <anchor id="askingClass"/>
-<screen>1 class &#8658; SmallInteger 
+<screen language="smalltalk">1 class &#8658; SmallInteger 
 (1/3) class &#8658; Fraction 
 (6/2) class &#8658; SmallInteger 
 (1/3) asFloat class  &#8658; SmallFloat64 
@@ -342,7 +342,7 @@ list.
 <para>From a Workspace, these methods are called with the message name sent
 directly to the class:
 </para>
-<screen>Float e
+<screen language="smalltalk">Float e
 &#8658; 2.718281828459045
 Float epsilon
 &#8658; 2.220446049250313e-16
@@ -366,7 +366,7 @@ this menu go away.
 <literal>Float</literal>, it throws an error and opens the red debugger
 window. Just close the debug window for now to ignore the result.
 </para>
-<screen>3.14 pi
+<screen language="smalltalk">3.14 pi
 &#8658; MessageNotUnderstood: SmallFloat64&gt;&gt;pi
 Float pi e
 &#8658; MessageNotUnderstood: SmallFloat64&gt;&gt;e
@@ -374,7 +374,7 @@ Float pi e
 <para>Often these class methods are used to access constant values as seen in
 the previous example or to create a new instance:
 </para>
-<screen>OrderedCollection new
+<screen language="smalltalk">OrderedCollection new
 &#8658; Create a new empty ordered collection
 Fraction numerator: 1 denominator: 3
 &#8658; 1/3 &quot;a fraction instance&quot;
@@ -397,14 +397,14 @@ is pressed to see this list.
 <para>In a Workspace, these methods are called with the message name sent
 directly to an instance:
 </para>
-<screen>-10.12 abs &#8658; 10.12
+<screen language="smalltalk">-10.12 abs &#8658; 10.12
 3.14 cos &#8658; -0.9999987317275395
 -10.12 * 2 &#8658; -20.24
 </screen>
 <para>Instance method messages cannot be sent directly to a class, you need
 to instantiate an object first:
 </para>
-<screen>Float cos
+<screen language="smalltalk">Float cos
 &#8658; MessageNotUnderstood: Float class&gt;&gt;cos
 Fraction squared
 &#8658; MessageNotUnderstood: Fraction class&gt;&gt;squared
@@ -414,7 +414,7 @@ OrderedCollection add: 10
 <para>Of course, you can mix both class and instance methods, as long as you
 send the message to the appropriate class or instance:
 </para>
-<screen>Float pi cos
+<screen language="smalltalk">Float pi cos
 &#8658; -1.0
 Float e ln
 &#8658; 1.0 
@@ -429,7 +429,7 @@ methods. This portion of code updates the orientation of a torpedo
 according to its velocity vector:
 </para>
 <anchor id="torpedoOrientation"/>
-<screen>self rotation: (velocity y arcTan: velocity x) + Float halfPi
+<screen language="smalltalk">self rotation: (velocity y arcTan: velocity x) + Float halfPi
 </screen>
 
 <para>With this brief introduction to the system browser, you are now
@@ -489,7 +489,7 @@ messages in a Workspace to discover the one we are searching for:
 </para>
 <indexterm role="cp"><primary>number</primary><secondary><literal>roundTo:</literal></secondary></indexterm><indexterm role="cp"><primary>number</primary><secondary><literal>roundUpTo:</literal></secondary></indexterm>
 <anchor id="roundingNumbers"/>
-<screen>1.264 roundTo: 0.1 &#8658; 1.3 
+<screen language="smalltalk">1.264 roundTo: 0.1 &#8658; 1.3 
 1.264 roundTo: 0.01 &#8658; 1.26 
 1.264 roundUpTo: 0.01 &#8658; 1.27
 1.264 roundTo: 0.001 &#8658; 1.264
@@ -505,7 +505,7 @@ numbers. In the <literal>Number</literal> class, the method category
 polymorphically with most kinds of numbers:
 </para>
 <anchor id="intervalLoops"/>
-<screen>1 to: 10 do: [:i | Transcript show: 1 / i; space]
+<screen language="smalltalk">1 to: 10 do: [:i | Transcript show: 1 / i; space]
 &#8658; 1 (1/2) (1/3) (1/4) (1/5) (1/6) (1/7) (1/8) (1/9) (1/10)
 
 1 to: 10 by: 2 do: [:i | Transcript show: 1 / i; space]
@@ -531,7 +531,7 @@ chapter.  Throwing a 6-face die 5 times can be simulated with
 an integer:
 </para>
 <indexterm role="cp"><primary>number</primary><secondary>integer</secondary><tertiary><literal>atRandom</literal></tertiary></indexterm><anchor id="playingDice"/>
-<screen>5 timesRepeat: [Transcript show: 6 atRandom; space]
+<screen language="smalltalk">5 timesRepeat: [Transcript show: 6 atRandom; space]
 &#8658; 1 2 4 6 2
 </screen>
 
@@ -542,7 +542,7 @@ an integer:
 <para>Intervals of numbers can be defined on their own, for future use:
 </para>
 <anchor id="interval"/>
-<screen>1 to: 10
+<screen language="smalltalk">1 to: 10
 &#8658; (1 to: 10)
 
 1 to: 10 by: 2
@@ -550,13 +550,13 @@ an integer:
 </screen>
 
 <para>Intervals work with other kinds of objects such as <literal>Character</literal>s:
-</para><screen>$d to: $h
+</para><screen language="smalltalk">$d to: $h
 &#8658; #($d $e $f $g $h)
 </screen>
 <para>In fact, an interval is an object of its own. It is a sort of
 collection:
 </para>
-<screen>(1 to: 10) class
+<screen language="smalltalk">(1 to: 10) class
 &#8658; Interval
 
 (1 to: 10 by: 2) squared
@@ -573,7 +573,7 @@ function in other languages. It picks a random value in the
 interval consisting of the gameplay area&#8217;s left and right extents:
 </para>
 <anchor id="teleportShipInterval"/>
-<screen>randomCoordinate := [(area left to: area right) atRandom].
+<screen language="smalltalk">randomCoordinate := [(area left to: area right) atRandom].
 aShip
    velocity: 0 @ 0;
    morphPosition: randomCoordinate value @ randomCoordinate value
@@ -594,7 +594,7 @@ When executing and printing <userinput>Ctrl-p</userinput> on such a
 number, it is immediately printed in the decimal base:
 </para>
 <anchor id="integerBase"/>
-<screen>2r1111 &#8658; 15
+<screen language="smalltalk">2r1111 &#8658; 15
 16rF &#8658; 15
 8r17 &#8658; 15
 20rF &#8658; 15
@@ -606,7 +606,7 @@ number representations are not exclusive to these civilisations,
 although they are the most documented use cases.</para></footnote>:
 </para>
 <anchor id="countingAncients"/>
-<screen>&quot;The Babylonians&quot;
+<screen language="smalltalk">&quot;The Babylonians&quot;
 60r10 &#8658; 60
 60r30 &#8658; 180
 60r60 &#8658; 360
@@ -625,7 +625,7 @@ bits left and right is equivalent to multiplying by 2 and dividing by
 2:
 </para>
 <anchor id="shiftBits"/>
-<screen>(2r1111 &lt;&lt; 1) printStringBase: 2 &#8658; '11110'
+<screen language="smalltalk">(2r1111 &lt;&lt; 1) printStringBase: 2 &#8658; '11110'
 2r1111 &lt;&lt; 1 &#8658; 30
 (2r1111 &gt;&gt; 1) printStringBase: 2 &#8658; '111'
 2r1111 &gt;&gt; 1 &#8658; 7
@@ -654,7 +654,7 @@ errors. Cuis-Smalltalk does not hide this inaccuracy.  There is good
 information about this in the class comment of <literal>Float</literal>.
 </para>
 <anchor id="FloatPrecision"/>
-<screen>0.1 + 0.2 - 0.3
+<screen language="smalltalk">0.1 + 0.2 - 0.3
 &#8658; 5.551115123125783e-17
 </screen>
 
@@ -688,7 +688,7 @@ executing this code</emphasis> <literal>5/0</literal><emphasis>?</emphasis>
 using the rational numbers, the <link linkend="FloatPrecision">FloatPrecision</link> becomes:
 </para>
 <anchor id="FractionPrecision"/>
-<screen>(1/10) + (2/10) - (3/10)
+<screen language="smalltalk">(1/10) + (2/10) - (3/10)
 &#8658; 0
 </screen>
 
@@ -711,7 +711,7 @@ asking for a fraction representation we have this strange answer. The
 internal computer representation of <literal>1.3</literal> is not exactly as
 it seems:
 </para>
-<screen>(13/10) asFloat
+<screen language="smalltalk">(13/10) asFloat
 &#8658; 1.3
 
 (13/10) asFloat asFraction
@@ -725,7 +725,7 @@ it seems:
 <indexterm role="cp"><primary>character</primary></indexterm>
 <para><emphasis role="bold">Character/UnicodeCodePoint.</emphasis> An individual character is written prefixed with a &#8220;$&#8221;, for example: <literal>$A</literal> or <literal>$φ</literal>. It can be defined with the class side method <literal>codePoint:</literal>. Note, however, that you can ask Character only about valid Characters. It is generally safer to ask UnicodeCodePoint instead:
 </para>
-<screen>Character codePoint: 65 &#8658; $A
+<screen language="smalltalk">Character codePoint: 65 &#8658; $A
 Character codePoint: 966 &#8658; nil
 UnicodeCodePoint codePoint: 966 &#8658; $φ
 </screen>
@@ -740,7 +740,7 @@ UnicodeCodePoint codePoint: 966 &#8658; $φ
 can use the <literal>Character</literal> instance methods:
 </para>
 <anchor id="apples12"/>
-<screen>'There are 12 apples.' select: [:c |c isDigit].
+<screen language="smalltalk">'There are 12 apples.' select: [:c |c isDigit].
 &#8658; '12'
 </screen>
 
@@ -771,14 +771,14 @@ the <literal>String</literal> class, search for method categories named like
 <literal>findXXX</literal> methods. Read the comments at the beginning of these
 methods:
 </para>
-<screen>findString: subString
+<screen language="smalltalk">findString: subString
    &quot;Answer the index of subString within the receiver, starting at
    start. If the receiver does not contain subString, answer 0.&quot;
    ^ self findString: subString startingAt: 1.
 </screen>
 <para>Or:
 </para>
-<screen>findString: key startingAt: start caseSensitive: caseSensitive
+<screen language="smalltalk">findString: key startingAt: start caseSensitive: caseSensitive
    &quot;Answer the index in this String at which the substring key first
    occurs, at or beyond start.  The match can be case-sensitive or
    not.  If no match is found, zero will be returned.&quot;
@@ -786,7 +786,7 @@ methods:
 </screen>
 <para>Then experiment with the potentially interesting messages in a workspace:
 </para>
-<screen>'I love apples' findString: 'love' &#8658; 3 &quot;match starts at position 3&quot;
+<screen language="smalltalk">'I love apples' findString: 'love' &#8658; 3 &quot;match starts at position 3&quot;
 'I love apples' findString: 'hate'
 &#8658;  0 &quot;not found&quot;
 'We humans, we all love apples' findString: 'we'
@@ -969,7 +969,7 @@ character. Finally, save the updated class definition with
 <userinput>Ctrl-s</userinput> shortcut:
 </para>
 <anchor id="torpedoClassVariables"/>
-<screen>Object subclass: #Torpedo
+<screen language="smalltalk">Object subclass: #Torpedo
    instanceVariableNames: 'position heading velocity lifeSpan'
    classVariableNames: ''
    poolDictionaries: ''
@@ -1005,7 +1005,7 @@ the method category you want &#8211; when none, select <command>-- all
 <para>In the code pane below appears a method template:
 </para>
 <anchor id="methodTemplate"/>
-<screen>messageSelectorAndArgumentNames
+<screen language="smalltalk">messageSelectorAndArgumentNames
    &quot;comment stating purpose of message&quot;
    | temporary variable names |
    statements
@@ -1029,7 +1029,7 @@ the method category you want &#8211; when none, select <command>-- all
 </listitem></orderedlist>
 <para>The getter <literal>mass</literal> on <literal>SpaceShip</literal> is written as:
 </para>
-<screen>SpaceShip&gt;&gt;mass
+<screen language="smalltalk">SpaceShip&gt;&gt;mass
    ^ mass
 </screen>
 <para>The <literal>SpaceShip&gt;&gt;</literal> part is not valid code and should not be
@@ -1050,7 +1050,7 @@ so a <firstterm>setter</firstterm> keyword message is necessary.
 To set the name of a space ship we add the
 following method:
 </para>
-<screen>SpaceShip&gt;&gt;name: aString
+<screen language="smalltalk">SpaceShip&gt;&gt;name: aString
    name := aString
 </screen>
 <para>The := character is an assignment, it means the
@@ -1084,7 +1084,7 @@ player ships to be of equal mass, we should remove the <literal>mass</literal>
 variable and edit the <literal>mass</literal> method to return a literal number:
 </para>
 <anchor id="methodConstant"/>
-<screen>SpaceShip&gt;&gt;mass
+<screen language="smalltalk">SpaceShip&gt;&gt;mass
    ^ 1
 </screen>
 
@@ -1138,7 +1138,7 @@ instance variables. When we create a new space ship object we want to
 set its default position, speed, and acceleration:
 </para>
 <anchor id="initSpaceShip"/>
-<screen>SpaceShip&gt;&gt;initialize
+<screen language="smalltalk">SpaceShip&gt;&gt;initialize
    super initialize.
    velocity := 0 @ 0.
    position := 100 @ 100.

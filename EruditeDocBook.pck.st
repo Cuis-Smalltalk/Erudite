@@ -1,10 +1,10 @@
-'From Cuis7.1 [latest update: #6487] on 22 June 2024 at 8:40:33 pm'!
+'From Cuis7.1 [latest update: #6487] on 23 June 2024 at 7:06:18 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 23!
-!requires: 'Erudite' 1 263 nil!
+!provides: 'EruditeDocBook' 1 24!
+!requires: 'Erudite' 1 267 nil!
 !requires: 'EruditeXMLBook' 1 14 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #'EruditeDocBook-Books'!
@@ -59,6 +59,16 @@ Object subclass: #EruditeDocBookParser
 	category: 'EruditeDocBook'!
 !classDefinition: 'EruditeDocBookParser class' category: #EruditeDocBook!
 EruditeDocBookParser class
+	instanceVariableNames: ''!
+
+!classDefinition: #DocBookSmalltalkStyler category: #EruditeDocBook!
+SHTextStylerST80 subclass: #DocBookSmalltalkStyler
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeDocBook'!
+!classDefinition: 'DocBookSmalltalkStyler class' category: #EruditeDocBook!
+DocBookSmalltalkStyler class
 	instanceVariableNames: ''!
 
 
@@ -527,12 +537,13 @@ parsePreface: anXMLElement
 	
 	^ paragraph! !
 
-!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 12:23:11'!
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/23/2024 19:03:07'!
 parseProgramlisting: anXMLElement
 
 	^ EruditeParagraphNode 
 	      contents: (Array with: ((EruditeDocCode code: anXMLElement contentString)
-								sourceLanguage: nil;
+								sourceLanguage: (anXMLElement attributeAt: #language);
+								evaluate: false;
 								yourself))
 	
 ! !
@@ -547,12 +558,13 @@ parseReleaseinfo: anXMLElement
 
 	^ nil! !
 
-!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 14:09:12'!
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/23/2024 19:03:15'!
 parseScreen: anXMLElement
 
 	^ EruditeParagraphNode 
 	      contents: (Array with: ((EruditeDocCode code: anXMLElement contentString)
-								sourceLanguage: nil;
+								sourceLanguage: (anXMLElement attributeAt: #language);
+								evaluate: false;
 								yourself))
 	
 ! !
@@ -656,3 +668,10 @@ parseVariablelist: anXMLElement
 parse: aString
 
 	^ self new parse: aString! !
+
+!DocBookSmalltalkStyler class methodsFor: 'as yet unclassified' stamp: 'MM 6/23/2024 18:41:15'!
+defaultStyleTable
+
+	"TODO: customize style table"
+
+	^ super defaultStyleTable ! !
