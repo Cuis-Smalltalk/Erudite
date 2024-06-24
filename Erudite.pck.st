@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6487] on 23 June 2024 at 10:32:50 pm'!
+'From Cuis7.1 [latest update: #6487] on 24 June 2024 at 2:00:26 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 269!
+!provides: 'Erudite' 1 270!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -20552,18 +20552,30 @@ dataKey
 	
 	^ nil! !
 
-!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:04'!
+!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 6/24/2024 13:58:47'!
 initialize: anObject type: aSymbol label: aString
 
-	target _ anObject.
-	type _ aSymbol.
-	label _ aString.
-	options _ Dictionary new! !
+	target := anObject.
+	type := aSymbol.
+	label := aString.
+	options := Dictionary new.
+	self validateLinkType.! !
 
 !EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 15:18'!
 labelOrTarget
 
 	^ label ifNil: [target]! !
+
+!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 6/24/2024 13:59:32'!
+validLinkTypes
+
+	^ #(section selector class method url image)! !
+
+!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 6/24/2024 13:58:38'!
+validateLinkType
+
+	self assert: (self validLinkTypes includes: type)
+		description: 'Invalid link type'! !
 
 !EruditeDocLink methodsFor: 'accessing' stamp: 'MM 12/1/2018 14:03'!
 label

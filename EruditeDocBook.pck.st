@@ -1,10 +1,10 @@
-'From Cuis7.1 [latest update: #6487] on 23 June 2024 at 10:33:03 pm'!
+'From Cuis7.1 [latest update: #6487] on 24 June 2024 at 2:11:04 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 26!
-!requires: 'Erudite' 1 269 nil!
+!provides: 'EruditeDocBook' 1 27!
+!requires: 'Erudite' 1 270 nil!
 !requires: 'EruditeXMLBook' 1 14 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #'EruditeDocBook-Books'!
@@ -287,16 +287,17 @@ parseElement: anXMLElement
 			"We didn't find a parser for the element, so parse the element children 'blindly'"
 			self parseChildrenOf: anXMLElement ]! !
 
-!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/21/2024 08:39:19'!
+!EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/24/2024 13:49:57'!
 parserFor: xmlTag
-
 	| parserSelector |
-	
-	parserSelector := ('parse', xmlTag capitalized, ':') asSymbol.
-	^ (self respondsTo: parserSelector) 
-		ifTrue: [parserSelector]
-		ifFalse: [Transcript show: '[EruditeDocBookParser WARNING] - No parser for: ', xmlTag; cr.
-				nil]! !
+	parserSelector := ('parse' , xmlTag capitalized , ':') asSymbol.
+	^ (self respondsTo: parserSelector)
+		ifTrue: [ parserSelector ]
+		ifFalse:
+			[Transcript
+				show: '[EruditeDocBookParser] - No parser for: ' , xmlTag;
+				cr.
+			nil ].! !
 
 !EruditeDocBookParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 21:14:52'!
 sectionLevel
@@ -451,17 +452,31 @@ parseItemizedlist: anXMLElement
 		ifEmpty: [list]
 		ifNotEmpty: [composite children addFirst: list. composite]! !
 
-!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 19:04:23'!
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/24/2024 14:06:54'!
 parseLink: anXMLElement
-
-	"TODO: render proper links"
-
-	^ EruditeStyledText 
-		text: (String streamContents: [:s |
+	
+	| label type target |
+	
+	label := String streamContents: 				[ :s | 	
 				s space;
 					nextPutAll: anXMLElement contentString;
-					space])
-		styles: (Array with: TextColor blue with: TextEmphasis underlined )! !
+					space ].
+	type := (anXMLElement attributeAt: #erudite:type			)
+			ifNotNil: [:val | val asSymbol]
+			ifNil: [(anXMLElement attributeAt: #xlink:href) 
+					ifNotNil: [#url]].
+	target := (anXMLElement attributeAt: #xlink:href)
+				ifNotNil: [:val | val]
+				ifNil: [anXMLElement contentString].
+	
+	^ type 
+		ifNotNil: [EruditeDocLink 			target: target type: type label: label]
+		ifNil: (EruditeStyledText
+				text: label
+				styles:
+					(Array
+						with: TextColor blue
+						with: TextEmphasis underlined))! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/22/2024 12:30:30'!
 parseListitem: anXMLElement
@@ -648,6 +663,19 @@ parseTitle: anXMLElement
 			           s nextPutAll: anXMLElement contents first string;
 					newLine; newLine ])
 		level: self sectionLevel ! !
+
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/24/2024 14:09:57'!
+parseUlink: anXMLElement
+	
+	| label target |
+	
+	label := String streamContents: 				[ :s | 	
+				s space;
+					nextPutAll: anXMLElement contentString;
+					space ].
+	target := anXMLElement attributeAt: #url.
+	
+	^ EruditeDocLink 			target: target type: #url label: label! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 19:07:30'!
 parseUserinput: anXMLElement
