@@ -153,7 +153,7 @@ readability of the code:
 </para>
 <screen language="smalltalk" erudite:action="doIt">Transcript show: 'Hello World!'; newLine; show: 'I am Cuising'
 </screen>
-<para>The <literal>Transcript</literal> class is frequently helpful in presenting
+<para>The <literal erudite:type="class">Transcript</literal> class is frequently helpful in presenting
 useful information when developing an application. An alternative to
 the <userinput>Ctrl-d</userinput> (<emphasis><emphasis role="bold">D</emphasis>o it</emphasis>) shortcut is <userinput>Ctrl-p</userinput>
 (<emphasis><emphasis role="bold">P</emphasis>rint it</emphasis>), which executes the script and prints the result
@@ -171,16 +171,16 @@ return the object to which a message is sent, in this case, the
 <para>As previously stated, a <literal>String</literal> is a sequence of <literal>Character</literal> 
 elements, and represents plain Text (without any formatting).
 </para>
-<para>In Cuis, as in most programming languages, <literal>String</literal> literals are a convenient syntax for creating <literal>String</literal> instances. These are some examples of <literal>String</literal> literals:
+<para>In Cuis, as in most programming languages, <literal erudite:type="class">String</literal> literals are a convenient syntax for creating <literal erudite:type="class">String</literal> instances. These are some examples of <literal erudite:type="class">String</literal> literals:
 </para>
 <screen language="smalltalk">'Hello World!'.
 'Accented letters: cigüeña, camión, déjà, deçà, forêt, coïncidence'.
 'Non-latin (Greek) letters: Λορεμ ιπσθμ δολορ σιτ αμετ'.
 </screen>
-<para>The first example is an instance of <literal>String</literal>. This class is used for String literals if all Characters are in the limited <acronym>ASCII</acronym> character set. The following examples contain non-<acronym>ASCII</acronym> Characters. For these, an instance of <literal>UnicodeString</literal> is used instead.  You usually don&#8217;t need to care about this: Instances of <literal>String</literal> and <literal>UnicodeString</literal> understand the same messages, so they are interchangeable.
+<para>The first example is an instance of <literal>String</literal>. This class is used for String literals if all Characters are in the limited <acronym>ASCII</acronym> character set. The following examples contain non-<acronym>ASCII</acronym> Characters. For these, an instance of <literal>UnicodeString</literal> is used instead.  You usually don&#8217;t need to care about this: Instances of <literal erudite:type="class">String</literal> and <literal erudite:type="class">UnicodeString</literal> understand the same messages, so they are interchangeable.
 </para>
 <para>Access to a character in a string is done with the keyword message
-<literal>#at:</literal> and its index position in the string as the argument. Execute
+<literal erudite:type="selector">#at:</literal> and its index position in the string as the argument. Execute
 the following examples with the <userinput>Ctrl-p</userinput> shortcut:
 </para>
 <screen language="smalltalk">'Hello' at: 1 &#8658; $H
@@ -195,14 +195,14 @@ the following examples with the <userinput>Ctrl-p</userinput> shortcut:
 </screen>
 <indexterm role="cp"><primary>string</primary><secondary><literal>at:put:</literal></secondary></indexterm><indexterm role="cp"><primary><literal>yourself</literal></primary></indexterm>
 <para>To change one character, use the companion two keyword message
-<literal>#at:put:</literal>. The argument must be noted as a character:
+<literal erudite:type="selector">#at:put:</literal>. The argument must be noted as a character:
 </para><screen language="smalltalk">'Hello' at: 2 put: $a; yourself
 &#8658; 'Hallo'
 </screen>
 <para>Observe the use of the cascade with the <literal>#yourself</literal> message.  A
 cascade sends the following messages to the original receiver, so
-<literal>#yourself</literal> returns the updated string.  Without the
-cascade, <literal>$a</literal> is returned as the result of the <literal>#at:put:</literal>
+<literal erudite:type="selector">#yourself</literal> returns the updated string.  Without the
+cascade, <literal>$a</literal> is returned as the result of the <literal erudite:type="selector">#at:put:</literal>
 message.
 </para>
 <anchor id="helloBelle"/>
@@ -251,8 +251,8 @@ and parentheses surround the elements of the array.
 In this case, the elements are <literal>Character</literal>s, but they can
 be instances of any class.
 </para>
-<para>Like <literal>#shuffled</literal>, all collections answer to the message
-<literal>#sorted</literal>, which answers a sorted collection.
+<para>Like <literal erudite:type="selector">#shuffled</literal>, all collections answer to the message
+<literal erudite:type="selector">#sorted</literal>, which answers a sorted collection.
 <indexterm role="cp"><primary>string</primary><secondary><literal>sorted</literal></secondary></indexterm></para><screen language="smalltalk">'hello world' sorted
 &#8658; ' dehllloorw'
 </screen>

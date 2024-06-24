@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6487] on 23 June 2024 at 10:09:51 pm'!
+'From Cuis7.1 [latest update: #6487] on 23 June 2024 at 10:32:50 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 268!
+!provides: 'Erudite' 1 269!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -20296,25 +20296,27 @@ render: aDocLink in: aDocument on: aStream
 						book _ EruditeBook bookNamed: bookTitle ifNone: [^nil].
 						book openInSection: sectionTitle]]))! !
 
-!EruditeSelectorDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:07:06'!
+!EruditeSelectorDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/23/2024 22:27:39'!
 render: aDocLink in: aDocument on: aStream
 
-	|action selector renderLink |
+	| action selector renderLink target |
 	
-	selector _ aDocLink target withBlanksTrimmed asSymbol.
-	renderLink _ [:anAction | 
+	target := aDocLink target withBlanksTrimmed.
+	target first = $# ifTrue: [		target := target allButFirst].
+	selector := target asSymbol.
+	renderLink := [:anAction | 
 		aStream nextPut: (Text string: selector printString
 				attributes: {BlockTextAction do: anAction})].
 	
 	aDocLink optionAt: #senders ifPresent: [:val |
-		action _ [:anObject | Smalltalk browseAllCallsOn: selector].
+		action := [:anObject | Smalltalk browseAllCallsOn: selector].
 		^ renderLink value: action].
 	
 	aDocLink optionAt: #implementors ifPresent: [:val |
-		action _ [:anObject | Smalltalk browseAllImplementorsOf: selector].
+		action := [:anObject | Smalltalk browseAllImplementorsOf: selector].
 		^ renderLink value: action].
 	
-	action _ [:anObject | Smalltalk browseAllImplementorsOf: selector].
+	action := [:anObject | Smalltalk browseAllImplementorsOf: selector].
 	renderLink value: action! !
 
 !EruditeUrlDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 16:38:52'!

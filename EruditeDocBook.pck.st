@@ -1,10 +1,10 @@
-'From Cuis7.1 [latest update: #6487] on 23 June 2024 at 10:09:55 pm'!
+'From Cuis7.1 [latest update: #6487] on 23 June 2024 at 10:33:03 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 25!
-!requires: 'Erudite' 1 267 nil!
+!provides: 'EruditeDocBook' 1 26!
+!requires: 'Erudite' 1 269 nil!
 !requires: 'EruditeXMLBook' 1 14 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #'EruditeDocBook-Books'!
@@ -477,15 +477,26 @@ parseListitem: anXMLElement
 	
 	^ node! !
 
-!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/20/2024 19:00:12'!
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/23/2024 22:30:12'!
 parseLiteral: anXMLElement
 
-	^ EruditeStyledText 
-		text: (String streamContents: [:s |
-				s space;
-					nextPutAll: anXMLElement contentString;
-					space])
-		style: TextColor blue! !
+	| text |
+	
+	text := String streamContents: [:s |
+					s space;
+				   	nextPutAll: anXMLElement contentString;
+				   	space].
+
+	^ (anXMLElement attributeAt: 'erudite:type')
+		ifNotNil: [:type |
+			^ EruditeDocLink 
+				target: anXMLElement contentString
+				type: type asSymbol
+				label: text]
+		ifNil: [
+			EruditeStyledText 
+				text: text
+				style: TextColor blue]! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/21/2024 08:34:25'!
 parseMediaobject: anXMLElement
