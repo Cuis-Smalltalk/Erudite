@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6487] on 23 June 2024 at 7:05:58 pm'!
+'From Cuis7.1 [latest update: #6487] on 23 June 2024 at 10:09:51 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 267!
+!provides: 'Erudite' 1 268!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -19486,17 +19486,16 @@ visitActionLink: aDocLink
 
 	stream nextPut: (Text string: aDocLink title attributes: {BlockTextAction do: [:x | aDocLink action value]. TextEmphasis underlined})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 18:50:11'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/23/2024 22:01:06'!
 visitCode: aDocCode
 
 	| codeActionSelector |
 
 	"If there's no action, just render the code."
-	aDocCode action ifNil: [
-		^ self renderCode: aDocCode].
+	aDocCode action ifNil: [		^ self renderCode: aDocCode].
 	
 	"If there's an action, call the rendering method, #renderCode<action>:"
-	codeActionSelector _ ('renderCode', ((aDocCode action at: #action) capitalized), ':') asSymbol.
+	codeActionSelector := ('renderCode', ((aDocCode action at: #action) capitalized), ':') asSymbol.
 	
 	self perform: codeActionSelector with: aDocCode! !
 
@@ -20427,17 +20426,24 @@ initialize: aString action: aSymbol
 	sourceLanguage := 'smalltalk'.
 	evaluate := true! !
 
+!EruditeDocCode methodsFor: 'as yet unclassified' stamp: 'MM 6/23/2024 21:54:33'!
+validActions
+
+	^#('doIt' 'exploreIt' 'inspectIt' 'printIt' 'printItHere' 'embedIt' 'doItWithButton' 'exploreItWithButton' 'inspectItWithButton')! !
+
 !EruditeDocCode methodsFor: 'accessing' stamp: 'MM 11/30/2018 18:19'!
 action
 	"Answer the value of action"
 
 	^ action! !
 
-!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 11/30/2018 18:19'!
+!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 6/23/2024 22:03:18'!
 action: anObject
-	"Set the value of action"
 
-	action _ anObject! !
+	"Set the value of action."
+	"TODO: validate that the action is valid."
+
+	action := anObject! !
 
 !EruditeDocCode methodsFor: 'accessing' stamp: 'MM 11/30/2018 18:19'!
 code

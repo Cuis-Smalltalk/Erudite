@@ -42,16 +42,13 @@ fresh Cuis-Smalltalk environment, the count of class instances is more than
 150000.
 </para>
 <indexterm role="cp"><primary>collection</primary><secondary><literal>inject:into:</literal></secondary></indexterm><anchor id="entitiesCount"/>
-<screen language="smalltalk">ProtoObject allSubclasses sum: [ :class | class allInstances size] 
-&#8658; 152058
+<screen language="smalltalk" erudite:action="printIt">ProtoObject allSubclasses sum: [ :class | class allInstances size]
 </screen>
 
 <para>The count of classes, the models for the entities &#8211; instances of the class <literal>Class</literal> &#8211; is less than 700.
 </para>
 <anchor id="classesCount"/>
-<screen language="smalltalk">Smalltalk allClasses size
-&#8658; 671
-</screen>
+<screen language="smalltalk" erudite:action="printIt">Smalltalk allClasses size</screen>
 
 <para>&#160;<inlinemediaobject><imageobject><imagedata fileref="note.png" format="PNG"></imagedata></imageobject></inlinemediaobject>
 Because you are not using the base image but one used
@@ -108,23 +105,17 @@ with a colon.
 <indexterm role="cp"><primary>message</primary><secondary>precedence</secondary></indexterm><para>Unary messages have the highest precedence, followed by binary messages, and
 finally keyword messages, so:
 </para>
-<screen language="smalltalk">2 raisedTo: 1 + 3 factorial
-&#8658; 128
-</screen>
+<screen language="smalltalk" erudite:action="printItHere">2 raisedTo: 1 + 3 factorial</screen>
 <para>First we send <literal>factorial</literal> to <literal>3</literal>, then we send
 <literal>+ 6</literal> to <literal>1</literal>, and finally we send
 <literal>raisedTo: 7</literal> to <literal>2</literal>.
 </para>
 <para>Precedence aside, evaluation is strictly from left to right, so
 </para>
-<screen language="smalltalk">1 + 2 * 3
-&#8658; 9
-</screen>
+<screen language="smalltalk" erudite:action="printItHere">1 + 2 * 3</screen>
 <para>is not 7. Parentheses must be used to alter the order of evaluation:
 </para>
-<screen language="smalltalk">1 + (2 * 3)
-&#8658; 7
-</screen>
+<screen language="smalltalk" erudite:action="printItHere">1 + (2 * 3)</screen>
 <para>Parentheses can also be used to make potentially confusing code more
 clear. For example, the strict left-to-right evaluation order can be
 confusing when applied to mathematical expressions. In the Spacewar!
@@ -142,7 +133,7 @@ separated by semicolons. Here is our earlier <link linkend="hello2">hello2</link
 expressed with a cascade:
 </para>
 <anchor id="helloCascade"/>
-<screen language="smalltalk">Transcript
+<screen language="smalltalk" erudite:action="doIt">Transcript
    show: 'Hello World!';
    newLine;
    show: 'I am Cuising'
@@ -160,7 +151,7 @@ expressed with a cascade:
 write the cascade of messages in one line, but it reduces the
 readability of the code:
 </para>
-<screen language="smalltalk">Transcript show: 'Hello World!'; newLine; show: 'I am Cuising'
+<screen language="smalltalk" erudite:action="doIt">Transcript show: 'Hello World!'; newLine; show: 'I am Cuising'
 </screen>
 <para>The <literal>Transcript</literal> class is frequently helpful in presenting
 useful information when developing an application. An alternative to
