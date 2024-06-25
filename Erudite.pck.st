@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6487] on 25 June 2024 at 11:35:21 am'!
+'From Cuis7.1 [latest update: #6487] on 25 June 2024 at 6:04:07 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 271!
+!provides: 'Erudite' 1 272!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -19076,29 +19076,29 @@ renderCodePrintIt: aDocCode
 					BlockTextAction do: [:anObject | Transcript show: (Compiler evaluate: evalString notifying: anObject textProvider logged: false) printString]}.
 	stream nextPut: button.! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:04'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/25/2024 18:01:36'!
 renderCodePrintItHere: aDocCode
 
 	|text evalString result textModel |
 	
-	evalString _ aDocCode code.
+	evalString := aDocCode code.
 	
-	text _ Text string: aDocCode code.							.
+	text := Text string: aDocCode code.							.
 							
-	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel := EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.
 		
 	stream nextPut: textModel actualContents.
 	stream nextPut: ' '.
 	
 	requestor ifNil: [
-		result _ [Compiler evaluate: evalString for: self logged: false]
+		result := [Compiler evaluate: evalString for: self logged: false]
 			on: Error do: [:error | error]]
 		ifNotNil: [
-			result _ [Compiler evaluate: evalString notifying: requestor logged: false]
+			result := [Compiler evaluate: evalString notifying: requestor logged: false]
 				on: Error do: [:error | error]].
 	
-	stream nextPut: '==> ';
+	stream nextPut: ' ⇒ ';
 			nextPut: (Text streamContents: [:s | result printOn: s]).! !
 
 !LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:18'!
@@ -19418,16 +19418,16 @@ renderCodePrintIt: aDocCode
 						BlockTextAction do: [:anObject | Transcript show: (Compiler evaluate: evalString notifying: requestor logged: false) printString]}.
 			stream nextPut: button]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 23:57:42'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 18:02:07'!
 renderCodePrintItHere: aDocCode
 
 	|text evalString result textModel |
 	
-	evalString _ aDocCode code.
+	evalString := aDocCode code.
 	
-	text _ Text string: aDocCode code.							.
+	text := Text string: aDocCode code.							.
 							
-	textModel _ EruditeSmalltalkTextModel withText: text.
+	textModel := EruditeSmalltalkTextModel withText: text.
 	textModel formatAndStyle.
 	
 	self codeBackgroundColor ifNotNil: [:color |
@@ -19437,13 +19437,13 @@ renderCodePrintItHere: aDocCode
 	stream nextPut: ' '.
 	
 	requestor ifNil: [
-		result _ [Compiler evaluate: evalString for: self logged: false]
+		result := [Compiler evaluate: evalString for: self logged: false]
 			on: Error do: [:error | error]]
 		ifNotNil: [
-			result _ [Compiler evaluate: evalString notifying: requestor logged: false]
+			result := [Compiler evaluate: evalString notifying: requestor logged: false]
 				on: Error do: [:error | error]].
 	
-	stream nextPut: '==> ';
+	stream nextPut: ' ⇒ ';
 			nextPut: (Text streamContents: [:s | result printOn: s]).! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 12:14:44'!
