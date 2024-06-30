@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6487] on 25 June 2024 at 6:04:07 pm'!
+'From Cuis7.1 [latest update: #6492] on 30 June 2024 at 10:15:15 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 272!
+!provides: 'Erudite' 1 273!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -19774,13 +19774,14 @@ menu: titleString
 		addStayUpIcons.
 	^ menu! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:59:45'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 6/30/2024 10:14:16'!
 newBook
 	| book title |
-	title _ FillInTheBlankMorph request: 'Book title:'.
-	title ifNotEmpty: [
-		book _ EruditeBook titled: title.
-		book edit ].! !
+	title := FillInTheBlankMorph request: 'Book title:'.
+	title ifNotNil: [
+		title ifNotEmpty: [
+			book := EruditeBook titled: title.
+			book edit ]]! !
 
 !EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 15:17:52'!
 openEruditeMenu
