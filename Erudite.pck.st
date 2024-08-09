@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6492] on 30 June 2024 at 10:15:15 am'!
+'From Cuis7.1 [latest update: #6577] on 9 August 2024 at 4:42:17 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 273!
+!provides: 'Erudite' 1 274!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -21189,7 +21189,7 @@ bookIsUnsaved
 
 	^ sourcesChanged! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 5/26/2024 15:24:14'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'jmv 8/9/2024 15:48:45'!
 buildMorphicWindow
 	| leftColumn previousButton nextButton navRow |
 	layoutMorph beRow.
@@ -21201,9 +21201,7 @@ buildMorphicWindow
 		listGetter: #explorerList
 		indexGetter: #getCurrentSelection
 		indexSetter: #noteNewSelection:)
-			mainView: self
-			menuGetter: #explorerMenu
-			keystrokeAction: #explorerKey:from:.
+			menuNshortcutsKey: #explorerMenuSpec.
 	explorerMorph
 		autoDeselect: true;
 		color: Color white.
@@ -21337,47 +21335,6 @@ exploreBook
 exploreVariables
 
 	bindings explore! !
-
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 19:56:57'!
-explorerMenu
-
-	|menu|
-	
-	menu := MenuMorph new defaultTarget: self.
-	menu add: 'add section' action: #addSection.
-	menu lastItem setIcon: Theme current newIcon.
-	menu addLine.
-	menu add: 'rename section' action: #renameSection.
-	menu lastItem setIcon: Theme current textEditorIcon.
-	menu add: 'remove section' action: #removeSection.
-	menu lastItem setIcon: Theme current deleteIcon.
-	menu addLine.
-	menu add: 'move top' action: #moveSectionTop.
-	menu add: 'move up' action: #moveSectionUp.
-	menu add: 'move down' action: #moveSectionDown.
-	menu add: 'move bottom' action: #moveSectionBottom.
-	menu addLine;
-		add: 'toggle view sources' action: #toggleViewSources.
-	menu lastItem setIcon: Theme current switchIcon.
-	menu add: 'explore book' action: #exploreBook.
-	menu lastItem setIcon: Theme current exploreIcon.
-	menu add: 'explore variables' action: #exploreVariables.
-	menu lastItem setIcon: Theme current exploreIcon.
-	menu add: 'reset variables'	action: #initializeBindings.
-	menu addLine.
-	menu add: 'open' action: #openBook.
-	menu lastItem setIcon: Theme current openIcon.
-	menu add: 'save' action: #saveBook;
-		add: 'save as ..' action: #saveBookAs.
-	menu lastItem setIcon: Theme current saveAsIcon.
-	menu add: 'reload' action: #reloadBook.
-	menu lastItem setIcon: Theme current updateIcon.
-	menu add: 'refresh' action: #refreshBook.
-	menu lastItem setIcon: Theme current changesIcon.
-	menu add: 'edit' action: #editBook.
-	menu lastItem setIcon: Theme current textEditorIcon.	
-	
-	^ menu! !
 
 !EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:37:20'!
 getStyledText: aDocument
@@ -21614,6 +21571,36 @@ initialize
 	sourcesChanged _ false.
 	self initializeBindings ! !
 
+!EruditeBookReaderMorph methodsFor: 'menu & kbd shortcuts' stamp: 'jmv 8/9/2024 16:02:29'!
+explorerMenuSpec
+	"Spec for the menu and shortcut keys for the system categories list.
+	See coment at Morph >> #getMenu
+	"
+	^#(
+		#(0 		'Erudite Document Reader' 					false)
+		#(10		'add section' 						nil 		window 			addSection 						newIcon)
+		#(20 		'-----')
+		#(30		'rename section' 						nil 		window 			renameSection 						textEditorIcon)
+		#(40		'remove section' 						nil 		window 			removeSection 						deleteIcon)
+		#(50 		'-----')
+		#(60		'move top' 						nil 		window 			moveSectionTop 						goTopIcon)
+		#(70		'move up' 						nil 		window 			moveSectionUp 						goUpIcon)
+		#(80		'move down' 						nil 		window 			moveSectionDown 						goDownIcon)
+		#(90		'move bottom' 						nil 		window 			moveSectionBottom 						fileOutIcon)
+		#(100 		'-----')
+		#(110		'toggle view sources' 						nil 		window 			toggleViewSources 						switchIcon)
+		#(120 		'explore book' 						nil 		window 			exploreBook 						exploreIcon)
+		#(130		'explore variables' 						nil 		window 			exploreVariables 						exploreIcon)
+		#(140		'reset variables' 						nil 		window 			initializeBindings 						nil)
+		#(150 		'-----')
+		#(160		'open' 						nil 		window 			openBook 						openIcon)
+		#(170		'save' 						nil 		window 			saveBook 						nil)
+		#(180		'save as ..' 						nil 		window 			saveBookAs 						saveAsIcon)
+		#(190		'reload' 						nil 		window 			reloadBook 						updateIcon)
+		#(200		'refresh' 						nil 		window 			refreshBook 						changesIcon)
+		#(210		'edit' 						nil 		window 			editBook 						textEditorIcon)
+	)! !
+
 !EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/12/2018 18:56'!
 buildMorphicWindow
 	super buildMorphicWindow.
@@ -21639,31 +21626,6 @@ contentsChanged
 
 	super contentsChanged.
 	self changed: #sourceContents! !
-
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 18:12:29'!
-explorerMenu
-
-	|menu exportSubmenu |
-	
-	menu _ super explorerMenu.
-	
-	menu add: 'toggle live editing' action: #toggleLiveEditing.
-	menu lastItem setIcon: Theme current switchIcon.
-	
-	menu addLine.
-	
-	"export menu"
-	
-	exportSubmenu _ MenuMorph new.
-	EruditeBookExporter subclassesDo: [:subclass |
-		exportSubmenu add: subclass exporterName 
-					target: self 
-					action: #exportWithClass:
-					argument: subclass].
-	
-	exportSubmenu _ menu add: 'export' subMenu: exportSubmenu.
-	
-	^ menu! !
 
 !EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 15:51:59'!
 exportToLatex
@@ -21740,6 +21702,22 @@ toggleViewSources
 	viewSources  _ viewSources not.
 	
 	sourceMorph visible: viewSources! !
+
+!EruditeBookEditorMorph methodsFor: 'menu & kbd shortcuts' stamp: 'jmv 8/9/2024 16:11:48'!
+explorerMenuSpec
+	"Spec for the menu and shortcut keys for the system categories list.
+	See coment at Morph >> #getMenu
+	"
+	^ super explorerMenuSpec,
+	#(
+		#(310		'toggle live editing' 						nil 		window 			toggleLiveEditing 						switchIcon)
+		#(320 		'-----')
+		#(330		'export' 						nil 		window 			1000 						)
+	),
+	(Array streamContents: [ :strm | | i |
+		i := 1000.
+		EruditeBookExporter subclassesDo: [:subclass |
+			strm nextPut: {i. subclass exporterName. nil. #window. #exportWithClass:. nil. nil. subclass } ]])! !
 
 !EruditeBookEditorMorph class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:14:06'!
 initialize
@@ -21838,6 +21816,12 @@ heading
 
 	^ heading4 / heading3 / heading2 / heading1! !
 
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 16:32'!
+heading: level
+
+	^ (self headingCharacter asParser min: level max: level) flatten,
+		(#newline asParser not, #any asParser) plus flatten! !
+
 !EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 16:31'!
 heading1
 
@@ -21857,12 +21841,6 @@ heading3
 heading4
 
 	^ self heading: 5! !
-
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 16:32'!
-heading: level
-
-	^ (self headingCharacter asParser min: level max: level) flatten,
-		(#newline asParser not, #any asParser) plus flatten! !
 
 !EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 15:38'!
 headingCharacter
@@ -22555,12 +22533,6 @@ insertMarkup: aBlock
 	model changed: #refetchContents.
 	self runningWorld activeHand newKeyboardFocus: morph! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 15:29:50'!
-insertMarkupMenu: aKeyboardEvent
-	
-	self getInsertMarkupMenu .
-	^ true! !
-
 !EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:10:24'!
 insertMethodLink
 
@@ -22626,27 +22598,6 @@ editEruditeSource
 	
 	EruditeDocEditorWindow open: sourceModel label: 'Edit Erudite source'.! !
 
-!EruditeDocEditor methodsFor: 'actions' stamp: 'MM 2/17/2022 15:11:35'!
-getMenu
-
-	|menu|
-	
-	menu _ super getMenu.
-	
-	menu addLine;
-		   " add: 'Toggle editing' action: #toggleEditing;
-		    add: 'Insert markup (i)...' action: #getInsertMarkupMenu."
-		add: 'Edit Erudite source' action: #editEruditeSource icon: #textEditorIcon;
-		add: 'Insert Erudite markup (i)' action: #getInsertMarkupMenu icon: #textEditorIcon.
-		
-	^ menu! !
-
-!EruditeDocEditor methodsFor: 'actions' stamp: 'MM 12/6/2018 11:26'!
-save: aKeyboardEvent
-
-	self acceptContents.
-	^ true! !
-
 !EruditeDocEditor methodsFor: 'actions' stamp: 'MM 12/13/2018 16:56'!
 toggleEditing
 	|editing|
@@ -22659,16 +22610,16 @@ toggleEditing
 sourceContents
 	model sourceContents ! !
 
-!EruditeDocEditor class methodsFor: 'as yet unclassified' stamp: 'MM 2/17/2022 15:26:12'!
-cmdShortcutsSpec
-	"
-	Editor initialize
-	"
-	"arranged in QWERTY keyboard order"
-	^#(
-		#(		$s	#save:								'Save (i.e. accept)')
-		#(		$l	#cancelEdits:						'Cancel')
-		#(       $i  #insertMarkupMenu:                         'Insert markup')
+!EruditeDocEditor methodsFor: 'menu & kbd shortcuts' stamp: 'jmv 8/9/2024 16:28:23'!
+defaultMenuSpec
+	^super defaultMenuSpec,
+	#(
+		#(310 		'-----')
+		"#(320		'Edit Erudite source' 							nil 		editor 			toggleEditing 							textEditorIcon)
+		#(330		'Insert markup (i)...' 							$i 		editor 			getInsertMarkupMenu 							textEditorIcon)"
+		#(340		'Toggle editing' 							nil 		editor 			editEruditeSource 							textEditorIcon)
+		#(350		'Insert Erudite markup (i)' 							$i 		editor 			getInsertMarkupMenu 							textEditorIcon)
+		#(991		nil 							$l 		editor 			cancel 							)
 	)! !
 
 !BlockTextAction methodsFor: 'as yet unclassified' stamp: 'MM 11/17/2018 11:59'!
