@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6577] on 9 August 2024 at 4:42:17 pm'!
+'From Cuis7.1 [latest update: #6618] on 22 August 2024 at 3:22:49 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 274!
+!provides: 'Erudite' 1 275!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -20907,10 +20907,11 @@ initialize
 	
 	styler _ SHTextStylerST80 new textModel: self.! !
 
-!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 16:18:33'!
-shouldStyle: text with: aTextStyler
+!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'jmv 8/22/2024 15:12:14'!
+stylesText
+	"Answer true to allow styling to proceed, or false to veto the styling"
 
-	^ true! !
+	^true! !
 
 !EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 12/13/2018 16:17'!
 editing
