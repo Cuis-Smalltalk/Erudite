@@ -1,6 +1,6 @@
 'From Cuis 6.0 [latest update: #5556] on 20 November 2022 at 11:19:27 am'!
 'Description Book on Morphic GUI system.'!
-!provides: 'MorphicBook' 1 36!
+!provides: 'MorphicBook' 1 37!
 !requires: 'Erudite' 1 133 nil!
 !requires: 'Dice' 1 0 nil!
 SystemOrganization addCategory: 'MorphicBook'!
@@ -84,8 +84,8 @@ drawOn: aCanvas
 	
 	crossHeight := self morphHeight / 3.0.
 	crossWidth := self morphWidth / 3.0.
-	horizontalBar := self morphLocalBounds insetBy: 0 @ crossHeight.
-	verticalBar := self morphLocalBounds insetBy: crossWidth @ 0.
+	horizontalBar := self localBounds insetBy: 0 @ crossHeight.
+	verticalBar := self localBounds insetBy: crossWidth @ 0.
 	aCanvas fillRectangle: horizontalBar color: self color.
 	aCanvas fillRectangle: verticalBar color: self color! !
 
@@ -119,8 +119,8 @@ morphContainsPoint: aPoint
 
 	crossHeight := self morphHeight / 3.0.
 	crossWidth := self morphWidth / 3.0.
-	horizontalBar := self morphLocalBounds insetBy: 0 @ crossHeight.
-	verticalBar := self morphLocalBounds insetBy: crossWidth @ 0.
+	horizontalBar := self localBounds insetBy: 0 @ crossHeight.
+	verticalBar := self localBounds insetBy: crossWidth @ 0.
 	^ (horizontalBar containsPoint: aPoint) or: [ verticalBar
 		containsPoint: aPoint ]! !
 
@@ -134,7 +134,7 @@ drawOn: aCanvas
 horizontalBar
 	| crossHeight |
 	crossHeight := self morphHeight / 3.0.
-	^ self morphLocalBounds insetBy: 0 @ crossHeight! !
+	^ self localBounds insetBy: 0 @ crossHeight! !
 
 !CrossMorph3 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 12:05:37'!
 morphContainsPoint: aPoint
@@ -144,7 +144,7 @@ morphContainsPoint: aPoint
 verticalBar
 	| crossWidth |
 	crossWidth := self morphWidth / 3.0.
-	^ self morphLocalBounds insetBy: crossWidth @ 0! !
+	^ self localBounds insetBy: crossWidth @ 0! !
 
 !CrossMorph4 methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 11:45:06'!
 handlesMouseDown: anEvent
