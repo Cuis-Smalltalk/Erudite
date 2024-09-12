@@ -1,120 +1,215 @@
-'From Cuis 6.0 [latest update: #5400] on 24 July 2022 at 9:50:58 am'!
+'From Cuis7.1 [latest update: #6715] on 12 September 2024 at 12:39:34 pm'!
 'Description '!
-!provides: 'EruditeMath' 1 45!
+!provides: 'EruditeMath' 1 46!
 !requires: 'Erudite' 1 203 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
-SystemOrganization addCategory: 'EruditeMath'!
-SystemOrganization addCategory: 'EruditeMath-Parser'!
-SystemOrganization addCategory: 'EruditeMath-Books'!
-SystemOrganization addCategory: 'EruditeMath-Exceptions'!
-SystemOrganization addCategory: 'EruditeMath-Latex'!
+SystemOrganization addCategory: #EruditeMath!
+SystemOrganization addCategory: #'EruditeMath-Parser'!
+SystemOrganization addCategory: #'EruditeMath-Books'!
+SystemOrganization addCategory: #'EruditeMath-Exceptions'!
+SystemOrganization addCategory: #'EruditeMath-Latex'!
 
 
-!classDefinition: #EnvironmentVariableNotDefinedError category: 'EruditeMath-Exceptions'!
-Error subclass: #EnvironmentVariableNotDefinedError
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'EruditeMath-Exceptions'!
-!classDefinition: 'EnvironmentVariableNotDefinedError class' category: 'EruditeMath-Exceptions'!
-EnvironmentVariableNotDefinedError class
-	instanceVariableNames: ''!
-
-!classDefinition: #EruditeMathMarkupGrammar category: 'EruditeMath-Parser'!
-EruditeMarkupParser subclass: #EruditeMathMarkupGrammar
-	instanceVariableNames: 'plot math'
+!classDefinition: #DocMath category: #'EruditeMath-Parser'!
+ProtoObject subclass: #DocMath
+	instanceVariableNames: 'formula'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeMath-Parser'!
-!classDefinition: 'EruditeMathMarkupGrammar class' category: 'EruditeMath-Parser'!
-EruditeMathMarkupGrammar class
+!classDefinition: 'DocMath class' category: #'EruditeMath-Parser'!
+DocMath class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeMathMarkupParser category: 'EruditeMath-Parser'!
-EruditeMathMarkupGrammar subclass: #EruditeMathMarkupParser
-	instanceVariableNames: ''
+!classDefinition: #DocPlot category: #'EruditeMath-Parser'!
+ProtoObject subclass: #DocPlot
+	instanceVariableNames: 'script'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeMath-Parser'!
-!classDefinition: 'EruditeMathMarkupParser class' category: 'EruditeMath-Parser'!
-EruditeMathMarkupParser class
+!classDefinition: 'DocPlot class' category: #'EruditeMath-Parser'!
+DocPlot class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeMathManual category: 'EruditeMath-Books'!
+!classDefinition: #EruditeMathManual category: #'EruditeMath-Books'!
 EruditeBook subclass: #EruditeMathManual
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeMath-Books'!
-!classDefinition: 'EruditeMathManual class' category: 'EruditeMath-Books'!
+!classDefinition: 'EruditeMathManual class' category: #'EruditeMath-Books'!
 EruditeMathManual class
 	instanceVariableNames: ''!
 
-!classDefinition: #LatexEruditeMathBookRenderer category: 'EruditeMath-Latex'!
+!classDefinition: #LatexEruditeMathBookRenderer category: #'EruditeMath-Latex'!
 LatexEruditeBookRenderer subclass: #LatexEruditeMathBookRenderer
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeMath-Latex'!
-!classDefinition: 'LatexEruditeMathBookRenderer class' category: 'EruditeMath-Latex'!
+!classDefinition: 'LatexEruditeMathBookRenderer class' category: #'EruditeMath-Latex'!
 LatexEruditeMathBookRenderer class
 	instanceVariableNames: ''!
 
-!classDefinition: #DocMath category: 'EruditeMath-Parser'!
-DocNode subclass: #DocMath
-	instanceVariableNames: 'formula'
+!classDefinition: #EnvironmentVariableNotDefinedError category: #'EruditeMath-Exceptions'!
+Error subclass: #EnvironmentVariableNotDefinedError
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeMath-Exceptions'!
+!classDefinition: 'EnvironmentVariableNotDefinedError class' category: #'EruditeMath-Exceptions'!
+EnvironmentVariableNotDefinedError class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeMathMarkupGrammar category: #'EruditeMath-Parser'!
+EruditeMarkupParser subclass: #EruditeMathMarkupGrammar
+	instanceVariableNames: 'plot math'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeMath-Parser'!
-!classDefinition: 'DocMath class' category: 'EruditeMath-Parser'!
-DocMath class
+!classDefinition: 'EruditeMathMarkupGrammar class' category: #'EruditeMath-Parser'!
+EruditeMathMarkupGrammar class
 	instanceVariableNames: ''!
 
-!classDefinition: #DocPlot category: 'EruditeMath-Parser'!
-DocNode subclass: #DocPlot
-	instanceVariableNames: 'script'
+!classDefinition: #EruditeMathMarkupParser category: #'EruditeMath-Parser'!
+EruditeMathMarkupGrammar subclass: #EruditeMathMarkupParser
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeMath-Parser'!
-!classDefinition: 'DocPlot class' category: 'EruditeMath-Parser'!
-DocPlot class
+!classDefinition: 'EruditeMathMarkupParser class' category: #'EruditeMath-Parser'!
+EruditeMathMarkupParser class
 	instanceVariableNames: ''!
 
 
-!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:10:47'!
-markup
-	^ super markup / plot / math! !
+!DocMath methodsFor: 'accessing' stamp: 'MM 6/12/2022 10:11:51'!
+formula
+	"Answer the value of formula"
 
-!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:10:57'!
-math
+	^ formula! !
 
-	^ ($$ asParser min: 1 max: 1) flatten,
-	   ($$ asParser min: 1 max: 1) negate plus flatten,
-	   ($$ asParser min: 1 max: 1) flatten! !
+!DocMath methodsFor: 'accessing' stamp: 'MM 6/12/2022 10:11:51'!
+formula: anObject
+	"Set the value of formula"
 
-!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'AS 7/24/2022 09:00:14'!
-plot
+	formula := anObject! !
 
-	^ '@startplot' asParser flatten,
-		'@endplot' asParser negate plus flatten,
-		'@endplot' asParser flatten! !
+!DocMath methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:16:32'!
+accept: aVisitor
 
-!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:11:41'!
-math
+	^ aVisitor visitMath: self! !
 
-	^ super math ==> [:res |
-		(DocMath new)
-			formula: res second;
-			yourself]! !
+!DocMath methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 12:13:01'!
+data
 
-!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 22:56:00'!
-plot
+	| dataDict darkPngPath formulaId lightGifPath lightPngPath |
+	dataDict := Dictionary new.
+	formulaId := self dataKey.
+	
+	darkPngPath := DirectoryEntry tempDirectory //
+		(formulaId, Theme darkModeId, '.png').
+	lightGifPath := DirectoryEntry tempDirectory //
+		(formulaId, Theme lightModeId, '.gif').
+	lightPngPath := DirectoryEntry tempDirectory //
+		(formulaId, Theme lightModeId, '.png').
 
-	^ super plot ==> [:res |
-		(DocPlot new)
-			script: res second;
-			yourself]! !
+	lightGifPath exists ifFalse: [
+		OSProcess mimetex: '-e ', lightGifPath pathName, ' "', self formula, '"'
+	].
+
+	lightPngPath exists ifFalse: [
+		OSProcess imConvert: lightGifPath pathName,' ', lightPngPath pathName
+	].
+
+	dataDict at: Theme lightModeId put:
+		(EruditeForm fromFileNamed: lightPngPath pathName).
+
+	darkPngPath exists ifFalse: [
+		OSProcess convertLightImage: lightPngPath pathName
+			toDarkImage: darkPngPath pathName
+	].
+
+	dataDict at: Theme darkModeId put:
+		(EruditeForm fromFileNamed: darkPngPath pathName).
+	
+	^ dataDict! !
+
+!DocMath methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:24:53'!
+dataKey
+
+	^ 'erudite-formula-', (((SecureHashAlgorithm new)
+		initialize;
+		hashMessage: self formula)
+			printStringBase: 16) asLowercase! !
+
+!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 21:30:31'!
+accept: aVisitor
+
+	^ aVisitor visitPlot: self! !
+
+!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 22:39:00'!
+data
+
+	| dataDict |
+	dataDict := Dictionary new.
+	
+	self putMorphicData: dataDict.
+	
+	^ dataDict! !
+
+!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 10:57:14'!
+dataKey
+
+	^ 'erudite-plot-', (((SecureHashAlgorithm new)
+		initialize;
+		hashMessage: self script)
+			printStringBase: 16) asLowercase! !
+
+!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 12:13:56'!
+putMorphicData: aDictionary
+
+	| darkImagePath gpPath lightImagePath plotId |
+	plotId := self dataKey.
+	
+	darkImagePath := DirectoryEntry tempDirectory //
+		(plotId, Theme darkModeId, '.png').
+	lightImagePath := DirectoryEntry tempDirectory //
+		(plotId, Theme lightModeId, '.png').
+	gpPath := (lightImagePath pathName, '.gp') asFileEntry.	
+
+	gpPath exists ifFalse: [
+		| gpScript |
+		gpScript := 'set term png \', String lf,
+			String tab, 'transparent truecolor', String lf,
+			'set output ''', lightImagePath pathName, '''', String lf,
+			self script.
+		gpPath fileContents: gpScript
+	].
+
+	lightImagePath exists ifFalse: [
+		OSProcess gnuplot: gpPath pathName
+	].
+
+	aDictionary at: Theme lightModeId put:
+		(EruditeForm fromFileNamed: lightImagePath pathName).
+
+	darkImagePath exists ifFalse: [
+		OSProcess convertLightImage: lightImagePath pathName
+			toDarkImage: darkImagePath pathName
+	].
+
+	aDictionary at: Theme darkModeId put:
+		(EruditeForm fromFileNamed: darkImagePath pathName)! !
+
+!DocPlot methodsFor: 'accessing' stamp: 'AS 6/13/2022 21:40:10'!
+script
+
+	^ script! !
+
+!DocPlot methodsFor: 'accessing' stamp: 'AS 6/13/2022 21:40:23'!
+script: aString
+
+	script _ aString! !
 
 !EruditeMathManual methodsFor: 'rendering' stamp: 'AS 6/16/2022 16:33:29'!
 latexRendererClass
@@ -1065,23 +1160,23 @@ If the environment variable MIMETEX is defined, EruditeMath will use it as the m
 
 If the environment variable GNUPLOT is defined, EruditeMath will use it as the gnuplot command. The default command is ''gnuplot''.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeMathManual class methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 23:48:01'!
+!EruditeMathManual class methodsFor: 'as yet unclassified' stamp: 'jmv 9/12/2024 12:38:44'!
 newBook
 	| title |
-	title _ FillInTheBlankMorph request: 'Book title:'.
+	title := StringRequestMorph request: 'Book title:'.
 	title ifNotEmpty: [
 		| book bookClass latexRendererClass parser |
-		book _ EruditeBook titled: title.
-		bookClass _ book storeAsClass.
+		book := EruditeBook titled: title.
+		bookClass := book storeAsClass.
 		
-		latexRendererClass _ String streamContents: [:s |
+		latexRendererClass := String streamContents: [:s |
 			s nextPutAll: 'latexRendererClass'; newLine;
 				nextPutAll: '    ^ LatexEruditeMathBookRenderer';
 				nextPutAll: '.'; newLine
 		].
 		bookClass compile: latexRendererClass.
 		
-		parser _ String streamContents: [:s |
+		parser := String streamContents: [:s |
 			s nextPutAll: 'parser'; newLine;
 				nextPutAll: '    ^ EruditeMathMarkupParser';
 				nextPutAll: '.'; newLine
@@ -1102,134 +1197,104 @@ on: aBook
 		beforePreamble: '\usepackage{gnuplottex}';
 		yourself! !
 
-!DocMath methodsFor: 'accessing' stamp: 'MM 6/12/2022 10:11:51'!
-formula
-	"Answer the value of formula"
+!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:10:47'!
+markup
+	^ super markup / plot / math! !
 
-	^ formula! !
+!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:10:57'!
+math
 
-!DocMath methodsFor: 'accessing' stamp: 'MM 6/12/2022 10:11:51'!
-formula: anObject
-	"Set the value of formula"
+	^ ($$ asParser min: 1 max: 1) flatten,
+	   ($$ asParser min: 1 max: 1) negate plus flatten,
+	   ($$ asParser min: 1 max: 1) flatten! !
 
-	formula := anObject! !
+!EruditeMathMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'AS 7/24/2022 09:00:14'!
+plot
 
-!DocMath methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:16:32'!
-accept: aVisitor
+	^ '@startplot' asParser flatten,
+		'@endplot' asParser negate plus flatten,
+		'@endplot' asParser flatten! !
 
-	^ aVisitor visitMath: self! !
+!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:11:41'!
+math
 
-!DocMath methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 12:13:01'!
-data
+	^ super math ==> [:res |
+		(DocMath new)
+			formula: res second;
+			yourself]! !
 
-	| dataDict darkPngPath formulaId lightGifPath lightPngPath |
-	dataDict := Dictionary new.
-	formulaId := self dataKey.
-	
-	darkPngPath := DirectoryEntry tempDirectory //
-		(formulaId, Theme darkModeId, '.png').
-	lightGifPath := DirectoryEntry tempDirectory //
-		(formulaId, Theme lightModeId, '.gif').
-	lightPngPath := DirectoryEntry tempDirectory //
-		(formulaId, Theme lightModeId, '.png').
+!EruditeMathMarkupParser methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 22:56:00'!
+plot
 
-	lightGifPath exists ifFalse: [
-		OSProcess mimetex: '-e ', lightGifPath pathName, ' "', self formula, '"'
-	].
+	^ super plot ==> [:res |
+		(DocPlot new)
+			script: res second;
+			yourself]! !
 
-	lightPngPath exists ifFalse: [
-		OSProcess imConvert: lightGifPath pathName,' ', lightPngPath pathName
-	].
+!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:38:06'!
+visitMath: aDocMath
 
-	dataDict at: Theme lightModeId put:
-		(EruditeForm fromFileNamed: lightPngPath pathName).
+	stream
+		nextPutAll: '$';
+		nextPutAll: aDocMath formula;
+		nextPutAll: '$'! !
 
-	darkPngPath exists ifFalse: [
-		OSProcess convertLightImage: lightPngPath pathName
-			toDarkImage: darkPngPath pathName
-	].
+!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/17/2022 12:33:10'!
+visitPlot: aDocPlot
 
-	dataDict at: Theme darkModeId put:
-		(EruditeForm fromFileNamed: darkPngPath pathName).
-	
-	^ dataDict! !
+	stream
+		nextPutAll: '\begin{gnuplot}[terminal=cairolatex]', String lf;
+		nextPutAll: 'set encoding utf8', String lf;
+		nextPutAll: aDocPlot script withBlanksTrimmed, String lf;
+		nextPutAll: '\end{gnuplot}', String lf! !
 
-!DocMath methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:24:53'!
-dataKey
+!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 7/24/2022 09:44:21'!
+launchInteractivePlot: aDocPlot
+	| gpPath |
+	gpPath _ DirectoryEntry tempDirectory // (aDocPlot dataKey, '-interact.gp').
+	gpPath exists ifFalse: [ gpPath fileContents: aDocPlot script ].
+	OSProcess gnuplot: '-p ', gpPath pathName! !
 
-	^ 'erudite-formula-', (((SecureHashAlgorithm new)
-		initialize;
-		hashMessage: self formula)
-			printStringBase: 16) asLowercase! !
+!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:49:29'!
+visitMath: aDocMath
 
-!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 21:30:31'!
-accept: aVisitor
+	| dataDict form imageMorph |
+	dataDict := [document getNodeData: aDocMath]
+		on: Error
+		do: [:e | ^stream nextPut: e printString].
 
-	^ aVisitor visitPlot: self! !
+	form := dataDict at: Theme currentDarkModeId.
+	imageMorph := ImageMorph new image: form.
 
-!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 22:39:00'!
-data
+	stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
 
-	| dataDict |
-	dataDict := Dictionary new.
-	
-	self putMorphicData: dataDict.
-	
-	^ dataDict! !
+!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 7/24/2022 09:48:35'!
+visitPlot: aDocPlot
 
-!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 10:57:14'!
-dataKey
+	["Render the image"
+		| dataDict form imageMorph |
+		dataDict _ [document getNodeData: aDocPlot]
+			on: Error
+			do: [:e | ^stream nextPut: e printString].
 
-	^ 'erudite-plot-', (((SecureHashAlgorithm new)
-		initialize;
-		hashMessage: self script)
-			printStringBase: 16) asLowercase! !
+		form _ dataDict at: Theme currentDarkModeId.
+		imageMorph _ ImageMorph new image: form.
 
-!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 12:13:56'!
-putMorphicData: aDictionary
+		stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])
+	] value.
 
-	| darkImagePath gpPath lightImagePath plotId |
-	plotId := self dataKey.
-	
-	darkImagePath := DirectoryEntry tempDirectory //
-		(plotId, Theme darkModeId, '.png').
-	lightImagePath := DirectoryEntry tempDirectory //
-		(plotId, Theme lightModeId, '.png').
-	gpPath := (lightImagePath pathName, '.gp') asFileEntry.	
-
-	gpPath exists ifFalse: [
-		| gpScript |
-		gpScript := 'set term png \', String lf,
-			String tab, 'transparent truecolor', String lf,
-			'set output ''', lightImagePath pathName, '''', String lf,
-			self script.
-		gpPath fileContents: gpScript
-	].
-
-	lightImagePath exists ifFalse: [
-		OSProcess gnuplot: gpPath pathName
-	].
-
-	aDictionary at: Theme lightModeId put:
-		(EruditeForm fromFileNamed: lightImagePath pathName).
-
-	darkImagePath exists ifFalse: [
-		OSProcess convertLightImage: lightImagePath pathName
-			toDarkImage: darkImagePath pathName
-	].
-
-	aDictionary at: Theme darkModeId put:
-		(EruditeForm fromFileNamed: darkImagePath pathName)! !
-
-!DocPlot methodsFor: 'accessing' stamp: 'AS 6/13/2022 21:40:10'!
-script
-
-	^ script! !
-
-!DocPlot methodsFor: 'accessing' stamp: 'AS 6/13/2022 21:40:23'!
-script: aString
-
-	script _ aString! !
+	["Render the interaction button"
+		| button |
+		button _ Text
+			string: '[interact]'
+			attributes: {
+				TextEmphasis underlined.
+				BlockTextAction do: [:anObject |
+					self launchInteractivePlot: aDocPlot]
+			}.
+		stream nextPut: String lf.
+		stream nextPut: button
+	] value! !
 
 !Theme class methodsFor: '*EruditeMath' stamp: 'AS 6/14/2022 08:38:31'!
 currentDarkModeId
@@ -1305,68 +1370,3 @@ mimetexCommand
 	
 	^ ThisOSProcess thisOSProcess environment
 		at: 'MIMETEX' ifAbsent: ['mimetex'].! !
-
-!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:38:06'!
-visitMath: aDocMath
-
-	stream
-		nextPutAll: '$';
-		nextPutAll: aDocMath formula;
-		nextPutAll: '$'! !
-
-!LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/17/2022 12:33:10'!
-visitPlot: aDocPlot
-
-	stream
-		nextPutAll: '\begin{gnuplot}[terminal=cairolatex]', String lf;
-		nextPutAll: 'set encoding utf8', String lf;
-		nextPutAll: aDocPlot script withBlanksTrimmed, String lf;
-		nextPutAll: '\end{gnuplot}', String lf! !
-
-!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 7/24/2022 09:44:21'!
-launchInteractivePlot: aDocPlot
-	| gpPath |
-	gpPath _ DirectoryEntry tempDirectory // (aDocPlot dataKey, '-interact.gp').
-	gpPath exists ifFalse: [ gpPath fileContents: aDocPlot script ].
-	OSProcess gnuplot: '-p ', gpPath pathName! !
-
-!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:49:29'!
-visitMath: aDocMath
-
-	| dataDict form imageMorph |
-	dataDict := [document getNodeData: aDocMath]
-		on: Error
-		do: [:e | ^stream nextPut: e printString].
-
-	form := dataDict at: Theme currentDarkModeId.
-	imageMorph := ImageMorph new image: form.
-
-	stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
-
-!MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 7/24/2022 09:48:35'!
-visitPlot: aDocPlot
-
-	["Render the image"
-		| dataDict form imageMorph |
-		dataDict _ [document getNodeData: aDocPlot]
-			on: Error
-			do: [:e | ^stream nextPut: e printString].
-
-		form _ dataDict at: Theme currentDarkModeId.
-		imageMorph _ ImageMorph new image: form.
-
-		stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])
-	] value.
-
-	["Render the interaction button"
-		| button |
-		button _ Text
-			string: '[interact]'
-			attributes: {
-				TextEmphasis underlined.
-				BlockTextAction do: [:anObject |
-					self launchInteractivePlot: aDocPlot]
-			}.
-		stream nextPut: String lf.
-		stream nextPut: button
-	] value! !

@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6618] on 22 August 2024 at 3:22:49 pm'!
+'From Cuis7.1 [latest update: #6715] on 12 September 2024 at 12:37:44 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 275!
+!provides: 'Erudite' 1 276!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -426,16 +426,6 @@ AbstractHierarchicalList subclass: #EruditeBookExplorer
 EruditeBookExplorer class
 	instanceVariableNames: ''!
 
-!classDefinition: #InnerEruditeDocMorph category: #'Erudite-Morphic'!
-InnerTextMorph subclass: #InnerEruditeDocMorph
-	instanceVariableNames: 'editing'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Erudite-Morphic'!
-!classDefinition: 'InnerEruditeDocMorph class' category: #'Erudite-Morphic'!
-InnerEruditeDocMorph class
-	instanceVariableNames: ''!
-
 !classDefinition: #EruditeDocEditorMorph category: #'Erudite-Morphic'!
 TextModelMorph subclass: #EruditeDocEditorMorph
 	instanceVariableNames: 'acceptContentsOnChange'
@@ -504,6 +494,16 @@ SystemWindow subclass: #EruditeDocumentReaderMorph
 	category: 'Erudite-Morphic'!
 !classDefinition: 'EruditeDocumentReaderMorph class' category: #'Erudite-Morphic'!
 EruditeDocumentReaderMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #InnerEruditeDocMorph category: #'Erudite-Morphic'!
+InnerTextMorph subclass: #InnerEruditeDocMorph
+	instanceVariableNames: 'editing'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Erudite-Morphic'!
+!classDefinition: 'InnerEruditeDocMorph class' category: #'Erudite-Morphic'!
+InnerEruditeDocMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeMarkupGrammar category: #'Erudite-Parser'!
@@ -19774,10 +19774,10 @@ menu: titleString
 		addStayUpIcons.
 	^ menu! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 6/30/2024 10:14:16'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'jmv 9/12/2024 12:37:12'!
 newBook
 	| book title |
-	title := FillInTheBlankMorph request: 'Book title:'.
+	title := StringRequestMorph request: 'Book title:'.
 	title ifNotNil: [
 		title ifNotEmpty: [
 			book := EruditeBook titled: title.
@@ -21004,38 +21004,6 @@ on: aBook
 
 	^ self new initialize: aBook! !
 
-!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:57'!
-initialize
-
-	super initialize.
-	editing _ false! !
-
-!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:51'!
-keyStroke: aKeyboardEvent
-
-	super keyStroke: aKeyboardEvent.
-	
-	owner acceptsContentsOnChange ifTrue: [
-		self hasUnacceptedEdits  ifTrue: [
-			self acceptContents]]! !
-
-!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 11/23/2022 20:34:57'!
-setFont: aFont
-
-	hasUnacceptedEdits
-		ifTrue: [ model basicActualContents: model actualContents ]
-		ifFalse: [ model refetch ].
-	editor defaultFont: aFont.
-	editor inspect.
-	self updateFromTextComposition.! !
-
-!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:59'!
-toggleEditing
-
-	editing _ editing not.
-	owner enableEditing: editing.
-	^ editing! !
-
 !EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:38'!
 acceptContents
 
@@ -21171,12 +21139,12 @@ text
 	"Needed for bindings handling."
 	^ ''! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/2/2023 09:07:13'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'jmv 9/12/2024 12:37:17'!
 addSection
 
 	| title |
 	
-	title _ FillInTheBlankMorph request: 'Section name: '.
+	title := StringRequestMorph request: 'Section name: '.
 	
 	title ifNotNil: [
 		title ifNotEmpty: [
@@ -21473,11 +21441,11 @@ removeSection
 			currentSection parent removeSection: currentSection.
 			self sectionsChanged; contentsChanged]]! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/21/2022 17:04:14'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'jmv 9/12/2024 12:37:20'!
 renameSection
 
 	currentSection  ifNotNil: [ | title |
-		title _ FillInTheBlankMorph request: 'Section name: ' initialAnswer: currentSection title.
+		title := StringRequestMorph request: 'Section name: ' initialAnswer: currentSection title.
 			
 		title ifNotNil: [
 			title ifNotEmpty: [
@@ -21492,11 +21460,11 @@ saveBook
 	model store.
 	sourcesChanged _ false! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 11:31:05'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'jmv 9/12/2024 12:37:23'!
 saveBookAs
 
 	| title  newBook newBookClass|
-	title := FillInTheBlankMorph request: 'A name for the new book:'.
+	title := StringRequestMorph request: 'A name for the new book:'.
 	
 	title ifNil: [^ self].
 	
@@ -21761,6 +21729,38 @@ getStyledText: aDocument
 	contents data: aDocument data.
 	
 	^ MorphicEruditeDocRenderer render: contents notifying: self! !
+
+!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:57'!
+initialize
+
+	super initialize.
+	editing _ false! !
+
+!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:51'!
+keyStroke: aKeyboardEvent
+
+	super keyStroke: aKeyboardEvent.
+	
+	owner acceptsContentsOnChange ifTrue: [
+		self hasUnacceptedEdits  ifTrue: [
+			self acceptContents]]! !
+
+!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 11/23/2022 20:34:57'!
+setFont: aFont
+
+	hasUnacceptedEdits
+		ifTrue: [ model basicActualContents: model actualContents ]
+		ifFalse: [ model refetch ].
+	editor defaultFont: aFont.
+	editor inspect.
+	self updateFromTextComposition.! !
+
+!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:59'!
+toggleEditing
+
+	editing _ editing not.
+	owner enableEditing: editing.
+	^ editing! !
 
 !EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 15:11:37'!
 assignLinkOption
@@ -22964,13 +22964,6 @@ selectionInterval
 text
 	^ ''! !
 
-!InnerTextMorph methodsFor: '*Erudite' stamp: 'MM 12/7/2018 12:59'!
-enableEditing: aBoolean
-
-	self setProperty: #disablesEdition toValue: aBoolean.
-	aBoolean ifFalse: [self stopBlinking]
-				ifTrue: [self removeProperty: #disablesEdition. self startBlinking]! !
-
 !HierarchicalListMorph methodsFor: '*Erudite' stamp: 'MM 12/13/2018 18:42'!
 expandRoot
 	scroller submorphs first toggleExpandedState ! !
@@ -22978,6 +22971,13 @@ expandRoot
 !TextModelMorph methodsFor: '*Erudite' stamp: 'MM 6/15/2022 09:43:47'!
 enableEditing: aBoolean
 	self innerTextMorph enableEditing: aBoolean! !
+
+!InnerTextMorph methodsFor: '*Erudite' stamp: 'MM 12/7/2018 12:59'!
+enableEditing: aBoolean
+
+	self setProperty: #disablesEdition toValue: aBoolean.
+	aBoolean ifFalse: [self stopBlinking]
+				ifTrue: [self removeProperty: #disablesEdition. self startBlinking]! !
 
 !DirectoryEntry class methodsFor: '*Erudite' stamp: 'AS 6/13/2022 19:55:00'!
 tempDirectory
