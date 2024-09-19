@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6715] on 12 September 2024 at 12:37:44 pm'!
+'From Cuis7.1 [latest update: #6731] on 19 September 2024 at 1:07:17 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 276!
+!provides: 'Erudite' 1 277!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -22611,14 +22611,14 @@ toggleEditing
 sourceContents
 	model sourceContents ! !
 
-!EruditeDocEditor methodsFor: 'menu & kbd shortcuts' stamp: 'jmv 8/9/2024 16:28:23'!
+!EruditeDocEditor methodsFor: 'menu & kbd shortcuts' stamp: 'MM 9/19/2024 13:07:00'!
 defaultMenuSpec
 	^super defaultMenuSpec,
 	#(
 		#(310 		'-----')
 		"#(320		'Edit Erudite source' 							nil 		editor 			toggleEditing 							textEditorIcon)
 		#(330		'Insert markup (i)...' 							$i 		editor 			getInsertMarkupMenu 							textEditorIcon)"
-		#(340		'Toggle editing' 							nil 		editor 			editEruditeSource 							textEditorIcon)
+		#(340		'Edit Erudite source' 							nil 		editor 			editEruditeSource 							textEditorIcon)
 		#(350		'Insert Erudite markup (i)' 							$i 		editor 			getInsertMarkupMenu 							textEditorIcon)
 		#(991		nil 							$l 		editor 			cancel 							)
 	)! !
