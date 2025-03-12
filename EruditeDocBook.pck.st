@@ -1,9 +1,9 @@
-'From Cuis7.1 [latest update: #6487] on 24 June 2024 at 3:36:37 pm'!
+'From Cuis7.3 [latest update: #7066] on 12 March 2025 at 6:53:45 pm'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 28!
+!provides: 'EruditeDocBook' 1 29!
 !requires: 'Erudite' 1 270 nil!
 !requires: 'EruditeXMLBook' 1 14 nil!
 !requires: 'YAXO' 1 27 nil!
@@ -547,19 +547,20 @@ parseMediaobject: anXMLElement
 
 	^ EruditeParagraphNode contents: (Array with: (self parseChildrenOf: anXMLElement))! !
 
-!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/22/2024 12:39:55'!
+!EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 3/12/2025 18:50:10'!
 parseOrderedlist: anXMLElement
 
-	| node |
-	
-	node := EruditeDocList new.
-	
-	anXMLElement childrenDo: [:xmlElem | 
-		(self parseElement: xmlElem) ifNotNil: [:docNode |
-			self assert: (docNode isKindOf: EruditeDocListItem ).
-			node items add: docNode]].
-	
-	^ node! !
+    | node |
+    
+    node := EruditeDocList new.
+    node listType: #ordered. 
+
+    anXMLElement childrenDo: [:xmlElem |
+        (self parseElement: xmlElem) ifNotNil: [:docNode |
+            self assert: (docNode isKindOf: EruditeDocListItem ).
+            node items add: docNode]].
+    
+    ^ node! !
 
 !EruditeDocBookParser methodsFor: 'parsers' stamp: 'MM 6/19/2024 08:34:42'!
 parsePara: anXMLElement

@@ -1,8 +1,8 @@
-'From Cuis7.3 [latest update: #7066] on 12 March 2025 at 4:15:41 pm'!
+'From Cuis7.3 [latest update: #7066] on 12 March 2025 at 6:53:37 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 279!
+!provides: 'Erudite' 1 280!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -19528,18 +19528,31 @@ visitLink: aDocLink
 	(self linkRendererFor: aDocLink type) 
 		render: aDocLink in: document on: stream! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2025 16:14:42'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2025 18:52:26'!
 visitList: aListNode
 
+	| listRendererSelector |
+	
+	listRendererSelector := ('visit', aListNode listType asString capitalized, 'List:') asSymbol.
+	^ self perform: listRendererSelector with: aListNode! !
+
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2025 18:51:29'!
+visitOrderedList: aListNode
+
+	| itemNumber |
+	
+	itemNumber := 0.
+
 	aListNode items do: [:item |
-		stream nextPut: '• '.
-		item contents do: [:elem |
-			(elem isKindOf: EruditeParagraphNode) ifTrue: [
-				elem contents do: [:el |
-					el accept: self]]
-			ifFalse: [	elem accept: self]].
-		stream nextPut: Character newLineCharacter asString].
-	stream nextPut: Character newLineCharacter asString! !
+    		itemNumber := itemNumber + 1.
+        	stream nextPut: itemNumber printString, '. '.
+        	item contents do: [:elem |
+            	(elem isKindOf: EruditeParagraphNode) ifTrue: [
+                	elem contents do: [:el |
+                    	el accept: self]]
+            	ifFalse: [    elem accept: self]].
+        	stream nextPut: Character newLineCharacter asString].
+        stream nextPut: Character newLineCharacter asString! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 23:10:43'!
 visitStyledText: aStyledText
@@ -19558,6 +19571,19 @@ visitStyledText: aStyledText
 				} otherwise: [self error: 'Invalid style']]].	
 	
 	stream nextPut: (Text string: aStyledText text attributes: attributes)! !
+
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2025 18:46:28'!
+visitUnorderedList: aListNode
+
+	aListNode items do: [:item |
+		stream nextPut: '• '.
+		item contents do: [:elem |
+			(elem isKindOf: EruditeParagraphNode) ifTrue: [
+				elem contents do: [:el |
+					el accept: self]]
+			ifFalse: [	elem accept: self]].
+		stream nextPut: Character newLineCharacter asString].
+	stream nextPut: Character newLineCharacter asString! !
 
 !MorphicEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 12/11/2018 18:27'!
 requestor
