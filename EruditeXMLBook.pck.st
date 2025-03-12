@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6487] on 23 June 2024 at 7:06:09 pm'!
+'From Cuis7.3 [latest update: #7066] on 12 March 2025 at 7:03:41 pm'!
 'Description '!
-!provides: 'EruditeXMLBook' 1 15!
+!provides: 'EruditeXMLBook' 1 16!
 !requires: 'Erudite' 1 267 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #EruditeXMLBook!
@@ -108,7 +108,7 @@ EruditeXMLUnorderedListParser class
 
 !classDefinition: #EruditeXMLParser category: #EruditeXMLBook!
 Object subclass: #EruditeXMLParser
-	instanceVariableNames: 'stream'
+	instanceVariableNames: 'stream mode'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeXMLBook'!
@@ -312,10 +312,11 @@ parse: anXMLElement using: aParser
 tag
 	^ 'ul'! !
 
-!EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 15:43:59'!
+!EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2025 19:01:31'!
 initialize: aStream
 
-	stream := aStream.! !
+	stream := aStream.
+	mode := #strict! !
 
 !EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 15:56:05'!
 parse
@@ -355,17 +356,25 @@ parseElement: anXMLElement
 		parse: anXMLElement
 		using: [:elem | self parseElement: elem]! !
 
-!EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 16:05:13'!
+!EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2025 19:02:00'!
 parserAt: xmlTag
 
 	^ self parsers 
 			detect: [:parserClass | parserClass tag sameAs: xmlTag]
-			ifNone: [self error: 'No parser for element: ', xmlTag]! !
+			ifNone: [self parserNotFound: 'No parser for element: ', xmlTag]! !
 
 !EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2024 20:54:46'!
 parserFor: tag
 
 	^ self parserAt:tag! !
+
+!EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2025 19:03:04'!
+parserNotFound: aString
+
+	mode caseOf: {
+		[ #strict ] -> [ self error: aString ].
+		[ #lenient ] -> [ Transcript show: aString; cr]
+	}! !
 
 !EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 16:01:31'!
 parsers
