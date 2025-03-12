@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6731] on 19 September 2024 at 1:07:17 pm'!
+'From Cuis7.3 [latest update: #7066] on 12 March 2025 at 10:16:38 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 277!
+!provides: 'Erudite' 1 278!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -19528,13 +19528,16 @@ visitLink: aDocLink
 	(self linkRendererFor: aDocLink type) 
 		render: aDocLink in: document on: stream! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/22/2024 20:33:17'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2025 09:59:45'!
 visitList: aListNode
 
 	aListNode items do: [:item |
 		stream nextPut: '• '.
 		item contents do: [:elem |
-			elem accept: self].
+			(elem isKindOf: EruditeParagraphNode) ifTrue: [
+				elem contents do: [:el |
+					el accept: self]]
+			ifFalse: [	elem accept: self]].
 		stream nextPut: Character newLineCharacter asString]! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 23:10:43'!
