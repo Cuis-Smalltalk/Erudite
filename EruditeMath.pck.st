@@ -11,24 +11,24 @@ SystemOrganization addCategory: #'EruditeMath-Exceptions'!
 SystemOrganization addCategory: #'EruditeMath-Latex'!
 
 
-!classDefinition: #DocMath category: #'EruditeMath-Parser'!
-ProtoObject subclass: #DocMath
+!classDefinition: #EruditeDocMath category: #'EruditeMath-Parser'!
+EruditeDocNode subclass: #EruditeDocMath
 	instanceVariableNames: 'formula'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeMath-Parser'!
-!classDefinition: 'DocMath class' category: #'EruditeMath-Parser'!
-DocMath class
+!classDefinition: 'EruditeDocMath class' category: #'EruditeMath-Parser'!
+EruditeDocMath class
 	instanceVariableNames: ''!
 
-!classDefinition: #DocPlot category: #'EruditeMath-Parser'!
-ProtoObject subclass: #DocPlot
+!classDefinition: #EruditeDocPlot category: #'EruditeMath-Parser'!
+EruditeDocNode subclass: #EruditeDocPlot
 	instanceVariableNames: 'script'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeMath-Parser'!
-!classDefinition: 'DocPlot class' category: #'EruditeMath-Parser'!
-DocPlot class
+!classDefinition: 'EruditeDocPlot class' category: #'EruditeMath-Parser'!
+EruditeDocPlot class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeMathManual category: #'EruditeMath-Books'!
@@ -82,24 +82,24 @@ EruditeMathMarkupParser class
 	instanceVariableNames: ''!
 
 
-!DocMath methodsFor: 'accessing' stamp: 'MM 6/12/2022 10:11:51'!
+!EruditeDocMath methodsFor: 'accessing' stamp: 'MM 6/12/2022 10:11:51'!
 formula
 	"Answer the value of formula"
 
 	^ formula! !
 
-!DocMath methodsFor: 'accessing' stamp: 'MM 6/12/2022 10:11:51'!
+!EruditeDocMath methodsFor: 'accessing' stamp: 'MM 6/12/2022 10:11:51'!
 formula: anObject
 	"Set the value of formula"
 
 	formula := anObject! !
 
-!DocMath methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:16:32'!
+!EruditeDocMath methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:16:32'!
 accept: aVisitor
 
 	^ aVisitor visitMath: self! !
 
-!DocMath methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 12:13:01'!
+!EruditeDocMath methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 12:13:01'!
 data
 
 	| dataDict darkPngPath formulaId lightGifPath lightPngPath |
@@ -134,7 +134,7 @@ data
 	
 	^ dataDict! !
 
-!DocMath methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:24:53'!
+!EruditeDocMath methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 11:24:53'!
 dataKey
 
 	^ 'erudite-formula-', (((SecureHashAlgorithm new)
@@ -142,12 +142,12 @@ dataKey
 		hashMessage: self formula)
 			printStringBase: 16) asLowercase! !
 
-!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 21:30:31'!
+!EruditeDocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/13/2022 21:30:31'!
 accept: aVisitor
 
 	^ aVisitor visitPlot: self! !
 
-!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 22:39:00'!
+!EruditeDocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 22:39:00'!
 data
 
 	| dataDict |
@@ -157,7 +157,7 @@ data
 	
 	^ dataDict! !
 
-!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 10:57:14'!
+!EruditeDocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/15/2022 10:57:14'!
 dataKey
 
 	^ 'erudite-plot-', (((SecureHashAlgorithm new)
@@ -165,7 +165,7 @@ dataKey
 		hashMessage: self script)
 			printStringBase: 16) asLowercase! !
 
-!DocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 12:13:56'!
+!EruditeDocPlot methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 12:13:56'!
 putMorphicData: aDictionary
 
 	| darkImagePath gpPath lightImagePath plotId |
@@ -201,12 +201,12 @@ putMorphicData: aDictionary
 	aDictionary at: Theme darkModeId put:
 		(EruditeForm fromFileNamed: darkImagePath pathName)! !
 
-!DocPlot methodsFor: 'accessing' stamp: 'AS 6/13/2022 21:40:10'!
+!EruditeDocPlot methodsFor: 'accessing' stamp: 'AS 6/13/2022 21:40:10'!
 script
 
 	^ script! !
 
-!DocPlot methodsFor: 'accessing' stamp: 'AS 6/13/2022 21:40:23'!
+!EruditeDocPlot methodsFor: 'accessing' stamp: 'AS 6/13/2022 21:40:23'!
 script: aString
 
 	script _ aString! !
@@ -1219,7 +1219,7 @@ plot
 math
 
 	^ super math ==> [:res |
-		(DocMath new)
+		(EruditeDocMath new)
 			formula: res second;
 			yourself]! !
 
@@ -1227,39 +1227,39 @@ math
 plot
 
 	^ super plot ==> [:res |
-		(DocPlot new)
+		(EruditeDocPlot new)
 			script: res second;
 			yourself]! !
 
 !LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:38:06'!
-visitMath: aDocMath
+visitMath: aEruditeDocMath
 
 	stream
 		nextPutAll: '$';
-		nextPutAll: aDocMath formula;
+		nextPutAll: aEruditeDocMath formula;
 		nextPutAll: '$'! !
 
 !LatexEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/17/2022 12:33:10'!
-visitPlot: aDocPlot
+visitPlot: aEruditeDocPlot
 
 	stream
 		nextPutAll: '\begin{gnuplot}[terminal=cairolatex]', String lf;
 		nextPutAll: 'set encoding utf8', String lf;
-		nextPutAll: aDocPlot script withBlanksTrimmed, String lf;
+		nextPutAll: aEruditeDocPlot script withBlanksTrimmed, String lf;
 		nextPutAll: '\end{gnuplot}', String lf! !
 
 !MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 7/24/2022 09:44:21'!
-launchInteractivePlot: aDocPlot
+launchInteractivePlot: aEruditeDocPlot
 	| gpPath |
-	gpPath _ DirectoryEntry tempDirectory // (aDocPlot dataKey, '-interact.gp').
-	gpPath exists ifFalse: [ gpPath fileContents: aDocPlot script ].
+	gpPath _ DirectoryEntry tempDirectory // (aEruditeDocPlot dataKey, '-interact.gp').
+	gpPath exists ifFalse: [ gpPath fileContents: aEruditeDocPlot script ].
 	OSProcess gnuplot: '-p ', gpPath pathName! !
 
 !MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 6/15/2022 11:49:29'!
-visitMath: aDocMath
+visitMath: aEruditeDocMath
 
 	| dataDict form imageMorph |
-	dataDict := [document getNodeData: aDocMath]
+	dataDict := [document getNodeData: aEruditeDocMath]
 		on: Error
 		do: [:e | ^stream nextPut: e printString].
 
@@ -1269,11 +1269,11 @@ visitMath: aDocMath
 	stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
 
 !MorphicEruditeDocRenderer methodsFor: '*EruditeMath' stamp: 'AS 7/24/2022 09:48:35'!
-visitPlot: aDocPlot
+visitPlot: aEruditeDocPlot
 
 	["Render the image"
 		| dataDict form imageMorph |
-		dataDict _ [document getNodeData: aDocPlot]
+		dataDict _ [document getNodeData: aEruditeDocPlot]
 			on: Error
 			do: [:e | ^stream nextPut: e printString].
 
@@ -1290,7 +1290,7 @@ visitPlot: aDocPlot
 			attributes: {
 				TextEmphasis underlined.
 				BlockTextAction do: [:anObject |
-					self launchInteractivePlot: aDocPlot]
+					self launchInteractivePlot: aEruditeDocPlot]
 			}.
 		stream nextPut: String lf.
 		stream nextPut: button
