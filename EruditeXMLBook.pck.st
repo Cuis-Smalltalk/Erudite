@@ -1,19 +1,29 @@
-'From Cuis7.3 [latest update: #7066] on 12 March 2025 at 7:03:41 pm'!
+'From Cuis7.3 [latest update: #7066] on 13 March 2025 at 4:26:29 pm'!
 'Description '!
-!provides: 'EruditeXMLBook' 1 16!
+!provides: 'EruditeXMLBook' 1 19!
 !requires: 'Erudite' 1 267 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #EruditeXMLBook!
 
 
-!classDefinition: #XMLEruditeBook category: #EruditeXMLBook!
-EruditeBook subclass: #XMLEruditeBook
+!classDefinition: #EruditeXMLBook category: #EruditeXMLBook!
+EruditeBook subclass: #EruditeXMLBook
+	instanceVariableNames: 'requirements file'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeXMLBook'!
+!classDefinition: 'EruditeXMLBook class' category: #EruditeXMLBook!
+EruditeXMLBook class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeXMLBookStorer category: #EruditeXMLBook!
+EruditeBookStorer subclass: #EruditeXMLBookStorer
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeXMLBook'!
-!classDefinition: 'XMLEruditeBook class' category: #EruditeXMLBook!
-XMLEruditeBook class
+!classDefinition: 'EruditeXMLBookStorer class' category: #EruditeXMLBook!
+EruditeXMLBookStorer class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeDocString category: #EruditeXMLBook!
@@ -44,6 +54,16 @@ Object subclass: #EruditeXMLElementParser
 	category: 'EruditeXMLBook'!
 !classDefinition: 'EruditeXMLElementParser class' category: #EruditeXMLBook!
 EruditeXMLElementParser class
+	instanceVariableNames: ''!
+
+!classDefinition: #EruditeXMLChapterParser category: #EruditeXMLBook!
+EruditeXMLElementParser subclass: #EruditeXMLChapterParser
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeXMLBook'!
+!classDefinition: 'EruditeXMLChapterParser class' category: #EruditeXMLBook!
+EruditeXMLChapterParser class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeXMLClassParser category: #EruditeXMLBook!
@@ -96,6 +116,16 @@ EruditeXMLElementParser subclass: #EruditeXMLParagraphParser
 EruditeXMLParagraphParser class
 	instanceVariableNames: ''!
 
+!classDefinition: #EruditeXMLTitleParser category: #EruditeXMLBook!
+EruditeXMLElementParser subclass: #EruditeXMLTitleParser
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeXMLBook'!
+!classDefinition: 'EruditeXMLTitleParser class' category: #EruditeXMLBook!
+EruditeXMLTitleParser class
+	instanceVariableNames: ''!
+
 !classDefinition: #EruditeXMLUnorderedListParser category: #EruditeXMLBook!
 EruditeXMLElementParser subclass: #EruditeXMLUnorderedListParser
 	instanceVariableNames: ''
@@ -137,7 +167,7 @@ EruditeXMLElement class
 	instanceVariableNames: ''!
 
 
-!XMLEruditeBook commentStamp: '<historical>' prior: 0!
+!EruditeXMLBook commentStamp: '<historical>' prior: 0!
 |xml doc|
 
 xml  '<h1>Title</h1>
@@ -152,12 +182,79 @@ doc  EruditeXMLParser parse: xml.
 
 ---------------
 
-(XMLEruditeBook titled: 'My book') edit!
+(EruditeXMLBook titled: 'My book') edit
 
-!XMLEruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 15:59:28'!
+---------------
+
+(EruditeXMLBook new
+	file: (CodePackage installedPackages at: 'EruditeXMLBook') fullFileName asFileEntry parent // 'Examples/xmlbook1.xml')
+	open!
+
+!EruditeXMLBook methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 16:01:26'!
+baseDir
+	^ file parent! !
+
+!EruditeXMLBook methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 16:05:34'!
+load
+
+	^ self reload! !
+
+!EruditeXMLBook methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 16:06:09'!
+sections
+
+	"lazily load the book when trying to access its sections"
+	sections ifEmpty:[self load].
+	^ super sections! !
+
+!EruditeXMLBook methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 16:16:13'!
+storerClass
+
+	^ EruditeXMLBookStorer ! !
+
+!EruditeXMLBook methodsFor: 'accessing' stamp: 'MM 3/13/2025 16:01:10'!
+file
+	"Answer the value of file"
+
+	^ file! !
+
+!EruditeXMLBook methodsFor: 'accessing' stamp: 'MM 3/13/2025 16:01:10'!
+file: anObject
+	"Set the value of file"
+
+	file := anObject! !
+
+!EruditeXMLBook methodsFor: 'accessing' stamp: 'MM 3/13/2025 16:01:10'!
+requirements
+	"Answer the value of requirements"
+
+	^ requirements! !
+
+!EruditeXMLBook class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 15:59:28'!
 parser
 
 	^ EruditeXMLParser new! !
+
+!EruditeXMLBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 16:20:46'!
+load
+	
+	| xml loadedBook |
+	
+	loadedBook := book class new
+					file: book file;
+					yourself.
+	xml := XMLDOMParser parseDocumentFrom: book file readStream.
+	xml tagsNamed: #title do: [:elem | loadedBook title: elem contentString].
+	"Each include is expected to have a chapter."
+	xml tagsNamed: #chapter do: [:elem | | chapterSource chapterXML chapterTitle |
+		chapterSource := String streamContents: [:s | elem printOn: s]. 
+		chapterXML := XMLDOMParser parseDocumentFrom: chapterSource readStream.
+		chapterTitle := chapterXML firstTagNamed: #title.
+		chapterTitle 
+			ifNil: [self error: 'Chapter with no title']
+			ifNotNil: [
+				loadedBook addSection: chapterTitle contentString contents: chapterSource]].
+	
+	^ loadedBook! !
 
 !EruditeDocString methodsFor: 'accessing' stamp: 'MM 6/15/2024 19:27:20'!
 contents
@@ -219,6 +316,23 @@ parse: anXMLElement using: aParser
 tag
 
 	^ self subclassResponsibility ! !
+
+!EruditeXMLChapterParser class methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 16:23:44'!
+parse: anXMLElement using: aParser
+
+	| paragraph |
+	
+	paragraph := EruditeParagraphNode new.
+	
+	anXMLElement childrenDo: [:xmlElem |
+		paragraph contents add: (aParser value: xmlElem)].
+	
+	^ paragraph! !
+
+!EruditeXMLChapterParser class methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 16:24:06'!
+tag
+
+	^ 'chapter'! !
 
 !EruditeXMLClassParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:14:08'!
 parse: anXMLElement using: aParser
@@ -294,6 +408,20 @@ tag
 
 	^ 'p'! !
 
+!EruditeXMLTitleParser class methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 16:25:36'!
+parse: anXMLElement using: aParser
+
+	^ EruditeDocHeading 
+		heading: (String streamContents: [:s |
+			           s nextPutAll: anXMLElement contents first string;
+					nextPut: Character newLineCharacter ])
+		level: 1! !
+
+!EruditeXMLTitleParser class methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 16:26:00'!
+tag
+
+	^ 'title'! !
+
 !EruditeXMLUnorderedListParser class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 18:02:16'!
 parse: anXMLElement using: aParser
 
@@ -312,11 +440,16 @@ parse: anXMLElement using: aParser
 tag
 	^ 'ul'! !
 
-!EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2025 19:01:31'!
+!EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 16:22:19'!
+initialize
+
+	mode := #strict! !
+
+!EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 16:22:13'!
 initialize: aStream
 
-	stream := aStream.
-	mode := #strict! !
+	stream := aStream
+	! !
 
 !EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 15:56:05'!
 parse
@@ -325,7 +458,7 @@ parse
 		parser: self;
 		yourself! !
 
-!EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 17:54:37'!
+!EruditeXMLParser methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 16:21:40'!
 parse: aString
 
 	| parser xml doc contents |

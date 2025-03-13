@@ -1,0 +1,16 @@
+<book>
+  <requirements>
+    <feature name="EruditeXMLBookPlot"/>
+    <feature name="EruditeXMLBookSmalltalk"/>
+  </requirements>
+  <chapter>
+    <title>Intro</title>
+    <p>Hello world</p>
+    <p>
+      <ul>
+        <li>Hello</li>
+        <li>World</li>
+      </ul>
+    </p>
+  </chapter>
+</book>
