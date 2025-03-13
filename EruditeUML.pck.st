@@ -38,7 +38,7 @@ EruditeUMLManual class
 	instanceVariableNames: ''!
 
 !classDefinition: #EruditeUMLNode category: 'EruditeUML'!
-DocNode subclass: #EruditeUMLNode
+EruditeDocNode subclass: #EruditeUMLNode
 	instanceVariableNames: 'script'
 	classVariableNames: ''
 	poolDictionaries: ''
