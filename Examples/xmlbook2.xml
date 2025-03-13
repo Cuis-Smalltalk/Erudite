@@ -1,0 +1,27 @@
+<book>
+  <requirements>
+    <feature>EruditeXMLBookHTML</feature>
+    <feature>EruditeXMLBookSmalltalk</feature>
+  </requirements>
+  <chapter>
+    <title>Intro</title>
+
+    <p>Hello world</p>
+    <p>
+      <ul>
+        <li>Hello</li>
+        <li>World</li>
+      </ul>
+    </p>
+    <p>
+      <smalltalk>
+        Object new
+      </smalltalk>
+    </p>
+    <p>
+      <doit>
+        Smalltalk inspect
+      </doit>
+    </p>
+  </chapter>
+</book>

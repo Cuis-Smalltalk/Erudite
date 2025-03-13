@@ -1,6 +1,10 @@
 <book>
+  <requirements>
+     <feature>EruditeXMLBookHTML</feature>
+  </requirements>
   <chapter>
     <title>Intro</title>
+
     <p>Hello world</p>
     <p>
       <ul>
