@@ -1,8 +1,4 @@
 <book>
-  <requirements>
-    <feature name="EruditeXMLBookPlot"/>
-    <feature name="EruditeXMLBookSmalltalk"/>
-  </requirements>
   <chapter>
     <title>Intro</title>
     <p>Hello world</p>
