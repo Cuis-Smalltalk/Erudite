@@ -1,8 +1,8 @@
-'From Cuis7.3 [latest update: #7066] on 12 March 2025 at 6:53:37 pm'!
+'From Cuis7.3 [latest update: #7066] on 13 March 2025 at 6:19:53 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 280!
+!provides: 'Erudite' 1 281!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -19446,22 +19446,35 @@ renderCodePrintItHere: aDocCode
 	stream nextPut: ' ⇒ ';
 			nextPut: (Text streamContents: [:s | result printOn: s]).! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 12:14:44'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 18:18:57'!
 renderNonSmalltalkCode: aDocCode
 
-	|text |
+	|text button |
 	
 	text := Text string: aDocCode code.
 	
 	self codeBackgroundColor ifNotNil: [:color |
 		text addAttribute: (TextBackgroundColor color: color)].
 	
-	stream nextPut: text! !
+	stream nextPut: text.
+	stream nextPut: ' '.
+	
+	self useIconButtons 
+		ifTrue: [
+			button := self createFormButton: Theme current copyIcon 
+						action: [ Clipboard storeObject: aDocCode code ]
+						balloonText: 'copy to clipboard'. 
+			stream nextPut: (Text streamContents: [:s | button printOn: s])]
+		ifFalse: [
+			button := Text string: '[copyIt]' 
+					attributes: {TextEmphasis underlined. 
+						BlockTextAction do: [:anObject | Clipboard storeObject: aDocCode code]}.
+			stream nextPut: button]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/23/2024 19:01:36'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 18:18:24'!
 renderSmalltalkCode: aDocCode
 
-	|text textModel|
+	|text textModel button|
 	
 	text := Text string: aDocCode code.
 	
@@ -19479,7 +19492,21 @@ renderSmalltalkCode: aDocCode
 		[requestor 
 			ifNil: [Compiler evaluate: aDocCode code for: self logged: false]
 			ifNotNil: [Compiler evaluate: aDocCode code notifying: requestor logged: false]]
-		on: Error do: [:ex | Transcript show: ex messageText]].! !
+		on: Error do: [:ex | Transcript show: ex messageText]].
+	
+	stream nextPut: ' '.
+	
+	self useIconButtons 
+		ifTrue: [
+			button := self createFormButton: Theme current copyIcon 
+						action: [ Clipboard storeObject: aDocCode code ]
+						balloonText: 'copy to clipboard'. 
+			stream nextPut: (Text streamContents: [:s | button printOn: s])]
+		ifFalse: [
+			button := Text string: '[copyIt]' 
+					attributes: {TextEmphasis underlined. 
+						BlockTextAction do: [:anObject | Clipboard storeObject: aDocCode code]}.
+			stream nextPut: button]! !
 
 !MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 15:48:01'!
 useIconButtons
