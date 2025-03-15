@@ -2,6 +2,7 @@
 'Description '!
 !provides: 'EruditeXMLBookUML' 1 0!
 !requires: 'EruditeXMLBook' 1 23 nil!
+!requires: 'EruditeUML' 1 7 nil!
 SystemOrganization addCategory: #EruditeXMLBookUML!
 
 
