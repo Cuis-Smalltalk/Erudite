@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7070] on 15 March 2025 at 9:59:22 am'!
+'From Cuis7.3 [latest update: #7070] on 15 March 2025 at 10:10:13 am'!
 'Description '!
-!provides: 'EruditeXMLBook' 1 22!
+!provides: 'EruditeXMLBook' 1 23!
 !requires: 'Erudite' 1 267 nil!
 !requires: 'YAXO' 1 27 nil!
 SystemOrganization addCategory: #EruditeXMLBook!
@@ -454,10 +454,10 @@ visitParagraph: aParagraph
 	self renderContents: aParagraph contents.
 	stream newLine; newLine! !
 
-!LatexEruditeDocRenderer methodsFor: '*EruditeXMLBook' stamp: 'MM 3/15/2025 09:51:50'!
+!LatexEruditeDocRenderer methodsFor: '*EruditeXMLBook' stamp: 'MM 3/15/2025 10:10:02'!
 visitString: aNode
 
-	stream nextPutAll: aNode contents ! !
+	stream nextPutAll: (self escapeLatex: aNode contents) ! !
 
 !MorphicEruditeDocRenderer methodsFor: '*EruditeXMLBook' stamp: 'MM 6/20/2024 18:47:28'!
 visitParagraph: aParagraph

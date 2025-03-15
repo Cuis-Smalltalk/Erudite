@@ -1,0 +1,37 @@
+<book>
+  <requirements>
+    <feature>EruditeXMLBookHTML</feature>
+    <feature>EruditeXMLBookSmalltalk</feature>
+    <feature>EruditeXMLBookUML</feature>
+  </requirements>
+  <chapter>
+    <title>Intro</title>
+
+    <p>Hello world</p>
+    <p>
+      <ul>
+        <li>Hello</li>
+        <li>World</li>
+      </ul>
+    </p>
+    <p>
+      <smalltalk>
+        Object new
+      </smalltalk>
+    </p>
+    <p>
+      <doit>
+        Smalltalk inspect
+      </doit>
+    </p>
+    <p>
+      <uml>
+        Alice -&gt; Bob: Authentication Request
+        Bob --&gt; Alice: Authentication Response
+
+        Alice -&gt; Bob: Another authentication Request
+        Alice &lt;-- Bob: another authentication Response
+      </uml>
+    </p>
+  </chapter>
+</book>
