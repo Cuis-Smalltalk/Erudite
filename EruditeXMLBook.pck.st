@@ -1,4 +1,4 @@
-'From Cuis7.3 [latest update: #7066] on 13 March 2025 at 7:35:44 pm'!
+'From Cuis7.3 [latest update: #7070] on 15 March 2025 at 9:59:22 am'!
 'Description '!
 !provides: 'EruditeXMLBook' 1 22!
 !requires: 'Erudite' 1 267 nil!
@@ -174,7 +174,7 @@ parser
 
 	^ EruditeXMLParser new! !
 
-!EruditeXMLBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 19:35:26'!
+!EruditeXMLBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 16:20:46'!
 load
 	
 	| xml loadedBook |
@@ -184,13 +184,7 @@ load
 					yourself.
 	xml := XMLDOMParser parseDocumentFrom: book file readStream.
 	xml tagsNamed: #title do: [:elem | loadedBook title: elem contentString].
-	
-	"Load book requirements"
-	xml tagsNamed: #requirements do: [:requirements | 
-		requirements tagsNamed: #feature do: [:feature |
-			Feature require: feature contentString ]].
-	
-	"Create book chapters"
+	"Each include is expected to have a chapter."
 	xml tagsNamed: #chapter do: [:elem | | chapterSource chapterXML chapterTitle |
 		chapterSource := String streamContents: [:s | elem printOn: s]. 
 		chapterXML := XMLDOMParser parseDocumentFrom: chapterSource readStream.
@@ -453,6 +447,17 @@ named: aString namespace: ns uri: uri attributes: attributeList
 new
 
 	^ self basicNew initialize! !
+
+!LatexEruditeDocRenderer methodsFor: '*EruditeXMLBook' stamp: 'MM 3/15/2025 09:50:51'!
+visitParagraph: aParagraph
+
+	self renderContents: aParagraph contents.
+	stream newLine; newLine! !
+
+!LatexEruditeDocRenderer methodsFor: '*EruditeXMLBook' stamp: 'MM 3/15/2025 09:51:50'!
+visitString: aNode
+
+	stream nextPutAll: aNode contents ! !
 
 !MorphicEruditeDocRenderer methodsFor: '*EruditeXMLBook' stamp: 'MM 6/20/2024 18:47:28'!
 visitParagraph: aParagraph

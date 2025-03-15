@@ -1,8 +1,8 @@
-'From Cuis7.3 [latest update: #7066] on 13 March 2025 at 6:19:53 pm'!
+'From Cuis7.3 [latest update: #7070] on 15 March 2025 at 9:59:26 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 281!
+!provides: 'Erudite' 1 282!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -18915,14 +18915,10 @@ linkRendererFor: aLinkType
 	^ Smalltalk at: handlerClassName asSymbol 
 				ifAbsent: [self error: 'No link renderer for: ', aLinkType asString]! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:51:25'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 3/15/2025 09:50:18'!
 render
 	
-	document parsedContents contents do: [:node |
-		node isString ifTrue: [
-			stream nextPutAll: (self escapeLatex: node)]
-		ifFalse: [
-			node accept: self]]! !
+	^ self renderContents: document parsedContents contents! !
 
 !LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/20/2024 12:13:38'!
 renderCode: aDocCode
@@ -19101,6 +19097,19 @@ renderCodePrintItHere: aDocCode
 	stream nextPut: ' ⇒ ';
 			nextPut: (Text streamContents: [:s | result printOn: s]).! !
 
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 3/15/2025 09:55:11'!
+renderContents: contents
+	
+	contents do: [:node | self renderNode: node]! !
+
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 3/15/2025 09:55:32'!
+renderNode: aNode
+
+	^ aNode isString ifTrue: [
+			stream nextPutAll: (self escapeLatex: aNode)]
+		ifFalse: [
+			aNode accept: self]! !
+
 !LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:18'!
 visitActionLink: aDocLink
 
@@ -19154,6 +19163,21 @@ visitLink: aDocLink
 			stream nextPutAll: '\url{';
 				nextPutAll: aDocLink target;
 				nextPutAll: '}']! !
+
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 3/15/2025 09:58:37'!
+visitList: aNode
+
+	stream nextPutAll: '\begin{itemize}'; newLine.
+	aNode items do: [:item |
+		self renderNode: item].
+	stream newLine; nextPutAll: '\end{itemize}'; newLine.! !
+
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 3/15/2025 09:58:10'!
+visitListItem: aNode
+
+	stream nextPutAll: '   \item '.
+	self renderContents: aNode contents.
+	stream newLine! !
 
 !LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 10/20/2022 18:30:12'!
 visitStyledText: aStyledText
