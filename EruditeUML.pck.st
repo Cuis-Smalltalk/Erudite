@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7070] on 15 March 2025 at 11:24:56 am'!
+'From Cuis7.3 [latest update: #7070] on 15 March 2025 at 12:55:10 pm'!
 'Description '!
-!provides: 'EruditeUML' 1 8!
+!provides: 'EruditeUML' 1 9!
 !requires: 'Erudite' 1 203 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
@@ -1049,7 +1049,15 @@ uml
 uml
 	^ super uml ==> [:script | EruditeUMLNode with: script]! !
 
-!LatexEruditeDocRenderer methodsFor: '*EruditeUML' stamp: 'MM 3/15/2025 11:24:48'!
+!LatexEruditeDocRenderer methodsFor: '*EruditeUML' stamp: 'MM 3/15/2025 12:54:01'!
+stringHash: aString
+
+	^ (((SecureHashAlgorithm new)
+			initialize;
+			hashMessage: aString)
+		printStringBase: 16) asLowercase! !
+
+!LatexEruditeDocRenderer methodsFor: '*EruditeUML' stamp: 'MM 3/15/2025 12:54:39'!
 visitUML: aNode
 
 	"(LatexEruditeBookExporter on: book)
@@ -1057,14 +1065,16 @@ visitUML: aNode
 	location: '/home/marian/src/xmlbook3.latex';
 	export"
 
-	| inputPath pngPath|
-	inputPath := DirectoryEntry tempDirectory // ('erudite-uml-', 'lalala', '.plantuml').
+	| inputPath pngPath name |
+	
+	name := self stringHash: aNode script.
+	inputPath := DirectoryEntry tempDirectory // ('erudite-uml-', name, '.plantuml').
 	inputPath exists ifFalse: [ inputPath fileContents: (String streamContents: [:s |
 													s nextPutAll: '@startuml'; newLine;
 													  nextPutAll: aNode script; newLine;
 													  nextPutAll: '@enduml'; newLine ])].
 
-	pngPath := DirectoryEntry tempDirectory // ('erudite-uml-', 'lalala', '.png').
+	pngPath := DirectoryEntry tempDirectory // ('erudite-uml-', name, '.png').
 	pngPath exists ifFalse: [
 		| cmdStatus |
 		cmdStatus := OSProcess plantuml: inputPath pathName.
