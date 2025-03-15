@@ -1,8 +1,8 @@
-'From Cuis7.3 [latest update: #7070] on 15 March 2025 at 9:59:26 am'!
+'From Cuis7.3 [latest update: #7070] on 15 March 2025 at 11:09:16 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 282!
+!provides: 'Erudite' 1 283!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -78,7 +78,7 @@ EruditeBookExporter class
 
 !classDefinition: #LatexEruditeBookExporter category: #'Erudite-Latex'!
 EruditeBookExporter subclass: #LatexEruditeBookExporter
-	instanceVariableNames: ''
+	instanceVariableNames: 'beforePreamble afterPreamble'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Erudite-Latex'!
@@ -18444,12 +18444,38 @@ requestEditorArgumentsFor: aBook
 
 	^ self subclassResponsibility ! !
 
-!LatexEruditeBookExporter methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:42:31'!
+!LatexEruditeBookExporter methodsFor: 'as yet unclassified' stamp: 'MM 3/15/2025 11:08:51'!
 export
 
 	(book latexRendererClass on: book)
+			beforePreamble: beforePreamble;
+			afterPreamble: afterPreamble;
 			texFilePath: location;
 			render.! !
+
+!LatexEruditeBookExporter methodsFor: 'accessing' stamp: 'MM 3/15/2025 11:08:23'!
+afterPreamble
+	"Answer the value of afterPreamble"
+
+	^ afterPreamble! !
+
+!LatexEruditeBookExporter methodsFor: 'accessing' stamp: 'MM 3/15/2025 11:08:23'!
+afterPreamble: anObject
+	"Set the value of afterPreamble"
+
+	afterPreamble := anObject! !
+
+!LatexEruditeBookExporter methodsFor: 'accessing' stamp: 'MM 3/15/2025 11:08:23'!
+beforePreamble
+	"Answer the value of beforePreamble"
+
+	^ beforePreamble! !
+
+!LatexEruditeBookExporter methodsFor: 'accessing' stamp: 'MM 3/15/2025 11:08:23'!
+beforePreamble: anObject
+	"Set the value of beforePreamble"
+
+	beforePreamble := anObject! !
 
 !LatexEruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:43:26'!
 exporterName

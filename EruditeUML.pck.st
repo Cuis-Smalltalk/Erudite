@@ -1,67 +1,52 @@
-'From Cuis 6.0 [latest update: #5352] on 20 July 2022 at 7:32:17 am'!
+'From Cuis7.3 [latest update: #7070] on 15 March 2025 at 11:24:56 am'!
 'Description '!
-!provides: 'EruditeUML' 1 7!
+!provides: 'EruditeUML' 1 8!
 !requires: 'Erudite' 1 203 nil!
 !requires: 'Cryptography-DigitalSignatures' 1 14 nil!
 !requires: 'OSProcess' 1 23 nil!
-SystemOrganization addCategory: 'EruditeUML'!
+SystemOrganization addCategory: #EruditeUML!
 
 
-!classDefinition: #EruditeUMLMarkupGrammar category: 'EruditeUML'!
-EruditeMarkupParser subclass: #EruditeUMLMarkupGrammar
-	instanceVariableNames: 'uml'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'EruditeUML'!
-!classDefinition: 'EruditeUMLMarkupGrammar class' category: 'EruditeUML'!
-EruditeUMLMarkupGrammar class
-	instanceVariableNames: ''!
-
-!classDefinition: #EruditeUMLMarkupParser category: 'EruditeUML'!
-EruditeUMLMarkupGrammar subclass: #EruditeUMLMarkupParser
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'EruditeUML'!
-!classDefinition: 'EruditeUMLMarkupParser class' category: 'EruditeUML'!
-EruditeUMLMarkupParser class
-	instanceVariableNames: ''!
-
-!classDefinition: #EruditeUMLManual category: 'EruditeUML'!
+!classDefinition: #EruditeUMLManual category: #EruditeUML!
 EruditeBook subclass: #EruditeUMLManual
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeUML'!
-!classDefinition: 'EruditeUMLManual class' category: 'EruditeUML'!
+!classDefinition: 'EruditeUMLManual class' category: #EruditeUML!
 EruditeUMLManual class
 	instanceVariableNames: ''!
 
-!classDefinition: #EruditeUMLNode category: 'EruditeUML'!
+!classDefinition: #EruditeUMLNode category: #EruditeUML!
 EruditeDocNode subclass: #EruditeUMLNode
 	instanceVariableNames: 'script'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeUML'!
-!classDefinition: 'EruditeUMLNode class' category: 'EruditeUML'!
+!classDefinition: 'EruditeUMLNode class' category: #EruditeUML!
 EruditeUMLNode class
 	instanceVariableNames: ''!
 
+!classDefinition: #EruditeUMLMarkupGrammar category: #EruditeUML!
+EruditeMarkupParser subclass: #EruditeUMLMarkupGrammar
+	instanceVariableNames: 'uml'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeUML'!
+!classDefinition: 'EruditeUMLMarkupGrammar class' category: #EruditeUML!
+EruditeUMLMarkupGrammar class
+	instanceVariableNames: ''!
 
-!EruditeUMLMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 20:34:09'!
-markup
-	^ super markup / uml! !
+!classDefinition: #EruditeUMLMarkupParser category: #EruditeUML!
+EruditeUMLMarkupGrammar subclass: #EruditeUMLMarkupParser
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EruditeUML'!
+!classDefinition: 'EruditeUMLMarkupParser class' category: #EruditeUML!
+EruditeUMLMarkupParser class
+	instanceVariableNames: ''!
 
-!EruditeUMLMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 20:54:58'!
-uml
-
-	^ ('@startuml' asParser flatten,
-	'@enduml' asParser negate plus flatten,
-	'@enduml' asParser flatten) flatten! !
-
-!EruditeUMLMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2022 16:01:30'!
-uml
-	^ super uml ==> [:script | EruditeUMLNode with: script]! !
 
 !EruditeUMLManual methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2022 16:02:37'!
 About
@@ -1040,22 +1025,52 @@ initialize: plantUMLScript
 
 	script _ plantUMLScript! !
 
+!EruditeUMLNode methodsFor: 'as yet unclassified' stamp: 'MM 3/15/2025 11:17:39'!
+script
+	^ script! !
+
 !EruditeUMLNode class methodsFor: 'as yet unclassified' stamp: 'MM 6/16/2022 21:43:27'!
 with: plantUMLScript
 
 	^ self new initialize: plantUMLScript! !
 
-!OSProcess class methodsFor: '*EruditeUML' stamp: 'AS 7/20/2022 07:11:39'!
-plantuml: aString
+!EruditeUMLMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 20:34:09'!
+markup
+	^ super markup / uml! !
 
-	^ self waitForCommand:
-		(self plantumlCommand, ' ', aString) withBlanksTrimmed! !
+!EruditeUMLMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 20:54:58'!
+uml
 
-!OSProcess class methodsFor: '*EruditeUML' stamp: 'AS 7/20/2022 07:32:06'!
-plantumlCommand
+	^ ('@startuml' asParser flatten,
+	'@enduml' asParser negate plus flatten,
+	'@enduml' asParser flatten) flatten! !
+
+!EruditeUMLMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/17/2022 16:01:30'!
+uml
+	^ super uml ==> [:script | EruditeUMLNode with: script]! !
+
+!LatexEruditeDocRenderer methodsFor: '*EruditeUML' stamp: 'MM 3/15/2025 11:24:48'!
+visitUML: aNode
+
+	"(LatexEruditeBookExporter on: book)
+	beforePreamble: '\usepackage{graphicx}';
+	location: '/home/marian/src/xmlbook3.latex';
+	export"
+
+	| inputPath pngPath|
+	inputPath := DirectoryEntry tempDirectory // ('erudite-uml-', 'lalala', '.plantuml').
+	inputPath exists ifFalse: [ inputPath fileContents: (String streamContents: [:s |
+													s nextPutAll: '@startuml'; newLine;
+													  nextPutAll: aNode script; newLine;
+													  nextPutAll: '@enduml'; newLine ])].
+
+	pngPath := DirectoryEntry tempDirectory // ('erudite-uml-', 'lalala', '.png').
+	pngPath exists ifFalse: [
+		| cmdStatus |
+		cmdStatus := OSProcess plantuml: inputPath pathName.
+		cmdStatus succeeded ifFalse: [ self error: 'Error running PlantUML command']].
 	
-	^ ThisOSProcess thisOSProcess environment
-		at: 'PLANTUML' ifAbsent: ['plantuml'].! !
+	stream nextPutAll: '\includegraphics{' , pngPath asString , '}'; newLine! !
 
 !MorphicEruditeDocRenderer methodsFor: '*EruditeUML' stamp: 'MM 6/16/2022 22:07:20'!
 visitUML: anUMLNode
@@ -1070,3 +1085,15 @@ visitUML: anUMLNode
 					image: form.
 							
 	stream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
+
+!OSProcess class methodsFor: '*EruditeUML' stamp: 'AS 7/20/2022 07:11:39'!
+plantuml: aString
+
+	^ self waitForCommand:
+		(self plantumlCommand, ' ', aString) withBlanksTrimmed! !
+
+!OSProcess class methodsFor: '*EruditeUML' stamp: 'AS 7/20/2022 07:32:06'!
+plantumlCommand
+	
+	^ ThisOSProcess thisOSProcess environment
+		at: 'PLANTUML' ifAbsent: ['plantuml'].! !
