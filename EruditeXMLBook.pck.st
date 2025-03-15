@@ -184,7 +184,13 @@ load
 					yourself.
 	xml := XMLDOMParser parseDocumentFrom: book file readStream.
 	xml tagsNamed: #title do: [:elem | loadedBook title: elem contentString].
-	"Each include is expected to have a chapter."
+	
+	"Load book requirements"
+	xml tagsNamed: #requirements do: [:requirements | 
+		requirements tagsNamed: #feature do: [:feature |
+			Feature require: feature contentString ]].
+	
+	"Create book chapters"
 	xml tagsNamed: #chapter do: [:elem | | chapterSource chapterXML chapterTitle |
 		chapterSource := String streamContents: [:s | elem printOn: s]. 
 		chapterXML := XMLDOMParser parseDocumentFrom: chapterSource readStream.
