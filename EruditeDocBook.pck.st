@@ -1,9 +1,9 @@
-'From Cuis7.3 [latest update: #7066] on 12 March 2025 at 6:53:45 pm'!
+'From Cuis7.3 [latest update: #7070] on 17 March 2025 at 9:57:25 am'!
 'Description DocBook support for Erudite.
 
 DocBook validation: https://wiki.archlinux.org/title/DocBook
 DocBook guide: https://tdg.docbook.org/tdg/5.2/'!
-!provides: 'EruditeDocBook' 1 29!
+!provides: 'EruditeDocBook' 1 30!
 !requires: 'Erudite' 1 270 nil!
 !requires: 'EruditeXMLBook' 1 14 nil!
 !requires: 'YAXO' 1 27 nil!
@@ -13,7 +13,7 @@ SystemOrganization addCategory: #EruditeDocBook!
 
 !classDefinition: #DocBookEruditeBook category: #EruditeDocBook!
 EruditeBook subclass: #DocBookEruditeBook
-	instanceVariableNames: 'file mediaDir imageDir'
+	instanceVariableNames: 'file mediaDir imageDir inferLiterals'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EruditeDocBook'!
@@ -106,10 +106,20 @@ baseDir
 
 	^ file parent! !
 
-!DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/24/2024 15:26:28'!
+!DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2025 09:56:36'!
 inferLiterals
 
-	^ false! !
+	^ inferLiterals! !
+
+!DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2025 09:56:50'!
+inferLiterals: aBoolean
+
+	inferLiterals := aBoolean! !
+
+!DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 3/17/2025 09:57:10'!
+initialize
+	super initialize.
+	inferLiterals := false! !
 
 !DocBookEruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 16:08:52'!
 load
