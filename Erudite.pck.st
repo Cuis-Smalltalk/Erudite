@@ -1,4 +1,4 @@
-'From Cuis7.3 [latest update: #7070] on 15 March 2025 at 11:09:16 am'!
+'From Cuis7.3 [latest update: #7070] on 18 March 2025 at 9:07:04 am'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
@@ -18616,16 +18616,17 @@ parent
 
 	^ parent! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 7/13/2022 11:13:24'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 3/18/2025 09:03:28'!
 parent: anObject
 	"Set the value of parent"
 
-	parent _ anObject.
+	parent := anObject.
 	
-	"Initialize ourselves with parent data."
-	document parser: parent parser.
+	document assignedParser ifNil: [
+		"Initialize ourselves with parent data."
+		document parser: parent parser].
 	
-	"Propagate our potentially new parser to our subsections"
+		"Propagate our potentially new parser to our subsections"
 	subsections do: [:ss | ss parent: self]! !
 
 !EruditeBookSection methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:27'!
@@ -19716,6 +19717,10 @@ render: aDocument notifying: anObject
 	^ (self on: aDocument)
 		requestor: anObject; 
 		render! !
+
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 3/18/2025 09:02:52'!
+assignedParser
+	^ parser! !
 
 !EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:37:39'!
 data
