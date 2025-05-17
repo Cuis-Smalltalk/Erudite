@@ -1,8 +1,8 @@
-'From Cuis7.3 [latest update: #7070] on 18 March 2025 at 9:07:04 am'!
+'From Cuis7.3 [latest update: #7166] on 17 May 2025 at 12:25:31 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 283!
+!provides: 'Erudite' 1 285!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -19747,16 +19747,21 @@ images: aDictionary
 	"Deprecated."
 	data _ aDictionary! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:07:36'!
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 5/17/2025 12:14:42'!
 initialize
 
-	images _ Dictionary new.
-	data _ Dictionary new.! !
+	data := Dictionary new.! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:00:30'!
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 5/17/2025 12:21:43'!
+open
+	EruditeDocumentReaderMorph open: self! !
+
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 5/17/2025 12:25:24'!
 parsedContents
 
-	^ self parser parse: contents.! !
+	^ contents isArray 
+		ifTrue: [self] "document is already parsed"
+		ifFalse: [self parser parse: contents]! !
 
 !EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:07'!
 storeOn: aStream
