@@ -1,8 +1,8 @@
-'From Cuis7.3 [latest update: #7166] on 17 May 2025 at 12:25:31 pm'!
+'From Cuis7.3 [latest update: #7166] on 17 May 2025 at 12:45:19 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 285!
+!provides: 'Erudite' 1 286!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -21846,6 +21846,13 @@ getStyledText: aDocument
 	contents data: aDocument data.
 	
 	^ MorphicEruditeDocRenderer render: contents notifying: self! !
+
+!EruditeDocumentReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 5/17/2025 12:44:53'!
+selectionInterval
+
+	"Needed for bindings handling."
+
+	^ 1 to: 1! !
 
 !InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:57'!
 initialize
