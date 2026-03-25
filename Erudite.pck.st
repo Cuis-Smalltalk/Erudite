@@ -21290,7 +21290,7 @@ buildMorphicWindow
 			menuNshortcutsKey: #explorerMenuSpec.
 	explorerMorph
 		autoDeselect: true;
-		color: Color white.
+		color: Theme current background.
 	
 	leftColumn addMorphUseAll: explorerMorph.
 	previousButton := PluggableButtonMorph
