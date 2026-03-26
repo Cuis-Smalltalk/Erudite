@@ -1,8 +1,8 @@
-'From Cuis7.3 [latest update: #7166] on 17 May 2025 at 12:45:19 pm'!
+'From Cuis7.7 [latest update: #7849] on 26 March 2026 at 5:24:31 pm'!
 'Description Documenter and Literate Programming system for Cuis Smalltalk.
 
 Author: Mariano Montone (marianomontone@gmail.com)'!
-!provides: 'Erudite' 1 286!
+!provides: 'Erudite' 1 287!
 !requires: 'Cuis-Base' 63 6247 nil!
 !requires: 'PetitParserBinding' 1 0 nil!
 !requires: 'PetitParser' 1 2 nil!
@@ -804,23 +804,23 @@ Note:
 !EruditeClassMethodCommentTextStyler commentStamp: '<historical>' prior: 0!
 A Smalltalk method styler that also styles comments.!
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 6/20/2024 16:03:32'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 20/Jun/2024 16:03:32'!
 load
 
 	"do nothing for normal books"! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 6/20/2024 16:02:59'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 20/Jun/2024 16:02:59'!
 reload
 
 	self become: self storer load! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 10/17/2022 17:41:57'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 17/Oct/2022 17:41:57'!
 store
 
 	^ self storer store
 	! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 12/4/2018 20:16'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 4/Dec/2018 20:16:00'!
 storeOn: aStream
 
 	aStream nextPutAll: '(';
@@ -830,11 +830,11 @@ storeOn: aStream
 	              nextPutAll: '; sections: '; store: sections;
 			   nextPutAll: '; updateParents; yourself)'! !
 
-!EruditeBook methodsFor: 'storage' stamp: 'MM 10/17/2022 17:36:50'!
+!EruditeBook methodsFor: 'storage' stamp: 'MM 17/Oct/2022 17:36:50'!
 storerClass
 	^ EruditeClassBookStorer ! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 10/21/2022 16:57:37'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 21/Oct/2022 16:57:37'!
 addSection: aBookSection
 
 	self assert: (sections anySatisfy: [:section | section title = aBookSection title]) not
@@ -843,38 +843,38 @@ addSection: aBookSection
 	sections addLast: aBookSection.
 	aBookSection parent: self! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 12/10/2018 21:28'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 10/Dec/2018 21:28:00'!
 addSection: aString contents: anotherString
 	self addSection:
 		(EruditeBookSection
 			title: aString
 			contents: anotherString).! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 12/10/2018 21:28'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 10/Dec/2018 21:28:00'!
 addSection: aString document: aDocument
 	self addSection:
 		(EruditeBookSection
 			title: aString
 			document: aDocument).! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 7/20/2020 11:18:07'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 20/Jul/2020 11:18:07'!
 author
 	"Answer the value of author"
 
 	^ author! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 7/20/2020 11:18:07'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 20/Jul/2020 11:18:07'!
 author: anObject
 	"Set the value of author"
 
 	author _ anObject! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 2/8/2022 12:06:56'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 8/Feb/2022 12:06:56'!
 findSectionNamed: aSectionName
 
 	^ self findSectionNamed: aSectionName ifAbsent: [self error: 'Section not found: ', aSectionName]! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 2/8/2022 12:09:03'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 8/Feb/2022 12:09:03'!
 findSectionNamed: aString ifAbsent: aBlock
 
 	sections do: [:aSection |
@@ -887,99 +887,99 @@ findSectionNamed: aString ifAbsent: aBlock
 	^ aBlock value
 		 ! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 12/18/2018 19:32:55'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 18/Dec/2018 19:32:55'!
 parent
 
 	"For navigation. BookSection interface."
 	^ nil! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 12/4/2018 18:06'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 4/Dec/2018 18:06:00'!
 removeSection: aSection
 
 	sections remove: aSection! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:28'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 13:28:00'!
 sections
 	"Answer the value of sections"
 
 	^ sections! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:28'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 13:28:00'!
 sections: anObject
 	"Set the value of sections"
 
 	sections _ anObject! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 10/20/2022 16:55:59'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 20/Oct/2022 16:55:59'!
 storer
 	^ storer ifNil: [self storerClass on: self]! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 10/17/2022 22:18:39'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 17/Oct/2022 22:18:39'!
 storer: aBookStorer
 	storer _ aBookStorer! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:28'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 13:28:00'!
 title
 	"Answer the value of title"
 
 	^ title! !
 
-!EruditeBook methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:28'!
+!EruditeBook methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 13:28:00'!
 title: anObject
 	"Set the value of title"
 
 	title _ anObject! !
 
-!EruditeBook methodsFor: 'rendering' stamp: 'AS 6/16/2022 15:53:22'!
+!EruditeBook methodsFor: 'rendering' stamp: 'AS 16/Jun/2022 15:53:22'!
 latexRendererClass
 	^ LatexEruditeBookRenderer ! !
 
-!EruditeBook methodsFor: 'rendering' stamp: 'MM 6/12/2022 10:52:36'!
+!EruditeBook methodsFor: 'rendering' stamp: 'MM 12/Jun/2022 10:52:36'!
 morphicRendererClass
 	^ MorphicEruditeDocRenderer ! !
 
-!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:48'!
+!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 21:48:00'!
 edit
 	EruditeBookEditorMorph open: self.! !
 
-!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 14:15'!
+!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 11/Dec/2018 14:15:00'!
 open
 	^ EruditeBookReaderMorph open: self.! !
 
-!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 14:15'!
+!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 11/Dec/2018 14:15:00'!
 openInSection: aString
 
 	|bookReader|
 	bookReader _ self open.
 	bookReader gotoSectionNamed: aString! !
 
-!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:32:00'!
+!EruditeBook methodsFor: 'as yet unclassified' stamp: 'MM 11/Jun/2022 19:32:00'!
 parser
 	^ self class parser! !
 
-!EruditeBook methodsFor: 'initialization' stamp: 'MM 7/21/2020 23:21:52'!
+!EruditeBook methodsFor: 'initialization' stamp: 'MM 21/Jul/2020 23:21:52'!
 initialize
 	sections _ OrderedCollection new! !
 
-!EruditeBook methodsFor: 'initialization' stamp: 'MM 7/21/2020 23:21:46'!
+!EruditeBook methodsFor: 'initialization' stamp: 'MM 21/Jul/2020 23:21:46'!
 initialize: aString
 
 	title _ aString
 	! !
 
-!EruditeBook methodsFor: 'initialization' stamp: 'MM 12/4/2018 20:11'!
+!EruditeBook methodsFor: 'initialization' stamp: 'MM 4/Dec/2018 20:11:00'!
 updateParents
 
 	sections do: [:section |
 		section parent: self.
 		section updateParents].! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 14:13'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 11/Dec/2018 14:13:00'!
 bookNamed: aString ifNone: aBlock
 	
 	^ self booksList detect: [:aBook | aBook title = aString] ifNone: aBlock! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 16:01:08'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 20/Jun/2024 16:01:08'!
 booksList
 
 	"To build the list of books, consider EruditeBook subclasses instances that have a title."
@@ -989,7 +989,7 @@ booksList
 							includes: book class) not 
 							and: [book title isNil not]]! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 7/21/2020 22:42:00'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 21/Jul/2020 22:42:00'!
 booksListInMethods
 
 	|pragmas |
@@ -997,29 +997,29 @@ booksListInMethods
 	pragmas _ Pragma allNamed: #book: in: self class.
 	^ pragmas collect: [:pragma | pragma method valueWithReceiver: self class arguments: #()].! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 7/18/2020 18:05:57'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 18/Jul/2020 18:05:57'!
 edit
 	^ self new edit! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 7/18/2020 18:05:49'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 18/Jul/2020 18:05:49'!
 open
 	^ self new open! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 12:02:54'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 8/Feb/2022 12:02:54'!
 openInSection: aSectionName
 	self new openInSection: aSectionName
 	! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:32:21'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 11/Jun/2022 19:32:21'!
 parser
 	^ EruditeMarkupParser new! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:31'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 13:31:00'!
 titled: aString
 
 	^ self new initialize: aString! !
 
-!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 12/8/2018 14:55'!
+!EruditeBook class methodsFor: 'as yet unclassified' stamp: 'MM 8/Dec/2018 14:55:00'!
 withBookSelectionDo: aBlock
 
 	| books bookTitles popup index |
@@ -1031,7 +1031,7 @@ withBookSelectionDo: aBlock
 	(index >= 1) ifTrue: [
 		aBlock value: 	(books at: index)]! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 AdditionalPackagesForCuis
 ^(EruditeBookSection basicNew title: 'Additional Packages for Cuis'; document: ((EruditeDocument contents: '!!!! Additional Packages for Cuis
 
@@ -1041,7 +1041,7 @@ Some of them are included in the main Cuis GitHub repository, at https://github.
 
 [[[Feature require: ''Core-Packages'']]] doIt') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 CuisAndGithub
 ^(EruditeBookSection basicNew title: 'Cuis and Github'; document: ((EruditeDocument contents: '!!!! Using Git and GitHub to host and manage Cuis code
 
@@ -1075,7 +1075,7 @@ This is the suggested procedure for developing external packages. Usually do thi
 
 * Exit the image. Usually without saving.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 CuisSmalltalk
 ^(EruditeBookSection basicNew title: 'Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!! Cuis Smalltalk
 
@@ -1116,13 +1116,13 @@ Cuis is continuously evolving towards simplicity. Each release is better (i.e. s
         add: self CuisSmalltalkLicense;
  yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 CuisSmalltalkAboutTheNameCuis
 ^(EruditeBookSection basicNew title: 'About the name Cuis'; document: ((EruditeDocument contents: '!!!!!! About the name Cuis
 
 Cuis is the common name of a {https://en.wikipedia.org/wiki/Southern_mountain_cavy::url|small animal} that lives in Argentina''s countryside. Cuis Smalltalk was originally forked from Squeak Smalltalk and many of us are also active in the Squeak community. So, picking the onomatopoeia of the voice of a mouse for the name makes sense. As the project was started in Buenos Aires, ''Cuis'' (essentially ''Squeak'' in Rioplatense Spanish) was the obvious choice.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 CuisSmalltalkContributingToCuis
 ^(EruditeBookSection basicNew title: 'Contributing to Cuis'; document: ((EruditeDocument contents: '!!!!!! Contributing to Cuis
 
@@ -1137,7 +1137,7 @@ Here is a Smalltalk script to load all packages currently included:
 
 [[[Feature require: ''Core-Packages'']]] doIt') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 CuisSmalltalkLearningAboutCuisSmalltalk
 ^(EruditeBookSection basicNew title: 'Learning about Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!!!! Learning about Cuis Smalltalk
 
@@ -1147,13 +1147,13 @@ Additionally, there are many tutorials and references for Smalltalk in the web. 
 
 The user interface enables you to access most of the code and conduct Smalltalk experiments on your own. You can review its features at {https://github.com/Cuis-Smalltalk-Learning/Learning-Cuis/blob/master/Quick-UI-Tour.md::url|"Quick Tour of the UI"}. ') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 CuisSmalltalkLicense
 ^(EruditeBookSection basicNew title: 'License'; document: ((EruditeDocument contents: '!!!!!! Cuis License
 
 Cuis is distributed subject to the MIT License. See the LICENSE file. Any contribution submitted for incorporation into or for distribution with Cuis shall be presumed subject to the same license.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Introduction
 
@@ -1161,7 +1161,7 @@ This is a manual about Cuis Smalltalk.
 
 NOTE: Most of its content was taken from Cuis documentation at: {https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/tree/master/Documentation::url}') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 ManagingYourCodeInCuis
 ^(EruditeBookSection basicNew title: 'Managing your code in Cuis'; document: ((EruditeDocument contents: '!!!! Managing your code in Cuis
 
@@ -1170,7 +1170,7 @@ Cuis includes tools and procedures for managing Smalltalk code. Code that is not
         add: self ManagingYourCodeInCuisLoadingChangeSetFilesIntoCuis;
  yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 ManagingYourCodeInCuisChangesToTheCuisBaseImage
 ^(EruditeBookSection basicNew title: 'Changes to the Cuis base image'; document: ((EruditeDocument contents: '!!!!!! Changes to the Cuis base image
 
@@ -1182,7 +1182,7 @@ Opening a [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: Change Sorte
 
 When the changes to the base system are complete, it is a good time to review the CuisCore change set and, maybe remove from it changes that we don''t want to keep (for example, experiments, halts, etc). Then, just do right click / File out and remove. This saves the //ChangeSet// on disk. It also removes it from the **ChangeSorter** (but it doesn''t remove any code). This is good, because the next changes done will end in a new CuisCore change set, and there''s no risk of having undesired changes in the old one. As changes to the base image progress, and several CuisCore //ChangeSets// are saved to disk, these numbered files are created in sequence. They will be ready to be loaded back in proper order in a fresh Cuis image, or to be sent to Cuis maintainers for integration in the update stream and in next releases of Cuis.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 ManagingYourCodeInCuisLoadingChangeSetFilesIntoCuis
 ^(EruditeBookSection basicNew title: 'Loading ChangeSet files into Cuis'; document: ((EruditeDocument contents: '!!!!!! Loading ChangeSet files into Cuis
 
@@ -1192,7 +1192,7 @@ There are two ways to load //ChangeSet// files (.cs): **[FileIn]** and **[Instal
 
 **[Install]** loads the code into a separate //ChangeSet// object (viewable in the [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: ChangeSorter tool). This is appropriate for loading Cuis updates, or other code that we are not authoring, as it doesn''t add new items (class or method definitions) to the current ChangeSet for our changes to Cuis. Usually any ChangeSets should be installed before doing changes to the image. The reason is that an installed ChangeSet could overwrite changes done by you, or packages you have installed. If this is the case, the affected packages would appear as dirty, and your change set would include any installed changes (that don''t belong in a package). Be careful when saving packages or change sets if this was the case!!!!') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 ManagingYourCodeInCuisPackages
 ^(EruditeBookSection basicNew title: 'Packages'; document: ((EruditeDocument contents: '!!!!!! Packages
 
@@ -1220,7 +1220,7 @@ Handling Packages like this, Cuis behaves as a sort of document editor (like, fo
 
 This is not unlike using Git or GitHub with a file-based development environment such as Eclipse or a text editor. Like Cuis, these tools don''t do version handling themselves, they just load and save files; and let Git do its magic.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 Tools
 ^(EruditeBookSection basicNew title: 'Tools'; document: ((EruditeDocument contents: '!!!! Tools
 
@@ -1237,7 +1237,7 @@ Subchapters explain how the tools provided by Cuis work.
         add: self ToolsInstalledPackages;
  yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:10'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:10'!
 ToolsInstalledPackages
 ^(EruditeBookSection basicNew title: 'Installed Packages'; document: ((EruditeDocument contents: '!!!! Installed Packages
 
@@ -2329,7 +2329,7 @@ B79Q88MPP/zwww8/1PALNX+UVaiHXmxME2r+4A/+4A/+4A/+4A+G4JdC/iiHUEuXXtZ04CT+
 QqalQ0uXVoRahrRr7fAP/uAP/uAP/uAP/uAP/uAP/sgO6czSnVMe/X+LeGEQCl4t0AAAAABJ
 RU5ErkJggg==')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 ToolsTheDebugger
 ^(EruditeBookSection basicNew title: 'The Debugger'; document: ((EruditeDocument contents: '!!!! The Debugger
 
@@ -3045,7 +3045,7 @@ wz9++OH3F374GbnjZ17mRoRUpSziH1D88AdgfvjhHz/88PsLP/yMuPEj6dwJc/chZHb2k/Lc
 Bu+32fjhhx9++OGHH3744We4IulbSeeOlwSv9J/szCp+0csPP/zwww8//PDDz4gRu5K+lXRu
 j+CVkBSwenoDP/zwww8//PDDDz/8DDckPevO7Lr5/wHdAwDI5tvHpgAAAABJRU5ErkJggg==')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 ToolsTheSystemBrowser
 ^(EruditeBookSection basicNew title: 'The System Browser'; document: ((EruditeDocument contents: '!!!! The System Browser
 
@@ -6045,7 +6045,7 @@ Do774LOXKlwrV7VOYMO32pwbs2P1t30r2zl133G396POBzHo/VB++pknvdYe87XxmUXQ4OPj
 4+Pj4+Pj4+Pj4wcNPj4+Pj4+Pj4+Pj4+ftDg4+Pj4+Pj4+Pj4+MHDT4+Pj4+Pj4+Pj4+ftDg
 4+Pj4+Pjyz95ho+Pj48vDb8IfHx8fHx8fHx8fHwG9/+0zlBgI8MZ2wAAAABJRU5ErkJggg==')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:10'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:10'!
 ToolsTheTranscript
 ^(EruditeBookSection basicNew title: 'The Transcript'; document: ((EruditeDocument contents: '!!!! The Transcript
 
@@ -7029,7 +7029,7 @@ vodvR3W2qbeN0F/eHqwvMg47QvRnOblv/h7+eQKN2kCDpq97Sx/0Qf88vQMB9BT2Rvbydzz7
 Jg/6szh90Ad90jvwYEsU8xMjvnwxlqP79EmPPuiDPunRB33Qx8wA+/v0/zsJ6JMefdAHfdAn
 PfqgD/qgj8OIv/3tb/D/AXxLP8GoylSwAAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:41:09'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:41:09'!
 ToolsWorkspace
 ^(EruditeBookSection basicNew title: 'Workspace'; document: ((EruditeDocument contents: '!!!! Workspace
 
@@ -7379,7 +7379,7 @@ UFz6RnKtoMjHx8fHx8fHx/fLYAVFK/iFqjoo9n18vjZti5LvyCIfHx8fHx8fHx+blQ8bNUl4
 RYOmzuaHxX8/HeD/ycfHx8fHx/cTYOVCKx96gqLFGln0nYbm4+Pj4+Pj4+PjsfKglQutfPj/
 AZTSdS27AIo1AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 initialize
     super initialize.
     title _ 'Cuis Manual'.
@@ -7391,7 +7391,7 @@ initialize
         self addSection: self section_Tools.
 ! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_AdditionalPackagesForCuis
 ^(EruditeBookSection basicNew title: 'Additional Packages for Cuis'; document: ((EruditeDocument contents: '!!!! Additional Packages for Cuis
 
@@ -7401,7 +7401,7 @@ Some of them are included in the main Cuis GitHub repository, at https://github.
 
 [[[Feature require: ''Core-Packages'']]] doIt') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_CuisAndGithub
 ^(EruditeBookSection basicNew title: 'Cuis and Github'; document: ((EruditeDocument contents: '!!!! Using Git and GitHub to host and manage Cuis code
 
@@ -7435,7 +7435,7 @@ This is the suggested procedure for developing external packages. Usually do thi
 
 * Exit the image. Usually without saving.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_CuisSmalltalk
 ^(EruditeBookSection basicNew title: 'Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!! Cuis Smalltalk
 
@@ -7476,13 +7476,13 @@ Cuis is continuously evolving towards simplicity. Each release is better (i.e. s
         add: self section_CuisSmalltalk_License;
  yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_CuisSmalltalk_AboutTheNameCuis
 ^(EruditeBookSection basicNew title: 'About the name Cuis'; document: ((EruditeDocument contents: '!!!!!! About the name Cuis
 
 Cuis is the common name of a {https://en.wikipedia.org/wiki/Southern_mountain_cavy::url|small animal} that lives in Argentina''s countryside. Cuis Smalltalk was originally forked from Squeak Smalltalk and many of us are also active in the Squeak community. So, picking the onomatopoeia of the voice of a mouse for the name makes sense. As the project was started in Buenos Aires, ''Cuis'' (essentially ''Squeak'' in Rioplatense Spanish) was the obvious choice.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_CuisSmalltalk_ContributingToCuis
 ^(EruditeBookSection basicNew title: 'Contributing to Cuis'; document: ((EruditeDocument contents: '!!!!!! Contributing to Cuis
 
@@ -7497,7 +7497,7 @@ Here is a Smalltalk script to load all packages currently included:
 
 [[[Feature require: ''Core-Packages'']]] doIt') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_CuisSmalltalk_LearningAboutCuisSmalltalk
 ^(EruditeBookSection basicNew title: 'Learning about Cuis Smalltalk'; document: ((EruditeDocument contents: '!!!!!! Learning about Cuis Smalltalk
 
@@ -7507,13 +7507,13 @@ Additionally, there are many tutorials and references for Smalltalk in the web. 
 
 The user interface enables you to access most of the code and conduct Smalltalk experiments on your own. You can review its features at {https://github.com/Cuis-Smalltalk/Learning-Cuis/blob/master/Quick-UI-Tour.md::url|"Quick Tour of the UI"}. ') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_CuisSmalltalk_License
 ^(EruditeBookSection basicNew title: 'License'; document: ((EruditeDocument contents: '!!!!!! Cuis License
 
 Cuis is distributed subject to the MIT License. See the LICENSE file. Any contribution submitted for incorporation into or for distribution with Cuis shall be presumed subject to the same license.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Introduction
 
@@ -7521,7 +7521,7 @@ This is a manual about Cuis Smalltalk.
 
 NOTE: Most of its content was taken from Cuis documentation at: {https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/tree/master/Documentation::url}') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_ManagingYourCodeInCuis
 ^(EruditeBookSection basicNew title: 'Managing your code in Cuis'; document: ((EruditeDocument contents: '!!!! Managing your code in Cuis
 
@@ -7530,7 +7530,7 @@ Cuis includes tools and procedures for managing Smalltalk code. Code that is not
         add: self section_ManagingYourCodeInCuis_LoadingChangeSetFilesIntoCuis;
  yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_ManagingYourCodeInCuis_ChangesToTheCuisBaseImage
 ^(EruditeBookSection basicNew title: 'Changes to the Cuis base image'; document: ((EruditeDocument contents: '!!!!!! Changes to the Cuis base image
 
@@ -7542,7 +7542,7 @@ Opening a [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: Change Sorte
 
 When the changes to the base system are complete, it is a good time to review the CuisCore change set and, maybe remove from it changes that we don''t want to keep (for example, experiments, halts, etc). Then, just do right click / File out and remove. This saves the //ChangeSet// on disk. It also removes it from the **ChangeSorter** (but it doesn''t remove any code). This is good, because the next changes done will end in a new CuisCore change set, and there''s no risk of having undesired changes in the old one. As changes to the base image progress, and several CuisCore //ChangeSets// are saved to disk, these numbered files are created in sequence. They will be ready to be loaded back in proper order in a fresh Cuis image, or to be sent to Cuis maintainers for integration in the update stream and in next releases of Cuis.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_ManagingYourCodeInCuis_LoadingChangeSetFilesIntoCuis
 ^(EruditeBookSection basicNew title: 'Loading ChangeSet files into Cuis'; document: ((EruditeDocument contents: '!!!!!! Loading ChangeSet files into Cuis
 
@@ -7552,7 +7552,7 @@ There are two ways to load //ChangeSet// files (.cs): **[FileIn]** and **[Instal
 
 **[Install]** loads the code into a separate //ChangeSet// object (viewable in the [[[ChangeSorterWindow openChangeSorter]]] doItWithButton: ChangeSorter tool). This is appropriate for loading Cuis updates, or other code that we are not authoring, as it doesn''t add new items (class or method definitions) to the current ChangeSet for our changes to Cuis. Usually any ChangeSets should be installed before doing changes to the image. The reason is that an installed ChangeSet could overwrite changes done by you, or packages you have installed. If this is the case, the affected packages would appear as dirty, and your change set would include any installed changes (that don''t belong in a package). Be careful when saving packages or change sets if this was the case!!!!') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_ManagingYourCodeInCuis_Packages
 ^(EruditeBookSection basicNew title: 'Packages'; document: ((EruditeDocument contents: '!!!!!! Packages
 
@@ -7580,7 +7580,7 @@ Handling Packages like this, Cuis behaves as a sort of document editor (like, fo
 
 This is not unlike using Git or GitHub with a file-based development environment such as Eclipse or a text editor. Like Cuis, these tools don''t do version handling themselves, they just load and save files; and let Git do its magic.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_Tools
 ^(EruditeBookSection basicNew title: 'Tools'; document: ((EruditeDocument contents: '!!!! Tools
 
@@ -7597,7 +7597,7 @@ Subchapters explain how the tools provided by Cuis work.
         add: self section_Tools_InstalledPackages;
  yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_Tools_InstalledPackages
 ^(EruditeBookSection basicNew title: 'Installed Packages'; document: ((EruditeDocument contents: '!!!! Installed Packages
 
@@ -8689,7 +8689,7 @@ B79Q88MPP/zwww8/1PALNX+UVaiHXmxME2r+4A/+4A/+4A/+4A+G4JdC/iiHUEuXXtZ04CT+
 QqalQ0uXVoRahrRr7fAP/uAP/uAP/uAP/uAP/uAP/sgO6czSnVMe/X+LeGEQCl4t0AAAAABJ
 RU5ErkJggg==')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_Tools_TheDebugger
 ^(EruditeBookSection basicNew title: 'The Debugger'; document: ((EruditeDocument contents: '!!!! The Debugger
 
@@ -9405,7 +9405,7 @@ wz9++OH3F374GbnjZ17mRoRUpSziH1D88AdgfvjhHz/88PsLP/yMuPEj6dwJc/chZHb2k/Lc
 Bu+32fjhhx9++OGHH3744We4IulbSeeOlwSv9J/szCp+0csPP/zwww8//PDDz4gRu5K+lXRu
 j+CVkBSwenoDP/zwww8//PDDDz/8DDckPevO7Lr5/wHdAwDI5tvHpgAAAABJRU5ErkJggg==')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_Tools_TheSystemBrowser
 ^(EruditeBookSection basicNew title: 'The System Browser'; document: ((EruditeDocument contents: '!!!! The System Browser
 
@@ -12405,7 +12405,7 @@ Do774LOXKlwrV7VOYMO32pwbs2P1t30r2zl133G396POBzHo/VB++pknvdYe87XxmUXQ4OPj
 4+Pj4+Pj4+Pj4wcNPj4+Pj4+Pj4+Pj4+ftDg4+Pj4+Pj4+Pj4+MHDT4+Pj4+Pj4+Pj4+ftDg
 4+Pj4+Pjyz95ho+Pj48vDb8IfHx8fHx8fHx8fHwG9/+0zlBgI8MZ2wAAAABJRU5ErkJggg==')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_Tools_TheTranscript
 ^(EruditeBookSection basicNew title: 'The Transcript'; document: ((EruditeDocument contents: '!!!! The Transcript
 
@@ -13389,7 +13389,7 @@ vodvR3W2qbeN0F/eHqwvMg47QvRnOblv/h7+eQKN2kCDpq97Sx/0Qf88vQMB9BT2Rvbydzz7
 Jg/6szh90Ad90jvwYEsU8xMjvnwxlqP79EmPPuiDPunRB33Qx8wA+/v0/zsJ6JMefdAHfdAn
 PfqgD/qgj8OIv/3tb/D/AXxLP8GoylSwAAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2023 14:20:07'!
+!CuisManual methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2023 14:20:07'!
 section_Tools_Workspace
 ^(EruditeBookSection basicNew title: 'Workspace'; document: ((EruditeDocument contents: '!!!! Workspace
 
@@ -13739,7 +13739,7 @@ UFz6RnKtoMjHx8fHx8fHx/fLYAVFK/iFqjoo9n18vjZti5LvyCIfHx8fHx8fHx+blQ8bNUl4
 RYOmzuaHxX8/HeD/ycfHx8fHx/cTYOVCKx96gqLFGln0nYbm4+Pj4+Pj4+PjsfKglQutfPj/
 AZTSdS27AIo1AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 16:31:40'!
 BookReaderAndEditor
 ^(EruditeBookSection basicNew title: 'Book reader and editor'; document: ((EruditeDocument contents: '!!!! Book reader and editor
 
@@ -14691,7 +14691,7 @@ H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
 BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 16:31:40'!
 Extensions
 ^(EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
 
@@ -14709,7 +14709,7 @@ This is implemented.
 
 TODO. Not implemented yet. ') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 16:31:40'!
 Extras
 ^(EruditeBookSection basicNew title: 'Extras'; document: ((EruditeDocument contents: '!!!! Extras
 
@@ -14721,7 +14721,7 @@ Also, a book on Morphic, the Cuis UI system:
 
 To install: [[[Feature require: ''MorphicBook'']]] doIt') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 16:31:40'!
 Implementation
 ^(EruditeBookSection basicNew title: 'Implementation'; document: ((EruditeDocument contents: '!!!! Implementation
 
@@ -14797,7 +14797,7 @@ There''s also the possibility of storing in a class method, but that''s not the 
 
 As you can see, it is done via the {storeOn: ::selector} method (it is indirectly call from {WriteStream>>store: ::method} method).') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:39'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 16:31:39'!
 Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Erudite Manual
 
@@ -14811,7 +14811,7 @@ Main documentation is realized via {EruditeBook::class|books}, a collection of d
 
 Books are read and edited via the {EruditeBookReaderMorph::class|reader} and {EruditeBookEditorMorph::class|editor} morphic applications.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 16:31:40'!
 LiterateProgramming
 ^(EruditeBookSection basicNew title: 'Literate Programming'; document: ((EruditeDocument contents: '!!!! Literate Programming
 
@@ -14845,7 +14845,7 @@ This misconception has led to claims that comment-extraction tools, such as the 
 
 Literate Programming can be realized by the creation of Erudite {EruditeBook::class|books}. In particular, via code embedding in its different forms. Contrary to other LP systems, there''s no need for a tangling and weaving phase; the document source is kept separately from the source code, Smalltalk code is referenced and embedded from the documentation. That means that in spite of documentation and code being separate, the referenced code is always up to date. Finally, the possibility of evaluating Smalltalk code from the documentation makes Erudite very unique compared to the other LP systems.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 16:31:40'!
 SyntaxReference
 ^(EruditeBookSection basicNew title: 'Syntax reference'; document: ((EruditeDocument contents: '!!!! Syntax reference
 
@@ -14855,7 +14855,7 @@ Text formatting, links to Smalltalk code, insertion of images, and code.') data:
         add: self SyntaxReferenceCode;
  yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 16:31:40'!
 SyntaxReferenceCode
 ^(EruditeBookSection basicNew title: 'Code'; document: ((EruditeDocument contents: '!!!!!! Code
 
@@ -14883,7 +14883,7 @@ Plain Smalltalk code: [[[Dictionary new at: #foo put: ''bar'']]].
 [[[ImageMorph new]]] embedIt
 ') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 16:31:40'!
 SyntaxReferenceImages
 ^(EruditeBookSection basicNew title: 'Images'; document: ((EruditeDocument contents: '!!!!!! Images
 
@@ -15356,7 +15356,7 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
 AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 16:31:40'!
 SyntaxReferenceLinks
 ^(EruditeBookSection basicNew title: 'Links'; document: ((EruditeDocument contents: '!!!!!! Links
 
@@ -15439,7 +15439,7 @@ To reference class methods, use this syntax: ```{EruditeBook class>>open ::metho
 
 **Example:** ```{http://cuis-smalltalk.org::url|Cuis Smalltalk}``` => {http://cuis-smalltalk.org::url|Cuis Smalltalk}') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 16:31:40'!
 SyntaxReferenceTextFormatting
 ^(EruditeBookSection basicNew title: 'Text formatting'; document: ((EruditeDocument contents: '!!!!!! Headings
 
@@ -15467,7 +15467,7 @@ Text between double _: ```__underlined__``` => __underlined__
 
 To prevent text formatting, enclose the text in triple back quotes.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 16:31:40'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 16:31:40'!
 SyntaxTest
 ^(EruditeBookSection basicNew title: 'Syntax test'; document: ((EruditeDocument contents: '!!!! Syntax test
 
@@ -15989,7 +15989,7 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
 AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 initialize
     super initialize.
     title _ 'Erudite Manual'.
@@ -16004,7 +16004,7 @@ initialize
         self addSection: self section_Examples.
 ! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_BookReaderAndEditor
 ^(EruditeBookSection basicNew title: 'Book reader and editor'; document: ((EruditeDocument contents: '!!!! Book reader and editor
 
@@ -16956,7 +16956,7 @@ H+T0RV/0QU5f9EVf9EUf5PRFH+T0RV/0NZxFX2dRnN9zUjMRNfkiu4/q9EVf9EVf9EVf9DUy
 lGm9Fs3VNYgaP/EfuO6Sv9E/KfRFX/RFX/RFXyNE3BLnEP/qq68Q9csbXoDl70tgu3oOrh0/
 BfQtdPqiL/qiL/qir+FpgRdk3ImXnlqJPbv+KUCc6/8PxfcRuBMZFUgAAAAASUVORK5CYII=')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_Books
 ^(EruditeBookSection basicNew title: 'Books'; document: ((EruditeDocument contents: '!!!! Books
 
@@ -16972,12 +16972,12 @@ To install: [[[Feature require: ''MorphicBook'']]] doIt
 
 To install: [[[Feature require: ''EruditeDocBook'']]] doIt') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_Examples
 ^(EruditeBookSection basicNew title: 'Examples'; document: ((EruditeDocument contents: '!!!! Examples') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new        add: self section_Examples_PlotsExample;
  yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_Examples_PlotsExample
 ^(EruditeBookSection basicNew title: 'Plots example'; document: ((EruditeDocument contents: '!!!! Plots example
 
@@ -16998,7 +16998,7 @@ g addFunction: [ :x | x \\ d ] color: Color green.
 g addFunction: [ :x | x // d ] color: Color red.
 g ]]] embedIt') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_Extensions
 ^(EruditeBookSection basicNew title: 'Extensions'; document: ((EruditeDocument contents: '!!!! Extensions
 
@@ -17018,7 +17018,7 @@ Provides markup and formatting in class comments.
 
 ') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:30:00'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2024 14:30:00'!
 section_Extras
 ^(EruditeBookSection basicNew title: 'Extras'; document: ((EruditeDocument contents: '!!!! Extras
 
@@ -17030,7 +17030,7 @@ Also, a book on Morphic, the Cuis UI system:
 
 To install: [[[Feature require: ''MorphicBook'']]] doIt') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_Implementation
 ^(EruditeBookSection basicNew title: 'Implementation'; document: ((EruditeDocument contents: '!!!! Implementation
 
@@ -17106,7 +17106,7 @@ There''s also the possibility of storing in a class method, but that''s not the 
 
 As you can see, it is done via the {storeOn: ::selector} method (it is indirectly call from {WriteStream>>store: ::method} method).') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_Introduction
 ^(EruditeBookSection basicNew title: 'Introduction'; document: ((EruditeDocument contents: '!!!! Erudite Manual
 
@@ -17120,7 +17120,7 @@ Main documentation is realized via {EruditeBook::class|books}, a collection of d
 
 Books are read and edited via the {EruditeBookReaderMorph::class|reader} and {EruditeBookEditorMorph::class|editor} morphic applications.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_LiterateProgramming
 ^(EruditeBookSection basicNew title: 'Literate Programming'; document: ((EruditeDocument contents: '!!!! Literate Programming
 
@@ -17154,7 +17154,7 @@ This misconception has led to claims that comment-extraction tools, such as the 
 
 Literate Programming can be realized by the creation of Erudite {EruditeBook::class|books}. In particular, via code embedding in its different forms. Contrary to other LP systems, there''s no need for a tangling and weaving phase; the document source is kept separately from the source code, Smalltalk code is referenced and embedded from the documentation. That means that in spite of documentation and code being separate, the referenced code is always up to date. Finally, the possibility of evaluating Smalltalk code from the documentation makes Erudite very unique compared to the other LP systems.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_SyntaxReference
 ^(EruditeBookSection basicNew title: 'Syntax reference'; document: ((EruditeDocument contents: '!!!! Syntax reference
 
@@ -17164,7 +17164,7 @@ Text formatting, links to Smalltalk code, insertion of images, and code.') data:
         add: self section_SyntaxReference_Code;
  yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_SyntaxReference_Code
 ^(EruditeBookSection basicNew title: 'Code'; document: ((EruditeDocument contents: '!!!!!! Code
 
@@ -17192,7 +17192,7 @@ Plain Smalltalk code: [[[Dictionary new at: #foo put: ''bar'']]].
 [[[ImageMorph new]]] embedIt
 ') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_SyntaxReference_Images
 ^(EruditeBookSection basicNew title: 'Images'; document: ((EruditeDocument contents: '!!!!!! Images
 
@@ -17665,7 +17665,7 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
 AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_SyntaxReference_Links
 ^(EruditeBookSection basicNew title: 'Links'; document: ((EruditeDocument contents: '!!!!!! Links
 
@@ -17748,7 +17748,7 @@ To reference class methods, use this syntax: ```{EruditeBook class>>open ::metho
 
 **Example:** ```{http://cuis-smalltalk.org::url|Cuis Smalltalk}``` => {http://cuis-smalltalk.org::url|Cuis Smalltalk}') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_SyntaxReference_TextFormatting
 ^(EruditeBookSection basicNew title: 'Text formatting'; document: ((EruditeDocument contents: '!!!!!! Headings
 
@@ -17776,7 +17776,7 @@ Text between double _: ```__underlined__``` => __underlined__
 
 To prevent text formatting, enclose the text in triple back quotes.') data: ((Dictionary new)); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 11:35:12'!
+!EruditeManual methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 11:35:12'!
 section_SyntaxTest
 ^(EruditeBookSection basicNew title: 'Syntax test'; document: ((EruditeDocument contents: '!!!! Syntax test
 
@@ -18298,16 +18298,16 @@ c4Dvfve7g9fv3Lk9euGC49e/+7rqYl810tNT0Hdm/E+3Hz9455+Fn9n/+A2C4MG77xZM3b17
 9+/Pfvdvtk0FzIM5xYM+n/27f2YjCJqfXDb+5DH7gz9bgYBfWeYrKf17//P/ALnBgn+5dhwJ
 AAAAAElFTkSuQmCC')); yourself); yourself); subsections: (OrderedCollection new yourself); yourself)! !
 
-!EruditeCompositeBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:50:43'!
+!EruditeCompositeBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 13:50:43'!
 edit
 	^ self error: 'This is a read-only book'! !
 
-!EruditeCompositeBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:28:16'!
+!EruditeCompositeBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 13:28:16'!
 initialize: aCollectionOfBooks
 
 	books _ aCollectionOfBooks! !
 
-!EruditeCompositeBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:50:02'!
+!EruditeCompositeBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 13:50:02'!
 sections
 
 	^ books collect: [:book | |section|
@@ -18318,16 +18318,16 @@ sections
 			section addSection: bookSection copy].
 		section]! !
 
-!EruditeCompositeBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:51:42'!
+!EruditeCompositeBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 13:51:42'!
 store
 	^ self error: 'This is a composite book. It can not be stored.'! !
 
-!EruditeCompositeBook class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:53:34'!
+!EruditeCompositeBook class methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 13:53:34'!
 with: books
 
 	^ self new initialize: books! !
 
-!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 19:16:28'!
+!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 19:16:28'!
 build
 
 	| classes |
@@ -18346,7 +18346,7 @@ build
 		(method argumentAt: 2) ifNil: [ "no parent. top-level section."
 			self buildSection: method]]! !
 
-!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:38:21'!
+!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 18:38:21'!
 buildSection: aMethod
 
 	| parent parentName classInstance |
@@ -18368,60 +18368,60 @@ buildSection: aMethod
 			ifTrue: [ "a subsection"
 				self buildSection: method]]! !
 
-!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:41:22'!
+!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 18:41:22'!
 edit
 	^ self error: 'This is a read-only book'! !
 
-!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:14:25'!
+!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 18:14:25'!
 initialize: bookTitle
 
 	super initialize: bookTitle.
 	
 	self build.! !
 
-!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 18:41:35'!
+!EruditeDynamicBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 18:41:35'!
 store
 	^ self error: 'This is a dynamic book. It can not be stored.'! !
 
-!EruditeDynamicBook class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 17:54:40'!
+!EruditeDynamicBook class methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 17:54:40'!
 titled: aString
 	^ self new initialize: aString! !
 
-!EruditeBookExporter methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:39:16'!
+!EruditeBookExporter methodsFor: 'as yet unclassified' stamp: 'MM 20/Oct/2022 17:39:16'!
 export
 
 	^ self subclassResponsibility ! !
 
-!EruditeBookExporter methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 18:11:26'!
+!EruditeBookExporter methodsFor: 'as yet unclassified' stamp: 'MM 20/Oct/2022 18:11:26'!
 initialize: aBook
 
 	book _ aBook! !
 
-!EruditeBookExporter methodsFor: 'accessing' stamp: 'MM 10/20/2022 17:37:57'!
+!EruditeBookExporter methodsFor: 'accessing' stamp: 'MM 20/Oct/2022 17:37:57'!
 book
 	"Answer the value of book"
 
 	^ book! !
 
-!EruditeBookExporter methodsFor: 'accessing' stamp: 'MM 10/20/2022 17:37:57'!
+!EruditeBookExporter methodsFor: 'accessing' stamp: 'MM 20/Oct/2022 17:37:57'!
 book: anObject
 	"Set the value of book"
 
 	book := anObject! !
 
-!EruditeBookExporter methodsFor: 'accessing' stamp: 'MM 10/20/2022 17:37:57'!
+!EruditeBookExporter methodsFor: 'accessing' stamp: 'MM 20/Oct/2022 17:37:57'!
 location
 	"Answer the value of location"
 
 	^ location! !
 
-!EruditeBookExporter methodsFor: 'accessing' stamp: 'MM 10/20/2022 17:37:57'!
+!EruditeBookExporter methodsFor: 'accessing' stamp: 'MM 20/Oct/2022 17:37:57'!
 location: anObject
 	"Set the value of location"
 
 	location := anObject! !
 
-!EruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:39:01'!
+!EruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 20/Oct/2022 17:39:01'!
 export: aBook to: aLocation
 	
 	| exporter |
@@ -18430,21 +18430,21 @@ export: aBook to: aLocation
 	exporter location: aLocation.
 	exporter export.! !
 
-!EruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:42:58'!
+!EruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 20/Oct/2022 17:42:58'!
 exporterName
 
 	^ self subclassResponsibility ! !
 
-!EruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 18:10:07'!
+!EruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 20/Oct/2022 18:10:07'!
 on: aBook
 	^ self new initialize: aBook; yourself! !
 
-!EruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:52:41'!
+!EruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 20/Oct/2022 17:52:41'!
 requestEditorArgumentsFor: aBook
 
 	^ self subclassResponsibility ! !
 
-!LatexEruditeBookExporter methodsFor: 'as yet unclassified' stamp: 'MM 3/15/2025 11:08:51'!
+!LatexEruditeBookExporter methodsFor: 'as yet unclassified' stamp: 'MM 15/Mar/2025 11:08:51'!
 export
 
 	(book latexRendererClass on: book)
@@ -18453,36 +18453,36 @@ export
 			texFilePath: location;
 			render.! !
 
-!LatexEruditeBookExporter methodsFor: 'accessing' stamp: 'MM 3/15/2025 11:08:23'!
+!LatexEruditeBookExporter methodsFor: 'accessing' stamp: 'MM 15/Mar/2025 11:08:23'!
 afterPreamble
 	"Answer the value of afterPreamble"
 
 	^ afterPreamble! !
 
-!LatexEruditeBookExporter methodsFor: 'accessing' stamp: 'MM 3/15/2025 11:08:23'!
+!LatexEruditeBookExporter methodsFor: 'accessing' stamp: 'MM 15/Mar/2025 11:08:23'!
 afterPreamble: anObject
 	"Set the value of afterPreamble"
 
 	afterPreamble := anObject! !
 
-!LatexEruditeBookExporter methodsFor: 'accessing' stamp: 'MM 3/15/2025 11:08:23'!
+!LatexEruditeBookExporter methodsFor: 'accessing' stamp: 'MM 15/Mar/2025 11:08:23'!
 beforePreamble
 	"Answer the value of beforePreamble"
 
 	^ beforePreamble! !
 
-!LatexEruditeBookExporter methodsFor: 'accessing' stamp: 'MM 3/15/2025 11:08:23'!
+!LatexEruditeBookExporter methodsFor: 'accessing' stamp: 'MM 15/Mar/2025 11:08:23'!
 beforePreamble: anObject
 	"Set the value of beforePreamble"
 
 	beforePreamble := anObject! !
 
-!LatexEruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:43:26'!
+!LatexEruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 20/Oct/2022 17:43:26'!
 exporterName
 
 	^ 'LaTeX'! !
 
-!LatexEruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:51:47'!
+!LatexEruditeBookExporter class methodsFor: 'as yet unclassified' stamp: 'MM 20/Oct/2022 17:51:47'!
 requestEditorArgumentsFor: aBook
 
 	"Request arguments for the exporter from the book editor tool."
@@ -18493,16 +18493,16 @@ requestEditorArgumentsFor: aBook
 	path _ self request: 'Export to:' initialAnswer: defaultFilePath asString.
 	^ {#location: -> path}! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:52'!
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 13:52:00'!
 contents: aString
 
 	self document: (self documentClass contents: aString asString)! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:27'!
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 21:27:00'!
 documentClass
 	^ EruditeDocument.! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 13:54'!
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 11/Dec/2018 13:54:00'!
 findSectionNamed: aString ifAbsent: aBlock
 
 	subsections do: [:aSection |
@@ -18513,25 +18513,25 @@ findSectionNamed: aString ifAbsent: aBlock
 	
 	^ aBlock value! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 17:39:26'!
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 19/Dec/2018 17:39:26'!
 latestAndDeepestSection
 
 	^ subsections 
 		ifEmpty: [self]
 		ifNotEmpty: [subsections last latestAndDeepestSection]! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 19:30:59'!
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 18/Dec/2018 19:30:59'!
 nextSection
 
 	^ subsections 
 		ifNotEmpty: [subsections first]
 		ifEmpty: [parent sections after: self ifNone: [parent parent ifNotNil: [:parentParent | parentParent sections after: parent]]]! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 6/11/2022 19:29:18'!
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 11/Jun/2022 19:29:18'!
 parser
 	^ document parser! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 17:42:13'!
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 19/Dec/2018 17:42:13'!
 previousSection
 	|beforeMe| 
 	
@@ -18545,17 +18545,17 @@ previousSection
 		ifNotNil: [
 			beforeMe latestAndDeepestSection]! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 18:04'!
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2018 18:04:00'!
 removeSection: aSection
 
 	subsections remove: aSection! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 17:48'!
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 7/Dec/2018 17:48:00'!
 sections
 
 	^ subsections! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:10'!
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2018 20:10:00'!
 storeOn: aStream
 
 	aStream
@@ -18568,14 +18568,14 @@ storeOn: aStream
 		nextPutAll: '; yourself)'
 		        ! !
 
-!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:12'!
+!EruditeBookSection methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2018 20:12:00'!
 updateParents
 
 	subsections do: [:subsection |
 		subsection parent: self.
 		subsection updateParents]! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 10/21/2022 16:58:24'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 21/Oct/2022 16:58:24'!
 addSection: aBookSection
 
 	self assert: (subsections anySatisfy: [:section | section title = aBookSection title]) not
@@ -18584,39 +18584,39 @@ addSection: aBookSection
 	subsections addLast: aBookSection.
 	aBookSection parent: self! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 12/10/2018 21:28'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 10/Dec/2018 21:28:00'!
 addSection: aString contents: anotherString
 	self addSection:
 		(EruditeBookSection
 			title: aString
 			contents: anotherString).! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 12/10/2018 21:28'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 10/Dec/2018 21:28:00'!
 addSection: aString document: aDocument
 	self addSection:
 		(EruditeBookSection
 			title: aString
 			document: aDocument).! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:27'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 13:27:00'!
 document
 	"Answer the value of document"
 
 	^ document! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:27'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 13:27:00'!
 document: anObject
 	"Set the value of document"
 
 	document _ anObject! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:27'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 13:27:00'!
 parent
 	"Answer the value of parent"
 
 	^ parent! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 3/18/2025 09:03:28'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 18/Mar/2025 09:03:28'!
 parent: anObject
 	"Set the value of parent"
 
@@ -18629,37 +18629,37 @@ parent: anObject
 		"Propagate our potentially new parser to our subsections"
 	subsections do: [:ss | ss parent: self]! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:27'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 13:27:00'!
 subsections
 	"Answer the value of subsections"
 
 	^ subsections! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 7/21/2020 23:18:51'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 21/Jul/2020 23:18:51'!
 subsections: anObject
 	"Set the value of subsections"
 
 	subsections _ anObject.
 	subsections do: [:ss | ss parent: self]! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:27'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 13:27:00'!
 title
 	"Answer the value of title"
 
 	^ title! !
 
-!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 11/30/2018 13:27'!
+!EruditeBookSection methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 13:27:00'!
 title: anObject
 	"Set the value of title"
 
 	title _ anObject! !
 
-!EruditeBookSection methodsFor: 'initialization' stamp: 'MM 11/30/2018 13:38'!
+!EruditeBookSection methodsFor: 'initialization' stamp: 'MM 30/Nov/2018 13:38:00'!
 initialize
 
 	subsections _ OrderedCollection new.! !
 
-!EruditeBookSection class methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:27'!
+!EruditeBookSection class methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 13:27:00'!
 title: aString contents: anotherString
 
 	^ self new 
@@ -18667,7 +18667,7 @@ title: aString contents: anotherString
 		contents: anotherString;
 		yourself! !
 
-!EruditeBookSection class methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:28'!
+!EruditeBookSection class methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 13:28:00'!
 title: aString document: aDocument
 
 	^ self new 
@@ -18675,58 +18675,58 @@ title: aString document: aDocument
 		document: aDocument;
 		yourself! !
 
-!EruditeBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:37:37'!
+!EruditeBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:37:37'!
 initialize: aBook
 
 	book _ aBook! !
 
-!EruditeBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:47:52'!
+!EruditeBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:47:52'!
 load
 	^ self subclassResponsibility ! !
 
-!EruditeBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:25:48'!
+!EruditeBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:25:48'!
 store
 	^ self subclassResponsibility ! !
 
-!EruditeBookStorer class methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:37:26'!
+!EruditeBookStorer class methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:37:26'!
 on: aBook
 	^ self new initialize: aBook! !
 
-!EruditeBookStorer class methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:37:59'!
+!EruditeBookStorer class methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:37:59'!
 store: aBook
 
 	^ (self on: aBook) store! !
 
-!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:42:33'!
+!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:42:33'!
 asMethodName: aString
 	"Return a string that can be used in a method name."
 	^ aString asCamelCase select: [:char | char isAlphaNumeric ]! !
 
-!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/21/2022 19:06:45'!
+!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 21/Oct/2022 19:06:45'!
 defaultNameForClass
 	^ (book title asCamelCase capitalized 
 		 select: [:char | char isAlphaNumeric ])
 		asSymbol! !
 
-!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:39:44'!
+!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:39:44'!
 defaultStorageCategory: aClassName
 	^ Smalltalk at: aClassName asSymbol
 		ifPresent: [:cls |		cls category]
 		ifAbsent: ['EruditeBooks']! !
 
-!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:49:20'!
+!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:49:20'!
 load
 	^ (Smalltalk at: self storageClassName) new! !
 
-!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:49:52'!
+!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:49:52'!
 store
 	^ self storeAsClassNamed: self storageClassName! !
 
-!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:28:09'!
+!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:28:09'!
 storeAsClassNamed: className
 	^ self storeAsClassNamed: className category: (self defaultStorageCategory: className asSymbol)! !
 
-!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:28:39'!
+!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:28:39'!
 storeAsClassNamed: className category: aCategory
 
 	|bookClass initialize|
@@ -18755,11 +18755,11 @@ storeAsClassNamed: className category: aCategory
 		
 	^ bookClass! !
 
-!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:29:06'!
+!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:29:06'!
 storeSection: aBookSection on: aClass
 	^ self storeSection: aBookSection on: aClass prefix: 'section_'! !
 
-!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/21/2022 16:48:43'!
+!EruditeClassBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 21/Oct/2022 16:48:43'!
 storeSection: aBookSection on: aClass prefix: prefix
 
 	| source subsectionPrefix |
@@ -18785,25 +18785,25 @@ storeSection: aBookSection on: aClass prefix: prefix
 	aBookSection subsections do: [:ss |
 		self storeSection: ss on: aClass prefix: subsectionPrefix].! !
 
-!EruditeClassBookStorer methodsFor: 'accessing' stamp: 'MM 10/17/2022 17:50:04'!
+!EruditeClassBookStorer methodsFor: 'accessing' stamp: 'MM 17/Oct/2022 17:50:04'!
 storageClassName
 	"Answer the value of storageClassName"
 
 	^ storageClassName ifNil: [self defaultNameForClass]! !
 
-!EruditeClassBookStorer methodsFor: 'accessing' stamp: 'MM 10/17/2022 17:36:09'!
+!EruditeClassBookStorer methodsFor: 'accessing' stamp: 'MM 17/Oct/2022 17:36:09'!
 storageClassName: anObject
 	"Set the value of storageClassName"
 
 	storageClassName := anObject! !
 
-!EruditeMethodBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:35:21'!
+!EruditeMethodBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:35:21'!
 defaultStorageMethodReference
 	^ MethodReference
 		class: (storageClass ifNil: [EruditeBook class])
 		selector: (self selectorFromTitle: book title).! !
 
-!EruditeMethodBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:52:24'!
+!EruditeMethodBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:52:24'!
 load
 
 	
@@ -18813,13 +18813,13 @@ load
 			valueWithReceiver: EruditeBook class
 			arguments: #().! !
 
-!EruditeMethodBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:52:34'!
+!EruditeMethodBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:52:34'!
 storageMethod
 	"Answer the value of storageMethod"
 
 	^ storageMethod ifNil: [self defaultStorageMethodReference]! !
 
-!EruditeMethodBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 10/17/2022 17:30:31'!
+!EruditeMethodBookStorer methodsFor: 'as yet unclassified' stamp: 'MM 17/Oct/2022 17:30:31'!
 store
 
 	|source|
@@ -18834,86 +18834,86 @@ store
 	
 	methodReference actualClass compile: source.! !
 
-!EruditeMethodBookStorer methodsFor: 'accessing' stamp: 'MM 10/17/2022 17:52:45'!
+!EruditeMethodBookStorer methodsFor: 'accessing' stamp: 'MM 17/Oct/2022 17:52:45'!
 methodReference
 	"Answer the value of methodReference"
 
 	^ methodReference! !
 
-!EruditeMethodBookStorer methodsFor: 'accessing' stamp: 'MM 10/17/2022 17:52:45'!
+!EruditeMethodBookStorer methodsFor: 'accessing' stamp: 'MM 17/Oct/2022 17:52:45'!
 methodReference: anObject
 	"Set the value of methodReference"
 
 	methodReference := anObject! !
 
-!EruditeMethodBookStorer methodsFor: 'accessing' stamp: 'MM 10/17/2022 17:52:45'!
+!EruditeMethodBookStorer methodsFor: 'accessing' stamp: 'MM 17/Oct/2022 17:52:45'!
 storageClass
 	"Answer the value of storageClass"
 
 	^ storageClass! !
 
-!EruditeMethodBookStorer methodsFor: 'accessing' stamp: 'MM 10/17/2022 17:52:45'!
+!EruditeMethodBookStorer methodsFor: 'accessing' stamp: 'MM 17/Oct/2022 17:52:45'!
 storageClass: anObject
 	"Set the value of storageClass"
 
 	storageClass := anObject! !
 
-!EruditeMethodBookStorer methodsFor: 'accessing' stamp: 'MM 10/17/2022 17:52:45'!
+!EruditeMethodBookStorer methodsFor: 'accessing' stamp: 'MM 17/Oct/2022 17:52:45'!
 storageMethod: anObject
 	"Set the value of storageMethod"
 
 	storageMethod := anObject! !
 
-!EruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:37:13'!
+!EruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2022 09:37:13'!
 document
 	^ document! !
 
-!EruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:36:56'!
+!EruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2022 09:36:56'!
 initialize: aDocument
 
 	document _ aDocument! !
 
-!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:58:28'!
+!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 15/Jun/2022 09:58:28'!
 document: anObject
 	"Set the value of document"
 
 	document := anObject! !
 
-!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:58:28'!
+!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 15/Jun/2022 09:58:28'!
 requestor
 	"Answer the value of requestor"
 
 	^ requestor! !
 
-!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:58:28'!
+!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 15/Jun/2022 09:58:28'!
 requestor: anObject
 	"Set the value of requestor"
 
 	requestor := anObject! !
 
-!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:58:28'!
+!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 15/Jun/2022 09:58:28'!
 stream
 	"Answer the value of stream"
 
 	^ stream! !
 
-!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:58:28'!
+!EruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 15/Jun/2022 09:58:28'!
 stream: anObject
 	"Set the value of stream"
 
 	stream := anObject! !
 
-!EruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:35:02'!
+!EruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2022 09:35:02'!
 on: aDocument
 
 	^ self new initialize: aDocument! !
 
-!EruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:35:26'!
+!EruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2022 09:35:26'!
 render: aDocument
 	
 	^ (self on: aDocument) render! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 10:00:06'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 10:00:06'!
 escapeLatex: aString
 	
 	|escapedString|
@@ -18933,7 +18933,7 @@ escapeLatex: aString
 '.
 	^ escapedString! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2024 14:26:39'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2024 14:26:39'!
 linkRendererFor: aLinkType
 
 	|handlerClassName|
@@ -18942,12 +18942,12 @@ linkRendererFor: aLinkType
 	^ Smalltalk at: handlerClassName asSymbol 
 				ifAbsent: [self error: 'No link renderer for: ', aLinkType asString]! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 3/15/2025 09:50:18'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Mar/2025 09:50:18'!
 render
 	
 	^ self renderContents: document parsedContents contents! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/20/2024 12:13:38'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 20/Jun/2024 12:13:38'!
 renderCode: aDocCode
 
 	highlightSyntax 
@@ -18970,7 +18970,7 @@ renderCode: aDocCode
 		ifNotNil: [Compiler evaluate: aDocCode code notifying: requestor logged: false]]
 	on: Exception do: [:ex | Transcript show: ex messageText]"! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:54:28'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 09:54:28'!
 renderCodeDoIt: aDocCode
 
 	|text button textModel |
@@ -18992,7 +18992,7 @@ renderCodeDoIt: aDocCode
  	button morphExtent: 40@15.
 	stream nextPut: (Text withForm: button)."! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:54:36'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 09:54:36'!
 renderCodeDoItWithButton: aDocCode
 
 	stream nextPut: (Text string: (aDocCode action at: #button)
@@ -19002,7 +19002,7 @@ renderCodeDoItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false]})! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:54:46'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 09:54:46'!
 renderCodeEmbedIt: aDocCode
 
 	| evalString result |
@@ -19019,7 +19019,7 @@ renderCodeEmbedIt: aDocCode
 	
 	stream nextPut: (Text streamContents: [:s | result printOn: s])! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:55:14'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 09:55:14'!
 renderCodeExploreIt: aDocCode
 
 	|text button evalString textModel |
@@ -19039,7 +19039,7 @@ renderCodeExploreIt: aDocCode
 					BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) explore]}.
 	stream nextPut: button.! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:55:23'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 09:55:23'!
 renderCodeExploreItWithButton: aDocCode
 
 	stream nextPut: (Text string: (aDocCode action at: #button)
@@ -19049,7 +19049,7 @@ renderCodeExploreItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) explore]})! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:55:34'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 09:55:34'!
 renderCodeInspectIt: aDocCode
 
 	|text button evalString textModel |
@@ -19069,7 +19069,7 @@ renderCodeInspectIt: aDocCode
 					BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) inspect]}.
 	stream nextPut: button.! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:55:43'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 09:55:43'!
 renderCodeInspectItWithButton: aDocCode
 
 	stream nextPut: (Text string: (aDocCode action at: #button)
@@ -19079,7 +19079,7 @@ renderCodeInspectItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: anObject textProvider logged: false) inspect]})! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:55:54'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 09:55:54'!
 renderCodePrintIt: aDocCode
 
 	|text button evalString textModel |
@@ -19099,7 +19099,7 @@ renderCodePrintIt: aDocCode
 					BlockTextAction do: [:anObject | Transcript show: (Compiler evaluate: evalString notifying: anObject textProvider logged: false) printString]}.
 	stream nextPut: button.! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/25/2024 18:01:36'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 25/Jun/2024 18:01:36'!
 renderCodePrintItHere: aDocCode
 
 	|text evalString result textModel |
@@ -19124,12 +19124,12 @@ renderCodePrintItHere: aDocCode
 	stream nextPut: ' ⇒ ';
 			nextPut: (Text streamContents: [:s | result printOn: s]).! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 3/15/2025 09:55:11'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Mar/2025 09:55:11'!
 renderContents: contents
 	
 	contents do: [:node | self renderNode: node]! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 3/15/2025 09:55:32'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Mar/2025 09:55:32'!
 renderNode: aNode
 
 	^ aNode isString ifTrue: [
@@ -19137,14 +19137,14 @@ renderNode: aNode
 		ifFalse: [
 			aNode accept: self]! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:18'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 09:56:18'!
 visitActionLink: aDocLink
 
 	stream nextPutAll: '\underline{';
 			nextPutAll: aDocLink title;
 			nextPutAll: '}'! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:28'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 09:56:28'!
 visitCode: aDocCode
 
 	self renderCode: aDocCode
@@ -19165,7 +19165,7 @@ visitCode: aDocCode
 		[#printItWithButton] -> [self renderCodePrintItWithButton: aDocCode]
 	}."! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:37'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 09:56:37'!
 visitHeading: aEruditeHeading
 
 	aEruditeHeading level caseOf: {
@@ -19176,7 +19176,7 @@ visitHeading: aEruditeHeading
 	}.
 	stream nextPutAll: aEruditeHeading heading; nextPutAll: '}'; newLine; newLine! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 09:56:45'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 09:56:45'!
 visitLink: aDocLink
 	
 	"(self linkRendererFor: aDocLink type) ifNotNil: [:aLinkRenderer |
@@ -19191,7 +19191,7 @@ visitLink: aDocLink
 				nextPutAll: aDocLink target;
 				nextPutAll: '}']! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 3/15/2025 09:58:37'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Mar/2025 09:58:37'!
 visitList: aNode
 
 	stream nextPutAll: '\begin{itemize}'; newLine.
@@ -19199,14 +19199,14 @@ visitList: aNode
 		self renderNode: item].
 	stream newLine; nextPutAll: '\end{itemize}'; newLine.! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 3/15/2025 09:58:10'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 15/Mar/2025 09:58:10'!
 visitListItem: aNode
 
 	stream nextPutAll: '   \item '.
 	self renderContents: aNode contents.
 	stream newLine! !
 
-!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 10/20/2022 18:30:12'!
+!LatexEruditeDocRenderer methodsFor: 'rendering' stamp: 'MM 20/Oct/2022 18:30:12'!
 visitStyledText: aStyledText
 
 	aStyledText style caseOf: {
@@ -19224,36 +19224,36 @@ visitStyledText: aStyledText
 										nextPutAll: '\end{verbatim}'; newLine].
 	}! !
 
-!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 10:00:58'!
+!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 15/Jun/2022 10:00:58'!
 highlightSyntax
 	"Answer the value of highlightSyntax"
 
 	^ highlightSyntax! !
 
-!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 10:00:58'!
+!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 15/Jun/2022 10:00:58'!
 highlightSyntax: anObject
 	"Set the value of highlightSyntax"
 
 	highlightSyntax := anObject! !
 
-!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:52:18'!
+!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 15/Jun/2022 09:52:18'!
 stream
 	"Answer the value of stream"
 
 	^ stream! !
 
-!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 6/15/2022 09:52:18'!
+!LatexEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 15/Jun/2022 09:52:18'!
 stream: anObject
 	"Set the value of stream"
 
 	stream := anObject! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/20/2022 10:53:58'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 20/Nov/2022 10:53:58'!
 codeBackgroundColor
 
 	^ self class codeBackgroundColor! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 15:50:58'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 24/Nov/2022 15:50:58'!
 createFormButton: aForm action: aBlock balloonText: balloonText
 
 	| button |
@@ -19265,13 +19265,13 @@ createFormButton: aForm action: aBlock balloonText: balloonText
 	
 	^ button! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2022 09:35:53'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2022 09:35:53'!
 initialize: aDocument
 
 	super initialize: aDocument.
 	stream _ WriteStream on: Array new.! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:25:16'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 14:25:16'!
 linkRendererFor: aLinkType
 
 	|handlerClassName|
@@ -19280,7 +19280,7 @@ linkRendererFor: aLinkType
 	^ Smalltalk at: handlerClassName asSymbol 
 				ifAbsent: [self error: 'No link renderer for: ', aLinkType asString]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 15:38'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/Dec/2018 15:38:00'!
 render
 
 	document contents isString ifTrue: [^ stream nextPutAll: document contents].
@@ -19293,14 +19293,14 @@ render
 	
 	^ stream contents inject: '' into: [:x :y | x, y]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/23/2024 18:58:22'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 23/Jun/2024 18:58:22'!
 renderCode: aDocCode
 
 	^ aDocCode sourceLanguage = 'smalltalk'
 		 ifTrue: [self renderSmalltalkCode: aDocCode]
 		 ifFalse: [self renderNonSmalltalkCode: aDocCode]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:04:22'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/Jun/2023 14:04:22'!
 renderCodeDoIt: aDocCode
 
 	|text button textModel |
@@ -19332,7 +19332,7 @@ renderCodeDoIt: aDocCode
  	button morphExtent: 40@15.
 	stream nextPut: (Text withForm: button)."! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:07:06'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/Jun/2023 14:07:06'!
 renderCodeDoItWithButton: aDocCode
 
 	stream nextPut: (Text string: (aDocCode action at: #button)
@@ -19342,7 +19342,7 @@ renderCodeDoItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | Compiler evaluate: aDocCode code notifying: requestor logged: false]})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 18:36'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/Dec/2018 18:36:00'!
 renderCodeEmbedIt: aDocCode
 
 	| evalString result |
@@ -19359,7 +19359,7 @@ renderCodeEmbedIt: aDocCode
 	
 	stream nextPut: (Text streamContents: [:s | result printOn: s])! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:05:51'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/Jun/2023 14:05:51'!
 renderCodeExploreIt: aDocCode
 
 	|text button evalString textModel |
@@ -19389,7 +19389,7 @@ renderCodeExploreIt: aDocCode
 								BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: anObject textProvider logged: false) explore]}.
 			stream nextPut: button]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:07:33'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/Jun/2023 14:07:33'!
 renderCodeExploreItWithButton: aDocCode
 
 	stream nextPut: (Text string: (aDocCode action at: #button)
@@ -19399,7 +19399,7 @@ renderCodeExploreItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: requestor logged: false) explore]})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:07:50'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/Jun/2023 14:07:50'!
 renderCodeInspectIt: aDocCode
 
 	|text button evalString textModel |
@@ -19429,7 +19429,7 @@ renderCodeInspectIt: aDocCode
 					BlockTextAction do: [:anObject | (Compiler evaluate: evalString notifying: requestor logged: false) inspect]}.
 			stream nextPut: button].! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:07:59'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/Jun/2023 14:07:59'!
 renderCodeInspectItWithButton: aDocCode
 
 	stream nextPut: (Text string: (aDocCode action at: #button)
@@ -19439,7 +19439,7 @@ renderCodeInspectItWithButton: aDocCode
 							TextEmphasis underlined .
 							BlockTextAction do: [:anObject | (Compiler evaluate: aDocCode code notifying: requestor logged: false) inspect]})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 14:08:12'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/Jun/2023 14:08:12'!
 renderCodePrintIt: aDocCode
 
 	|text button evalString textModel |
@@ -19469,7 +19469,7 @@ renderCodePrintIt: aDocCode
 						BlockTextAction do: [:anObject | Transcript show: (Compiler evaluate: evalString notifying: requestor logged: false) printString]}.
 			stream nextPut: button]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/25/2024 18:02:07'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 25/Jun/2024 18:02:07'!
 renderCodePrintItHere: aDocCode
 
 	|text evalString result textModel |
@@ -19497,7 +19497,7 @@ renderCodePrintItHere: aDocCode
 	stream nextPut: ' ⇒ ';
 			nextPut: (Text streamContents: [:s | result printOn: s]).! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 18:18:57'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 13/Mar/2025 18:18:57'!
 renderNonSmalltalkCode: aDocCode
 
 	|text button |
@@ -19522,7 +19522,7 @@ renderNonSmalltalkCode: aDocCode
 						BlockTextAction do: [:anObject | Clipboard storeObject: aDocCode code]}.
 			stream nextPut: button]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/13/2025 18:18:24'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 13/Mar/2025 18:18:24'!
 renderSmalltalkCode: aDocCode
 
 	|text textModel button|
@@ -19559,16 +19559,16 @@ renderSmalltalkCode: aDocCode
 						BlockTextAction do: [:anObject | Clipboard storeObject: aDocCode code]}.
 			stream nextPut: button]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 15:48:01'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 24/Nov/2022 15:48:01'!
 useIconButtons
 	^ Preferences at: #eruditeUseIconButtons! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 14:11'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 14:11:00'!
 visitActionLink: aDocLink
 
 	stream nextPut: (Text string: aDocLink title attributes: {BlockTextAction do: [:x | aDocLink action value]. TextEmphasis underlined})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/23/2024 22:01:06'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 23/Jun/2024 22:01:06'!
 visitCode: aDocCode
 
 	| codeActionSelector |
@@ -19581,13 +19581,13 @@ visitCode: aDocCode
 	
 	self perform: codeActionSelector with: aDocCode! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:29:36'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 20/Jun/2024 22:29:36'!
 visitCompositeNode: aDocNode
 
 	aDocNode children do: [:node |
 		node accept: self]! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'jmv 6/11/2020 16:33:17'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'jmv 11/Jun/2020 16:33:17'!
 visitHeading: aEruditeHeading
 
 	|pointSizes|
@@ -19600,13 +19600,13 @@ visitHeading: aEruditeHeading
 							TextFontFamily familyName: FontFamily defaultFamilyName.
 						TextFontSize pointSize: (pointSizes at: aEruditeHeading level)})! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:23:37'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 14:23:37'!
 visitLink: aDocLink
 	
 	(self linkRendererFor: aDocLink type) 
 		render: aDocLink in: document on: stream! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2025 18:52:26'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/Mar/2025 18:52:26'!
 visitList: aListNode
 
 	| listRendererSelector |
@@ -19614,7 +19614,7 @@ visitList: aListNode
 	listRendererSelector := ('visit', aListNode listType asString capitalized, 'List:') asSymbol.
 	^ self perform: listRendererSelector with: aListNode! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2025 18:51:29'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/Mar/2025 18:51:29'!
 visitOrderedList: aListNode
 
 	| itemNumber |
@@ -19632,7 +19632,7 @@ visitOrderedList: aListNode
         	stream nextPut: Character newLineCharacter asString].
         stream nextPut: Character newLineCharacter asString! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 23:10:43'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 23:10:43'!
 visitStyledText: aStyledText
 
 	| attributes |
@@ -19650,7 +19650,7 @@ visitStyledText: aStyledText
 	
 	stream nextPut: (Text string: aStyledText text attributes: attributes)! !
 
-!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2025 18:46:28'!
+!MorphicEruditeDocRenderer methodsFor: 'as yet unclassified' stamp: 'MM 12/Mar/2025 18:46:28'!
 visitUnorderedList: aListNode
 
 	aListNode items do: [:item |
@@ -19663,22 +19663,22 @@ visitUnorderedList: aListNode
 		stream nextPut: Character newLineCharacter asString].
 	stream nextPut: Character newLineCharacter asString! !
 
-!MorphicEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 12/11/2018 18:27'!
+!MorphicEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 11/Dec/2018 18:27:00'!
 requestor
 
 	^ requestor! !
 
-!MorphicEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 12/11/2018 18:26'!
+!MorphicEruditeDocRenderer methodsFor: 'accessing' stamp: 'MM 11/Dec/2018 18:26:00'!
 requestor: anObject
 
 	requestor _ anObject! !
 
-!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/20/2022 10:53:28'!
+!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 20/Nov/2022 10:53:28'!
 codeBackgroundColor
 
 	^ Preferences at: #eruditeCodeBackgroundColor! !
 
-!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:30'!
+!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 21:30:00'!
 example1
 	"self example1"
 	| erudite |
@@ -19689,14 +19689,14 @@ Look at Object>>at:
 Properties are defined via #triggerEvent:'.
 	(MorphicEruditeDocRenderer on: erudite) render edit.! !
 
-!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:30'!
+!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 21:30:00'!
 example2
 	"self example2"
 	| erudite |
 	erudite _ SmalltalkEruditeParser parse: Object comment.
 	(MorphicEruditeDocRenderer on: erudite) render edit.! !
 
-!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 15:48:36'!
+!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 24/Nov/2022 15:48:36'!
 initialize
 
 	Preferences name: #eruditeCodeBackgroundColor 
@@ -19711,27 +19711,27 @@ initialize
 			type: Boolean 
 			value: true.! !
 
-!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/11/2018 18:28'!
+!MorphicEruditeDocRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/Dec/2018 18:28:00'!
 render: aDocument notifying: anObject
 	
 	^ (self on: aDocument)
 		requestor: anObject; 
 		render! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 3/18/2025 09:02:52'!
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 18/Mar/2025 09:02:52'!
 assignedParser
 	^ parser! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:37:39'!
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:37:39'!
 data
 	^ data! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:47'!
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 17:56:47'!
 data: aDictionary
 
 	data _ aDictionary! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:39:32'!
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 17:39:32'!
 getNodeData: aNode
 
 	self assert: aNode dataKey isNil not.
@@ -19742,28 +19742,28 @@ getNodeData: aNode
 				data at: aNode dataKey put: nodeData.
 				nodeData]! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:38:00'!
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:38:00'!
 images: aDictionary
 	"Deprecated."
 	data _ aDictionary! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 5/17/2025 12:14:42'!
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 17/May/2025 12:14:42'!
 initialize
 
 	data := Dictionary new.! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 5/17/2025 12:21:43'!
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 17/May/2025 12:21:43'!
 open
 	EruditeDocumentReaderMorph open: self! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 5/17/2025 12:25:24'!
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 17/May/2025 12:25:24'!
 parsedContents
 
 	^ contents isArray 
 		ifTrue: [self] "document is already parsed"
 		ifFalse: [self parser parse: contents]! !
 
-!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:56:07'!
+!EruditeDocument methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 17:56:07'!
 storeOn: aStream
 
 	|usedData|
@@ -19784,41 +19784,41 @@ storeOn: aStream
 			nextPutAll: ') data: '; store: usedData;
 			nextPutAll: '; yourself)'! !
 
-!EruditeDocument methodsFor: 'accessing' stamp: 'MM 11/29/2018 19:25'!
+!EruditeDocument methodsFor: 'accessing' stamp: 'MM 29/Nov/2018 19:25:00'!
 contents
 	"Answer the value of contents"
 
 	^ contents! !
 
-!EruditeDocument methodsFor: 'accessing' stamp: 'MM 12/10/2018 21:38'!
+!EruditeDocument methodsFor: 'accessing' stamp: 'MM 10/Dec/2018 21:38:00'!
 contents: anObject
 	"Set the value of contents"
 
 	contents _ anObject! !
 
-!EruditeDocument methodsFor: 'accessing' stamp: 'MM 6/11/2022 19:00:47'!
+!EruditeDocument methodsFor: 'accessing' stamp: 'MM 11/Jun/2022 19:00:47'!
 parser
 	"Answer the value of parser"
 
 	^ parser ifNil: [EruditeMarkupParser new]! !
 
-!EruditeDocument methodsFor: 'accessing' stamp: 'MM 6/11/2022 18:59:58'!
+!EruditeDocument methodsFor: 'accessing' stamp: 'MM 11/Jun/2022 18:59:58'!
 parser: anObject
 	"Set the value of parser"
 
 	parser := anObject! !
 
-!EruditeDocument class methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 23:33'!
+!EruditeDocument class methodsFor: 'as yet unclassified' stamp: 'MM 29/Nov/2018 23:33:00'!
 contents: aCollection
 	
 	^ self new contents: aCollection; yourself! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:56:41'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 15/Dec/2018 14:56:41'!
 editBook
 	EruditeBook withBookSelectionDo: [ :book |
 		book edit ].! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:55:02'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 13:55:02'!
 eruditeWorldMenu
 	"Build the Erudite menu for the world."
 
@@ -19850,7 +19850,7 @@ eruditeWorldMenu
 			} asDictionary.
 		}`! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 2/9/2022 11:40:20'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 9/Feb/2022 11:40:20'!
 helpMenuOptions
 
 	^ `{
@@ -19865,7 +19865,7 @@ helpMenuOptions
 			} asDictionary.
 		}` ! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'as 7/6/2022 06:52:24'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'as 6/Jul/2022 06:52:24'!
 initialize
 
 	Prefs _ PreferenceSet new.
@@ -19881,7 +19881,7 @@ initialize
 					 
 	EruditeManual open! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:58:27'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 15/Dec/2018 14:58:27'!
 menu: titleString
 	"Create a menu with the given title, ready for filling"
 
@@ -19891,7 +19891,7 @@ menu: titleString
 		addStayUpIcons.
 	^ menu! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'jmv 9/12/2024 12:37:12'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'jmv 12/Sep/2024 12:37:12'!
 newBook
 	| book title |
 	title := StringRequestMorph request: 'Book title:'.
@@ -19900,24 +19900,24 @@ newBook
 			book := EruditeBook titled: title.
 			book edit ]]! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 15:17:52'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 15/Dec/2018 15:17:52'!
 openEruditeMenu
 	"Build and show the preferences menu for the world."
 
 	self eruditeWorldMenu popUpInWorld: self runningWorld! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 13:55:40'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 13:55:40'!
 readAllBooks
 
 	(EruditeCompositeBook
 		with: EruditeBook booksList) open.! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 14:59:53'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 15/Dec/2018 14:59:53'!
 readBook
 	EruditeBook withBookSelectionDo: [ :book |
 		book open ].! !
 
-!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 12/15/2018 15:15:17'!
+!EruditeSystem class methodsFor: 'as yet unclassified' stamp: 'MM 15/Dec/2018 15:15:17'!
 worldMenuOptions
 
 	^`{{
@@ -19931,11 +19931,11 @@ worldMenuOptions
 	} asDictionary.
 	}`! !
 
-!EruditeSystem class methodsFor: 'accessing' stamp: 'as 7/6/2022 06:54:01'!
+!EruditeSystem class methodsFor: 'accessing' stamp: 'as 6/Jul/2022 06:54:01'!
 preferences
 	^ Prefs! !
 
-!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 6/16/2022 09:42:29'!
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 16/Jun/2022 09:42:29'!
 listingsPackageConfiguration
 
 	"See: https://marianopeck.blog/2012/06/17/smalltalk-syntax-highlighting-for-latex/"
@@ -19970,7 +19970,7 @@ listingsPackageConfiguration
  \endminipage%
 }%'! !
 
-!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 1/19/2019 19:02:33'!
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 19/Jan/2019 19:02:33'!
 render
 
 	self renderWithTemplate: [
@@ -19979,19 +19979,19 @@ render
 	
 	texFilePath fileContents: stream contents! !
 
-!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 1/19/2019 17:02:11'!
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 19/Jan/2019 17:02:11'!
 renderArticle
 
 	documentClass _ #article.
 	self render! !
 
-!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 1/19/2019 17:01:59'!
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 19/Jan/2019 17:01:59'!
 renderBook
 
 	documentClass _ #book.
 	self render! !
 
-!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 6/15/2022 10:01:21'!
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 15/Jun/2022 10:01:21'!
 renderDocument: aDocument
 
 	|renderer|
@@ -20001,7 +20001,7 @@ renderDocument: aDocument
 			highlightSyntax: highlightSyntax.
 	renderer render! !
 
-!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 1/19/2019 17:00:55'!
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 19/Jan/2019 17:00:55'!
 renderSection: aBookSection
 
 	documentClass caseOf: {
@@ -20016,7 +20016,7 @@ renderSection: aBookSection
 	aBookSection sections do: [:section |
 		self renderSubsection: section]! !
 
-!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 1/19/2019 17:01:18'!
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 19/Jan/2019 17:01:18'!
 renderSubsection: aBookSection
 
 	documentClass caseOf: {
@@ -20031,7 +20031,7 @@ renderSubsection: aBookSection
 	aBookSection sections do: [:section |
 		self renderSubsubsection: section]! !
 
-!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 1/19/2019 17:00:26'!
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 19/Jan/2019 17:00:26'!
 renderSubsubsection: aBookSection
 
 	documentClass caseOf: {
@@ -20045,7 +20045,7 @@ renderSubsubsection: aBookSection
 	
 	! !
 
-!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 6/16/2022 09:26:10'!
+!LatexEruditeBookRenderer methodsFor: 'rendering' stamp: 'MM 16/Jun/2022 09:26:10'!
 renderWithTemplate: aBlock
 
 	stream nextPutAll: '\documentclass[11pt,pdflatex,makeidx]{scrbook}   % Book class in 11 points'; newLine.
@@ -20087,44 +20087,44 @@ renderWithTemplate: aBlock
 			"nextPutAll: '\printindex'; newLine;"
 			nextPutAll: '\end{document}'! !
 
-!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 6/16/2022 08:37:15'!
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 16/Jun/2022 08:37:15'!
 afterPreamble: aString
 	afterPreamble _ aString! !
 
-!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 6/16/2022 08:37:05'!
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 16/Jun/2022 08:37:05'!
 beforePreamble: aString
 	beforePreamble _ aString! !
 
-!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 19:03:51'!
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 19/Jan/2019 19:03:51'!
 book: aBook
 
 	book _ aBook! !
 
-!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 6/16/2022 09:10:16'!
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 16/Jun/2022 09:10:16'!
 highlightSyntax: aBoolean
 	highlightSyntax _ aBoolean! !
 
-!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 16:21:07'!
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 19/Jan/2019 16:21:07'!
 requestor
 
 	^ requestor! !
 
-!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 16:21:07'!
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 19/Jan/2019 16:21:07'!
 requestor: anObject
 
 	requestor _ anObject! !
 
-!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 18:52:04'!
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 19/Jan/2019 18:52:04'!
 texFilePath
 
 	^ texFilePath! !
 
-!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 1/19/2019 18:51:49'!
+!LatexEruditeBookRenderer methodsFor: 'accessing' stamp: 'MM 19/Jan/2019 18:51:49'!
 texFilePath: aFilePath
 
 	texFilePath _ aFilePath! !
 
-!LatexEruditeBookRenderer methodsFor: 'initialization' stamp: 'MM 1/19/2019 19:06:48'!
+!LatexEruditeBookRenderer methodsFor: 'initialization' stamp: 'MM 19/Jan/2019 19:06:48'!
 initialize: aBook
 
 	book _ aBook.
@@ -20132,29 +20132,29 @@ initialize: aBook
 	documentClass _ #book.
 	highlightSyntax _ true! !
 
-!LatexEruditeBookRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:05:45'!
+!LatexEruditeBookRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 19/Jan/2019 19:05:45'!
 on: aBook
 
 	^ self new initialize: aBook! !
 
-!LatexEruditeBookRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:05:57'!
+!LatexEruditeBookRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 19/Jan/2019 19:05:57'!
 render: aBook
 	
 	^ (self on: aBook) render! !
 
-!LatexEruditeBookRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/19/2019 19:06:11'!
+!LatexEruditeBookRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 19/Jan/2019 19:06:11'!
 render: aBook notifying: anObject
 	
 	^ (self on: aBook)
 		requestor: anObject; 
 		render! !
 
-!EruditeDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 22:58:57'!
+!EruditeDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 17/Dec/2018 22:58:57'!
 render: aLink in: aDocument on: aStream
 
 	^ self subclassResponsibility! !
 
-!EruditeClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 15:22'!
+!EruditeClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 15:22:00'!
 browse: aClass selector: aSymbol
 
 	| browser |
@@ -20167,7 +20167,7 @@ browse: aClass selector: aSymbol
 			open: browser
 			label: 'System Browser' ! !
 
-!EruditeClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 16:24:20'!
+!EruditeClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 24/Nov/2022 16:24:20'!
 embed: aDocLink on: aStream
 
 	|text class textModel |
@@ -20206,7 +20206,7 @@ embed: aDocLink on: aStream
 					attributes: {BlockTextAction do: [:x | 	self browse: class			selector: nil]. 
 								TextEmphasis underlined})]! !
 
-!EruditeClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:24'!
+!EruditeClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 17/Dec/2018 23:06:24'!
 render: aDocLink in: aDocument on: aStream
 
 	aDocLink optionAt: #embed ifPresent: [:val |
@@ -20215,7 +20215,7 @@ render: aDocLink in: aDocument on: aStream
 	
 	self renderLink: aDocLink on: aStream! !
 
-!EruditeClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 15:06:13'!
+!EruditeClassDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 18/Dec/2018 15:06:13'!
 renderLink: aDocLink on: aStream
 
 	aStream nextPut: (Text string: aDocLink labelOrTarget 
@@ -20226,7 +20226,7 @@ renderLink: aDocLink on: aStream
 									ifAbsent: [self error: 'Class not found: ', className asString].
 						self browse: class selector: nil]))! !
 
-!EruditeImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 23:18:08'!
+!EruditeImageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 20/Jun/2024 23:18:08'!
 render: aDocLink in: aDocument on: aStream
 
 	|form imageMorph |
@@ -20247,7 +20247,7 @@ render: aDocLink in: aDocument on: aStream
 							
 	aStream nextPut: (Text streamContents: [:s | imageMorph printOn: s])! !
 
-!EruditeMessageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:35'!
+!EruditeMessageDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 17/Dec/2018 23:06:35'!
 render: aDocLink in: aDocument on: aStream
 
 	|action selector renderLink |
@@ -20268,7 +20268,7 @@ render: aDocLink in: aDocument on: aStream
 	action _ [:anObject | Smalltalk browseAllImplementorsOf: selector].
 	renderLink value: action! !
 
-!EruditeMethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 15:52'!
+!EruditeMethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 15:52:00'!
 browse: aClass selector: aSymbol
 
 	| browser |
@@ -20281,7 +20281,7 @@ browse: aClass selector: aSymbol
 			open: browser
 			label: 'System Browser' ! !
 
-!EruditeMethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:13:52'!
+!EruditeMethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 15:13:52'!
 document: aDocLink on: aStream
 
 	|methodReference textModel docString text indentation |
@@ -20315,7 +20315,7 @@ document: aDocLink on: aStream
 								selector: methodReference selector]. 
 							TextEmphasis underlined})! !
 
-!EruditeMethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 11/24/2022 16:24:02'!
+!EruditeMethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 24/Nov/2022 16:24:02'!
 embed: aDocLink on: aStream
 
 	|text methodReference textModel |
@@ -20355,7 +20355,7 @@ embed: aDocLink on: aStream
 										selector: methodReference selector]. 
 									TextEmphasis underlined})]! !
 
-!EruditeMethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:47:00'!
+!EruditeMethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 20/Sep/2021 13:47:00'!
 methodReferenceFor: aDocLink 
 
 	| classAndMethod class |
@@ -20369,7 +20369,7 @@ methodReferenceFor: aDocLink
 		class: class
 		selector: classAndMethod second withBlanksTrimmed asSymbol! !
 
-!EruditeMethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:03:33'!
+!EruditeMethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 15:03:33'!
 render: aDocLink in: aDocument on: aStream
 
 	aDocLink optionAt: #embed ifPresent: [:val |
@@ -20382,7 +20382,7 @@ render: aDocLink in: aDocument on: aStream
 	
 	self renderLink: aDocLink on: aStream! !
 
-!EruditeMethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 9/20/2021 13:49:13'!
+!EruditeMethodDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 20/Sep/2021 13:49:13'!
 renderLink: aDocLink on: aStream
 
 	|methodReference|
@@ -20397,7 +20397,7 @@ renderLink: aDocLink on: aStream
 								selector: methodReference selector]))]
 				ifNil: [aStream nextPut: (Text string: aDocLink labelOrTarget)]! !
 
-!EruditeSectionDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:06:58'!
+!EruditeSectionDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 17/Dec/2018 23:06:58'!
 render: aDocLink in: aDocument on: aStream
 
 	|bookTitle sectionTitle bookAndSection|
@@ -20418,7 +20418,7 @@ render: aDocLink in: aDocument on: aStream
 						book _ EruditeBook bookNamed: bookTitle ifNone: [^nil].
 						book openInSection: sectionTitle]]))! !
 
-!EruditeSelectorDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 6/23/2024 22:27:39'!
+!EruditeSelectorDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 23/Jun/2024 22:27:39'!
 render: aDocLink in: aDocument on: aStream
 
 	| action selector renderLink target |
@@ -20441,7 +20441,7 @@ render: aDocLink in: aDocument on: aStream
 	action := [:anObject | Smalltalk browseAllImplementorsOf: selector].
 	renderLink value: action! !
 
-!EruditeUrlDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 16:38:52'!
+!EruditeUrlDocLinkRenderer class methodsFor: 'as yet unclassified' stamp: 'MM 19/Dec/2018 16:38:52'!
 render: aDocLink in: aDocument on: aStream
 
 	|url |
@@ -20451,98 +20451,98 @@ render: aDocLink in: aDocument on: aStream
 	aStream nextPut: (Text string: aDocLink labelOrTarget
 				attributes: {EruditeTextURL url: url}).! !
 
-!EruditeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 19:31:20'!
+!EruditeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 19:31:20'!
 accept: aVisitor
 
 	^ self subclassResponsibility ! !
 
-!EruditeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:13:02'!
+!EruditeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 17:13:02'!
 data
 	^ nil! !
 
-!EruditeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:13:07'!
+!EruditeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 17:13:07'!
 dataKey
 	^ nil! !
 
-!EruditeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:03:49'!
+!EruditeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 17:03:49'!
 readDataFrom: aDictionary
 	"Read my previously stored data from aDictionary."! !
 
-!EruditeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:04:04'!
+!EruditeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 17:04:04'!
 storeData: aDictionary
 	"Store my  data in aDictionary.
 A node's data is serialized and transferred in books."
 	! !
 
-!EruditeCompositeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:27:36'!
+!EruditeCompositeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 20/Jun/2024 22:27:36'!
 accept: aVisitor
 
 	^ aVisitor visitCompositeNode: self! !
 
-!EruditeCompositeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:32:21'!
+!EruditeCompositeDocNode methodsFor: 'as yet unclassified' stamp: 'MM 20/Jun/2024 22:32:21'!
 initialize
 
 	super initialize.
 	
 	children := OrderedCollection new! !
 
-!EruditeCompositeDocNode methodsFor: 'accessing' stamp: 'MM 6/20/2024 22:27:58'!
+!EruditeCompositeDocNode methodsFor: 'accessing' stamp: 'MM 20/Jun/2024 22:27:58'!
 children
 	"Answer the value of children"
 
 	^ children! !
 
-!EruditeCompositeDocNode methodsFor: 'accessing' stamp: 'MM 6/20/2024 22:27:58'!
+!EruditeCompositeDocNode methodsFor: 'accessing' stamp: 'MM 20/Jun/2024 22:27:58'!
 children: anObject
 	"Set the value of children"
 
 	children := anObject! !
 
-!EruditeCompositeDocNode class methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 22:28:17'!
+!EruditeCompositeDocNode class methodsFor: 'as yet unclassified' stamp: 'MM 20/Jun/2024 22:28:17'!
 children: aCollection
 
 	^self new children: aCollection; yourself! !
 
-!EruditeDocActionLink methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:02'!
+!EruditeDocActionLink methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 14:02:00'!
 accept: aVisitor
 
 	^ aVisitor visitActionLink: self! !
 
-!EruditeDocActionLink methodsFor: 'accessing' stamp: 'MM 11/29/2018 22:45'!
+!EruditeDocActionLink methodsFor: 'accessing' stamp: 'MM 29/Nov/2018 22:45:00'!
 action
 	"Answer the value of action"
 
 	^ action! !
 
-!EruditeDocActionLink methodsFor: 'accessing' stamp: 'MM 11/29/2018 22:45'!
+!EruditeDocActionLink methodsFor: 'accessing' stamp: 'MM 29/Nov/2018 22:45:00'!
 action: anObject
 	"Set the value of action"
 
 	action _ anObject! !
 
-!EruditeDocActionLink methodsFor: 'accessing' stamp: 'MM 11/29/2018 22:45'!
+!EruditeDocActionLink methodsFor: 'accessing' stamp: 'MM 29/Nov/2018 22:45:00'!
 title
 	"Answer the value of title"
 
 	^ title! !
 
-!EruditeDocActionLink methodsFor: 'accessing' stamp: 'MM 11/29/2018 22:45'!
+!EruditeDocActionLink methodsFor: 'accessing' stamp: 'MM 29/Nov/2018 22:45:00'!
 title: anObject
 	"Set the value of title"
 
 	title _ anObject! !
 
-!EruditeDocActionLink class methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 22:44'!
+!EruditeDocActionLink class methodsFor: 'as yet unclassified' stamp: 'MM 29/Nov/2018 22:44:00'!
 title: aString do: aBlock
 
 	^ self new title: aString; action: aBlock; yourself! !
 
-!EruditeDocCode methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 18:18'!
+!EruditeDocCode methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 18:18:00'!
 accept: aVisitor
 
 	^ aVisitor visitCode: self! !
 
-!EruditeDocCode methodsFor: 'as yet unclassified' stamp: 'MM 6/23/2024 19:02:40'!
+!EruditeDocCode methodsFor: 'as yet unclassified' stamp: 'MM 23/Jun/2024 19:02:40'!
 initialize: aString action: aSymbol
 
 	code := aString.
@@ -20550,18 +20550,18 @@ initialize: aString action: aSymbol
 	sourceLanguage := 'smalltalk'.
 	evaluate := true! !
 
-!EruditeDocCode methodsFor: 'as yet unclassified' stamp: 'MM 6/23/2024 21:54:33'!
+!EruditeDocCode methodsFor: 'as yet unclassified' stamp: 'MM 23/Jun/2024 21:54:33'!
 validActions
 
 	^#('doIt' 'exploreIt' 'inspectIt' 'printIt' 'printItHere' 'embedIt' 'doItWithButton' 'exploreItWithButton' 'inspectItWithButton')! !
 
-!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 11/30/2018 18:19'!
+!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 18:19:00'!
 action
 	"Answer the value of action"
 
 	^ action! !
 
-!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 6/23/2024 22:03:18'!
+!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 23/Jun/2024 22:03:18'!
 action: anObject
 
 	"Set the value of action."
@@ -20569,112 +20569,112 @@ action: anObject
 
 	action := anObject! !
 
-!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 11/30/2018 18:19'!
+!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 18:19:00'!
 code
 	"Answer the value of code"
 
 	^ code! !
 
-!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 11/30/2018 18:19'!
+!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 18:19:00'!
 code: anObject
 	"Set the value of code"
 
 	code _ anObject! !
 
-!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 6/23/2024 19:02:52'!
+!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 23/Jun/2024 19:02:52'!
 evaluate
 	"Answer the value of evaluate"
 
 	^ evaluate! !
 
-!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 6/23/2024 19:02:52'!
+!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 23/Jun/2024 19:02:52'!
 evaluate: anObject
 	"Set the value of evaluate"
 
 	evaluate := anObject! !
 
-!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 6/20/2024 12:08:09'!
+!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 20/Jun/2024 12:08:09'!
 sourceLanguage
 	"Answer the value of sourceLanguage"
 
 	^ sourceLanguage! !
 
-!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 6/20/2024 12:08:09'!
+!EruditeDocCode methodsFor: 'accessing' stamp: 'MM 20/Jun/2024 12:08:09'!
 sourceLanguage: anObject
 	"Set the value of sourceLanguage"
 
 	sourceLanguage := anObject! !
 
-!EruditeDocCode class methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 11:57:06'!
+!EruditeDocCode class methodsFor: 'as yet unclassified' stamp: 'MM 20/Jun/2024 11:57:06'!
 code: aString
 
 	^ self code: aString action: nil! !
 
-!EruditeDocCode class methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 18:17'!
+!EruditeDocCode class methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 18:17:00'!
 code: aString action: aSymbol
 
 	^ self new initialize: aString action: aSymbol! !
 
-!EruditeDocHeading methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 16:00'!
+!EruditeDocHeading methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 16:00:00'!
 accept: aVisitor
 
 	^ aVisitor visitHeading: self! !
 
-!EruditeDocHeading methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 15:47'!
+!EruditeDocHeading methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 15:47:00'!
 initialize: aString level: aNumber
 
 	heading _ aString.
 	level _ aNumber! !
 
-!EruditeDocHeading methodsFor: 'accessing' stamp: 'MM 11/30/2018 16:03'!
+!EruditeDocHeading methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 16:03:00'!
 heading
 	"Answer the value of heading"
 
 	^ heading! !
 
-!EruditeDocHeading methodsFor: 'accessing' stamp: 'MM 11/30/2018 16:03'!
+!EruditeDocHeading methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 16:03:00'!
 heading: anObject
 	"Set the value of heading"
 
 	heading _ anObject! !
 
-!EruditeDocHeading methodsFor: 'accessing' stamp: 'MM 11/30/2018 16:03'!
+!EruditeDocHeading methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 16:03:00'!
 level
 	"Answer the value of level"
 
 	^ level! !
 
-!EruditeDocHeading methodsFor: 'accessing' stamp: 'MM 11/30/2018 16:03'!
+!EruditeDocHeading methodsFor: 'accessing' stamp: 'MM 30/Nov/2018 16:03:00'!
 level: anObject
 	"Set the value of level"
 
 	level _ anObject! !
 
-!EruditeDocHeading class methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 15:47'!
+!EruditeDocHeading class methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 15:47:00'!
 heading: aString level: aNumber
 
 	^ self new initialize: aString level: aNumber! !
 
-!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:02'!
+!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 14:02:00'!
 accept: aVisitor
 
 	^ aVisitor visitLink: self! !
 
-!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:36:09'!
+!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 17:36:09'!
 data
 
 	type == #image ifTrue: [^ EruditeForm fromFileNamed: target withBlanksTrimmed ].
 	
 	^ nil! !
 
-!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 17:31:24'!
+!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 17:31:24'!
 dataKey
 
 	type == #image ifTrue: [^target].
 	
 	^ nil! !
 
-!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 6/24/2024 13:58:47'!
+!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 24/Jun/2024 13:58:47'!
 initialize: anObject type: aSymbol label: aString
 
 	target := anObject.
@@ -20683,125 +20683,125 @@ initialize: anObject type: aSymbol label: aString
 	options := Dictionary new.
 	self validateLinkType.! !
 
-!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 15:18'!
+!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 15:18:00'!
 labelOrTarget
 
 	^ label ifNil: [target]! !
 
-!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 6/24/2024 13:59:32'!
+!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 24/Jun/2024 13:59:32'!
 validLinkTypes
 
 	^ #(section selector class method url image)! !
 
-!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 6/24/2024 13:58:38'!
+!EruditeDocLink methodsFor: 'as yet unclassified' stamp: 'MM 24/Jun/2024 13:58:38'!
 validateLinkType
 
 	self assert: (self validLinkTypes includes: type)
 		description: 'Invalid link type'! !
 
-!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 12/1/2018 14:03'!
+!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 1/Dec/2018 14:03:00'!
 label
 	"Answer the value of label"
 
 	^ label! !
 
-!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 12/1/2018 14:03'!
+!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 1/Dec/2018 14:03:00'!
 label: anObject
 	"Set the value of label"
 
 	label _ anObject! !
 
-!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 12/6/2018 18:15'!
+!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 6/Dec/2018 18:15:00'!
 optionAt: aSymbol
 
 	^ options at: aSymbol! !
 
-!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 12/6/2018 18:15'!
+!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 6/Dec/2018 18:15:00'!
 optionAt: aSymbol ifAbsent: aBlock
 
 	^ options at: aSymbol ifAbsent: aBlock! !
 
-!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 12/6/2018 18:15'!
+!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 6/Dec/2018 18:15:00'!
 optionAt: aSymbol ifPresent: aBlock
 
 	^ options at: aSymbol ifPresent: aBlock! !
 
-!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 12/6/2018 18:16'!
+!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 6/Dec/2018 18:16:00'!
 optionAt: aSymbol put: anObject
 
 	^ options at: aSymbol put: anObject! !
 
-!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 12/1/2018 14:03'!
+!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 1/Dec/2018 14:03:00'!
 options
 	"Answer the value of options"
 
 	^ options! !
 
-!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 12/1/2018 14:03'!
+!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 1/Dec/2018 14:03:00'!
 options: anObject
 	"Set the value of options"
 
 	options _ anObject! !
 
-!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 12/1/2018 14:03'!
+!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 1/Dec/2018 14:03:00'!
 target
 	"Answer the value of target"
 
 	^ target! !
 
-!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 12/1/2018 14:03'!
+!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 1/Dec/2018 14:03:00'!
 target: anObject
 	"Set the value of target"
 
 	target _ anObject! !
 
-!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 12/1/2018 14:03'!
+!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 1/Dec/2018 14:03:00'!
 type
 	"Answer the value of type"
 
 	^ type! !
 
-!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 12/1/2018 14:03'!
+!EruditeDocLink methodsFor: 'accessing' stamp: 'MM 1/Dec/2018 14:03:00'!
 type: anObject
 	"Set the value of type"
 
 	type _ anObject! !
 
-!EruditeDocLink class methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:08'!
+!EruditeDocLink class methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 14:08:00'!
 target: anObject type: aSymbol label: aString
 
 	^ self new initialize: anObject type: aSymbol label: aString! !
 
-!EruditeDocList methodsFor: 'accessing' stamp: 'MM 6/15/2024 17:58:02'!
+!EruditeDocList methodsFor: 'accessing' stamp: 'MM 15/Jun/2024 17:58:02'!
 items
 	"Answer the value of items"
 
 	^ items! !
 
-!EruditeDocList methodsFor: 'accessing' stamp: 'MM 6/15/2024 17:58:02'!
+!EruditeDocList methodsFor: 'accessing' stamp: 'MM 15/Jun/2024 17:58:02'!
 items: anObject
 	"Set the value of items"
 
 	items := anObject! !
 
-!EruditeDocList methodsFor: 'accessing' stamp: 'MM 6/15/2024 17:58:02'!
+!EruditeDocList methodsFor: 'accessing' stamp: 'MM 15/Jun/2024 17:58:02'!
 listType
 	"Answer the value of listType"
 
 	^ listType! !
 
-!EruditeDocList methodsFor: 'accessing' stamp: 'MM 6/15/2024 17:58:02'!
+!EruditeDocList methodsFor: 'accessing' stamp: 'MM 15/Jun/2024 17:58:02'!
 listType: anObject
 	"Set the value of listType"
 
 	listType := anObject! !
 
-!EruditeDocList methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 19:32:04'!
+!EruditeDocList methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 19:32:04'!
 accept: aVisitor
 
 	^ aVisitor visitList: self! !
 
-!EruditeDocList methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 17:58:23'!
+!EruditeDocList methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 17:58:23'!
 initialize
 
 	super initialize.
@@ -20809,97 +20809,97 @@ initialize
 	items := OrderedCollection new.
 	listType := #unordered! !
 
-!EruditeDocListItem methodsFor: 'accessing' stamp: 'MM 6/15/2024 18:05:16'!
+!EruditeDocListItem methodsFor: 'accessing' stamp: 'MM 15/Jun/2024 18:05:16'!
 contents
 	"Answer the value of contents"
 
 	^ contents! !
 
-!EruditeDocListItem methodsFor: 'accessing' stamp: 'MM 6/15/2024 18:05:16'!
+!EruditeDocListItem methodsFor: 'accessing' stamp: 'MM 15/Jun/2024 18:05:16'!
 contents: anObject
 	"Set the value of contents"
 
 	contents := anObject! !
 
-!EruditeDocListItem methodsFor: 'as yet unclassified' stamp: 'MM 6/22/2024 12:31:24'!
+!EruditeDocListItem methodsFor: 'as yet unclassified' stamp: 'MM 22/Jun/2024 12:31:24'!
 accept: aVisitor
 
 	^ aVisitor visitListItem: self! !
 
-!EruditeDocListItem methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 18:05:32'!
+!EruditeDocListItem methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 18:05:32'!
 initialize
 
 	super initialize.
 	
 	contents := OrderedCollection new! !
 
-!EruditeDocTaggedElement methodsFor: 'accessing' stamp: 'MM 6/12/2024 10:33:32'!
+!EruditeDocTaggedElement methodsFor: 'accessing' stamp: 'MM 12/Jun/2024 10:33:32'!
 attributes
 	"Answer the value of attributes"
 
 	^ attributes! !
 
-!EruditeDocTaggedElement methodsFor: 'accessing' stamp: 'MM 6/12/2024 10:33:32'!
+!EruditeDocTaggedElement methodsFor: 'accessing' stamp: 'MM 12/Jun/2024 10:33:32'!
 attributes: anObject
 	"Set the value of attributes"
 
 	attributes := anObject! !
 
-!EruditeDocTaggedElement methodsFor: 'accessing' stamp: 'MM 6/12/2024 10:33:32'!
+!EruditeDocTaggedElement methodsFor: 'accessing' stamp: 'MM 12/Jun/2024 10:33:32'!
 contents
 	"Answer the value of contents"
 
 	^ contents! !
 
-!EruditeDocTaggedElement methodsFor: 'accessing' stamp: 'MM 6/12/2024 10:33:32'!
+!EruditeDocTaggedElement methodsFor: 'accessing' stamp: 'MM 12/Jun/2024 10:33:32'!
 contents: anObject
 	"Set the value of contents"
 
 	contents := anObject! !
 
-!EruditeDocTaggedElement methodsFor: 'accessing' stamp: 'MM 6/12/2024 10:33:32'!
+!EruditeDocTaggedElement methodsFor: 'accessing' stamp: 'MM 12/Jun/2024 10:33:32'!
 tag
 	"Answer the value of tag"
 
 	^ tag! !
 
-!EruditeDocTaggedElement methodsFor: 'accessing' stamp: 'MM 6/12/2024 10:33:32'!
+!EruditeDocTaggedElement methodsFor: 'accessing' stamp: 'MM 12/Jun/2024 10:33:32'!
 tag: anObject
 	"Set the value of tag"
 
 	tag := anObject! !
 
-!EruditeDocTaggedElement methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2024 10:35:22'!
+!EruditeDocTaggedElement methodsFor: 'as yet unclassified' stamp: 'MM 12/Jun/2024 10:35:22'!
 initialize: aTag attributes: anArray contents: contentsString
 
 	tag := aTag.
 	attributes := anArray.
 	contents := contentsString! !
 
-!EruditeDocTaggedElement class methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2024 10:34:21'!
+!EruditeDocTaggedElement class methodsFor: 'as yet unclassified' stamp: 'MM 12/Jun/2024 10:34:21'!
 tag: tag attributes: attributes contents: contents
 
 	^ self new
 		initialize: tag attributes: attributes contents: contents! !
 
-!EruditeStyledText methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:09'!
+!EruditeStyledText methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 12:09:00'!
 accept: aVisitor
 
 	^ aVisitor visitStyledText: self! !
 
-!EruditeStyledText methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 23:07:39'!
+!EruditeStyledText methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 23:07:39'!
 initialize: aString styles: anArray
 
 	text := aString.
 	self styles: anArray! !
 
-!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 6/15/2024 22:46:58'!
+!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 15/Jun/2024 22:46:58'!
 styles
 	"Answer the value of styles"
 
 	^ styles! !
 
-!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 6/15/2024 23:08:32'!
+!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 15/Jun/2024 23:08:32'!
 styles: anObject
 	"Set the value of styles"
 
@@ -20907,29 +20907,29 @@ styles: anObject
 	self assert: (anObject allSatisfy: [:el | el isSymbol or: [el isKindOf: TextAttribute]]).
 	styles := anObject! !
 
-!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 12/1/2018 12:11'!
+!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 1/Dec/2018 12:11:00'!
 text
 	"Answer the value of text"
 
 	^ text! !
 
-!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 12/1/2018 12:11'!
+!EruditeStyledText methodsFor: 'accessing' stamp: 'MM 1/Dec/2018 12:11:00'!
 text: anObject
 	"Set the value of text"
 
 	text _ anObject! !
 
-!EruditeStyledText class methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 18:58:49'!
+!EruditeStyledText class methodsFor: 'as yet unclassified' stamp: 'MM 20/Jun/2024 18:58:49'!
 text: aString style: style
 
 	^ self text: aString styles: (Array with: style)! !
 
-!EruditeStyledText class methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:46:10'!
+!EruditeStyledText class methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 22:46:10'!
 text: aString styles: styles
 
 	^ self new initialize: aString styles: styles! !
 
-!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 19:11:04'!
+!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 19:11:04'!
 chapter1
 
 	<booksection: 'Chapter 1' parent: nil order: 1 book: 'Dynamic book test'>
@@ -20938,7 +20938,7 @@ chapter1
 	
 	{DynamicEruditeBook::class}'! !
 
-!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 19:11:12'!
+!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 19:11:12'!
 chapter2
 
 	<booksection: 'Chapter 2' parent: nil order: 2 book:  'Dynamic book test'>
@@ -20947,7 +20947,7 @@ chapter2
 	
 	{Object::class}[embed]'! !
 
-!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 19:11:19'!
+!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 19:11:19'!
 sub11
 
 	<booksection: 'Sub chapter 1' parent: 'Chapter 1' order: 1 book: 'Dynamic book test'>
@@ -20956,7 +20956,7 @@ sub11
 	
 	Hello'! !
 
-!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 19:11:25'!
+!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 19:11:25'!
 sub12
 
 	<booksection: 'Sub chapter 2' parent: 'Chapter 1' order: 2 book: 'Dynamic book test'>
@@ -20965,7 +20965,7 @@ sub12
 	
 	Bye'! !
 
-!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 2/26/2022 19:11:31'!
+!EruditeDynamicTestBook methodsFor: 'as yet unclassified' stamp: 'MM 26/Feb/2022 19:11:31'!
 sub21
 
 	<booksection: 'Sub chapter 3' parent: 'Chapter 2' order: 1 book: 'Dynamic book test'>
@@ -20974,13 +20974,13 @@ sub21
 	
 	Bye'! !
 
-!EruditeForm methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:47:53'!
+!EruditeForm methodsFor: 'as yet unclassified' stamp: 'MM 17/Dec/2018 23:47:53'!
 base64String
 
 	"TODO: how to support other image formats apart from PNG?"
 	 ^ ("ImageReadWriter" PNGReadWriter bytesFor: self) base64Encoded.! !
 
-!EruditeForm methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 23:46:23'!
+!EruditeForm methodsFor: 'as yet unclassified' stamp: 'MM 17/Dec/2018 23:46:23'!
 storeOn: aStream
 
 	aStream nextPutAll: '(EruditeForm fromBase64String:'.
@@ -20989,7 +20989,7 @@ storeOn: aStream
 	
 	! !
 
-!EruditeForm class methodsFor: 'as yet unclassified' stamp: 'MM 12/17/2018 20:16:23'!
+!EruditeForm class methodsFor: 'as yet unclassified' stamp: 'MM 17/Dec/2018 20:16:23'!
 fromBase64String: aString
 
 	|form|
@@ -20998,7 +20998,7 @@ fromBase64String: aString
 
 	^ form as: EruditeForm! !
 
-!EruditeForm class methodsFor: 'as yet unclassified' stamp: 'AS 7/29/2022 20:36:06'!
+!EruditeForm class methodsFor: 'as yet unclassified' stamp: 'AS 29/Jul/2022 20:36:06'!
 fromFileNamed: aString
 
 	| form |
@@ -21008,59 +21008,59 @@ fromFileNamed: aString
 		ifFalse: [ form ].
 	^ form as: EruditeForm! !
 
-!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/16/2018 11:01:54'!
+!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 16/Dec/2018 11:01:54'!
 classOrMetaClass: aClass
 
 	styler classOrMetaClass: aClass! !
 
-!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 5/21/2023 12:11:11'!
+!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 21/May/2023 12:11:11'!
 formatAndStyle
 	self convertAndStyleIfNeededWith: styler.! !
 
-!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/16/2018 11:02:06'!
+!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'MM 16/Dec/2018 11:02:06'!
 initialize
 	
 	super initialize.
 	
 	styler _ SHTextStylerST80 new textModel: self.! !
 
-!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'jmv 8/22/2024 15:12:14'!
+!EruditeSmalltalkTextModel methodsFor: 'as yet unclassified' stamp: 'jmv 22/Aug/2024 15:12:14'!
 stylesText
 	"Answer true to allow styling to proceed, or false to veto the styling"
 
 	^true! !
 
-!EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 12/13/2018 16:17'!
+!EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 13/Dec/2018 16:17:00'!
 editing
 	"Answer the value of editing"
 
 	^ editing! !
 
-!EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 12/13/2018 16:52'!
+!EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 13/Dec/2018 16:52:00'!
 editing: anObject
 	"Set the value of editing"
 
 	editing _ anObject.
 	self refetch! !
 
-!EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 3/5/2021 17:11:51'!
+!EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 5/Mar/2021 17:11:51'!
 sourceGetter
 	"Answer the value of sourceGetter"
 
 	^ sourceGetter! !
 
-!EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 3/5/2021 17:11:51'!
+!EruditePluggableTextModel methodsFor: 'accessing' stamp: 'MM 5/Mar/2021 17:11:51'!
 sourceGetter: anObject
 	"Set the value of sourceGetter"
 
 	sourceGetter _ anObject! !
 
-!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:35'!
+!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 13/Dec/2018 16:35:00'!
 editorClass
 
 	^ EruditeDocEditor! !
 
-!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:58'!
+!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 13/Dec/2018 16:58:00'!
 getActualContents
 
 	|text|
@@ -21073,19 +21073,19 @@ getActualContents
 			MorphicEruditeDocRenderer render: parsed]
 	! !
 
-!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 17:12:35'!
+!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 5/Mar/2021 17:12:35'!
 initWith: aTextProvider
 
 	super initWith: aTextProvider.
 	editing _ true.
 	sourceGetter _ nil.! !
 
-!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 18:20:30'!
+!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 19/Nov/2022 18:20:30'!
 isDirty
 
 	^undoRedoCommands position isZero not.! !
 
-!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:46'!
+!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 13/Dec/2018 16:46:00'!
 refetch
 	"Answer true if actualContents was actually fetched."
 	textGetter
@@ -21100,59 +21100,59 @@ refetch
 			self changed: #refetched.
 			^true ]! !
 
-!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 17:13:27'!
+!EruditePluggableTextModel methodsFor: 'as yet unclassified' stamp: 'MM 5/Mar/2021 17:13:27'!
 sourceContents
 	^ sourceGetter ifNotNil: [textProvider perform: sourceGetter]
 		ifNil: [textProvider perform: textGetter]! !
 
-!EruditeBookExplorer methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2023 14:22:43'!
+!EruditeBookExplorer methodsFor: 'as yet unclassified' stamp: 'MM 19/Jun/2023 14:22:43'!
 explorerList
 	^ book sections collect: [ :bookSection |
 		EruditeBookSectionExplorerWrapper with: bookSection ].! !
 
-!EruditeBookExplorer methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 19:57'!
+!EruditeBookExplorer methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 19:57:00'!
 initialize: aBook
 
 	book _ aBook.
 	! !
 
-!EruditeBookExplorer class methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 13:57'!
+!EruditeBookExplorer class methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 13:57:00'!
 on: aBook
 
 	^ self new initialize: aBook! !
 
-!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:38'!
+!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 11:38:00'!
 acceptContents
 
 	^ self editor acceptContents! !
 
-!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:30'!
+!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 11:30:00'!
 acceptContentsOnChange
 
 	acceptContentsOnChange _ true! !
 
-!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:33'!
+!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 11:33:00'!
 acceptContentsOnChange: aBoolean
 
 	acceptContentsOnChange _ aBoolean! !
 
-!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:37'!
+!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 11:37:00'!
 acceptsContentsOnChange
 
 	^ acceptContentsOnChange ! !
 
-!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:32'!
+!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 13/Dec/2018 16:32:00'!
 initialize
 
 	super initialize.
 	
 	acceptContentsOnChange _ false! !
 
-!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:30'!
+!EruditeDocEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 21:30:00'!
 innerMorphClass
 	^ InnerEruditeDocMorph.! !
 
-!EruditeDocEditorMorph class methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 18:19:04'!
+!EruditeDocEditorMorph class methodsFor: 'as yet unclassified' stamp: 'MM 19/Nov/2022 18:19:04'!
 textProvider: aTextProvider textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter
 	| newModel answer |
 	answer _ self new.
@@ -21162,15 +21162,15 @@ textProvider: aTextProvider textGetter: textGetter textSetter: textSetter select
 	answer model: newModel.
 	^answer! !
 
-!EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 15:11'!
+!EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 15:11:00'!
 acceptsContentsOnChange
 	^ false! !
 
-!EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:30'!
+!EruditeDocViewerMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 21:30:00'!
 innerMorphClass
 	^ InnerEruditeDocMorph.! !
 
-!EruditeDocViewerMorph class methodsFor: 'as yet unclassified' stamp: 'MM 11/19/2022 18:18:08'!
+!EruditeDocViewerMorph class methodsFor: 'as yet unclassified' stamp: 'MM 19/Nov/2022 18:18:08'!
 textProvider: aTextProvider textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter
 	| newModel answer |
 	answer _ self new.
@@ -21180,7 +21180,7 @@ textProvider: aTextProvider textGetter: textGetter textSetter: textSetter select
 	answer model: newModel.
 	^answer! !
 
-!EruditeClassCommentMorph methodsFor: 'as yet unclassified' stamp: 'jmv 5/10/2021 12:38:47'!
+!EruditeClassCommentMorph methodsFor: 'as yet unclassified' stamp: 'jmv 10/May/2021 12:38:47'!
 hidePane
 
 	self hide.
@@ -21191,12 +21191,12 @@ hidePane
 	code layoutSpec proportionalHeight: 1.0.
 	separator hide.! !
 
-!EruditeClassCommentMorph methodsFor: 'as yet unclassified' stamp: 'jmv 5/10/2021 12:38:38'!
+!EruditeClassCommentMorph methodsFor: 'as yet unclassified' stamp: 'jmv 10/May/2021 12:38:38'!
 separator: adjusterMorph code: codeMorph
 	separator _ adjusterMorph.
 	code _ codeMorph.! !
 
-!EruditeClassCommentMorph methodsFor: 'as yet unclassified' stamp: 'jmv 5/10/2021 12:38:56'!
+!EruditeClassCommentMorph methodsFor: 'as yet unclassified' stamp: 'jmv 10/May/2021 12:38:56'!
 showPane
 
 	self show.
@@ -21206,7 +21206,7 @@ showPane
 	separator layoutSpec fixedHeight: Theme current layoutAdjusterThickness.
 	separator show! !
 
-!EruditeClassCommentMorph methodsFor: 'as yet unclassified' stamp: 'jmv 5/10/2021 12:39:36'!
+!EruditeClassCommentMorph methodsFor: 'as yet unclassified' stamp: 'jmv 10/May/2021 12:39:36'!
 update: anAspect
 	super update: anAspect.
 	anAspect == #editSelection ifFalse: [ ^self ].
@@ -21214,12 +21214,12 @@ update: anAspect
 		ifTrue: [ self showPane ]
 		ifFalse: [ self hidePane ]! !
 
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 11/Dec/2018 16:28:00'!
 bindingNamesDo: aBlock
 
 	bindings keysDo: aBlock! !
 
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:20'!
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 11/Dec/2018 17:20:00'!
 bindingOf: aString
 
 	(bindings includesKey: aString) ifFalse: [
@@ -21228,35 +21228,35 @@ bindingOf: aString
 			ifFalse: [bindings at: aString put: nil]].
 	^bindings associationAt: aString! !
 
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 11/Dec/2018 16:28:00'!
 hasBindingOf: aString
 	^bindings includesKey: aString! !
 
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 11/Dec/2018 16:28:00'!
 hasBindingThatBeginsWith: aString 
 
 	bindings keysDo: [ :each |
 		(each beginsWith: aString) ifTrue: [ ^true ] ].
 	^false! !
 
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 16:28'!
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 11/Dec/2018 16:28:00'!
 initializeBindings
 	
 	bindings _ Dictionary new! !
 
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:29'!
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 11/Dec/2018 17:29:00'!
 selectionInterval
 
 	"Needed for bindings handling."
 
 	^ 1 to: 1! !
 
-!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 12/11/2018 17:28'!
+!EruditeBookReaderMorph methodsFor: 'bindings' stamp: 'MM 11/Dec/2018 17:28:00'!
 text
 	"Needed for bindings handling."
 	^ ''! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'jmv 9/12/2024 12:37:17'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'jmv 12/Sep/2024 12:37:17'!
 addSection
 
 	| title |
@@ -21270,12 +21270,12 @@ addSection
 				ifNil: [model addSection: title contents: ''].
 			self sectionsChanged]	]! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 11:36'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 11:36:00'!
 bookIsUnsaved
 
 	^ sourcesChanged! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'jmv 8/9/2024 15:48:45'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 26/Mar/2026 17:23:57'!
 buildMorphicWindow
 	| leftColumn previousButton nextButton navRow |
 	layoutMorph beRow.
@@ -21290,7 +21290,7 @@ buildMorphicWindow
 			menuNshortcutsKey: #explorerMenuSpec.
 	explorerMorph
 		autoDeselect: true;
-		color: Theme current background.
+		color: Theme current defaultListColor.
 	
 	leftColumn addMorphUseAll: explorerMorph.
 	previousButton := PluggableButtonMorph
@@ -21328,7 +21328,7 @@ buildMorphicWindow
 	
 	layoutMorph addMorphUseAll: eruditeViewerMorph.! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 11:39'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 11:39:00'!
 closeBoxHit
 
 	self bookIsUnsaved 
@@ -21337,7 +21337,7 @@ closeBoxHit
 				ifTrue: [^ super closeBoxHit]]
 		ifFalse: [^ super closeBoxHit]! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 23:34'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 23:34:00'!
 contents
 
 	^ currentSection 
@@ -21347,7 +21347,7 @@ contents
 				ifFalse: [self getStyledText: currentSection document]]
 		ifNil: ['']! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 11:40'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 11:40:00'!
 contents: aString notifying: aRequestor
 
 	viewSources ifTrue: [
@@ -21359,16 +21359,16 @@ contents: aString notifying: aRequestor
 
 	! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 11:39'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 11:39:00'!
 contentsChanged
 
 	self changed: #contents! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 18:34:01'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2019 18:34:01'!
 correctFrom: aSmallInteger to: aSmallInteger2 with: aString 
 	! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'Install-Erudite 7/6/2022 06:36:25'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'Install-Erudite 6/Jul/2022 06:36:25'!
 drawLabelOn: aCanvas
 
 	| x0 y0 f w availableW l |
@@ -21389,21 +21389,21 @@ drawLabelOn: aCanvas
 		color: Color white
 		embossed: false! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 15:02'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 15:02:00'!
 editBook
 
 	model edit! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:30'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 21:30:00'!
 editorClassFor: textGetter
 	"Enable any object to be the textProvider for a PluggableTextModel"
 	^ EruditeDocEditor.! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 17:24:07'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 5/Mar/2021 17:24:07'!
 eruditeSources
 	^ currentSection document contents! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 17:24:16'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 5/Mar/2021 17:24:16'!
 eruditeSources: aString notifying: aRequestor
 	currentSection ifNil: [^ self inform: 'Create or select a book section to edit'].
 	currentSection document contents: aString.
@@ -21412,17 +21412,17 @@ eruditeSources: aString notifying: aRequestor
 	self contentsChanged.
 	^ true! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/2/2018 00:06'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 2/Dec/2018 00:06:00'!
 exploreBook
 
 	model explore! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/18/2018 19:09:56'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 18/Dec/2018 19:09:56'!
 exploreVariables
 
 	bindings explore! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2022 18:37:20'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2022 18:37:20'!
 getStyledText: aDocument
 	^ styledDocuments
 		at: aDocument
@@ -21434,27 +21434,27 @@ getStyledText: aDocument
 			aDocument data: erudite data.
 			text ].! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/9/2018 22:09'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 9/Dec/2018 22:09:00'!
 gotoNextSection
 
 	currentSection ifNotNil: [
 		currentSection nextSection ifNotNil: [:aSection |
 			self gotoSection: aSection]]! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/9/2018 22:09'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 9/Dec/2018 22:09:00'!
 gotoPreviousSection
 
 	currentSection ifNotNil: [
 		currentSection previousSection ifNotNil: [:aSection |
 			self gotoSection: aSection]]! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2023 14:23:49'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 19/Jun/2023 14:23:49'!
 gotoSection: aSection
 	
 	currentSection := aSection.
 	explorer noteNewSelection: (EruditeBookSectionExplorerWrapper with: aSection)! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 12:07:11'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 8/Feb/2022 12:07:11'!
 gotoSectionNamed: aString
 	
 	|section|
@@ -21463,30 +21463,30 @@ gotoSectionNamed: aString
 						
 	self gotoSection: section! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 14:05:18'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 23/Jan/2019 14:05:18'!
 initialExtent
 
 	^ 600@600! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 23:29'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 23:29:00'!
 invalidateDocumentStyle: aDocument
 
 	styledDocuments removeKey: aDocument ifAbsent: []! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 14:13'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 14:13:00'!
 model: aBook
 
 	aBook ifNotNil: [self setLabel: aBook title].
 	
 	^ super model: aBook! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 2/8/2022 22:20:45'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 8/Feb/2022 22:20:45'!
 mouseDownOnHelpHandle: anEvent
 	"The mouse went down in the show-balloon handle"
 	
 	EruditeManual open! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 19:56:20'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/Jun/2023 19:56:20'!
 moveSectionBottom
 
 	currentSection ifNotNil: [
@@ -21496,7 +21496,7 @@ moveSectionBottom
 		parent sections addLast: currentSection.
 		self sectionsChanged]! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 17:52'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 7/Dec/2018 17:52:00'!
 moveSectionDown
 
 	currentSection ifNotNil: [
@@ -21507,7 +21507,7 @@ moveSectionDown
 		parent sections add: currentSection after: after.
 		self sectionsChanged]! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/6/2023 19:56:08'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/Jun/2023 19:56:08'!
 moveSectionTop
 
 	currentSection ifNotNil: [
@@ -21517,7 +21517,7 @@ moveSectionTop
 		parent sections addFirst: currentSection.
 		self sectionsChanged]! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 17:51'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 7/Dec/2018 17:51:00'!
 moveSectionUp
 
 	currentSection ifNotNil: [
@@ -21528,29 +21528,29 @@ moveSectionUp
 		parent sections add: currentSection before: before.
 		self sectionsChanged]! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 18:43:20'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2019 18:43:20'!
 notify: aString at: aSmallInteger in: aReadStream 
 	self inform: aString! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:27'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 21:27:00'!
 openBook
 	EruditeBook withBookSelectionDo: [ :book |
 		book open ].! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 14:58'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 14:58:00'!
 refreshBook
 
 	styledDocuments _ Dictionary new.
 	self contentsChanged! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/20/2024 16:02:43'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 20/Jun/2024 16:02:43'!
 reloadBook
 
 	model reload.
 	currentSection := nil.
 	self sectionsChanged; contentsChanged ! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 15:39'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 7/Dec/2018 15:39:00'!
 removeSection
 
 	currentSection ifNotNil: [
@@ -21558,7 +21558,7 @@ removeSection
 			currentSection parent removeSection: currentSection.
 			self sectionsChanged; contentsChanged]]! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'jmv 9/12/2024 12:37:20'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'jmv 12/Sep/2024 12:37:20'!
 renameSection
 
 	currentSection  ifNotNil: [ | title |
@@ -21571,13 +21571,13 @@ renameSection
 		
 		! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 11:36'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 11:36:00'!
 saveBook
 
 	model store.
 	sourcesChanged _ false! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'jmv 9/12/2024 12:37:23'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'jmv 12/Sep/2024 12:37:23'!
 saveBookAs
 
 	| title  newBook newBookClass|
@@ -21598,23 +21598,23 @@ saveBookAs
 	currentSection := nil.
 	self sectionsChanged ; contentsChanged! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 17:44'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 7/Dec/2018 17:44:00'!
 sectionsChanged
 	explorer changed: #explorerList! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 18:32:46'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2019 18:32:46'!
 selectFrom: aSmallInteger to: aSmallInteger2 
 ! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/22/2019 18:33:19'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 22/Jan/2019 18:33:19'!
 selectInvisiblyFrom: aSmallInteger to: aSmallInteger2 
 ! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 15:45:23'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 5/Mar/2021 15:45:23'!
 sourceContents
 	^ currentSection document contents! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 16:09:37'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 5/Mar/2021 16:09:37'!
 sourceContents: aString notifying: aRequestor
 	currentSection ifNil: [^ self inform: 'Create or select a book section to edit'].
 	currentSection document contents: aString.
@@ -21623,31 +21623,31 @@ sourceContents: aString notifying: aRequestor
 	self contentsChanged.
 	^ true! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 11:36'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 11:36:00'!
 sourcesChanged
 
 	^ sourcesChanged! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 12:55'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 7/Dec/2018 12:55:00'!
 toggleViewSources
 
 	viewSources _ viewSources not.
 	eruditeViewerMorph enableEditing: viewSources.
 	self contentsChanged! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:02'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 11:02:00'!
 update: aSymbol
 
 	aSymbol == #getCurrentSelection ifTrue: [
 		currentSection _ explorer getCurrentSelection 	ifNotNil: [:sel | sel section].
 		self contentsChanged]! !
 
-!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 22:45'!
+!EruditeBookReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2018 22:45:00'!
 windowColor
 
 	^ Color pink veryMuchDarker ! !
 
-!EruditeBookReaderMorph methodsFor: 'initialization' stamp: 'MM 1/23/2019 14:03:42'!
+!EruditeBookReaderMorph methodsFor: 'initialization' stamp: 'MM 23/Jan/2019 14:03:42'!
 initialize
 
 	super initialize.
@@ -21657,7 +21657,7 @@ initialize
 	sourcesChanged _ false.
 	self initializeBindings ! !
 
-!EruditeBookReaderMorph methodsFor: 'menu & kbd shortcuts' stamp: 'jmv 8/9/2024 16:02:29'!
+!EruditeBookReaderMorph methodsFor: 'menu & kbd shortcuts' stamp: 'jmv 9/Aug/2024 16:02:29'!
 explorerMenuSpec
 	"Spec for the menu and shortcut keys for the system categories list.
 	See coment at Morph >> #getMenu
@@ -21687,7 +21687,7 @@ explorerMenuSpec
 		#(210		'edit' 						nil 		window 			editBook 						textEditorIcon)
 	)! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/12/2018 18:56'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/Dec/2018 18:56:00'!
 buildMorphicWindow
 	super buildMorphicWindow.
 	sourceMorph _ EruditeDocEditorMorph
@@ -21699,7 +21699,7 @@ buildMorphicWindow
 		addAdjusterAndMorph: sourceMorph
 		proportionalWidth: 1.! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 00:50'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 7/Dec/2018 00:50:00'!
 contents
 
 	^ currentSection 
@@ -21707,13 +21707,13 @@ contents
 			self getStyledText: currentSection document]
 		ifNil: ['']! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:04'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 11:04:00'!
 contentsChanged
 
 	super contentsChanged.
 	self changed: #sourceContents! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'AS 6/16/2022 15:51:59'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'AS 16/Jun/2022 15:51:59'!
 exportToLatex
 	
 	| defaultFilePath |
@@ -21725,7 +21725,7 @@ exportToLatex
 			render.
 		self inform: 'Book exported']! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 18:06:35'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 20/Oct/2022 18:06:35'!
 exportWithClass: aExporterClass
 
 	| args exporter |
@@ -21739,12 +21739,12 @@ exportWithClass: aExporterClass
 	exporter export.
 	self inform: 'Book exported'.! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 1/23/2019 14:06:54'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 23/Jan/2019 14:06:54'!
 initialExtent
 
 	^ RealEstateAgent standardWindowExtent ! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:14:48'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 20/Oct/2022 17:14:48'!
 initialize
 
 	super initialize.
@@ -21752,12 +21752,12 @@ initialize
 	viewSources _ true.
 	liveEditing _ Preferences at: #eruditeLiveEditing! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:27'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 21:27:00'!
 openBook
 	EruditeBook withBookSelectionDo: [ :book |
 		book edit ].! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 10:59'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 10:59:00'!
 sourceContents
 
 	^ currentSection 
@@ -21765,7 +21765,7 @@ sourceContents
 			currentSection document contents]
 		ifNil: ['']! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 19:49'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 19:49:00'!
 sourceContents: aString notifying: aRequestor
 	currentSection ifNil: [^ self inform: 'Create or select a book section to edit'].
 	currentSection document contents: aString.
@@ -21775,21 +21775,21 @@ sourceContents: aString notifying: aRequestor
 	^ true
 				! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/9/2018 21:22'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 9/Dec/2018 21:22:00'!
 toggleLiveEditing
 
 	liveEditing _ liveEditing not.
 	
 	sourceMorph acceptContentsOnChange: liveEditing! !
 
-!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/7/2018 00:48'!
+!EruditeBookEditorMorph methodsFor: 'as yet unclassified' stamp: 'MM 7/Dec/2018 00:48:00'!
 toggleViewSources
 
 	viewSources  _ viewSources not.
 	
 	sourceMorph visible: viewSources! !
 
-!EruditeBookEditorMorph methodsFor: 'menu & kbd shortcuts' stamp: 'jmv 8/9/2024 16:11:48'!
+!EruditeBookEditorMorph methodsFor: 'menu & kbd shortcuts' stamp: 'jmv 9/Aug/2024 16:11:48'!
 explorerMenuSpec
 	"Spec for the menu and shortcut keys for the system categories list.
 	See coment at Morph >> #getMenu
@@ -21805,7 +21805,7 @@ explorerMenuSpec
 		EruditeBookExporter subclassesDo: [:subclass |
 			strm nextPut: {i. subclass exporterName. nil. #window. #exportWithClass:. nil. nil. subclass } ]])! !
 
-!EruditeBookEditorMorph class methodsFor: 'as yet unclassified' stamp: 'MM 10/20/2022 17:14:06'!
+!EruditeBookEditorMorph class methodsFor: 'as yet unclassified' stamp: 'MM 20/Oct/2022 17:14:06'!
 initialize
 	Preferences name: #eruditeLiveEditing 
 			description: 'Visualized changes live in Erudite editor' 
@@ -21813,7 +21813,7 @@ initialize
 			type: Boolean 
 			value: false! !
 
-!EruditeDocEditorWindow methodsFor: 'as yet unclassified' stamp: 'MM 3/5/2021 17:01:29'!
+!EruditeDocEditorWindow methodsFor: 'as yet unclassified' stamp: 'MM 5/Mar/2021 17:01:29'!
 buildMorphicWindow
 
 	| sourceMorph |
@@ -21823,7 +21823,7 @@ buildMorphicWindow
 		
 	self layoutMorph addMorphUseAll: sourceMorph.! !
 
-!EruditeDocumentReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 23:04:54'!
+!EruditeDocumentReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 19/Jun/2024 23:04:54'!
 buildMorphicWindow
 
 	layoutMorph addMorphUseAll: 
@@ -21832,12 +21832,12 @@ buildMorphicWindow
 			textGetter: #contents
 			textSetter: #contents:notifying:)! !
 
-!EruditeDocumentReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 23:11:25'!
+!EruditeDocumentReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 19/Jun/2024 23:11:25'!
 contents
 
 	^ self getStyledText: model! !
 
-!EruditeDocumentReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2024 23:11:57'!
+!EruditeDocumentReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 19/Jun/2024 23:11:57'!
 getStyledText: aDocument
 	
 	 | contents |
@@ -21847,20 +21847,20 @@ getStyledText: aDocument
 	
 	^ MorphicEruditeDocRenderer render: contents notifying: self! !
 
-!EruditeDocumentReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 5/17/2025 12:44:53'!
+!EruditeDocumentReaderMorph methodsFor: 'as yet unclassified' stamp: 'MM 17/May/2025 12:44:53'!
 selectionInterval
 
 	"Needed for bindings handling."
 
 	^ 1 to: 1! !
 
-!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:57'!
+!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 13/Dec/2018 16:57:00'!
 initialize
 
 	super initialize.
 	editing _ false! !
 
-!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 11:51'!
+!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 11:51:00'!
 keyStroke: aKeyboardEvent
 
 	super keyStroke: aKeyboardEvent.
@@ -21869,7 +21869,7 @@ keyStroke: aKeyboardEvent
 		self hasUnacceptedEdits  ifTrue: [
 			self acceptContents]]! !
 
-!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 11/23/2022 20:34:57'!
+!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 23/Nov/2022 20:34:57'!
 setFont: aFont
 
 	hasUnacceptedEdits
@@ -21879,26 +21879,26 @@ setFont: aFont
 	editor inspect.
 	self updateFromTextComposition.! !
 
-!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 12/13/2018 16:59'!
+!InnerEruditeDocMorph methodsFor: 'as yet unclassified' stamp: 'MM 13/Dec/2018 16:59:00'!
 toggleEditing
 
 	editing _ editing not.
 	owner enableEditing: editing.
 	^ editing! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 3/12/2021 15:11:37'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/Mar/2021 15:11:37'!
 assignLinkOption
 
 	^ #word asParser plus flatten, $= asParser, {$,.$]} asChoiceParser negate plus flatten! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:04'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 12:04:00'!
 bold
 
 	^ ($* asParser min: 2 max: 2) flatten,
 	   ($* asParser min: 2 max: 2) negate plus flatten,
 	   ($* asParser min: 2 max: 2) flatten! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 12:24'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 12:24:00'!
 buttonCodeAction
 
 	^  (self withButtonAction: 'doItWithButton') /
@@ -21907,7 +21907,7 @@ buttonCodeAction
 	(self withButtonAction: 'printItWithButton') /
 	(self withButtonAction: 'browseItWithButton') ! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 12:42'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 12:42:00'!
 code
 
 	^ ($[ asParser min: 3 max: 3) flatten,
@@ -21915,71 +21915,71 @@ code
 	   ($] asParser min: 3 max: 3) flatten, 
 	(#blank asParser, codeAction) optional! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 12:23'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 12:23:00'!
 codeAction
 
 	 ^ buttonCodeAction / 
 	   simpleCodeAction! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 19:17:43'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 22/Oct/2022 19:17:43'!
 codeActions
 	"Return the collection of available code actions."
 	^ self class codeActions! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:30'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 12:30:00'!
 erudite
 	
 	^ (markup / plainText) star! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 13:43'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 13:43:00'!
 falseLinkOption
 
 	^ $!! asParser, #word asParser plus flatten! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 15:41'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 15:41:00'!
 heading
 
 	^ heading4 / heading3 / heading2 / heading1! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 16:32'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 16:32:00'!
 heading: level
 
 	^ (self headingCharacter asParser min: level max: level) flatten,
 		(#newline asParser not, #any asParser) plus flatten! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 16:31'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 16:31:00'!
 heading1
 
 	^ self heading: 2! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 16:31'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 16:31:00'!
 heading2
 
 	^ self heading: 3! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 16:31'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 16:31:00'!
 heading3
 
 	^ self heading: 4! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 16:31'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 16:31:00'!
 heading4
 
 	^ self heading: 5! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 15:38'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 15:38:00'!
 headingCharacter
 
 	^ $!!! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:05'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 12:05:00'!
 italic
 
 	^ ($/ asParser min: 2 max: 2) flatten,
 	   ($/ asParser min: 2 max: 2) negate plus flatten,
 	   ($/ asParser min: 2 max: 2) flatten! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 13:54'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 13:54:00'!
 link
 
 	"{target::type|label}[options]"
@@ -21996,28 +21996,28 @@ link
 	   $} asParser,
 	    linkOptions optional bind! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 13:45'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 13:45:00'!
 linkOption
 
 	^ assignLinkOption / falseLinkOption / trueLinkOption! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 18:32'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 18:32:00'!
 linkOptions
 
 	^ $[ asParser trim, linkOptionsList, $] asParser! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 13:01'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 13:01:00'!
 linkOptionsList
 
 	^ linkOption, 
 		($, asParser trim, linkOption) star! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 12:18:07'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2024 12:18:07'!
 markup
 
 	^ markupExtension / heading / code / bold / italic / underlined / unformatted / link! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 12:27:30'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2024 12:27:30'!
 markupExtension
 
 	|extensions|
@@ -22028,12 +22028,12 @@ markupExtension
 		ifEmpty: [	PPFailingParser message: 'No extension at point']
 		ifNotEmpty: [ 			PPChoiceParser withAll:  (extensions collect: [:ext | ext markupParser])]! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:30'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 12:30:00'!
 plainText
 
 	^ markup negate plus flatten! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 18:47:49'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 22/Oct/2022 18:47:49'!
 simpleCodeAction
 
 	| actionParser |
@@ -22045,36 +22045,36 @@ simpleCodeAction
 	
 	^ actionParser! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 15:43'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 15:43:00'!
 start
 	
 	^ erudite end! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 13:43'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 13:43:00'!
 trueLinkOption
 
 	^ #word asParser plus flatten! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/18/2022 15:29:26'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 18/Jun/2022 15:29:26'!
 underlined
 
 	^ ($_ asParser min: 2 max: 2) flatten,
 	   ($_ asParser min: 2 max: 2) negate plus flatten,
 	   ($_ asParser min: 2 max: 2) flatten! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 12:31'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 12:31:00'!
 unformatted
 
 	^ ($` asParser min: 3 max: 3) flatten,
 		($` asParser min: 3 max: 3) negate plus flatten,
 		($` asParser min: 3 max: 3) flatten! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 12:14'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 12:14:00'!
 withButtonAction: aString
 
 	^ aString asParser, ':' asParser, $. asParser negate plus flatten, $. asParser! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 11:26:18'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2024 11:26:18'!
 xml
 
 	"A generic element. Extension point."
@@ -22097,7 +22097,7 @@ xml
 		
 		! !
 
-!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 11:24:12'!
+!EruditeMarkupGrammar methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2024 11:24:12'!
 xmlAttribute
 
 	^ #word asParser plus flatten bind,
@@ -22106,59 +22106,59 @@ xmlAttribute
 	    $" asParser negate star flatten bind,
 	    $" asParser! !
 
-!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 18:59:31'!
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 22/Oct/2022 18:59:31'!
 addCodeAction: aString
 
 	"Adds an action to the list of code actions. This is meant for extensions."
 	(CodeActions includes: aString) ifTrue: [^self].
 	CodeActions add: aString! !
 
-!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 19:17:07'!
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 22/Oct/2022 19:17:07'!
 codeActions
 	"Return the collection of available code actions."
 	^ CodeActions ifNil: [CodeActions _ self initializeCodeActions]! !
 
-!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 19:17:28'!
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 22/Oct/2022 19:17:28'!
 defaultCodeActions
 
 	^ {'doIt'. 'inspectIt'. 'exploreIt'. 'printItHere'. 'printIt'. 'embedIt'} asOrderedCollection! !
 
-!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 19:18:06'!
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 22/Oct/2022 19:18:06'!
 initialize
 
 	^ self initializeCodeActions! !
 
-!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 19:17:20'!
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 22/Oct/2022 19:17:20'!
 initializeCodeActions
 
 	^ CodeActions _ self defaultCodeActions.! !
 
-!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 12:26:28'!
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2024 12:26:28'!
 markupExtensions
 
 	^ MarkupExtensions ifNil: [MarkupExtensions := Set new]! !
 
-!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 6/14/2024 14:03:22'!
+!EruditeMarkupGrammar class methodsFor: 'as yet unclassified' stamp: 'MM 14/Jun/2024 14:03:22'!
 registerMarkupExtension: extensionClass
 	self markupExtensions add: extensionClass! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:17'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 14:17:00'!
 assignLinkOption
 
 	^ super assignLinkOption ==> [:res | 
 		res first asSymbol -> res third withBlanksTrimmed ]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:58:02'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 22:58:02'!
 bold
 
 	^ super bold ==> [:res | EruditeStyledText text: res second styles: #(bold)]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 12:35'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 12:35:00'!
 buttonCodeAction
 
 	^ super buttonCodeAction ==> [:res | {#action->res first asSymbol. #button-> res third withBlanksTrimmed } as: Dictionary]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:12:08'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 14:12:08'!
 code
 
 	^ super code ==> [:res | |source action|
@@ -22166,51 +22166,51 @@ code
 		action _ (res at: 4) ifNotNil: [:a | a second].
 		EruditeDocCode code: source action: action]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:44:08'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/Jun/2022 10:44:08'!
 documentClass
 
 	^ EruditeDocument! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:18'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 14:18:00'!
 falseLinkOption
 
 	^ super falseLinkOption ==> [:res |
 		res second asSymbol -> false]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:12:19'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 14:12:19'!
 heading1
 	^ super heading1 ==> [ :res |
 		EruditeDocHeading
 			heading: res second withBlanksTrimmed
 			level: 1 ].! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:12:19'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 14:12:19'!
 heading2
 	^ super heading2 ==> [ :res |
 		EruditeDocHeading
 			heading: res second withBlanksTrimmed
 			level: 2 ].! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:12:19'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 14:12:19'!
 heading3
 	^ super heading3 ==> [ :res |
 		EruditeDocHeading
 			heading: res second withBlanksTrimmed
 			level: 3 ].! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:12:19'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 14:12:19'!
 heading4
 	^ super heading4 ==> [ :res |
 		EruditeDocHeading
 			heading: res second withBlanksTrimmed
 			level: 4 ].! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:47:23'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 22:47:23'!
 italic
 
 	^ super italic ==> [:res | EruditeStyledText text: res second styles: #(italic)]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:12:31'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 14:12:31'!
 link
 	^ super link ~=> [ :target :type :label :options | | lnk |
 		lnk _ EruditeDocLink
@@ -22223,7 +22223,7 @@ link
 				put: opt value ]].
 		lnk ].! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:24'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 14:24:00'!
 linkOptions
 
 	^ super linkOptions ==> [:res | |opts|
@@ -22233,44 +22233,44 @@ linkOptions
 			opts add: x second].
 		opts]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/6/2018 12:25'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/Dec/2018 12:25:00'!
 simpleCodeAction
 
 	^ super simpleCodeAction ==> [:res | {#action-> res asSymbol} as: Dictionary]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/12/2022 10:43:57'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/Jun/2022 10:43:57'!
 start
 	^ super start ==> [ :contents | 		(self documentClass contents: contents)
 								parser: self;
 								yourself ].! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 14:18'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 14:18:00'!
 trueLinkOption
 
 	^ super trueLinkOption ==> [:res |
 		res asSymbol -> true]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:47:31'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 22:47:31'!
 underlined
 
 	^ super underlined ==> [:res | EruditeStyledText text: res second styles: #(underlined)]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 22:47:40'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 22:47:40'!
 unformatted
 	
 	^ super unformatted ==> [:res | EruditeStyledText text: res second styles: #(unformatted)]! !
 
-!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:15:19'!
+!EruditeMarkupParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 14:15:19'!
 xml
 
 	^ super xml ~=> [:tag :attributes :contents | EruditeDocTaggedElement tag: tag attributes: attributes contents: contents]! !
 
-!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/30/2018 11:11'!
+!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 30/Nov/2018 11:11:00'!
 erudite
 
 	^ (smalltalkClassMethod / smalltalkClass / smalltalkSelector / text) star! !
 
-!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 21:38'!
+!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 29/Nov/2018 21:38:00'!
 smalltalkClass
 
 	|className|
@@ -22279,41 +22279,41 @@ smalltalkClass
 		(PPPredicateObjectParser on: [:val | Smalltalk at: className asSymbol ifPresent:[:v | true] ifAbsent:[false]] message: 'Class not found') and)
 		==> [:val | className]! !
 
-!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 23:09'!
+!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 29/Nov/2018 23:09:00'!
 smalltalkClassMethod
 
 	^ (smalltalkClassName, '>>' asParser, smalltalkClassMethodName) ==> 
 		[:res | Array with: res first with: res third]! !
 
-!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 22:22'!
+!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 29/Nov/2018 22:22:00'!
 smalltalkClassMethodName
 
 	^  ((#word asParser plus, $: asParser) plus /
 	      #word asParser plus) flatten! !
 
-!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 21:32'!
+!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 29/Nov/2018 21:32:00'!
 smalltalkClassName
 
 	^ (#uppercase asParser, #word asParser plus) flatten! !
 
-!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 22:11'!
+!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 29/Nov/2018 22:11:00'!
 smalltalkSelector
 
 	^ ($# asParser, 
 	    ((#word asParser plus, $: asParser) plus /
 	      #word asParser plus)) flatten! !
 
-!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 21:29'!
+!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 29/Nov/2018 21:29:00'!
 start
 
 	^ erudite end! !
 
-!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 21:28'!
+!SmalltalkEruditeGrammar methodsFor: 'as yet unclassified' stamp: 'MM 29/Nov/2018 21:28:00'!
 text
 
 	^ (smalltalkClassMethod / smalltalkClass / smalltalkSelector) negate plus flatten! !
 
-!SmalltalkEruditeParser methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 20:59'!
+!SmalltalkEruditeParser methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2018 20:59:00'!
 browse: aClass selector: aSymbol
 
 	| browser |
@@ -22327,7 +22327,7 @@ browse: aClass selector: aSymbol
 			open: browser
 			label: 'System Browser' ! !
 
-!SmalltalkEruditeParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:11:55'!
+!SmalltalkEruditeParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 14:11:55'!
 smalltalkClass
 	^ super smalltalkClass ==> [ :className |
 		EruditeDocActionLink
@@ -22338,7 +22338,7 @@ smalltalkClass
 					browse: class
 					selector: nil ]].! !
 
-!SmalltalkEruditeParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:11:55'!
+!SmalltalkEruditeParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 14:11:55'!
 smalltalkClassMethod
 	^ super smalltalkClassMethod ==> [ :aClassMethod |
 		EruditeDocActionLink
@@ -22350,7 +22350,7 @@ smalltalkClassMethod
 					browse: class
 					selector: selector ]].! !
 
-!SmalltalkEruditeParser methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:11:55'!
+!SmalltalkEruditeParser methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 14:11:55'!
 smalltalkSelector
 	^ super smalltalkSelector ==> [ :aString | | selector |
 		selector _ aString allButFirst asSymbol.
@@ -22358,42 +22358,42 @@ smalltalkSelector
 			title: aString
 			do: [ Smalltalk browseAllImplementorsOf: selector ]].! !
 
-!SmalltalkEruditeParser methodsFor: 'as yet unclassified' stamp: 'MM 12/10/2018 21:27'!
+!SmalltalkEruditeParser methodsFor: 'as yet unclassified' stamp: 'MM 10/Dec/2018 21:27:00'!
 start
 	^ super start ==> [ :contents |
 		EruditeDocument contents: contents ].! !
 
-!SmalltalkEruditeStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 21:07'!
+!SmalltalkEruditeStyler methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2018 21:07:00'!
 initialize
 
 	super initialize.
 	
 	self propertyAt: #ranges put: OrderedCollection new.! !
 
-!SmalltalkEruditeStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 21:22'!
+!SmalltalkEruditeStyler methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2018 21:22:00'!
 ranges
 
 	^ self propertyAt: #ranges! !
 
-!SmalltalkEruditeStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 11:31'!
+!SmalltalkEruditeStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 11:31:00'!
 smalltalkClass
 
 	^ super smalltalkClass token ==> [ :token |
 		self style: token as: #class]! !
 
-!SmalltalkEruditeStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 21:08'!
+!SmalltalkEruditeStyler methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2018 21:08:00'!
 smalltalkClassMethod
 
 	^ super smalltalkClassMethod token ==> [:token |
 		self style: token as: #method]! !
 
-!SmalltalkEruditeStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 21:09'!
+!SmalltalkEruditeStyler methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2018 21:09:00'!
 smalltalkSelector
 
 	^ super smalltalkSelector token ==> [:token |
 		self style: token as: #selector]! !
 
-!SmalltalkEruditeStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 11:36'!
+!SmalltalkEruditeStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 11:36:00'!
 style: aToken as: aSymbol
 
 	"This is a bad hack. For some strange reason I've not been able to figure out, ranges are added twice.
@@ -22409,7 +22409,7 @@ style: aToken as: aSymbol
 
 	self ranges add: (SHRange start: aToken start end: aToken stop type: aSymbol)! !
 
-!SmalltalkEruditeStyler class methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 21:00'!
+!SmalltalkEruditeStyler class methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2018 21:00:00'!
 browse: aClass selector: aSymbol
 
 	| browser |
@@ -22423,7 +22423,7 @@ browse: aClass selector: aSymbol
 			open: browser
 			label: 'System Browser' ! !
 
-!SmalltalkEruditeStyler class methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 21:24'!
+!SmalltalkEruditeStyler class methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2018 21:24:00'!
 style: aString
 
 	|styler|
@@ -22433,7 +22433,7 @@ style: aString
 	
 	^ styler ranges! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:02:46'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:02:46'!
 addAndSelectString: aString
 
 	|from to|
@@ -22448,7 +22448,7 @@ addAndSelectString: aString
 	
 	^ self! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:04:09'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:04:09'!
 addAndSelectString: aString then: aBlock
 
 	|from to|
@@ -22466,7 +22466,7 @@ addAndSelectString: aString then: aBlock
 	
 	^ self! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:09:04'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:09:04'!
 embedClass
 
 	self insertMarkup: [
@@ -22474,7 +22474,7 @@ embedClass
 			addAndSelectString: '<class name>' then: [
 				self addString: '::class}[embed]']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:10:35'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:10:35'!
 embedMethod
 
 	self insertMarkup: [
@@ -22482,7 +22482,7 @@ embedMethod
 			addAndSelectString: 'Class>>selector' then: [
 				self addString: ' ::method}[embed]']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 23:30:06'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 23:30:06'!
 getInsertMarkupMenu
 	
 	| menu |
@@ -22526,7 +22526,7 @@ getInsertMarkupMenu
 			
 	menu popUpInWorld: morph world.! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:01:34'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:01:34'!
 insertBold
 
 	self insertMarkup: [
@@ -22534,7 +22534,7 @@ insertBold
 			addAndSelectString: 'text in bold'
 				then: [self addString: '**']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:08:54'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:08:54'!
 insertClassLink
 
 	self insertMarkup: [
@@ -22542,7 +22542,7 @@ insertClassLink
 			addAndSelectString: '<class name>' then: [
 				self addString: '::class}']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:02:12'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:02:12'!
 insertCode
 
 	self insertMarkup: [
@@ -22550,7 +22550,7 @@ insertCode
 			addAndSelectString: 'code' then: [
 				self addString: ']]]']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:59:23'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:59:23'!
 insertCodeDoIt
 
 	self insertMarkup: [
@@ -22558,7 +22558,7 @@ insertCodeDoIt
 			addAndSelectString: 'code' then: [
 				self addString: ']]] doIt']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:08:12'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 20:08:12'!
 insertCodeDoItWithButton
 
 	self insertMarkup: [
@@ -22566,7 +22566,7 @@ insertCodeDoItWithButton
 			addAndSelectString: 'code' then: [
 				self addString: ']]] doItWithButton: label.']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:08:54'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 20:08:54'!
 insertCodeEmbedItWithButton
 
 	self insertMarkup: [
@@ -22574,7 +22574,7 @@ insertCodeEmbedItWithButton
 			addAndSelectString: 'code' then: [
 				self addString: ']]] embedIt']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:59:31'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:59:31'!
 insertCodeExploreIt
 
 	self insertMarkup: [
@@ -22582,7 +22582,7 @@ insertCodeExploreIt
 			addAndSelectString: 'code' then: [
 				self addString: ']]] exploreIt']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:08:25'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 20:08:25'!
 insertCodeExploreItWithButton
 
 	self insertMarkup: [
@@ -22590,7 +22590,7 @@ insertCodeExploreItWithButton
 			addAndSelectString: 'code' then: [
 				self addString: ']]] exploreItWithButton: label.']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:59:45'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:59:45'!
 insertCodeInspectIt
 
 	self insertMarkup: [
@@ -22598,7 +22598,7 @@ insertCodeInspectIt
 			addAndSelectString: 'code' then: [
 				self addString: ']]] inspectIt']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:08:35'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 20:08:35'!
 insertCodeInspectItWithButton
 
 	self insertMarkup: [
@@ -22606,7 +22606,7 @@ insertCodeInspectItWithButton
 			addAndSelectString: 'code' then: [
 				self addString: ']]] inspectItWithButton: label.']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:09:14'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 20:09:14'!
 insertCodePrintItHereWithButton
 
 	self insertMarkup: [
@@ -22614,7 +22614,7 @@ insertCodePrintItHereWithButton
 			addAndSelectString: 'code' then: [
 				self addString: ']]] printItHere']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:09:08'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 20:09:08'!
 insertCodePrintItWithButton
 
 	self insertMarkup: [
@@ -22622,14 +22622,14 @@ insertCodePrintItWithButton
 			addAndSelectString: 'code' then: [
 				self addString: ']]] printIt']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:03:07'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:03:07'!
 insertHeading
 
 	self insertMarkup: [
 		self addString: '!!!! ';
 			addAndSelectString: 'heading']! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 20:01:02'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 20:01:02'!
 insertImage
 
 	self insertMarkup: [
@@ -22637,7 +22637,7 @@ insertImage
 			addAndSelectString: 'imageFilePath' then: [
 				self addString: ' ::image}']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:03:43'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:03:43'!
 insertItalics
 
 	self insertMarkup: [
@@ -22645,20 +22645,20 @@ insertItalics
 			addAndSelectString: 'text in italics' then: [
 				self addString: '//']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 15:30:47'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 15:30:47'!
 insertLink
 
 	self insertMarkup: [
 		self addString: '{target::type|label}']! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 15:26:57'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 15:26:57'!
 insertMarkup: aBlock
 
 	aBlock value.
 	model changed: #refetchContents.
 	self runningWorld activeHand newKeyboardFocus: morph! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:10:24'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:10:24'!
 insertMethodLink
 
 	self insertMarkup: [
@@ -22666,7 +22666,7 @@ insertMethodLink
 			addAndSelectString: 'Class>>selector' then: [
 				self addString: ' ::method}']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:00:06'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:00:06'!
 insertSectionLink
 
 	self insertMarkup: [
@@ -22674,7 +22674,7 @@ insertSectionLink
 			addAndSelectString: '<sectionName>' then: [
 			self addString: '::section}']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:05:53'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:05:53'!
 insertSelectorLink
 
 	self insertMarkup: [
@@ -22682,21 +22682,21 @@ insertSelectorLink
 			addAndSelectString: '<selectorName>' then: [
 				self addString: '::selector}']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:06:12'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:06:12'!
 insertSubSubheading
 
 	self insertMarkup: [
 		self addString: '!!!!!!!! ';
 			addAndSelectString: 'subsubheading']! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:06:35'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:06:35'!
 insertSubheading
 
 	self insertMarkup: [
 		self addString: '!!!!!! ';
 			addAndSelectString: 'subheading']! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:12:00'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:12:00'!
 insertUrlLink
 
 	self insertMarkup: [
@@ -22704,7 +22704,7 @@ insertUrlLink
 			addAndSelectString: 'url' then: [
 				self addString: '::url|optional label}']]! !
 
-!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 2/17/2022 19:07:08'!
+!EruditeDocEditor methodsFor: 'markup-insertion' stamp: 'MM 17/Feb/2022 19:07:08'!
 insertVerbatim
 
 	self insertMarkup: [
@@ -22712,7 +22712,7 @@ insertVerbatim
 			addAndSelectString: 'verbatim' then: [
 				self addString: '```']]! !
 
-!EruditeDocEditor methodsFor: 'actions' stamp: 'MM 3/5/2021 17:24:02'!
+!EruditeDocEditor methodsFor: 'actions' stamp: 'MM 5/Mar/2021 17:24:02'!
 editEruditeSource
 
 	|sourceModel| 
@@ -22723,7 +22723,7 @@ editEruditeSource
 	
 	EruditeDocEditorWindow open: sourceModel label: 'Edit Erudite source'.! !
 
-!EruditeDocEditor methodsFor: 'actions' stamp: 'MM 12/13/2018 16:56'!
+!EruditeDocEditor methodsFor: 'actions' stamp: 'MM 13/Dec/2018 16:56:00'!
 toggleEditing
 	|editing|
 	
@@ -22731,11 +22731,11 @@ toggleEditing
 	model editing: editing
 	! !
 
-!EruditeDocEditor methodsFor: 'accessing' stamp: 'MM 3/5/2021 14:47:44'!
+!EruditeDocEditor methodsFor: 'accessing' stamp: 'MM 5/Mar/2021 14:47:44'!
 sourceContents
 	model sourceContents ! !
 
-!EruditeDocEditor methodsFor: 'menu & kbd shortcuts' stamp: 'MM 9/19/2024 13:07:00'!
+!EruditeDocEditor methodsFor: 'menu & kbd shortcuts' stamp: 'MM 19/Sep/2024 13:07:00'!
 defaultMenuSpec
 	^super defaultMenuSpec,
 	#(
@@ -22747,17 +22747,17 @@ defaultMenuSpec
 		#(991		nil 							$l 		editor 			cancel 							)
 	)! !
 
-!BlockTextAction methodsFor: 'as yet unclassified' stamp: 'MM 11/17/2018 11:59'!
+!BlockTextAction methodsFor: 'as yet unclassified' stamp: 'MM 17/Nov/2018 11:59:00'!
 actOnClickFor: anObject
 	block value: anObject.
 	^ true ! !
 
-!BlockTextAction methodsFor: 'as yet unclassified' stamp: 'MM 11/17/2018 11:58'!
+!BlockTextAction methodsFor: 'as yet unclassified' stamp: 'MM 17/Nov/2018 11:58:00'!
 initialize: aBlock
 
 	block _ aBlock! !
 
-!BlockTextAction class methodsFor: 'as yet unclassified' stamp: 'MM 11/17/2018 12:04'!
+!BlockTextAction class methodsFor: 'as yet unclassified' stamp: 'MM 17/Nov/2018 12:04:00'!
 do: aBlock
 	"
 	('Some text. ',
@@ -22766,7 +22766,7 @@ do: aBlock
 	"
 	^ self new initialize: aBlock! !
 
-!EruditeTextURL methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 16:34:46'!
+!EruditeTextURL methodsFor: 'as yet unclassified' stamp: 'MM 19/Dec/2018 16:34:46'!
 actOnClickFor: anObject 
 	"Copy url to the clipboard and inform."
 	
@@ -22776,27 +22776,27 @@ actOnClickFor: anObject
 					   nextPutAll: '(copied to the clipboard)']).
 	^true! !
 
-!EruditeTextURL class methodsFor: 'as yet unclassified' stamp: 'MM 12/19/2018 16:38:33'!
+!EruditeTextURL class methodsFor: 'as yet unclassified' stamp: 'MM 19/Dec/2018 16:38:33'!
 url: aString
 
 	^ self new url: aString; yourself! !
 
-!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2023 14:22:33'!
+!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 19/Jun/2023 14:22:33'!
 asString
 	
 	^ self section title! !
 
-!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2023 14:22:52'!
+!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 19/Jun/2023 14:22:52'!
 contents
 	^ self section subsections collect: [ :bookSection |
 		EruditeBookSectionExplorerWrapper with: bookSection ].! !
 
-!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2023 14:22:19'!
+!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 19/Jun/2023 14:22:19'!
 isAncestorOf: aSection
 	
 	^ self isSection: self item ancestorOf: aSection! !
 
-!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 6/19/2023 13:55:59'!
+!EruditeBookSectionExplorerWrapper methodsFor: 'as yet unclassified' stamp: 'MM 19/Jun/2023 13:55:59'!
 isSection: aSection ancestorOf: otherSection
 
 	otherSection parent == aSection 
@@ -22805,19 +22805,19 @@ isSection: aSection ancestorOf: otherSection
 	^ aSection subsections anySatisfy: [:subsection |
 		self isSection: subsection ancestorOf: otherSection]! !
 
-!EruditeBookSectionExplorerWrapper methodsFor: 'accessing' stamp: 'MM 6/19/2023 14:21:54'!
+!EruditeBookSectionExplorerWrapper methodsFor: 'accessing' stamp: 'MM 19/Jun/2023 14:21:54'!
 section
 	"Answer the value of section"
 
 	^ self item! !
 
-!EruditeBookSectionExplorerWrapper methodsFor: 'accessing' stamp: 'MM 6/19/2023 14:22:01'!
+!EruditeBookSectionExplorerWrapper methodsFor: 'accessing' stamp: 'MM 19/Jun/2023 14:22:01'!
 section: anObject
 	"Set the value of section"
 
 	item := anObject! !
 
-!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 12:31'!
+!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 12:31:00'!
 attributesFor: aSymbol text: aText
 
 	^ aSymbol caseOf: {
@@ -22826,7 +22826,7 @@ attributesFor: aSymbol text: aText
 		[#selector] -> [self selectorAttributesFor: aText]
 	}! !
 
-!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 12:31'!
+!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 12:31:00'!
 classAttributesFor: aText
 
 	^ { BlockTextAction
@@ -22835,11 +22835,11 @@ classAttributesFor: aText
 				SmalltalkEruditeStyler browse: class selector: nil].
 		TextColor red }! !
 
-!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 12:40'!
+!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 12:40:00'!
 classOrMetaClass: anUndefinedObject 
 	! !
 
-!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 12:31'!
+!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 12:31:00'!
 methodAttributesFor: aText
 
 	|classAndMethod|
@@ -22852,10 +22852,10 @@ methodAttributesFor: aText
 				SmalltalkEruditeStyler browse: class selector: selector].
 		TextColor red}! !
 
-!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 12:25'!
+!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 12:25:00'!
 privateFormatAndConvert! !
 
-!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 12:27'!
+!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 12:27:00'!
 privateStyle
 
 	| ranges |
@@ -22863,19 +22863,19 @@ privateStyle
 	ranges _ self rangesIn: formattedText.
 	ranges ifNotNil: [ self setAttributesIn: formattedText fromRanges: ranges in: nil ]! !
 
-!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 12:28'!
+!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 12:28:00'!
 rangesIn: aText
 
 	^ SmalltalkEruditeStyler style: aText asString! !
 
-!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 12:31'!
+!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 12:31:00'!
 selectorAttributesFor: aText
 
 	^ {BlockTextAction
 			do: [ :x | Smalltalk browseAllImplementorsOf: aText asString allButFirst asSymbol ].
 		TextColor red}! !
 
-!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 12:30'!
+!EruditeClassCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 12:30:00'!
 setAttributesIn: aText fromRanges: ranges in: anInterval
 
 	aText removeAttributesThat: [ :attribute | attribute isForShout ].
@@ -22885,7 +22885,7 @@ setAttributesIn: aText fromRanges: ranges in: anInterval
 			attributes do: [ :each |
 				aText addAttribute: each from: range start to: range end ]]]! !
 
-!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 11:13'!
+!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 11:13:00'!
 classAttributesFor: aText
 
 	^ { BlockTextAction
@@ -22894,7 +22894,7 @@ classAttributesFor: aText
 				SmalltalkEruditeStyler browse: class selector: nil].
 		TextColor red }! !
 
-!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 12:30'!
+!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 12:30:00'!
 commentAttributesFor: aSymbol text: aText
 
 	^ aSymbol caseOf: {
@@ -22903,7 +22903,7 @@ commentAttributesFor: aSymbol text: aText
 		[#selector] -> [self selectorAttributesFor: aText]
 	}! !
 
-!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 22:12'!
+!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2018 22:12:00'!
 methodAttributesFor: aText
 
 	|classAndMethod|
@@ -22916,14 +22916,14 @@ methodAttributesFor: aText
 				SmalltalkEruditeStyler browse: class selector: selector].
 		TextColor red}! !
 
-!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2018 22:14'!
+!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2018 22:14:00'!
 selectorAttributesFor: aText
 
 	^ {BlockTextAction
 			do: [ :x | Smalltalk browseAllImplementorsOf: aText asString allButFirst asSymbol ].
 		TextColor red}! !
 
-!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/4/2019 12:37:54'!
+!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 4/Dec/2019 12:37:54'!
 setAttributesFromRanges: ranges
 
 	|comments styler commentRanges aText |
@@ -22946,7 +22946,7 @@ setAttributesFromRanges: ranges
 		attributes do: [:attribute |
 			formattedText addAttribute: attribute from: range start to: range end]]! !
 
-!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 11:21'!
+!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 11:21:00'!
 setAttributesIn: aText fromRanges: ranges in: anInterval
 
 	|comments styler commentRanges |
@@ -22967,7 +22967,7 @@ setAttributesIn: aText fromRanges: ranges in: anInterval
 		attributes do: [:attribute |
 			aText addAttribute: attribute from: range start to: range end]]! !
 
-!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 12/5/2018 11:18'!
+!EruditeClassMethodCommentTextStyler methodsFor: 'as yet unclassified' stamp: 'MM 5/Dec/2018 11:18:00'!
 shiftRanges: aCollection delta: aNumber
 
 	aCollection do: [:aSHRange |
@@ -22976,22 +22976,22 @@ shiftRanges: aCollection delta: aNumber
 			end: aSHRange end + aNumber].
 	^ aCollection! !
 
-!EruditeMarkupGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 13:21'!
+!EruditeMarkupGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 13:21:00'!
 setUp
 
 	parser _ EruditeMarkupGrammar new.! !
 
-!EruditeMarkupGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 13:22'!
+!EruditeMarkupGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 13:22:00'!
 testBold
 
 	self assert: (parser bold parse: '**bold**') isPetitFailure not! !
 
-!EruditeMarkupGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 13:22'!
+!EruditeMarkupGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 13:22:00'!
 testItalic
 
 	self assert: (parser italic parse: '//italic//') isPetitFailure not! !
 
-!EruditeMarkupGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 13:33'!
+!EruditeMarkupGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 13:33:00'!
 testLink
 
 	self assert: (parser link end parse: '{target::type}') isPetitFailure not.
@@ -23000,27 +23000,27 @@ testLink
 	self assert: (parser link end parse: '{target::type|label}[!!falseOpt]') isPetitFailure not.
 	self assert: (parser link end parse: '{target::type|label}[opt1=val1, opt2=val2]') isPetitFailure not.! !
 
-!EruditeMarkupGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 12/1/2018 13:23'!
+!EruditeMarkupGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 1/Dec/2018 13:23:00'!
 testUnformatted
 
 	self assert: (parser unformatted parse: '```unformatted```') isPetitFailure not! !
 
-!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 10:22:23'!
+!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 22/Oct/2022 10:22:23'!
 setUp
 
 	parser _ EruditeMarkupParser new.! !
 
-!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 10:22:12'!
+!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 22/Oct/2022 10:22:12'!
 testBold
 
 	self assert: (parser bold parse: '**bold**') isPetitFailure not! !
 
-!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 10:22:12'!
+!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 22/Oct/2022 10:22:12'!
 testItalic
 
 	self assert: (parser italic parse: '//italic//') isPetitFailure not! !
 
-!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 6/15/2024 14:12:31'!
+!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 15/Jun/2024 14:12:31'!
 testLink
 
 	|docLink|
@@ -23036,17 +23036,17 @@ testLink
 	self assert: (parser link end parse: '{target::type|label}[!!falseOpt]') isPetitFailure not.
 	self assert: (parser link end parse: '{target::type|label}[opt1=val1, opt2=val2]') isPetitFailure not.! !
 
-!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 10/22/2022 10:22:12'!
+!EruditeMarkupParserTest methodsFor: 'as yet unclassified' stamp: 'MM 22/Oct/2022 10:22:12'!
 testUnformatted
 
 	self assert: (parser unformatted parse: '```unformatted```') isPetitFailure not! !
 
-!SmalltalkEruditeGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 21:42'!
+!SmalltalkEruditeGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 29/Nov/2018 21:42:00'!
 setUp
 
 	parser _ SmalltalkEruditeGrammar new.! !
 
-!SmalltalkEruditeGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 21:44'!
+!SmalltalkEruditeGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 29/Nov/2018 21:44:00'!
 testSmalltalkClass
 
 	self assert: (parser smalltalkClass parse: 'Object ') isPetitFailure not.
@@ -23054,14 +23054,14 @@ testSmalltalkClass
 	self assert: (parser smalltalkClass parse: 'lowercase ') isPetitFailure.
 	! !
 
-!SmalltalkEruditeGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 22:21'!
+!SmalltalkEruditeGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 29/Nov/2018 22:21:00'!
 testSmalltalkClassMethod
 
 	self assert: (parser smalltalkClassMethod parse: 'Object>>someMethod') isPetitFailure not.
 	self assert: (parser smalltalkClassMethod parse: 'NonExistentClass>>someMethod') isPetitFailure.
 	self assert: (parser smalltalkClassMethod parse: 'Object>>foo:bar:') isPetitFailure not.! !
 
-!SmalltalkEruditeGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 11/29/2018 22:13'!
+!SmalltalkEruditeGrammarTest methodsFor: 'as yet unclassified' stamp: 'MM 29/Nov/2018 22:13:00'!
 testSmalltalkSelector
 
 	self assert: (parser smalltalkSelector end parse: '#selector') isPetitFailure not.
@@ -23070,40 +23070,40 @@ testSmalltalkSelector
 	self assert: (parser smalltalkSelector end parse: '#selector::') isPetitFailure.
 	self assert: (parser smalltalkSelector end parse: '#selector:foo:') isPetitFailure not.! !
 
-!Browser methodsFor: '*Erudite' stamp: 'MM 3/5/2021 17:25:35'!
+!Browser methodsFor: '*Erudite' stamp: 'MM 5/Mar/2021 17:25:35'!
 eruditeSources
 	^ self classCommentText ! !
 
-!Browser methodsFor: '*Erudite' stamp: 'MM 3/5/2021 17:28:59'!
+!Browser methodsFor: '*Erudite' stamp: 'MM 5/Mar/2021 17:28:59'!
 eruditeSources: aString notifying: aRequestor
 	editSelection _ #editComment.
 	^ self contents: aString notifying: aRequestor! !
 
-!Browser methodsFor: '*Erudite' stamp: 'MM 12/13/2018 18:25'!
+!Browser methodsFor: '*Erudite' stamp: 'MM 13/Dec/2018 18:25:00'!
 selectionInterval
 
 	^ 1 to: 1! !
 
-!Browser methodsFor: '*Erudite' stamp: 'MM 12/13/2018 18:26'!
+!Browser methodsFor: '*Erudite' stamp: 'MM 13/Dec/2018 18:26:00'!
 text
 	^ ''! !
 
-!HierarchicalListMorph methodsFor: '*Erudite' stamp: 'MM 12/13/2018 18:42'!
+!HierarchicalListMorph methodsFor: '*Erudite' stamp: 'MM 13/Dec/2018 18:42:00'!
 expandRoot
 	scroller submorphs first toggleExpandedState ! !
 
-!TextModelMorph methodsFor: '*Erudite' stamp: 'MM 6/15/2022 09:43:47'!
+!TextModelMorph methodsFor: '*Erudite' stamp: 'MM 15/Jun/2022 09:43:47'!
 enableEditing: aBoolean
 	self innerTextMorph enableEditing: aBoolean! !
 
-!InnerTextMorph methodsFor: '*Erudite' stamp: 'MM 12/7/2018 12:59'!
+!InnerTextMorph methodsFor: '*Erudite' stamp: 'MM 7/Dec/2018 12:59:00'!
 enableEditing: aBoolean
 
 	self setProperty: #disablesEdition toValue: aBoolean.
 	aBoolean ifFalse: [self stopBlinking]
 				ifTrue: [self removeProperty: #disablesEdition. self startBlinking]! !
 
-!DirectoryEntry class methodsFor: '*Erudite' stamp: 'AS 6/13/2022 19:55:00'!
+!DirectoryEntry class methodsFor: '*Erudite' stamp: 'AS 13/Jun/2022 19:55:00'!
 tempDirectory
 
 	|thisOS|
